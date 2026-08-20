@@ -1,0 +1,65 @@
+{
+  "titel": "Lektion Demo",
+  "karten": [
+    {
+      "id": "demo-001",
+      "en": ["dog"],
+      "de": ["Hund"],
+      "wortart": "Nomen",
+      "hinweise": {
+        "nach-de": "ein Haustier",
+        "nach-en": "it starts with a d"
+      }
+    },
+    {
+      "id": "demo-002",
+      "en": ["bike", "bicycle"],
+      "de": ["Fahrrad", "Rad"],
+      "wortart": "Nomen",
+      "hinweise": {
+        "nach-de": "hat Räder und einen Lenker",
+        "nach-en": "you ride it to school"
+      }
+    },
+    {
+      "id": "demo-003",
+      "en": ["to look for something"],
+      "de": ["etwas suchen"],
+      "wortart": "Verb",
+      "hinweise": {
+        "nach-de": "man tut das, wenn etwas weg ist",
+        "nach-en": "4 words, starts with 'to'"
+      }
+    },
+        {
+      "id": "demo-004",
+      "en": ["to write"],
+      "de": ["schreiben"],
+      "wortart": "unregelmäßiges Verb",
+      "hinweise": {
+        "nach-de": "das lernt man in der Grundschule",
+        "nach-en": "it starts with 'to w....'"
+      }
+    },
+    {
+      "id": "demo-005",
+      "en": ["to read"],
+      "de": ["lesen"],
+      "wortart": "unregelmäßiges Verb",
+      "hinweise": {
+        "nach-de": "das lernt man in der Grundschule",
+        "nach-en": "it starts with 'to r....'"
+      }
+    },
+    {
+      "id": "demo-006",
+      "en": ["to win"],
+      "de": ["gewinnen"],
+      "wortart": "unregelmäßiges Verb",
+      "hinweise": {
+        "nach-de": "man kriegt einen pokal",
+        "nach-en": "you are happy when you do this"
+      }
+    }   
+  ]
+}
