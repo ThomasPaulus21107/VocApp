@@ -33,29 +33,29 @@
     },
         {
       "id": "demo-004",
-      "en": ["to write"],
-      "de": ["schreiben"],
-      "wortart": "unregelmäßiges Verb",
+      "en": ["to analyse"],
+      "de": ["analysieren"],
+      "wortart": "Verb",
       "hinweise": {
-        "nach-de": "das lernt man in der Grundschule",
-        "nach-en": "it starts with 'to w....'"
+        "nach-de": "das lernt man in im Studium",
+        "nach-en": "it starts with 'to a....'"
       }
     },
     {
       "id": "demo-005",
-      "en": ["to read"],
-      "de": ["lesen"],
-      "wortart": "unregelmäßiges Verb",
+      "en": ["to stay"],
+      "de": ["bleiben"],
+      "wortart": "Verb",
       "hinweise": {
-        "nach-de": "das lernt man in der Grundschule",
-        "nach-en": "it starts with 'to r....'"
+        "nach-de": "man bleibt an einem Ort",
+        "nach-en": "it starts with 'to s....'"
       }
     },
     {
       "id": "demo-006",
-      "en": ["to win"],
-      "de": ["gewinnen"],
-      "wortart": "unregelmäßiges Verb",
+      "en": ["to jump"],
+      "de": ["springen"],
+      "wortart": "Verb",
       "hinweise": {
         "nach-de": "man kriegt einen pokal",
         "nach-en": "you are happy when you do this"
