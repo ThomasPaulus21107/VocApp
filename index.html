@@ -30,6 +30,14 @@
         <p id="frage" class="frage"></p>
         <p id="beiwort" class="beiwort" hidden></p>
 
+        <!-- Die drei Formen. Nur bei unregelmäßigen Verben sichtbar;
+             eine davon ist die Lücke, die getippt werden soll. -->
+        <dl id="formen" class="formen" hidden>
+          <div><dt>infinitive</dt><dd id="form-infinitive"></dd></div>
+          <div><dt>simple past</dt><dd id="form-simple-past"></dd></div>
+          <div><dt>past participle</dt><dd id="form-past-participle"></dd></div>
+        </dl>
+
         <form id="antwort-formular" class="formular">
           <label class="label" for="eingabe" id="eingabe-label"></label>
           <input

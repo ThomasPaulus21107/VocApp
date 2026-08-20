@@ -3,8 +3,15 @@
 
 import './ui/styles.css';
 import vokabeln from '../data/vokabeln.json';
-import { stelleFrage, pruefeAntwort, mische, RICHTUNGEN } from './domain/pruefung.js';
+import verben from '../data/unregelmaessige-verben.json';
+import {
+  stelleFrage, stelleFormFrage, hatFormen, pruefeAntwort, mische, RICHTUNGEN,
+} from './domain/pruefung.js';
 import * as ui from './ui/ui.js';
+
+// Beide Listen kommen in einen gemeinsamen Stapel. Auswählen, welche Liste
+// geübt wird, kommt in einem späteren Sprint.
+const alleKarten = [...vokabeln.karten, ...verben.karten];
 
 let richtung = RICHTUNGEN.NACH_DE;
 let stapel = [];
@@ -13,14 +20,18 @@ let index = 0;
 let beantwortet = false;
 
 function start() {
-  stapel = mische(vokabeln.karten);
+  stapel = mische(alleKarten);
   index = 0;
   zeigeAktuelle();
 }
 
+// Unregelmäßige Verben werden anders gefragt: drei Formen, eine davon leer.
 function zeigeAktuelle() {
   beantwortet = false;
-  frage = stelleFrage(stapel[index], richtung);
+  const karte = stapel[index];
+  frage = hatFormen(karte)
+    ? stelleFormFrage(karte, richtung)
+    : stelleFrage(karte, richtung);
   ui.zeigeKarte(frage, richtung, index + 1, stapel.length);
 }
 

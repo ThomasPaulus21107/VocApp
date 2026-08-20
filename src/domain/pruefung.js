@@ -40,6 +40,46 @@ export function stelleFrage(karte, richtung) {
   };
 }
 
+export const FORMEN = ['infinitive', 'simple-past', 'past-participle'];
+
+/**
+ * Eine Karte mit drei Formen wird anders abgefragt als eine normale Vokabel.
+ * Entscheidend ist, ob die Formen DA sind -- nicht, was in wortart steht.
+ */
+export function hatFormen(karte) {
+  return Boolean(karte.formen);
+}
+
+/**
+ * Baut die Frage zu einem unregelmäßigen Verb. Alle drei Formen werden in der
+ * Antwortsprache gezeigt, eine davon bleibt leer. Der Infinitiv der ANDEREN
+ * Sprache steht als Frage darüber -- sonst wüsste man nicht, welches Verb
+ * gemeint ist.
+ *
+ * Welche Form die Lücke wird, entscheidet der Zufall. Der wird hereingereicht,
+ * damit der Test das Ergebnis vorhersagen kann -- gleiches Prinzip wie mische().
+ */
+export function stelleFormFrage(karte, richtung, zufall = Math.random) {
+  const nachDe = richtung === RICHTUNGEN.NACH_DE;
+  const antwortsprache = nachDe ? 'de' : 'en';
+  const fragesprache = nachDe ? 'en' : 'de';
+
+  const gesucht = FORMEN[Math.floor(zufall() * FORMEN.length)];
+
+  return {
+    id: karte.id,
+    frage: karte.formen.infinitive[fragesprache][0],
+    formen: FORMEN.map((name) => ({
+      name,
+      wort: name === gesucht ? null : karte.formen[name][antwortsprache][0],
+    })),
+    antworten: karte.formen[gesucht][antwortsprache],
+    hinweis: karte.hinweise?.[richtung] ?? null,
+    bedeutung: karte.bedeutung ?? null,
+    wortart: karte.wortart ?? null,
+  };
+}
+
 /**
  * Prüft eine getippte Antwort gegen eine gestellte Frage.
  * Gibt IMMER ein Ergebnis-Objekt zurück und verändert nichts.

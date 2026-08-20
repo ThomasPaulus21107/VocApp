@@ -58,7 +58,7 @@ Tests als Merge-Bedingung bleibt Sprint 2.**
 ## Architektur: der eine Schnitt, der alles trägt
 
 ```
-data/          Vokabeln als JSON. Daten, kein Code.
+data/          Vokabellisten und die Wortartenliste als JSON. Daten, kein Code.
 src/domain/    Regeln: was ist richtig, wie wird gemischt, wie gedreht.
 src/ui/        Alles, was den DOM anfasst.
 src/app.js     Steckt die Schichten zusammen.
@@ -90,9 +90,22 @@ macht beides kaputt.
 
 ## Das Datenformat
 
-Maßgeblich ist `data/vokabeln.json`, so wie Matilda sie angelegt hat. Wenn
-diese Beschreibung und die Datei sich widersprechen, hat **die Datei recht**
+Maßgeblich sind die Dateien in `data/`, so wie Matilda sie angelegt hat. Wenn
+diese Beschreibung und eine Datei sich widersprechen, hat **die Datei recht**
 und diese Beschreibung wird nachgezogen — nicht umgekehrt.
+
+Es gibt inzwischen mehr als eine Liste:
+
+| Datei | Inhalt |
+|---|---|
+| `data/vokabeln.json` | gemischte Vokabeln, Matildas Lektionen |
+| `data/unregelmaessige-verben.json` | nur unregelmäßige Verben, mit allen drei Formen |
+| `data/wortarten.json` | die erlaubten Werte für `wortart`, eine flache Liste |
+
+**Unregelmäßige Verben stehen nur in der Verbendatei.** Eine Karte mit
+`"wortart": "unregelmäßiges Verb"` ohne `formen` ist ein Fehler, und eine
+Karte mit `formen` und einer anderen `wortart` genauso. Der Daten-Test prüft
+beide Richtungen.
 
 ### Die Datei als Ganzes
 
@@ -135,9 +148,11 @@ beiden Richtungen.
   der Datei eindeutig.
 - `en` / `de`: Listen. **Das erste Wort wird als Frage gezeigt**, alle gelten
   als richtige Antwort.
-- `wortart`: freier Text auf Deutsch, so wie im Schulheft — `"Nomen"`,
-  `"Verb"`, `"unregelmäßiges Verb"`. Keine feste Auswahlliste, kein Test
-  darauf.
+- `wortart`: einer der Werte aus `data/wortarten.json`, sonst nichts. Die
+  Liste ist bewusst Daten und kein Code: fehlt eine Wortart, wird sie **dort**
+  eingetragen und steht danach überall zur Verfügung. Frei auf die Karte
+  schreiben geht nicht mehr — ein Tippfehler wäre sonst eine stille Wortart,
+  die nur einmal vorkommt. Der Daten-Test setzt das durch.
 - `hinweise.nach-de` erscheint, wenn auf Deutsch geantwortet werden soll,
   `hinweise.nach-en` entsprechend andersherum. Der Hinweis ist eingeklappt
   hinter einem Knopf.
@@ -169,6 +184,42 @@ unterschiedlicher `bedeutung`.
 `wortart` und `bedeutung` stehen **offen** unter der Frage, weil sie zur
 Aufgabe gehören — anders als die Hinweise, die man sich erst holen muss.
 Fehlt `bedeutung`, zeigt die UI an dieser Stelle einfach nichts an.
+
+### `formen` — die drei Formen unregelmäßiger Verben
+
+Ein unregelmäßiges Verb hat **statt** `en` und `de` das Feld `formen` mit drei
+Paaren. Jedes Paar kennt wieder beide Sprachen:
+
+```json
+{
+  "id": "uv-053",
+  "wortart": "unregelmäßiges Verb",
+  "formen": {
+    "infinitive": { "en": ["to write"], "de": ["schreiben"] },
+    "simple-past": { "en": ["wrote"], "de": ["schrieb"] },
+    "past-participle": { "en": ["written"], "de": ["geschrieben"] }
+  },
+  "hinweise": { "nach-de": "...", "nach-en": "..." }
+}
+```
+
+Abgefragt wird so eine Karte anders als eine normale Vokabel: **alle drei
+Formen werden gezeigt, eine davon bleibt leer und wird getippt.** Welche,
+entscheidet der Zufall — und der wird wie überall hereingereicht, nicht in der
+Domänenfunktion gezogen.
+
+- Die drei Schlüssel heißen wie die Spalten im Schulheft und liegen fest.
+- **Nur der Infinitiv trägt alle Bedeutungen.** `to break` heißt „brechen,
+  zerbrechen, kaputtmachen"; die zweite und dritte Form stehen nur in der
+  Hauptbedeutung da („brach", „gebrochen"). Sonst wachsen die Listen ins
+  Unlesbare, ohne dass jemand mehr davon lernt. Preis: wer „zerbrach" tippt,
+  bekommt ein Falsch.
+- `en` und `de` sind auch hier Listen, und auch hier gilt: **das erste Wort
+  wird gezeigt**, alle gelten als richtig.
+- `hinweise` steht einmal pro Karte, nicht pro Form. Der Tipp beschreibt die
+  Bedeutung des Verbs, und die ändert sich über die Formen nicht.
+
+Eine Karte hat entweder `en`/`de` oder `formen` — nie beides, nie keins.
 
 ### `id` ist heilig
 
@@ -224,10 +275,15 @@ npm run build   # Produktionsstand nach dist/
 Zwei Sorten, beide relevant:
 
 - `tests/pruefung.test.js` — die Domänenlogik.
-- `tests/daten.test.js` — die Vokabeldatei selbst: `titel` und `karten`
-  vorhanden, `id` eindeutig, beide Sprachen gefüllt, `wortart` gesetzt, beide
-  Hinweise vorhanden. `bedeutung` wird **nicht** eingefordert, sie ist
-  freiwillig. Meldet die betroffene `id`.
+- `tests/daten.test.js` — die Vokabeldateien selbst, **alle** aus `data/`:
+  `titel` und `karten` vorhanden, `id` über alle Dateien hinweg eindeutig,
+  beide Sprachen gefüllt, `wortart` aus `wortarten.json`, `formen` und
+  `wortart` passen zueinander, beide Hinweise vorhanden. `bedeutung` wird
+  **nicht** eingefordert, sie ist freiwillig. Meldet die betroffene `id`.
+
+  Die ids müssen über alle Dateien zusammen eindeutig sein, nicht nur je
+  Datei — die App lädt sie in einen gemeinsamen Stapel, und ab Sprint 3 hängt
+  der Lernstand an der id.
 
 **Der Daten-Test ist der praktisch wichtigste.** Er fängt Matildas Tippfehler
 ab, bevor sie in der App auffallen. Bei Änderungen am Format muss er

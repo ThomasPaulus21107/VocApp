@@ -9,3 +9,5 @@ dist/
 
 # macOS legt das in jedem Ordner an, den man im Finder oeffnet.
 .DS_Store
+
+VocApp.code-workspace

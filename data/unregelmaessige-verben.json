@@ -1,0 +1,696 @@
+{
+  "titel": "Unregelmäßige Verben",
+  "karten": [
+    {
+      "id": "uv-001",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to be"], "de": ["sein"] },
+        "simple-past": { "en": ["was", "were"], "de": ["war"] },
+        "past-participle": { "en": ["been"], "de": ["gewesen"] }
+      },
+      "hinweise": {
+        "nach-de": "Ich bin, du bist, er ist — wie heißt das Wort dazu?",
+        "nach-en": "the most common verb of all: I am, you are, he is"
+      }
+    },
+    {
+      "id": "uv-002",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to bite"], "de": ["beißen"] },
+        "simple-past": { "en": ["bit"], "de": ["biss"] },
+        "past-participle": { "en": ["bitten"], "de": ["gebissen"] }
+      },
+      "hinweise": {
+        "nach-de": "das macht ein wütender Hund mit seinen Zähnen",
+        "nach-en": "an angry dog does this with its teeth"
+      }
+    },
+    {
+      "id": "uv-003",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to break"], "de": ["brechen", "zerbrechen", "kaputtmachen"] },
+        "simple-past": { "en": ["broke"], "de": ["brach"] },
+        "past-participle": { "en": ["broken"], "de": ["gebrochen"] }
+      },
+      "hinweise": {
+        "nach-de": "das passiert mit einem Glas, das vom Tisch fällt",
+        "nach-en": "the glass falls down and then it is in pieces"
+      }
+    },
+    {
+      "id": "uv-004",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to buy"], "de": ["kaufen"] },
+        "simple-past": { "en": ["bought"], "de": ["kaufte"] },
+        "past-participle": { "en": ["bought"], "de": ["gekauft"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du im Laden, wenn du Geld dabei hast",
+        "nach-en": "you do this in a shop when you have money"
+      }
+    },
+    {
+      "id": "uv-005",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to catch"], "de": ["fangen"] },
+        "simple-past": { "en": ["caught"], "de": ["fing"] },
+        "past-participle": { "en": ["caught"], "de": ["gefangen"] }
+      },
+      "hinweise": {
+        "nach-de": "ich werfe dir den Ball zu, und du ...?",
+        "nach-en": "I throw the ball and you ___ it"
+      }
+    },
+    {
+      "id": "uv-006",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to choose"], "de": ["aussuchen", "auswählen", "wählen", "sich aussuchen"] },
+        "simple-past": { "en": ["chose"], "de": ["suchte aus"] },
+        "past-participle": { "en": ["chosen"], "de": ["ausgesucht"] }
+      },
+      "hinweise": {
+        "nach-de": "zwei Eissorten stehen da, du darfst nur eine haben",
+        "nach-en": "two kinds of ice cream, but you can only have one"
+      }
+    },
+    {
+      "id": "uv-007",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to come"], "de": ["kommen"] },
+        "simple-past": { "en": ["came"], "de": ["kam"] },
+        "past-participle": { "en": ["come"], "de": ["gekommen"] }
+      },
+      "hinweise": {
+        "nach-de": "das Gegenteil von gehen",
+        "nach-en": "the opposite of 'to go'"
+      }
+    },
+    {
+      "id": "uv-008",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to do"], "de": ["tun", "machen"] },
+        "simple-past": { "en": ["did"], "de": ["tat"] },
+        "past-participle": { "en": ["done"], "de": ["getan"] }
+      },
+      "hinweise": {
+        "nach-de": "Was hast du am Wochenende ...?",
+        "nach-en": "What did you ___ at the weekend?"
+      }
+    },
+    {
+      "id": "uv-009",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to draw"], "de": ["zeichnen"] },
+        "simple-past": { "en": ["drew"], "de": ["zeichnete"] },
+        "past-participle": { "en": ["drawn"], "de": ["gezeichnet"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du mit einem Bleistift auf Papier",
+        "nach-en": "you do this with a pencil and paper"
+      }
+    },
+    {
+      "id": "uv-010",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to drink"], "de": ["trinken"] },
+        "simple-past": { "en": ["drank"], "de": ["trank"] },
+        "past-participle": { "en": ["drunk"], "de": ["getrunken"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du mit Wasser oder Saft",
+        "nach-en": "you do this with water or juice"
+      }
+    },
+    {
+      "id": "uv-011",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to eat"], "de": ["essen"] },
+        "simple-past": { "en": ["ate"], "de": ["aß"] },
+        "past-participle": { "en": ["eaten"], "de": ["gegessen"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du dreimal am Tag am Tisch",
+        "nach-en": "you do this three times a day at the table"
+      }
+    },
+    {
+      "id": "uv-012",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to fall"], "de": ["fallen", "stürzen", "hinfallen"] },
+        "simple-past": { "en": ["fell"], "de": ["fiel"] },
+        "past-participle": { "en": ["fallen"], "de": ["gefallen"] }
+      },
+      "hinweise": {
+        "nach-de": "das passiert, wenn du auf Eis ausrutschst",
+        "nach-en": "this happens when you slip on the ice"
+      }
+    },
+    {
+      "id": "uv-013",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to feed"], "de": ["füttern"] },
+        "simple-past": { "en": ["fed"], "de": ["fütterte"] },
+        "past-participle": { "en": ["fed"], "de": ["gefüttert"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du jeden Morgen mit dem Haustier",
+        "nach-en": "you give food to an animal"
+      }
+    },
+    {
+      "id": "uv-014",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to feel"], "de": ["fühlen", "sich fühlen"] },
+        "simple-past": { "en": ["felt"], "de": ["fühlte"] },
+        "past-participle": { "en": ["felt"], "de": ["gefühlt"] }
+      },
+      "hinweise": {
+        "nach-de": "Wie geht es dir? Das Wort für müde, glücklich, krank sein",
+        "nach-en": "How do you ___ today? Tired? Happy?"
+      }
+    },
+    {
+      "id": "uv-015",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to fight"], "de": ["kämpfen"] },
+        "simple-past": { "en": ["fought"], "de": ["kämpfte"] },
+        "past-participle": { "en": ["fought"], "de": ["gekämpft"] }
+      },
+      "hinweise": {
+        "nach-de": "das machen Ritter mit Schwertern",
+        "nach-en": "knights do this with swords"
+      }
+    },
+    {
+      "id": "uv-016",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to find"], "de": ["finden"] },
+        "simple-past": { "en": ["found"], "de": ["fand"] },
+        "past-participle": { "en": ["found"], "de": ["gefunden"] }
+      },
+      "hinweise": {
+        "nach-de": "du hast lange gesucht — und dann?",
+        "nach-en": "you look for something for a long time, and then you ___ it"
+      }
+    },
+    {
+      "id": "uv-017",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to forget"], "de": ["vergessen"] },
+        "simple-past": { "en": ["forgot"], "de": ["vergaß"] },
+        "past-participle": { "en": ["forgotten"], "de": ["vergessen"] }
+      },
+      "hinweise": {
+        "nach-de": "das Gegenteil von sich merken",
+        "nach-en": "the opposite of 'to remember'"
+      }
+    },
+    {
+      "id": "uv-018",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to get"], "de": ["bekommen", "kriegen", "werden"] },
+        "simple-past": { "en": ["got"], "de": ["bekam"] },
+        "past-participle": { "en": ["got"], "de": ["bekommen"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du mit Geschenken am Geburtstag",
+        "nach-en": "you ___ presents on your birthday"
+      }
+    },
+    {
+      "id": "uv-019",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to give"], "de": ["geben"] },
+        "simple-past": { "en": ["gave"], "de": ["gab"] },
+        "past-participle": { "en": ["given"], "de": ["gegeben"] }
+      },
+      "hinweise": {
+        "nach-de": "das Gegenteil von bekommen",
+        "nach-en": "the opposite of 'to get'"
+      }
+    },
+    {
+      "id": "uv-020",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to go"], "de": ["gehen"] },
+        "simple-past": { "en": ["went"], "de": ["ging"] },
+        "past-participle": { "en": ["gone"], "de": ["gegangen"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du zu Fuß in Richtung Schule",
+        "nach-en": "you do this on foot, to school for example"
+      }
+    },
+    {
+      "id": "uv-021",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to grow"], "de": ["anbauen", "anpflanzen"] },
+        "simple-past": { "en": ["grew"], "de": ["baute an"] },
+        "past-participle": { "en": ["grown"], "de": ["angebaut"] }
+      },
+      "hinweise": {
+        "nach-de": "das macht ein Bauer mit Kartoffeln auf dem Feld",
+        "nach-en": "a farmer does this with potatoes in a field"
+      }
+    },
+    {
+      "id": "uv-022",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to have"], "de": ["haben"] },
+        "simple-past": { "en": ["had"], "de": ["hatte"] },
+        "past-participle": { "en": ["had"], "de": ["gehabt"] }
+      },
+      "hinweise": {
+        "nach-de": "Ich ... einen Hund. Was steht in der Lücke?",
+        "nach-en": "I ___ a dog. She ___ a cat."
+      }
+    },
+    {
+      "id": "uv-023",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to hear"], "de": ["hören"] },
+        "simple-past": { "en": ["heard"], "de": ["hörte"] },
+        "past-participle": { "en": ["heard"], "de": ["gehört"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du mit den Ohren",
+        "nach-en": "you do this with your ears"
+      }
+    },
+    {
+      "id": "uv-024",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to hide"], "de": ["verstecken", "sich verstecken"] },
+        "simple-past": { "en": ["hid"], "de": ["versteckte"] },
+        "past-participle": { "en": ["hidden"], "de": ["versteckt"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du beim Spiel hinter dem Vorhang",
+        "nach-en": "you do this behind the curtain, so nobody can see you"
+      }
+    },
+    {
+      "id": "uv-025",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to hit something", "to hit sth.", "to hit"], "de": ["gegen etwas prallen", "gegen etwas stoßen", "prallen", "stoßen"] },
+        "simple-past": { "en": ["hit"], "de": ["prallte gegen etwas"] },
+        "past-participle": { "en": ["hit"], "de": ["gegen etwas geprallt"] }
+      },
+      "hinweise": {
+        "nach-de": "das passiert mit dem Kopf und einem tiefen Türrahmen",
+        "nach-en": "your head and a low door: what happens?"
+      }
+    },
+    {
+      "id": "uv-026",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to hold"], "de": ["halten"] },
+        "simple-past": { "en": ["held"], "de": ["hielt"] },
+        "past-participle": { "en": ["held"], "de": ["gehalten"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du mit einem Glas in der Hand",
+        "nach-en": "you do this with a glass in your hand"
+      }
+    },
+    {
+      "id": "uv-027",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to know"], "de": ["wissen", "kennen"] },
+        "simple-past": { "en": ["knew"], "de": ["wusste"] },
+        "past-participle": { "en": ["known"], "de": ["gewusst"] }
+      },
+      "hinweise": {
+        "nach-de": "die Antwort ist im Kopf — man muss nicht nachschauen",
+        "nach-en": "you have the answer in your head, you do not need to look"
+      }
+    },
+    {
+      "id": "uv-028",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to leave"], "de": ["verlassen", "zurücklassen"] },
+        "simple-past": { "en": ["left"], "de": ["verließ"] },
+        "past-participle": { "en": ["left"], "de": ["verlassen"] }
+      },
+      "hinweise": {
+        "nach-de": "du gehst raus aus dem Haus und bist weg",
+        "nach-en": "you go out of the house and you are gone"
+      }
+    },
+    {
+      "id": "uv-029",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to let"], "de": ["lassen"] },
+        "simple-past": { "en": ["let"], "de": ["ließ"] },
+        "past-participle": { "en": ["let"], "de": ["gelassen"] }
+      },
+      "hinweise": {
+        "nach-de": "Mama ... mich fernsehen. Sie erlaubt es also.",
+        "nach-en": "Mum ___ me watch TV. She says yes."
+      }
+    },
+    {
+      "id": "uv-030",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to make"], "de": ["machen", "herstellen"] },
+        "simple-past": { "en": ["made"], "de": ["machte"] },
+        "past-participle": { "en": ["made"], "de": ["gemacht"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du mit einem Kuchen in der Küche",
+        "nach-en": "you do this with a cake in the kitchen"
+      }
+    },
+    {
+      "id": "uv-031",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to meet"], "de": ["treffen", "sich treffen", "kennenlernen"] },
+        "simple-past": { "en": ["met"], "de": ["traf"] },
+        "past-participle": { "en": ["met"], "de": ["getroffen"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du mit deiner Freundin um drei am Bahnhof",
+        "nach-en": "you and your friend, at three, at the station"
+      }
+    },
+    {
+      "id": "uv-032",
+      "wortart": "unregelmäßiges Verb",
+      "bedeutung": "etwas wohin",
+      "formen": {
+        "infinitive": { "en": ["to put"], "de": ["legen", "stellen", "tun"] },
+        "simple-past": { "en": ["put"], "de": ["legte"] },
+        "past-participle": { "en": ["put"], "de": ["gelegt"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du mit dem Buch auf den Tisch",
+        "nach-en": "you do this with the book, onto the table"
+      }
+    },
+    {
+      "id": "uv-033",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to read"], "de": ["lesen"] },
+        "simple-past": { "en": ["read"], "de": ["las"] },
+        "past-participle": { "en": ["read"], "de": ["gelesen"] }
+      },
+      "hinweise": {
+        "nach-de": "das lernt man in der Grundschule",
+        "nach-en": "you do this with a book in the evening"
+      }
+    },
+    {
+      "id": "uv-034",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to ride a bike"], "de": ["Rad fahren", "radfahren", "fahren"] },
+        "simple-past": { "en": ["rode a bike", "rode"], "de": ["fuhr Rad"] },
+        "past-participle": { "en": ["ridden a bike", "ridden"], "de": ["Rad gefahren"] }
+      },
+      "hinweise": {
+        "nach-de": "zwei Räder, ein Lenker, und du trittst in die Pedale",
+        "nach-en": "two wheels and pedals — what are you doing?"
+      }
+    },
+    {
+      "id": "uv-035",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to run"], "de": ["rennen", "laufen"] },
+        "simple-past": { "en": ["ran"], "de": ["rannte"] },
+        "past-participle": { "en": ["run"], "de": ["gerannt"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du schneller als gehen",
+        "nach-en": "faster than walking"
+      }
+    },
+    {
+      "id": "uv-036",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to say"], "de": ["sagen"] },
+        "simple-past": { "en": ["said"], "de": ["sagte"] },
+        "past-participle": { "en": ["said"], "de": ["gesagt"] }
+      },
+      "hinweise": {
+        "nach-de": "Was hast du gerade ...? Ich habe dich nicht verstanden.",
+        "nach-en": "What did you ___? I did not understand you."
+      }
+    },
+    {
+      "id": "uv-037",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to see"], "de": ["sehen"] },
+        "simple-past": { "en": ["saw"], "de": ["sah"] },
+        "past-participle": { "en": ["seen"], "de": ["gesehen"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du mit den Augen",
+        "nach-en": "you do this with your eyes"
+      }
+    },
+    {
+      "id": "uv-038",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to sell"], "de": ["verkaufen"] },
+        "simple-past": { "en": ["sold"], "de": ["verkaufte"] },
+        "past-participle": { "en": ["sold"], "de": ["verkauft"] }
+      },
+      "hinweise": {
+        "nach-de": "das Gegenteil von kaufen — du bekommst das Geld",
+        "nach-en": "the opposite of 'to buy' — you get the money"
+      }
+    },
+    {
+      "id": "uv-039",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to send"], "de": ["schicken", "senden"] },
+        "simple-past": { "en": ["sent"], "de": ["schickte"] },
+        "past-participle": { "en": ["sent"], "de": ["geschickt"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du mit einer Postkarte aus dem Urlaub",
+        "nach-en": "you do this with a postcard from your holiday"
+      }
+    },
+    {
+      "id": "uv-040",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to sing"], "de": ["singen"] },
+        "simple-past": { "en": ["sang"], "de": ["sang"] },
+        "past-participle": { "en": ["sung"], "de": ["gesungen"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du mit einem Lied unter der Dusche",
+        "nach-en": "you do this with a song in the shower"
+      }
+    },
+    {
+      "id": "uv-041",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to sit"], "de": ["sitzen", "sich setzen"] },
+        "simple-past": { "en": ["sat"], "de": ["saß"] },
+        "past-participle": { "en": ["sat"], "de": ["gesessen"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du auf einem Stuhl",
+        "nach-en": "you do this on a chair"
+      }
+    },
+    {
+      "id": "uv-042",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to sleep"], "de": ["schlafen"] },
+        "simple-past": { "en": ["slept"], "de": ["schlief"] },
+        "past-participle": { "en": ["slept"], "de": ["geschlafen"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du nachts im Bett",
+        "nach-en": "you do this in bed at night"
+      }
+    },
+    {
+      "id": "uv-043",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to speak"], "de": ["sprechen"] },
+        "simple-past": { "en": ["spoke"], "de": ["sprach"] },
+        "past-participle": { "en": ["spoken"], "de": ["gesprochen"] }
+      },
+      "hinweise": {
+        "nach-de": "Ich ... Deutsch und ein bisschen Englisch.",
+        "nach-en": "I ___ German and a little English."
+      }
+    },
+    {
+      "id": "uv-044",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to swim"], "de": ["schwimmen"] },
+        "simple-past": { "en": ["swam"], "de": ["schwamm"] },
+        "past-participle": { "en": ["swum"], "de": ["geschwommen"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du im Wasser, ohne unterzugehen",
+        "nach-en": "you do this in the water, and you do not go down"
+      }
+    },
+    {
+      "id": "uv-045",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to take"], "de": ["nehmen", "mitnehmen", "wegbringen", "hinbringen"] },
+        "simple-past": { "en": ["took"], "de": ["nahm"] },
+        "past-participle": { "en": ["taken"], "de": ["genommen"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du mit dem Regenschirm, bevor du losgehst",
+        "nach-en": "you do this with your umbrella before you leave"
+      }
+    },
+    {
+      "id": "uv-046",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to tell"], "de": ["erzählen", "berichten"] },
+        "simple-past": { "en": ["told"], "de": ["erzählte"] },
+        "past-participle": { "en": ["told"], "de": ["erzählt"] }
+      },
+      "hinweise": {
+        "nach-de": "das macht Papa abends mit einer Geschichte",
+        "nach-en": "you do this with a story, to somebody"
+      }
+    },
+    {
+      "id": "uv-047",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to think"], "de": ["denken", "glauben"] },
+        "simple-past": { "en": ["thought"], "de": ["dachte"] },
+        "past-participle": { "en": ["thought"], "de": ["gedacht"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du im Kopf, bevor du antwortest",
+        "nach-en": "you do this in your head before you answer"
+      }
+    },
+    {
+      "id": "uv-048",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to throw"], "de": ["werfen"] },
+        "simple-past": { "en": ["threw"], "de": ["warf"] },
+        "past-participle": { "en": ["thrown"], "de": ["geworfen"] }
+      },
+      "hinweise": {
+        "nach-de": "das Gegenteil von fangen",
+        "nach-en": "the opposite of 'to catch'"
+      }
+    },
+    {
+      "id": "uv-049",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to understand"], "de": ["verstehen"] },
+        "simple-past": { "en": ["understood"], "de": ["verstand"] },
+        "past-participle": { "en": ["understood"], "de": ["verstanden"] }
+      },
+      "hinweise": {
+        "nach-de": "Sorry, I don't ... — was fehlt hier?",
+        "nach-en": "Sorry, I do not ___. Can you say that again?"
+      }
+    },
+    {
+      "id": "uv-050",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to wake up"], "de": ["aufwachen"] },
+        "simple-past": { "en": ["woke up"], "de": ["wachte auf"] },
+        "past-participle": { "en": ["woken up"], "de": ["aufgewacht"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du morgens, wenn der Wecker klingelt",
+        "nach-en": "the alarm clock rings and then you ___"
+      }
+    },
+    {
+      "id": "uv-051",
+      "wortart": "unregelmäßiges Verb",
+      "bedeutung": "Kleidung",
+      "formen": {
+        "infinitive": { "en": ["to wear"], "de": ["tragen"] },
+        "simple-past": { "en": ["wore"], "de": ["trug"] },
+        "past-participle": { "en": ["worn"], "de": ["getragen"] }
+      },
+      "hinweise": {
+        "nach-de": "das machst du mit deinem Lieblingspulli",
+        "nach-en": "you do this with your favourite pullover"
+      }
+    },
+    {
+      "id": "uv-052",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to win"], "de": ["gewinnen"] },
+        "simple-past": { "en": ["won"], "de": ["gewann"] },
+        "past-participle": { "en": ["won"], "de": ["gewonnen"] }
+      },
+      "hinweise": {
+        "nach-de": "man kriegt einen pokal",
+        "nach-en": "you are happy when you do this"
+      }
+    },
+    {
+      "id": "uv-053",
+      "wortart": "unregelmäßiges Verb",
+      "formen": {
+        "infinitive": { "en": ["to write"], "de": ["schreiben"] },
+        "simple-past": { "en": ["wrote"], "de": ["schrieb"] },
+        "past-participle": { "en": ["written"], "de": ["geschrieben"] }
+      },
+      "hinweise": {
+        "nach-de": "das lernt man in der Grundschule",
+        "nach-en": "you do this with a pen in your exercise book"
+      }
+    }
+  ]
+}
