@@ -9,8 +9,11 @@ falsch. Fertig, wenn Matilda den Link verschicken kann.
 - [ ] Entscheiden, wie streng die App prüft
 
 ## Matilda
-- [ ] GitHub Skills: Introduction to GitHub
-- [ ] GitHub Skills: Communicate using Markdown
+Noch kein eigener GitHub-Account — Altersgrenze ist 13. Sie arbeitet an
+Thomas' Rechner mit, er übernimmt den GitHub-Teil.
+
+- [ ] GitHub Skills: Introduction to GitHub *(gemeinsam, Thomas bedient)*
+- [ ] GitHub Skills: Communicate using Markdown *(dito)*
 - [X] Demo Vokabeln in `data/vokabeln.json` eintragen
 - [X] Eigener Branch dafür, Pull Request aufmachen
 - [ ] Farben in `src/ui/styles.css` aussuchen
@@ -27,8 +30,10 @@ falsch. Fertig, wenn Matilda den Link verschicken kann.
 - [ ] App läuft unter der Pages-URL
 - [ ] Vokabeln kommen aus dem JSON
 - [ ] Tests laufen grün
-- [ ] Matilda hat einen Pull Request gemerged
+- [ ] Eine Änderung von Matilda ist in `main` gemergt
 - [ ] Auf dem Handy bedienbar
 
 ## Später, nicht jetzt
 Punkte, Streaks, Leitner, Accounts, Pipeline, PWA, Supabase
+
+Ab Matildas 13. Geburtstag: eigener GitHub-Account.

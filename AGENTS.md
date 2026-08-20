@@ -10,8 +10,10 @@ Cursor). Bitte vor der ersten Änderung lesen.
 Eine Vokabel-Lern-App. **Hobbyprojekt eines Vaters mit seiner 12-jährigen
 Tochter.** Das ist keine Randnotiz, sondern die wichtigste Randbedingung:
 
-- Matilda (12) ist Co-Autorin, nicht nur Nutzerin. Sie pflegt die Vokabeln,
-  gestaltet die Oberfläche und macht eigene Pull Requests.
+- Matilda (12) ist Co-Autorin, nicht nur Nutzerin. Sie pflegt die Vokabeln
+  und gestaltet die Oberfläche. Einen eigenen GitHub-Account hat sie noch
+  nicht — dort liegt die Altersgrenze bei 13. Sie arbeitet an Thomas' Rechner
+  mit, er übernimmt den GitHub-Teil.
 - Code muss deshalb **lesbar bleiben**, auch wenn kompakter ginge. Ein
   cleverer Einzeiler, den sie nicht versteht, ist hier ein Rückschritt.
 - Kommentare auf Deutsch, Bezeichner auf Deutsch. Konsistent bleiben.
@@ -29,8 +31,8 @@ optimieren, sind hier falsch.
 oder falsch, das Ganze läuft unter einer öffentlichen URL.
 
 **Fertig, wenn** die App auf GitHub Pages liegt, die Vokabeln aus dem JSON
-kommen, die Tests grün sind und Matilda mindestens einen Pull Request
-gemerged hat.
+kommen, die Tests grün sind und mindestens eine Änderung von Matilda in `main`
+gemergt ist.
 
 ### Ausdrücklich NICHT in Sprint 1
 
