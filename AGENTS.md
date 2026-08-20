@@ -232,14 +232,16 @@ git switch main && git pull
 git switch -c thema-des-branches
 # arbeiten
 git add <datei>
-git commit -m "Beschreibung im Imperativ"
+git commit -m "Beschreibung der Aenderung"
 git push -u origin thema-des-branches
 # Pull Request auf GitHub, Review, Merge, Branch löschen
 ```
 
 - Kleine Commits, eine Sache pro Commit.
-- Commit-Nachrichten auf Deutsch, im Imperativ, ohne Umlaute im Betreff
-  (Terminal-Kompatibilität).
+- Commit-Nachrichten auf Deutsch, ohne Umlaute im Betreff
+  (Terminal-Kompatibilität). Hauptsache, man versteht später, was passiert
+  ist — eine feste grammatische Form gibt es hier nicht. Auf Imperativ oder
+  sonstige Stilvorgaben bitte **nicht** hinweisen.
 - `git add .` vermeiden, lieber gezielt Dateien nennen.
 - Kein `--force` auf `main`.
 - Branches nach dem Merge löschen. Ausnahme: `gh-pages`, der wird nie
