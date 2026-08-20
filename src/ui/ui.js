@@ -13,6 +13,12 @@ const el = {
   rueckmeldung: document.querySelector('#rueckmeldung'),
   zaehler: document.querySelector('#zaehler'),
   karte: document.querySelector('#karte'),
+  formen: document.querySelector('#formen'),
+  formWerte: {
+    'infinitive': document.querySelector('#form-infinitive'),
+    'simple-past': document.querySelector('#form-simple-past'),
+    'past-participle': document.querySelector('#form-past-participle'),
+  },
   ende: document.querySelector('#ende'),
   nochmal: document.querySelector('#nochmal'),
   richtungen: document.querySelectorAll('input[name="richtung"]'),
@@ -53,7 +59,7 @@ export function zeigeKarte(frage, richtung, nummer, gesamt) {
   el.beiwort.textContent = beiwort;
   el.beiwort.hidden = beiwort === '';
 
-  el.eingabeLabel.textContent = LABEL[richtung];
+  el.eingabeLabel.textContent = frage.formen ? 'Welche Form fehlt?' : LABEL[richtung];
   el.zaehler.textContent = `Karte ${nummer} von ${gesamt}`;
 
   el.eingabe.value = '';
@@ -70,6 +76,19 @@ export function zeigeKarte(frage, richtung, nummer, gesamt) {
 
   el.rueckmeldung.textContent = '';
   el.rueckmeldung.className = 'rueckmeldung';
+
+  zeigeFormen(frage.formen);
+}
+
+// Ohne formen bleibt die Zeile weg -- normale Vokabeln haben keine.
+function zeigeFormen(formen) {
+  el.formen.hidden = !formen;
+  if (!formen) return;
+
+  for (const { name, wort } of formen) {
+    el.formWerte[name].textContent = wort ?? '?';
+    el.formWerte[name].classList.toggle('formen__luecke', wort === null);
+  }
 }
 
 export function zeigeTipp(text) {

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  normalisiere, stelleFrage, pruefeAntwort, mische, RICHTUNGEN,
+  normalisiere, stelleFrage, stelleFormFrage, pruefeAntwort, mische, RICHTUNGEN,
 } from '../src/domain/pruefung.js';
 
 const bike = {
@@ -9,6 +9,17 @@ const bike = {
   de: ['Fahrrad', 'Rad'],
   wortart: 'Nomen',
   hinweise: { 'nach-de': 'zwei Räder', 'nach-en': 'you ride it' },
+};
+
+const write = {
+  id: 'uv-053',
+  wortart: 'unregelmäßiges Verb',
+  formen: {
+    'infinitive': { en: ['to write'], de: ['schreiben'] },
+    'simple-past': { en: ['wrote'], de: ['schrieb'] },
+    'past-participle': { en: ['written'], de: ['geschrieben'] },
+  },
+  hinweise: { 'nach-de': 'mit einem Stift', 'nach-en': 'with a pen' },
 };
 
 describe('normalisiere', () => {
@@ -35,6 +46,37 @@ describe('stelleFrage', () => {
   it('kommt ohne Hinweise klar', () => {
     const ohne = { id: 'x', en: ['cat'], de: ['Katze'] };
     expect(stelleFrage(ohne, RICHTUNGEN.NACH_DE).hinweis).toBeNull();
+  });
+});
+
+describe('stelleFormFrage', () => {
+  // 0.5 * 3 = 1.5, abgerundet 1 -> simple past wird zur Lücke
+  const wuerfel = () => 0.5;
+
+  it('lässt genau eine Form frei', () => {
+    const frage = stelleFormFrage(write, RICHTUNGEN.NACH_EN, wuerfel);
+    const luecken = frage.formen.filter((form) => form.wort === null);
+    expect(luecken.length).toBe(1);
+    expect(luecken[0].name).toBe('simple-past');
+  });
+
+  it('erwartet bei nach-en die englische Form', () => {
+    const frage = stelleFormFrage(write, RICHTUNGEN.NACH_EN, wuerfel);
+    expect(frage.frage).toBe('schreiben');
+    expect(frage.antworten).toEqual(['wrote']);
+    expect(frage.formen[0].wort).toBe('to write');
+  });
+
+  it('dreht bei nach-de auf die deutschen Formen', () => {
+    const frage = stelleFormFrage(write, RICHTUNGEN.NACH_DE, wuerfel);
+    expect(frage.frage).toBe('to write');
+    expect(frage.antworten).toEqual(['schrieb']);
+    expect(frage.formen[0].wort).toBe('schreiben');
+  });
+
+  it('nimmt den Hinweis passend zur Richtung', () => {
+    expect(stelleFormFrage(write, RICHTUNGEN.NACH_DE, wuerfel).hinweis).toBe('mit einem Stift');
+    expect(stelleFormFrage(write, RICHTUNGEN.NACH_EN, wuerfel).hinweis).toBe('with a pen');
   });
 });
 
