@@ -23,13 +23,14 @@ Thomas' Rechner mit, er übernimmt den GitHub-Teil.
 
 ## Thomas
 - [X] Projekt aufsetzen, `base` in `vite.config.js` eintragen
-- [ ] Branch Protection auf `main`
-- [ ] GitHub Pages aktivieren und einmal deployen
+- [ ] Branch Protection scharf schalten *(Ruleset ist angelegt, steht aber auf
+      Disabled und hat keinen Ziel-Branch — wirkt so nicht)*
+- [ ] Pages-Quelle auf „GitHub Actions" stellen
 
 ## Fertig, wenn
 - [ ] App läuft unter der Pages-URL
 - [ ] Vokabeln kommen aus dem JSON
-- [ ] Tests laufen grün
+- [X] Tests laufen grün
 - [ ] Eine Änderung von Matilda ist in `main` gemergt
 - [ ] Auf dem Handy bedienbar
 

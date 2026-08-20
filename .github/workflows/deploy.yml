@@ -1,0 +1,51 @@
+# Baut die App bei jedem Push auf main und veroeffentlicht sie auf GitHub Pages.
+# Es gibt bewusst keinen gh-pages-Branch: das Build-Ergebnis wandert nie ins Repo.
+
+name: Auf GitHub Pages veroeffentlichen
+
+on:
+  push:
+    branches: [main]
+  # Erlaubt zusaetzlich das Ausloesen von Hand im Actions-Tab.
+  workflow_dispatch:
+
+# Ohne pages: write und id-token: write bricht der Deploy mit Rechtefehler ab.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Zwei gleichzeitige Deploys wuerden sich gegenseitig ueberholen.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  bauen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      # npm ci installiert exakt nach package-lock.json und aendert sie nicht.
+      - run: npm ci
+      - run: npm run build
+
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  veroeffentlichen:
+    needs: bauen
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

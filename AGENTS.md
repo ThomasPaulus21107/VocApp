@@ -36,12 +36,22 @@ gemergt ist.
 
 ### Ausdrücklich NICHT in Sprint 1
 
-Punkte, Streaks, Leitner-Algorithmus, Accounts, GitHub Actions, PWA,
-Supabase, TypeScript, Framework.
+Punkte, Streaks, Leitner-Algorithmus, Accounts, PWA, Supabase, TypeScript,
+Framework.
 
 Wenn eine Aufgabe eines dieser Themen berührt: **nicht einbauen, sondern
 nachfragen.** Alle sind bewusst für spätere Sprints zurückgestellt. Das
 Projekt soll klein bleiben und früh laufen.
+
+**GitHub Actions stand hier ursprünglich mit auf der Liste und wurde bewusst
+vorgezogen.** Der Deploy von Hand über einen `gh-pages`-Branch wären fünf
+Befehle bei jedem Veröffentlichen — gegenüber einer Workflow-Datei, die man
+einmal schreibt und nie wieder anfasst. Vor allem aber hat der Handbetrieb
+einen Fehlermodus, den der Workflow nicht kennt: `npm run build` vergessen und
+einen alten Stand hochladen, ohne dass es auffällt. Der Workflow fügt keine
+Abhängigkeit und keine Zeile hinzu, die Matilda liest, und Sprint 2 hätte ihn
+ohnehin gebracht. Nur Build und Deploy sind vorgezogen; **CI im Sinne von
+Tests als Merge-Bedingung bleibt Sprint 2.**
 
 ---
 
@@ -197,7 +207,15 @@ npm run build   # Produktionsstand nach dist/
 - Keine weiteren Abhängigkeiten hinzufügen ohne Rückfrage. Jede neue
   Abhängigkeit ist etwas, das Matilda nicht mehr überblickt.
 - `vite.config.js` enthält `base: '/VocApp/'` — nötig für GitHub Pages.
-  Nicht entfernen.
+  Nicht entfernen. Der Pfad muss zum Repo-Namen passen, sonst lädt die
+  veröffentlichte Seite leer.
+- `.github/workflows/deploy.yml` baut bei jedem Push auf `main` und
+  veröffentlicht auf Pages. Pages steht in den Repo-Einstellungen auf Quelle
+  **GitHub Actions**, nicht auf „Deploy from a branch".
+- `dist/` gehört deshalb **nie** ins Repo — es entsteht bei jedem Lauf neu und
+  steht in der `.gitignore`.
+- Der Workflow prüft bewusst **nicht**, ob die Tests grün sind. Das kommt in
+  Sprint 2 dazu. Bis dahin gilt: vor dem Pull Request einmal `npm test`.
 
 ---
 
@@ -246,8 +264,10 @@ git push -u origin thema-des-branches
   sonstige Stilvorgaben bitte **nicht** hinweisen.
 - `git add .` vermeiden, lieber gezielt Dateien nennen.
 - Kein `--force` auf `main`.
-- Branches nach dem Merge löschen. Ausnahme: `gh-pages`, der wird nie
-  gemergt.
+- Branches nach dem Merge löschen. Einen `gh-pages`-Branch gibt es nicht —
+  der Deploy läuft über Actions, das Build-Ergebnis landet nie in Git.
+- Nach dem Löschen eines Branches auf GitHub räumt `git fetch --prune` die
+  veralteten Einträge unter `git branch -r` weg.
 
 **Für KI-Assistenten:** keine Commits oder Pushes ohne ausdrückliche
 Aufforderung. Der Git-Ablauf ist hier Teil des Lernziels und wird bewusst von
