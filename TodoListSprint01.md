@@ -19,17 +19,16 @@ Thomas' Rechner mit, er übernimmt den GitHub-Teil.
 - [ ] Farben in `src/ui/styles.css` aussuchen
 - [ ] Texte in der App formulieren
 - [ ] App auf dem Handy testen
-- [ ] Drei Dinge aufschreiben, die stören oder fehlen
+- [ ] Drei Dinge aufschreiben, die stören oder besser sein könnten
 
 ## Thomas
 - [X] Projekt aufsetzen, `base` in `vite.config.js` eintragen
-- [ ] Branch Protection scharf schalten *(Ruleset ist angelegt, steht aber auf
-      Disabled und hat keinen Ziel-Branch — wirkt so nicht)*
-- [ ] Pages-Quelle auf „GitHub Actions" stellen
+- [X] Branch Protection scharf schalten
+- [X] Pages-Quelle auf „GitHub Actions" stellen
 
 ## Fertig, wenn
-- [ ] App läuft unter der Pages-URL
-- [ ] Vokabeln kommen aus dem JSON
+- [X] App läuft unter der Pages-URL
+- [X] Vokabeln kommen aus dem JSON
 - [X] Tests laufen grün
 - [ ] Eine Änderung von Matilda ist in `main` gemergt
 - [ ] Auf dem Handy bedienbar
