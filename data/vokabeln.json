@@ -23,43 +23,74 @@
     },
     {
       "id": "demo-003",
-      "en": ["to look for something"],
-      "de": ["etwas suchen"],
-      "wortart": "Verb",
+      "en": ["car"],
+      "de": ["Auto"],
+      "wortart": "Nomen",
       "hinweise": {
-        "nach-de": "man tut das, wenn etwas weg ist",
-        "nach-en": "4 words, starts with 'to'"
+        "nach-de": "hat Räder und einen Motor",
+        "nach-en": "you drive it to get around"
       }
     },
-        {
+    {
       "id": "demo-004",
-      "en": ["to analyse"],
-      "de": ["analysieren"],
-      "wortart": "Verb",
+      "en": ["house"],
+      "de": ["Haus"],
+      "wortart": "Nomen",
       "hinweise": {
-        "nach-de": "das lernt man in im Studium",
-        "nach-en": "it starts with 'to a....'"
+        "nach-de": "wo man wohnt",
+        "nach-en": "you live in it"
       }
     },
     {
       "id": "demo-005",
-      "en": ["to stay"],
-      "de": ["bleiben"],
-      "wortart": "Verb",
+      "en": ["tree"],
+      "de": ["Baum"],
+      "wortart": "Nomen",
       "hinweise": {
-        "nach-de": "man bleibt an einem Ort",
-        "nach-en": "it starts with 'to s....'"
+        "nach-de": "hat Blätter und einen Stamm",
+        "nach-en": "it grows in the ground"
       }
     },
     {
       "id": "demo-006",
-      "en": ["to jump"],
-      "de": ["springen"],
-      "wortart": "Verb",
+      "en": ["book"],
+      "de": ["Buch"],
+      "wortart": "Nomen",
       "hinweise": {
-        "nach-de": "man kriegt einen pokal",
-        "nach-en": "you are happy when you do this"
+        "nach-de": "hat Seiten und einen Einband",
+        "nach-en": "you read it to learn"
       }
-    }   
-  ]
+    },
+    {
+      "id": "demo-007",
+      "en": ["computer"],
+      "de": ["Computer"],
+      "wortart": "Nomen",
+      "hinweise": {
+        "nach-de": "hat einen Bildschirm und eine Tastatur",
+        "nach-en": "you use it to work or play games"
+      }
+    },
+    {
+      "id": "demo-008",
+      "en": ["phone"],
+      "de": ["Telefon"],
+      "wortart": "Nomen",
+      "hinweise": {
+        "nach-de": "hat Tasten und einen Lautsprecher",
+        "nach-en": "you use it to call people"
+      }
+    },  
+    {
+      "id": "demo-009",
+      "en": ["school"],
+      "de": ["Schule"],
+      "wortart": "Nomen",
+      "hinweise": {
+        "nach-de": "wo man lernt",
+        "nach-en": "you go there to learn"
+      }
+    }
+  
+  ] 
 }

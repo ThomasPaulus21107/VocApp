@@ -12,14 +12,14 @@ falsch. Fertig, wenn Matilda den Link verschicken kann.
 Noch kein eigener GitHub-Account — Altersgrenze ist 13. Sie arbeitet an
 Thomas' Rechner mit, er übernimmt den GitHub-Teil.
 
-- [ ] GitHub Skills: Introduction to GitHub *(gemeinsam, Thomas bedient)*
-- [ ] GitHub Skills: Communicate using Markdown *(dito)*
+- [X] GitHub Skills: Introduction to GitHub *(gemeinsam, Thomas bedient)*
+- [X] GitHub Skills: Communicate using Markdown *(dito)*
 - [X] Demo Vokabeln in `data/vokabeln.json` eintragen
 - [X] Eigener Branch dafür, Pull Request aufmachen
-- [ ] Farben in `src/ui/styles.css` aussuchen
-- [ ] Texte in der App formulieren
-- [ ] App auf dem Handy testen
-- [ ] Drei Dinge aufschreiben, die stören oder besser sein könnten
+- [X] Farben in `src/ui/styles.css` aussuchen
+- [X] Texte in der App formulieren
+- [X] App auf dem Handy testen
+- [X] Drei Dinge aufschreiben, die stören oder besser sein könnten
 
 ## Thomas
 - [X] Projekt aufsetzen, `base` in `vite.config.js` eintragen
@@ -30,8 +30,8 @@ Thomas' Rechner mit, er übernimmt den GitHub-Teil.
 - [X] App läuft unter der Pages-URL
 - [X] Vokabeln kommen aus dem JSON
 - [X] Tests laufen grün
-- [ ] Eine Änderung von Matilda ist in `main` gemergt
-- [ ] Auf dem Handy bedienbar
+- [X] Eine Änderung von Matilda ist in `main` gemergt
+- [X] Auf dem Handy bedienbar
 
 ## Später, nicht jetzt
 Punkte, Streaks, Leitner, Accounts, Pipeline, PWA, Supabase
