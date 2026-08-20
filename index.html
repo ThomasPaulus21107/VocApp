@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vokabelkarten</title>
+  </head>
+  <body>
+    <main class="buehne">
+      <h1 class="titel">Vokabelkarten</h1>
+
+      <!-- Richtungswahl. Radios statt Knöpfe, damit klar ist:
+           genau eine der beiden Möglichkeiten gilt. -->
+      <fieldset class="richtung">
+        <legend class="sr-only">In welche Richtung möchtest du üben?</legend>
+        <label class="richtung__wahl">
+          <input type="radio" name="richtung" value="nach-de" checked />
+          <span>Englisch → Deutsch</span>
+        </label>
+        <label class="richtung__wahl">
+          <input type="radio" name="richtung" value="nach-en" />
+          <span>Deutsch → Englisch</span>
+        </label>
+      </fieldset>
+
+      <!-- Die Karte: sichtbar, solange noch Vokabeln übrig sind -->
+      <section id="karte" class="karte" aria-labelledby="frage">
+        <p id="zaehler" class="zaehler"></p>
+
+        <p id="frage" class="frage"></p>
+        <p id="beiwort" class="beiwort" hidden></p>
+
+        <form id="antwort-formular" class="formular">
+          <label class="label" for="eingabe" id="eingabe-label"></label>
+          <input
+            id="eingabe"
+            class="eingabe"
+            type="text"
+            autocomplete="off"
+            autocapitalize="off"
+            autocorrect="off"
+            spellcheck="false"
+            enterkeyhint="go"
+          />
+          <button id="knopf" class="knopf" type="submit">Prüfen</button>
+        </form>
+
+        <button id="tipp-knopf" class="knopf-leise" type="button">
+          Tipp anzeigen
+        </button>
+        <p id="tipp" class="tipp" hidden></p>
+
+        <!-- aria-live sorgt dafür, dass Vorlesesoftware die Rückmeldung ansagt -->
+        <p id="rueckmeldung" class="rueckmeldung" role="status" aria-live="polite"></p>
+      </section>
+
+      <!-- Der Abschluss: sichtbar, wenn der Stapel durch ist -->
+      <section id="ende" class="karte" hidden>
+        <p id="ende-text" class="frage"></p>
+        <button id="nochmal" class="knopf" type="button">Noch eine Runde</button>
+      </section>
+    </main>
+
+    <script type="module" src="/src/app.js"></script>
+  </body>
+</html>

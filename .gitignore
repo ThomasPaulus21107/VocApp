@@ -1,0 +1,11 @@
+# Dateien, die Git absichtlich nicht mitzaehlen soll.
+
+# Die Pakete, die "npm install" herunterlaedt. Kommen aus package.json,
+# gehoeren deshalb nicht ins Repo.
+node_modules/
+
+# Der gebaute Stand aus "npm run build". Entsteht jedes Mal neu.
+dist/
+
+# macOS legt das in jedem Ordner an, den man im Finder oeffnet.
+.DS_Store
