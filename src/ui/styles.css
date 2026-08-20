@@ -1,0 +1,230 @@
+/* =========================================================
+   HIER DARFST DU ALLES ÄNDERN, MATILDA
+   Diese Werte gelten für die ganze App. Ändere eine Farbe,
+   speichere, und schau im Browser zu.
+   Farben findest du z.B. auf coolors.co
+   ========================================================= */
+:root {
+  --hintergrund: #e8e6ff;   /* Farbe hinter der Karte */
+  --karte: #ffffff;         /* Farbe der Karte selbst */
+  --schrift: #1c1b2e;       /* normale Textfarbe */
+  --leise: #6f6d8a;         /* für kleine Nebentexte */
+  --akzent: #5b3df5;        /* Knopf und Rahmen */
+  --richtig: #128a5a;       /* wenn du richtig lagst */
+  --falsch: #c2295b;        /* wenn nicht */
+
+  --rundung: 20px;          /* wie rund die Ecken sind */
+
+  /* Schrift. Willst du eine andere? Sag Papa Bescheid,
+     dann bauen wir eine echte Schriftart ein. */
+  --schriftart: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* =========================================================
+   Ab hier ist Technik. Kannst du anschauen, musst du nicht.
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+
+  background: var(--hintergrund);
+  color: var(--schrift);
+  font-family: var(--schriftart);
+}
+
+.buehne {
+  width: 100%;
+  max-width: 30rem;
+}
+
+.titel {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--leise);
+  text-align: center;
+}
+
+.karte {
+  background: var(--karte);
+  border-radius: var(--rundung);
+  padding: 2rem 1.5rem;
+  box-shadow: 0 12px 32px rgb(28 27 46 / 0.12);
+}
+
+.zaehler {
+  margin: 0 0 1.5rem;
+  font-size: 0.875rem;
+  color: var(--leise);
+  text-align: center;
+}
+
+.frage {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+.beiwort {
+  margin: 0.75rem 0 0;
+  font-size: 0.9375rem;
+  color: var(--leise);
+  text-align: center;
+}
+
+/* Nur für Vorlesesoftware sichtbar, nicht auf dem Bildschirm */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.richtung {
+  display: flex;
+  gap: 0.25rem;
+  margin: 0 0 1rem;
+  padding: 0.25rem;
+  border: none;
+  background: rgb(255 255 255 / 0.5);
+  border-radius: calc(var(--rundung) / 2);
+}
+
+.richtung__wahl {
+  flex: 1;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--leise);
+  padding: 0.5rem 0.25rem;
+  border-radius: calc(var(--rundung) / 2 - 4px);
+  cursor: pointer;
+}
+
+.richtung__wahl input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.richtung__wahl:has(input:checked) {
+  background: var(--karte);
+  color: var(--akzent);
+}
+
+.richtung__wahl:has(input:focus-visible) {
+  outline: 3px solid var(--akzent);
+  outline-offset: 2px;
+}
+
+.knopf-leise {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--akzent);
+  background: none;
+  border: 2px solid var(--akzent);
+  border-radius: calc(var(--rundung) / 2);
+  cursor: pointer;
+}
+
+.knopf-leise:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.knopf-leise:focus-visible {
+  outline: 3px solid var(--schrift);
+  outline-offset: 2px;
+}
+
+.tipp {
+  margin: 0.75rem 0 0;
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--leise);
+  text-align: center;
+}
+
+.formular {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.label {
+  font-size: 0.9375rem;
+  color: var(--leise);
+}
+
+.eingabe {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-family: inherit;
+  font-size: 1.25rem;
+  color: inherit;
+  background: var(--hintergrund);
+  border: 2px solid transparent;
+  border-radius: calc(var(--rundung) / 2);
+}
+
+.eingabe:focus-visible {
+  outline: none;
+  border-color: var(--akzent);
+}
+
+.eingabe:disabled {
+  opacity: 0.6;
+}
+
+.knopf {
+  /* min-height 3rem, damit der Knopf am Handy gut zu treffen ist */
+  min-height: 3rem;
+  padding: 0.75rem 1.5rem;
+  font-family: inherit;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--akzent);
+  border: none;
+  border-radius: calc(var(--rundung) / 2);
+  cursor: pointer;
+}
+
+.knopf:focus-visible {
+  outline: 3px solid var(--schrift);
+  outline-offset: 2px;
+}
+
+.rueckmeldung {
+  margin: 1.25rem 0 0;
+  min-height: 1.5rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.rueckmeldung--richtig { color: var(--richtig); }
+.rueckmeldung--falsch  { color: var(--falsch); }
+.rueckmeldung--hinweis { color: var(--leise); }
