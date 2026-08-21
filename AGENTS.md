@@ -60,7 +60,7 @@ Tests als Merge-Bedingung bleibt Sprint 2.**
 ```
 data/          Vokabellisten und die Wortartenliste als JSON. Daten, kein Code.
 src/domain/    Regeln: was ist richtig, wie wird gemischt, wie gedreht.
-src/ui/        Alles, was den DOM anfasst.
+src/ui/        Alles, was der Nutzer sieht und hört: DOM und Töne.
 src/app.js     Steckt die Schichten zusammen.
 tests/         Tests auf domain/ und auf die Daten.
 ```
@@ -79,9 +79,14 @@ macht beides kaputt.
 - Zufall wird hereingereicht: `mische(karten, zufall = Math.random)`.
 - Das Datum wird später genauso hereingereicht: `berechneStreak(zustand, heute)`.
   Niemals `new Date()` innerhalb einer Domänenfunktion.
-- `ui.js` kennt nur `textContent`, `classList`, `hidden` und
-  Event-Registrierung. Keine Lernlogik, keine Entscheidung über richtig
-  oder falsch.
+- `ui.js` kennt nur `textContent`, `classList`, `hidden`,
+  Event-Registrierung und die Töne aus `klang.js`. Keine Lernlogik, keine
+  Entscheidung über richtig oder falsch.
+- `klang.js` ist die zweite Datei der UI-Schicht: sie erzeugt die
+  Rückmeldungstöne, fasst aber keinen DOM an. Sie bekommt nur einen Namen
+  gesagt (`spiele('richtig')`) und entscheidet nichts selbst. Die Töne
+  werden im Browser gerechnet -- es gibt bewusst keine Sounddateien, damit
+  eine Melodie aus Zahlen besteht, die man ändern kann.
 - Datenfluss nach unten (App sagt der UI, was sie zeigen soll), Ereignisse
   nach oben (UI meldet nur, *was* passiert ist).
 - `app.js` ist der einzige Ort mit veränderlichem Zustand.
@@ -259,6 +264,7 @@ Hier bitte **nicht ungefragt aufräumen, umbauen oder "optimieren"**:
 | `data/README.md` | die Anleitung in ihrer Sprache. Bei Formatänderung mitpflegen. |
 | `src/ui/styles.css` | der Variablenblock ganz oben mit deutschen Kommentaren. Nicht in eine andere Datei verschieben, nicht umbenennen, nicht durch ein Framework ersetzen. |
 | UI-Texte in `ui.js` | "Prüfen", "Richtig!", "Leider nicht ..." formuliert sie selbst. |
+| `MELODIEN` in `src/ui/klang.js` | wie die fünf Rückmeldungen klingen. Zahlen ändern, hören, fertig -- wie der Farbblock im CSS. |
 
 Der CSS-Variablenblock ist Absicht: eine Farbe ändern, speichern, sofort
 Wirkung sehen. Das ist ihr erster Kontakt mit Code.
