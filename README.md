@@ -23,6 +23,11 @@ npm run build   # baut die fertige Version nach dist/
 Alle Vokabeln stehen in `data/vokabeln.json`.
 Wie das Format geht, steht in `data/README.md`.
 
+## Was als Nächstes kommt
+
+Der Fahrplan steht in [`roadmap/`](roadmap/): der laufende Sprint, die
+abgeschlossenen, und alles Weitere im Backlog.
+
 ## Aufbau
 
 ```

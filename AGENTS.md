@@ -49,9 +49,10 @@ Befehle bei jedem Veröffentlichen — gegenüber einer Workflow-Datei, die man
 einmal schreibt und nie wieder anfasst. Vor allem aber hat der Handbetrieb
 einen Fehlermodus, den der Workflow nicht kennt: `npm run build` vergessen und
 einen alten Stand hochladen, ohne dass es auffällt. Der Workflow fügt keine
-Abhängigkeit und keine Zeile hinzu, die Matilda liest, und Sprint 2 hätte ihn
-ohnehin gebracht. Nur Build und Deploy sind vorgezogen; **CI im Sinne von
-Tests als Merge-Bedingung bleibt Sprint 2.**
+Abhängigkeit und keine Zeile hinzu, die Matilda liest, und ein späterer Sprint
+hätte ihn ohnehin gebracht. Nur Build und Deploy sind vorgezogen; **CI im
+Sinne von Tests als Merge-Bedingung ist ein eigenes Vorhaben**, siehe
+`roadmap/feature-tests-in-ci.md`.
 
 ---
 
@@ -228,8 +229,9 @@ Eine Karte hat entweder `en`/`de` oder `formen` — nie beides, nie keins.
 
 ### `id` ist heilig
 
-Niemals eine bestehende `id` ändern, umbenennen oder neu vergeben. In Sprint 3
-hängt der Lernstand daran. Frage-Text darf sich ändern, die `id` nie.
+Niemals eine bestehende `id` ändern, umbenennen oder neu vergeben. Sobald es
+einen gespeicherten Lernstand gibt (siehe `roadmap/backlog.md`), hängt er
+daran. Frage-Text darf sich ändern, die `id` nie.
 
 ---
 
@@ -292,8 +294,9 @@ npm run build   # Produktionsstand nach dist/
   **GitHub Actions**, nicht auf „Deploy from a branch".
 - `dist/` gehört deshalb **nie** ins Repo — es entsteht bei jedem Lauf neu und
   steht in der `.gitignore`.
-- Der Workflow prüft bewusst **nicht**, ob die Tests grün sind. Das kommt in
-  Sprint 2 dazu. Bis dahin gilt: vor dem Pull Request einmal `npm test`.
+- Der Workflow prüft bewusst **nicht**, ob die Tests grün sind. Das kommt mit
+  `roadmap/feature-tests-in-ci.md` dazu. Bis dahin gilt: vor dem Pull Request
+  einmal `npm test`.
 
 ---
 
@@ -309,8 +312,8 @@ Zwei Sorten, beide relevant:
   **nicht** eingefordert, sie ist freiwillig. Meldet die betroffene `id`.
 
   Die ids müssen über alle Dateien zusammen eindeutig sein, nicht nur je
-  Datei — die App lädt sie in einen gemeinsamen Stapel, und ab Sprint 3 hängt
-  der Lernstand an der id.
+  Datei — die App lädt sie in einen gemeinsamen Stapel, und ein späterer
+  Lernstand hängt an der id.
 
 **Der Daten-Test ist der praktisch wichtigste.** Er fängt Matildas Tippfehler
 ab, bevor sie in der App auffallen. Bei Änderungen am Format muss er
@@ -380,15 +383,40 @@ Hand gemacht.
 
 ---
 
+## Out of Scope
+
+Diese Punkte scheitern an keiner Voraussetzung — sie sind **entschieden**. Sie
+stehen deshalb hier und nicht im Backlog: was im Backlog steht, wollen wir
+bauen. Wer einen davon doch aufnehmen will, ändert zuerst diesen Abschnitt.
+
+| Nicht | Warum |
+|---|---|
+| **PWA / Offline-Installation** | Die App lädt in unter einer Sekunde. Der Gewinn wäre klein, der Aufwand (Service Worker, Cache-Invalidierung) dauerhaft. |
+| **TypeScript** | Würde Matilda eine zweite Sprache zumuten, bevor sie die erste kann. |
+| **Ein Framework** | Die App hat zwei Bildschirme. React würde mehr Code hinzufügen, als es entfernt. |
+| **Ein CSS-Preprozessor** | Der Variablenblock in `styles.css` ist Matildas Einstieg in Code. Er muss im Browser direkt wirken. |
+
+Das ist die Produktseite derselben Entscheidung, die oben unter „Was hier
+nicht passieren soll" als Arbeitsregel steht.
+
+---
+
 ## Fahrplan (zur Einordnung, nicht zum Vorziehen)
 
-| Sprint | Inhalt |
-|---|---|
-| 1 | Kartenabfrage, beide Richtungen, Hinweise, Deploy auf Pages |
-| 2 | Punkte und Streak über `localStorage`, CI/CD mit GitHub Actions |
-| 3 | Leitner-Algorithmus für gesteuerte Wiederholung |
-| 4 | optional: Accounts und Sync über Supabase |
+**Der Fahrplan steht in [`roadmap/`](roadmap/), nicht hier.** Dort liegen der
+laufende Sprint, die abgeschlossenen, je eine `feature-*.md` pro
+durchdachtem Feature und alles Weitere in `backlog.md`. Eine zweite Liste an
+dieser Stelle würde nur veralten. `roadmap/README.md` erklärt den Weg vom
+Backlog über das Refinement bis in einen Sprint.
 
-Beim Übergang zu Sprint 2 entsteht `src/infra/storage.js` als **einziger**
-Ort, der Persistenz kennt. Das ist die Naht, an der in Sprint 4 Supabase
-eingesetzt wird. Sie muss sauber bleiben.
+Was wir bewusst **nicht** bauen, steht dagegen oben unter „Out of Scope" —
+nicht in der Roadmap, damit es dort nicht als Vorhaben missverstanden wird.
+
+Was für die Architektur wichtig ist: `src/infra/storage.js` entsteht in
+Sprint 3 als **einziger** Ort, der Persistenz kennt — zunächst
+ausschließlich für **Einstellungen** (Töne an/aus, was geübt wird, Richtung).
+Ein Lernstand **pro Karte** geht bewusst noch nicht durch diese Naht:
+Einstellungen kann man jederzeit erweitern, ein gespeicherter Lernstand legt
+sein Format dagegen fest und müsste später migriert werden. Dieselbe Naht wird
+später gegen Supabase getauscht, ohne dass Domäne oder UI davon erfahren. Sie
+muss sauber bleiben.

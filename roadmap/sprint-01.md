@@ -33,6 +33,12 @@ Thomas' Rechner mit, er übernimmt den GitHub-Teil.
 - [X] Eine Änderung von Matilda ist in `main` gemergt
 - [X] Auf dem Handy bedienbar
 
+## Ungeplant dazugekommen
+
+Der **Formen-Modus für unregelmäßige Verben** (PR #7 und #8) war nicht
+vorgesehen: 53 Verben in einer eigenen Liste, drei Formen nebeneinander, eine
+davon als Lücke. Er ist die Grundlage für Sprint 2 geworden.
+
 ## Später, nicht jetzt
 Punkte, Streaks, Leitner, Accounts, Pipeline, PWA, Supabase
 
