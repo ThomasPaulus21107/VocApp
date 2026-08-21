@@ -2,53 +2,79 @@
 // und an dem es einen veränderlichen Zustand gibt.
 
 import './ui/styles.css';
-import vokabeln from '../data/vokabeln.json';
 import verben from '../data/unregelmaessige-verben.json';
-import {
-  stelleFrage, stelleFormFrage, hatFormen, pruefeAntwort, mische, RICHTUNGEN,
-} from './domain/pruefung.js';
+import { stelleFormFrage, pruefeAntwort, zieheRunde, RICHTUNGEN } from './domain/pruefung.js';
 import * as ui from './ui/ui.js';
 
-// Beide Listen kommen in einen gemeinsamen Stapel. Auswählen, welche Liste
-// geübt wird, kommt in einem späteren Sprint.
-const alleKarten = [...vokabeln.karten, ...verben.karten];
+// Vorerst nur unregelmäßige Verben, und nur in eine Richtung: das deutsche
+// Verb steht da, getippt wird die englische Form.
+const RUNDENGROESSE = 20;
+const RICHTUNG = RICHTUNGEN.NACH_EN;
 
-let richtung = RICHTUNGEN.NACH_DE;
+// 0 = erster Versuch, 1 = Korrekturchance, 2 = erledigt
+const ERLEDIGT = 2;
+
 let stapel = [];
 let frage = null;
 let index = 0;
-let beantwortet = false;
+let versuch = 0;
 
 function start() {
-  stapel = mische(alleKarten);
+  stapel = zieheRunde(verben.karten, RUNDENGROESSE);
   index = 0;
   zeigeAktuelle();
 }
 
-// Unregelmäßige Verben werden anders gefragt: drei Formen, eine davon leer.
 function zeigeAktuelle() {
-  beantwortet = false;
-  const karte = stapel[index];
-  frage = hatFormen(karte)
-    ? stelleFormFrage(karte, richtung)
-    : stelleFrage(karte, richtung);
-  ui.zeigeKarte(frage, richtung, index + 1, stapel.length);
+  versuch = 0;
+  frage = stelleFormFrage(stapel[index], RICHTUNG);
+  ui.zeigeKarte(frage, index + 1, stapel.length);
 }
 
 // Ein Knopf, zwei Bedeutungen: erst prüfen, dann weiter.
 function aufAbsenden(eingabe) {
-  if (beantwortet) {
+  if (versuch === ERLEDIGT) {
     weiter();
     return;
   }
 
   const ergebnis = pruefeAntwort(eingabe, frage);
-  ui.zeigeErgebnis(ergebnis);
 
-  // Bei leerer Eingabe bleiben wir auf derselben Karte.
-  if (!ergebnis.leer) {
-    beantwortet = true;
+  // Bei leerer Eingabe bleiben wir auf derselben Karte, ohne einen Versuch
+  // zu verbrauchen.
+  if (ergebnis.leer) {
+    ui.zeigeLeer();
+    return;
   }
+
+  // "s" überspringt die Karte -- ohne Lösung, direkt zur nächsten.
+  if (ergebnis.springen) {
+    weiter();
+    return;
+  }
+
+  // "keine Ahnung" ist kein Fehlversuch: die Karte bleibt stehen, es gibt
+  // Zuspruch, und der Versuch ist noch nicht verbraucht.
+  if (ergebnis.mutmachen) {
+    ui.zeigeMutmacher();
+    return;
+  }
+
+  if (ergebnis.richtig) {
+    versuch = ERLEDIGT;
+    ui.zeigeRichtig(frage.loesung, frage.gesuchteForm);
+    return;
+  }
+
+  // Beim ersten Fehlversuch gibt es noch eine Chance, erst danach die Lösung.
+  if (versuch === 0) {
+    versuch = 1;
+    ui.zeigeKorrekturchance();
+    return;
+  }
+
+  versuch = ERLEDIGT;
+  ui.zeigeFalsch(ergebnis.erwartet, frage.loesung, frage.gesuchteForm);
 }
 
 function weiter() {
@@ -60,16 +86,9 @@ function weiter() {
   zeigeAktuelle();
 }
 
-// Richtung wechseln startet eine frische Runde -- sonst stünde man
-// mitten im Stapel plötzlich vor der anderen Sprache.
-function aufRichtungswechsel(neueRichtung) {
-  richtung = neueRichtung;
-  start();
-}
-
 function aufTipp() {
   if (frage.hinweis) ui.zeigeTipp(frage.hinweis);
 }
 
-ui.verbinde({ aufAbsenden, aufNeustart: start, aufRichtungswechsel, aufTipp });
+ui.verbinde({ aufAbsenden, aufNeustart: start, aufTipp });
 start();

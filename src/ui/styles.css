@@ -8,8 +8,8 @@
   --hintergrund: #9f5de4;   /* Farbe hinter der Karte */
   --karte: #e3b3f4;         /* Farbe der Karte selbst */
   --schrift: #000000;       /* normale Textfarbe */
-  --leise: #310647;         /* für kleine Nebentexte */
-  --akzent: #bc63af;        /* Knopf und Rahmen */
+  --leise: #4b1a64;         /* für kleine Nebentexte */
+  --akzent: #9c5692;        /* Knopf und Rahmen */
   --richtig: #00ff99;       /* wenn du richtig lagst */
   --falsch: #fd0000;        /* wenn nicht */
   --eingabefeld: #fefcfe;    /* Hintergrundfarbe der Eingabefelder */
@@ -27,6 +27,14 @@
 
 * {
   box-sizing: border-box;
+}
+
+/* Wenn im HTML "hidden" steht, ist das Element weg -- Punkt.
+   Ohne diese Regel wuerde jede eigene display-Angabe das Attribut
+   ueberstimmen, und versteckte Sachen blieben sichtbar. Genau das ist
+   uns bei der Formenzeile schon einmal passiert. */
+[hidden] {
+  display: none !important;
 }
 
 body {
@@ -60,29 +68,32 @@ body {
 .karte {
   background: var(--karte);
   border-radius: var(--rundung);
-  padding: 2rem 1.5rem;
+  padding: clamp(1.25rem, 5vw, 2rem) clamp(1rem, 4vw, 1.5rem);
   box-shadow: 0 12px 32px rgba(42, 247, 6, 0.12);
 }
 
 .zaehler {
-  margin: 0 0 1.5rem;
-  font-size: 2.0rem;
+  margin: 0 0 1rem;
+  font-size: clamp(0.875rem, 3.5vw, 1.0625rem);
   color: var(--leise);
   text-align: center;
 }
 
 .frage {
   margin: 0;
-  font-size: 3.5rem;
+  font-size: clamp(2rem, 11vw, 3.25rem);
   font-weight: 600;
-  line-height: 1.8;
+  line-height: 1.15;
   text-align: center;
   overflow-wrap: break-word;
 }
 
 .beiwort {
   margin: 0.75rem 0 0;
-  font-size: 0.9375rem;
+  font-size: clamp(1rem, 4.5vw, 1.25rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--leise);
   text-align: center;
 }
@@ -161,8 +172,10 @@ body {
 
 .tipp {
   margin: 0.75rem 0 0;
-  font-size: 1rem;
-  font-style: italic;
+  /* Schreibmaschinenschrift: nur so sind die Unterstriche zaehlbar */
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: clamp(1.125rem, 5vw, 1.5rem);
+  letter-spacing: 0.1em;
   color: var(--leise);
   text-align: center;
 }
@@ -183,7 +196,7 @@ body {
   width: 100%;
   padding: 0.875rem 1rem;
   font-family: inherit;
-  font-size: 1.8rem;
+  font-size: clamp(1.125rem, 5vw, 1.5rem);
   color: inherit;
   background: var(--eingabefeld);
   border: 2px solid transparent;
@@ -221,7 +234,7 @@ body {
 .rueckmeldung {
   margin: 1.25rem 0 0;
   min-height: 1.5rem;
-  font-size: 2.0rem;
+  font-size: clamp(1.125rem, 4.5vw, 1.5rem);
   font-weight: 600;
   text-align: center;
 }
@@ -230,36 +243,30 @@ body {
 .rueckmeldung--falsch  { color: var(--falsch); }
 .rueckmeldung--hinweis { color: var(--leise); }
 
-/* Die drei Formen eines unregelmäßigen Verbs, nebeneinander.
-   Eine davon ist leer -- das ist die, die getippt werden soll. */
+/* Die drei Formen, erst nach dem Loesen sichtbar. Feste drei Spalten:
+   umbrechen wuerde 2 + 1 ergeben, und das liest sich nicht mehr wie
+   eine Tabelle. Lange Formen brechen stattdessen in ihrer Spalte um. */
 .formen {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 1.25rem;
-  justify-content: center;
-  margin: 0 0 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin: 1rem 0 0;
   text-align: center;
 }
 
-/* Muss sein: "display: flex" oben wuerde das hidden-Attribut sonst
-   ueberstimmen, und bei normalen Vokabeln blieben die Formen der
-   Vorgaengerkarte stehen. */
-.formen[hidden] {
-  display: none;
-}
-
 .formen dt {
-  font-size: 0.75rem;
+  font-size: clamp(0.6875rem, 2.8vw, 0.8125rem);
   color: var(--leise);
 }
 
 .formen dd {
   margin: 0.15rem 0 0;
-  font-size: 1.0625rem;
+  font-size: clamp(0.9375rem, 4vw, 1.125rem);
   font-weight: 600;
+  overflow-wrap: break-word;
 }
 
-.formen__luecke {
+.formen__gefragt {
   color: var(--akzent);
   border-bottom: 2px solid var(--akzent);
 }

@@ -50,35 +50,76 @@ export function hatFormen(karte) {
   return Boolean(karte.formen);
 }
 
+// Gefragt wird nur nach diesen beiden. Das Partizip wird nach dem Lösen
+// mitgezeigt, aber nie abgefragt.
+export const ABGEFRAGTE_FORMEN = ['infinitive', 'simple-past'];
+
 /**
- * Baut die Frage zu einem unregelmäßigen Verb. Alle drei Formen werden in der
- * Antwortsprache gezeigt, eine davon bleibt leer. Der Infinitiv der ANDEREN
- * Sprache steht als Frage darüber -- sonst wüsste man nicht, welches Verb
- * gemeint ist.
+ * Baut den Tipp zu einem Wort: erster Buchstabe, dann ein Unterstrich je
+ * weiterem Buchstaben. Aus "wrote" wird "w____", aus "woke up" wird "w___ u_".
  *
- * Welche Form die Lücke wird, entscheidet der Zufall. Der wird hereingereicht,
- * damit der Test das Ergebnis vorhersagen kann -- gleiches Prinzip wie mische().
+ * Ein führendes "to" bleibt stehen -- das gehört zur Form und muss nicht
+ * geraten werden. Die Unterstriche verraten dafür die Länge.
+ */
+export function baueHinweis(wort) {
+  return String(wort)
+    .split(' ')
+    .map((teil, stelle) =>
+      stelle === 0 && teil === 'to' ? teil : teil[0] + '_'.repeat(teil.length - 1)
+    )
+    .join(' ');
+}
+
+/**
+ * Zieht eine Runde: mischen, dann die ersten n nehmen. Sind weniger Karten
+ * da als gewünscht, kommen eben alle dran.
+ */
+export function zieheRunde(karten, anzahl, zufall = Math.random) {
+  return mische(karten, zufall).slice(0, anzahl);
+}
+
+/**
+ * Baut die Frage zu einem unregelmäßigen Verb. Gezeigt wird das Verb in der
+ * Fragesprache, gesucht ist eine Form in der Antwortsprache -- welche,
+ * entscheidet der Zufall unter ABGEFRAGTE_FORMEN.
+ *
+ * Der Zufall wird hereingereicht, damit der Test das Ergebnis vorhersagen
+ * kann. Gleiches Prinzip wie bei mische().
  */
 export function stelleFormFrage(karte, richtung, zufall = Math.random) {
   const nachDe = richtung === RICHTUNGEN.NACH_DE;
   const antwortsprache = nachDe ? 'de' : 'en';
   const fragesprache = nachDe ? 'en' : 'de';
 
-  const gesucht = FORMEN[Math.floor(zufall() * FORMEN.length)];
+  const gesucht = ABGEFRAGTE_FORMEN[Math.floor(zufall() * ABGEFRAGTE_FORMEN.length)];
+  const antworten = karte.formen[gesucht][antwortsprache];
 
   return {
     id: karte.id,
     frage: karte.formen.infinitive[fragesprache][0],
-    formen: FORMEN.map((name) => ({
+    gesuchteForm: gesucht,
+    antworten,
+    // Der Tipp wird gebaut, nicht aus der Karte gelesen: er soll bei der Form
+    // helfen, nicht bei der Bedeutung.
+    hinweis: baueHinweis(antworten[0]),
+    // Erst wenn die Karte erledigt ist, werden alle drei Formen gezeigt --
+    // auch das Partizip, nach dem nie gefragt wird.
+    loesung: FORMEN.map((name) => ({
       name,
-      wort: name === gesucht ? null : karte.formen[name][antwortsprache][0],
+      wort: karte.formen[name][antwortsprache][0],
     })),
-    antworten: karte.formen[gesucht][antwortsprache],
-    hinweis: karte.hinweise?.[richtung] ?? null,
     bedeutung: karte.bedeutung ?? null,
     wortart: karte.wortart ?? null,
   };
 }
+
+// Ein einzelnes "s" heißt: diese Karte überspringen. Als Antwort kommt es
+// nicht in Frage -- keine englische Verbform besteht aus einem Buchstaben.
+export const SPRINGEN = 's';
+
+// "keine Ahnung" ist kein Fehlversuch, sondern ein Hilferuf. Die Karte bleibt
+// offen, es gibt Zuspruch statt einer Bewertung.
+export const AUFGEBEN = 'keine ahnung';
 
 /**
  * Prüft eine getippte Antwort gegen eine gestellte Frage.
@@ -88,14 +129,22 @@ export function pruefeAntwort(eingabe, frage) {
   const getippt = normalisiere(eingabe);
 
   if (getippt === '') {
-    return { richtig: false, leer: true, erwartet: frage.antworten };
+    return { richtig: false, leer: true, springen: false, mutmachen: false, erwartet: frage.antworten };
+  }
+
+  if (getippt === SPRINGEN) {
+    return { richtig: false, leer: false, springen: true, mutmachen: false, erwartet: frage.antworten };
+  }
+
+  if (getippt === AUFGEBEN) {
+    return { richtig: false, leer: false, springen: false, mutmachen: true, erwartet: frage.antworten };
   }
 
   const richtig = frage.antworten.some(
     (antwort) => normalisiere(antwort) === getippt
   );
 
-  return { richtig, leer: false, erwartet: frage.antworten };
+  return { richtig, leer: false, springen: false, mutmachen: false, erwartet: frage.antworten };
 }
 
 /**
