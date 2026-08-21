@@ -1,5 +1,7 @@
-// UI-Schicht. Kennt nur den DOM.
+// UI-Schicht. Kennt nur den DOM und die Töne.
 // Weiß nichts davon, was richtig oder falsch bedeutet -- bekommt das gesagt.
+
+import * as klang from './klang.js';
 
 const el = {
   frage: document.querySelector('#frage'),
@@ -98,6 +100,7 @@ export function zeigeTipp(text) {
 export function zeigeLeer() {
   el.rueckmeldung.textContent = 'Tipp erst eine Antwort ein.';
   el.rueckmeldung.className = 'rueckmeldung rueckmeldung--hinweis';
+  klang.spiele('leer');
   el.eingabe.focus();
 }
 
@@ -108,6 +111,7 @@ export function zeigeLeer() {
 export function zeigeMutmacher() {
   el.rueckmeldung.textContent = 'DU SCHAFFST DAS';
   el.rueckmeldung.className = 'rueckmeldung rueckmeldung--richtig';
+  klang.spiele('mutmachen');
 
   el.eingabe.value = '';
   el.eingabe.focus();
@@ -116,6 +120,7 @@ export function zeigeMutmacher() {
 export function zeigeRichtig(loesung, gesuchteForm) {
   el.rueckmeldung.textContent = 'Richtig!';
   el.rueckmeldung.className = 'rueckmeldung rueckmeldung--richtig';
+  klang.spiele('richtig');
   zeigeLoesung(loesung, gesuchteForm);
   schliesseKarteAb();
 }
@@ -127,6 +132,7 @@ export function zeigeRichtig(loesung, gesuchteForm) {
 export function zeigeKorrekturchance() {
   el.rueckmeldung.textContent = 'Noch nicht ganz. Du hast noch einen Versuch.';
   el.rueckmeldung.className = 'rueckmeldung rueckmeldung--hinweis';
+  klang.spiele('nochmal');
 
   el.eingabe.value = '';
   el.eingabe.focus();
@@ -135,6 +141,7 @@ export function zeigeKorrekturchance() {
 export function zeigeFalsch(erwartet, loesung, gesuchteForm) {
   el.rueckmeldung.textContent = `Leider nicht. Richtig wäre: ${erwartet.join(' oder ')}`;
   el.rueckmeldung.className = 'rueckmeldung rueckmeldung--falsch';
+  klang.spiele('falsch');
   zeigeLoesung(loesung, gesuchteForm);
   schliesseKarteAb();
 }
