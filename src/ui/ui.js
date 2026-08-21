@@ -13,20 +13,23 @@ const el = {
   rueckmeldung: document.querySelector('#rueckmeldung'),
   zaehler: document.querySelector('#zaehler'),
   karte: document.querySelector('#karte'),
+  ende: document.querySelector('#ende'),
+  nochmal: document.querySelector('#nochmal'),
+  richtung: document.querySelector('#richtung'),
+  richtungen: document.querySelectorAll('input[name="richtung"]'),
   formen: document.querySelector('#formen'),
   formWerte: {
     'infinitive': document.querySelector('#form-infinitive'),
     'simple-past': document.querySelector('#form-simple-past'),
     'past-participle': document.querySelector('#form-past-participle'),
   },
-  ende: document.querySelector('#ende'),
-  nochmal: document.querySelector('#nochmal'),
-  richtungen: document.querySelectorAll('input[name="richtung"]'),
 };
 
-const LABEL = {
-  'nach-de': 'Was heißt das auf Deutsch?',
-  'nach-en': 'What is this in English?',
+// So heißt die gesuchte Form auf der Karte.
+const FORM_NAME = {
+  'infinitive': 'infinitive',
+  'simple-past': 'simple past',
+  'past-participle': 'past participle',
 };
 
 /**
@@ -42,24 +45,28 @@ export function verbinde({ aufAbsenden, aufNeustart, aufRichtungswechsel, aufTip
   el.nochmal.addEventListener('click', aufNeustart);
   el.tippKnopf.addEventListener('click', aufTipp);
 
+  // Die Richtungswahl ist im Moment abgeschaltet. Ohne Handler bleibt sie
+  // ausgeblendet -- die Auswahl selbst steht noch im HTML.
+  el.richtung.hidden = !aufRichtungswechsel;
+  if (!aufRichtungswechsel) return;
+
   el.richtungen.forEach((radio) => {
     radio.addEventListener('change', () => aufRichtungswechsel(radio.value));
   });
 }
 
-export function zeigeKarte(frage, richtung, nummer, gesamt) {
+export function zeigeKarte(frage, nummer, gesamt) {
   el.karte.hidden = false;
   el.ende.hidden = true;
 
   el.frage.textContent = frage.frage;
 
-  // Wortart und Bedeutung stehen direkt an der Frage, nicht im Tipp:
-  // ohne sie wäre "bank" nicht eindeutig beantwortbar.
-  const beiwort = [frage.wortart, frage.bedeutung].filter(Boolean).join(' · ');
-  el.beiwort.textContent = beiwort;
-  el.beiwort.hidden = beiwort === '';
+  // Unter der Frage steht, welche Form getippt werden soll. Ohne die Angabe
+  // wäre gar nicht klar, wonach gefragt ist.
+  el.beiwort.textContent = FORM_NAME[frage.gesuchteForm] ?? '';
+  el.beiwort.hidden = el.beiwort.textContent === '';
 
-  el.eingabeLabel.textContent = frage.formen ? 'Welche Form fehlt?' : LABEL[richtung];
+  el.eingabeLabel.textContent = 'Deine Antwort';
   el.zaehler.textContent = `Karte ${nummer} von ${gesamt}`;
 
   el.eingabe.value = '';
@@ -74,21 +81,11 @@ export function zeigeKarte(frage, richtung, nummer, gesamt) {
   el.tippKnopf.hidden = frage.hinweis === null;
   el.tippKnopf.disabled = false;
 
+  // Die drei Formen kommen erst, wenn die Karte erledigt ist.
+  el.formen.hidden = true;
+
   el.rueckmeldung.textContent = '';
   el.rueckmeldung.className = 'rueckmeldung';
-
-  zeigeFormen(frage.formen);
-}
-
-// Ohne formen bleibt die Zeile weg -- normale Vokabeln haben keine.
-function zeigeFormen(formen) {
-  el.formen.hidden = !formen;
-  if (!formen) return;
-
-  for (const { name, wort } of formen) {
-    el.formWerte[name].textContent = wort ?? '?';
-    el.formWerte[name].classList.toggle('formen__luecke', wort === null);
-  }
 }
 
 export function zeigeTipp(text) {
@@ -98,23 +95,67 @@ export function zeigeTipp(text) {
   el.eingabe.focus();
 }
 
-export function zeigeErgebnis(ergebnis) {
-  if (ergebnis.leer) {
-    el.rueckmeldung.textContent = 'Tipp erst eine Antwort ein.';
-    el.rueckmeldung.className = 'rueckmeldung rueckmeldung--hinweis';
-    el.eingabe.focus();
-    return;
-  }
+export function zeigeLeer() {
+  el.rueckmeldung.textContent = 'Tipp erst eine Antwort ein.';
+  el.rueckmeldung.className = 'rueckmeldung rueckmeldung--hinweis';
+  el.eingabe.focus();
+}
 
-  if (ergebnis.richtig) {
-    el.rueckmeldung.textContent = 'Richtig!';
-    el.rueckmeldung.className = 'rueckmeldung rueckmeldung--richtig';
-  } else {
-    el.rueckmeldung.textContent =
-      `Leider nicht. Richtig wäre: ${ergebnis.erwartet.join(' oder ')}`;
-    el.rueckmeldung.className = 'rueckmeldung rueckmeldung--falsch';
-  }
+/**
+ * Antwort auf "keine Ahnung": kein Ergebnis, sondern Zuspruch. Sieht aus wie
+ * ein Richtig, zählt aber nicht als einer -- die Karte bleibt offen.
+ */
+export function zeigeMutmacher() {
+  el.rueckmeldung.textContent = 'DU SCHAFFST DAS';
+  el.rueckmeldung.className = 'rueckmeldung rueckmeldung--richtig';
 
+  el.eingabe.value = '';
+  el.eingabe.focus();
+}
+
+export function zeigeRichtig(loesung, gesuchteForm) {
+  el.rueckmeldung.textContent = 'Richtig!';
+  el.rueckmeldung.className = 'rueckmeldung rueckmeldung--richtig';
+  zeigeLoesung(loesung, gesuchteForm);
+  schliesseKarteAb();
+}
+
+/**
+ * Erster Fehlversuch: die Karte bleibt offen, das Feld wird geleert.
+ * Die Lösung gibt es hier noch nicht.
+ */
+export function zeigeKorrekturchance() {
+  el.rueckmeldung.textContent = 'Noch nicht ganz. Du hast noch einen Versuch.';
+  el.rueckmeldung.className = 'rueckmeldung rueckmeldung--hinweis';
+
+  el.eingabe.value = '';
+  el.eingabe.focus();
+}
+
+export function zeigeFalsch(erwartet, loesung, gesuchteForm) {
+  el.rueckmeldung.textContent = `Leider nicht. Richtig wäre: ${erwartet.join(' oder ')}`;
+  el.rueckmeldung.className = 'rueckmeldung rueckmeldung--falsch';
+  zeigeLoesung(loesung, gesuchteForm);
+  schliesseKarteAb();
+}
+
+/**
+ * Alle drei Formen, jetzt vollständig ausgefüllt. Die Form, nach der gefragt
+ * war, wird hervorgehoben -- deshalb kann die Angabe über der Frage weg,
+ * sonst stünde sie zweimal da.
+ */
+function zeigeLoesung(loesung, gesuchteForm) {
+  el.beiwort.hidden = true;
+
+  el.formen.hidden = false;
+  for (const { name, wort } of loesung) {
+    el.formWerte[name].textContent = wort;
+    el.formWerte[name].classList.toggle('formen__gefragt', name === gesuchteForm);
+  }
+}
+
+// Aus "Prüfen" wird "Weiter": dieselbe Taste bringt die nächste Karte.
+function schliesseKarteAb() {
   el.eingabe.disabled = true;
   el.tippKnopf.disabled = true;
   el.knopf.textContent = 'Weiter';

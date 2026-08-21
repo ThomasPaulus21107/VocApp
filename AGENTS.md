@@ -228,6 +228,27 @@ hängt der Lernstand daran. Frage-Text darf sich ändern, die `id` nie.
 
 ---
 
+## Zwei Easter Eggs im Eingabefeld
+
+`pruefeAntwort()` behandelt zwei Eingaben gesondert. Beide stehen als benannte
+Konstanten in `domain/pruefung.js` und sind **Absicht, kein toter Code**:
+
+| Eingabe | Konstante | Was passiert |
+|---|---|---|
+| `s` | `SPRINGEN` | Karte überspringen, sofort zur nächsten, ohne Lösung |
+| `keine ahnung` | `AUFGEBEN` | „DU SCHAFFST DAS" — die Karte bleibt offen, kein Versuch verbraucht |
+
+**In der Oberfläche steht bewusst nichts davon.** Sie sollen gefunden werden,
+nicht erklärt. Also bitte weder ins Label schreiben noch in `data/README.md`
+erwähnen — die Anleitung liest Matilda.
+
+Dass sie in der Domänenschicht liegen und nicht in `ui.js`, hat einen Grund:
+was eine Eingabe *bedeutet*, ist eine Regel. Die UI erfährt nur, was sie
+anzeigen soll.
+
+Als Antwort können die beiden nicht kollidieren — keine englische Verbform ist
+einen Buchstaben lang, und „keine ahnung" ist kein englisches Wort.
+
 ## Bereiche, die Matilda gehören
 
 Hier bitte **nicht ungefragt aufräumen, umbauen oder "optimieren"**:
