@@ -266,6 +266,7 @@ Hier bitte **nicht ungefragt aufräumen, umbauen oder "optimieren"**:
 | `data/README.md` | die Anleitung in ihrer Sprache. Bei Formatänderung mitpflegen. |
 | `src/ui/styles.css` | der Variablenblock ganz oben mit deutschen Kommentaren. Nicht in eine andere Datei verschieben, nicht umbenennen, nicht durch ein Framework ersetzen. |
 | UI-Texte in `ui.js` | "Prüfen", "Richtig!", "Leider nicht ..." formuliert sie selbst. |
+| `NOTEN_TEXTE` in `src/ui/ui.js` | ihr Satz zu jeder Schulnote. Wie der Farbblock im CSS: Text ändern, speichern, Runde spielen. Die Noten als Schlüssel gehören dagegen zur Tabelle in `domain/note.js` und dürfen nicht umbenannt werden. |
 | `MELODIEN` in `src/ui/klang.js` | wie die fünf Rückmeldungen klingen. Zahlen ändern, hören, fertig -- wie der Farbblock im CSS. |
 
 Der CSS-Variablenblock ist Absicht: eine Farbe ändern, speichern, sofort

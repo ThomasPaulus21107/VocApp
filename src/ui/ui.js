@@ -14,8 +14,12 @@ const el = {
   tipp: document.querySelector('#tipp'),
   rueckmeldung: document.querySelector('#rueckmeldung'),
   zaehler: document.querySelector('#zaehler'),
+  loesung: document.querySelector('#loesung'),
   karte: document.querySelector('#karte'),
   ende: document.querySelector('#ende'),
+  note: document.querySelector('#note'),
+  endeText: document.querySelector('#ende-text'),
+  punkte: document.querySelector('#punkte'),
   nochmal: document.querySelector('#nochmal'),
   richtung: document.querySelector('#richtung'),
   richtungen: document.querySelectorAll('input[name="richtung"]'),
@@ -25,6 +29,32 @@ const el = {
     'simple-past': document.querySelector('#form-simple-past'),
     'past-participle': document.querySelector('#form-past-participle'),
   },
+};
+
+/* =========================================================
+   AUCH DAS HIER GEHÖRT DIR, MATILDA
+   Zu jeder Note ein Satz. Er steht am Ende einer Runde unter
+   der Note. Ändere den Text, speichere, spiel eine Runde.
+   Die Noten links dürfen nicht umbenannt werden -- die kommen
+   aus der Punktetabelle in src/domain/note.js.
+   ========================================================= */
+const NOTEN_TEXTE = {
+  '1+': '👑 Einfach Aura gefarmt, besser geht’s nicht!',
+  '1':  '✨ Komplett abgeliefert, richtig viel Aura!',
+  '1−': '😎 Fast perfekt, bisschen Aura fehlt noch!',
+  '2+': '🔥 Stark abgeliefert, du hast richtig geslayt!',
+  '2':  '💅 Stabil, du hast’s echt drauf!',
+  '2−': '😮‍💨 Schon ziemlich stark, da geht aber noch mehr!',
+  '3+': '😎 Solide abgeliefert, noch nicht komplett cooked!',
+  '3':  '🙂 Ganz gut, aber da geht noch was!',
+  '3−': '💡 Du kannst das, du musst nur noch ein bisschen üben!',
+  '4+': '🚀 Nicht perfekt, aber du bist auf dem richtigen Weg!',
+  '4':  '💪 Noch nicht ganz, aber Aufgeben gilt nicht!',
+  '4−': '🌱 Da ist noch Luft nach oben, aber du kannst das schaffen!',
+  '5+': '🔥 Nicht dein bester Tag, aber davon geht die Welt nicht unter!',
+  '5':  '❤️ Kopf hoch, beim nächsten Mal wird’s besser!',
+  '5−': '💪 Das war nix, aber jetzt weißt du wenigstens, woran du arbeiten kannst!',
+  '6':  '🫶 Okay, das war jetzt echt nicht dein Tag, aber jeder darf mal danebenliegen!',
 };
 
 // So heißt die gesuchte Form auf der Karte.
@@ -86,6 +116,10 @@ export function zeigeKarte(frage, nummer, gesamt) {
   // Die drei Formen kommen erst, wenn die Karte erledigt ist.
   el.formen.hidden = true;
 
+  // Und die große Lösung nur, wenn es schiefgeht.
+  el.loesung.hidden = true;
+  el.loesung.textContent = '';
+
   el.rueckmeldung.textContent = '';
   el.rueckmeldung.className = 'rueckmeldung';
 }
@@ -138,9 +172,18 @@ export function zeigeKorrekturchance() {
   el.eingabe.focus();
 }
 
+/**
+ * Falsche Antwort. Das richtige Wort steht groß unter der Rückmeldung und
+ * nicht mehr mitten im Satz -- es ist das Einzige, was von dieser Karte
+ * hängenbleiben soll.
+ */
 export function zeigeFalsch(erwartet, loesung, gesuchteForm) {
-  el.rueckmeldung.textContent = `Leider nicht. Richtig wäre: ${erwartet.join(' oder ')}`;
+  el.rueckmeldung.textContent = 'Leider nicht. Richtig ist:';
   el.rueckmeldung.className = 'rueckmeldung rueckmeldung--falsch';
+
+  el.loesung.textContent = erwartet.join(' oder ');
+  el.loesung.hidden = false;
+
   klang.spiele('falsch');
   zeigeLoesung(loesung, gesuchteForm);
   schliesseKarteAb();
@@ -169,10 +212,27 @@ function schliesseKarteAb() {
   el.knopf.focus();
 }
 
-export function zeigeEnde(anzahl) {
+/**
+ * Der Abschluss einer Runde: die Note, Matildas Satz dazu und die Punkte.
+ * Die Note wird hier nicht ausgerechnet -- sie kommt fertig herein.
+ */
+export function zeigeEnde(note, punkte, hoechstpunktzahl) {
   el.karte.hidden = true;
   el.ende.hidden = false;
-  el.ende.querySelector('#ende-text').textContent =
-    `Du hast alle ${anzahl} Karten durch.`;
+
+  el.note.textContent = note;
+  el.endeText.textContent = NOTEN_TEXTE[note] ?? '';
+  el.punkte.textContent =
+    `${schreibePunkte(punkte)} von ${hoechstpunktzahl} Punkten`;
+
   el.nochmal.focus();
+}
+
+/**
+ * Punkte, wie man sie hinschreibt: 12,4 statt 12.4 und 15 statt 15,0.
+ * Das Runden ist nötig, weil sich beim Addieren von Zehnteln sonst
+ * Nachkommastellen einschleichen, die niemand sehen will.
+ */
+function schreibePunkte(punkte) {
+  return Number(punkte.toFixed(1)).toString().replace('.', ',');
 }

@@ -36,16 +36,16 @@ erste davon schon zwei Sprints lang liegen geblieben.
   - Muss man beim Infinitiv „to" mittippen? Aktuell ja — bei „to hit
     something" wird das unangenehm.
   - Bei `to be` gelten „was" und „were" beide. Soll das so bleiben?
-- [ ] **Zählt eine im zweiten Versuch richtige Karte als Punkt?** Davon hängt
-      die Note ab. Vorschlag: nein.
-- [ ] **Wird die Note auch bei 0 von 15 gezeigt?** Das wäre eine 6. Zeigen wie
-      sie ist, oder ab einer Schwelle nur Matildas Text?
+- [x] **Zählt eine im zweiten Versuch richtige Karte als Punkt?** Einen halben.
+      Ein Tipp kostet zusätzlich 0,1 — siehe
+      [feature-schulnoten.md](feature-schulnoten.md).
+- [x] **Wird die Note auch bei 0 von 15 gezeigt?** Ja, dann steht da eine 6.
 
 ## Kleinkram
 
 Zu klein für eine eigene Datei, zu konkret zum Vergessen.
 
-- [ ] `RUNDENGROESSE` von 20 auf **15** — gehört zur Note, ist aber eine Zeile
+- [x] `RUNDENGROESSE` von 20 auf **15** — gehört zur Note, ist aber eine Zeile
 - [ ] Tipp von `demo-006` reparieren: die Karte heißt jetzt „to jump", der
       Tipp sagt aber noch „man kriegt einen pokal" *(Matilda)*
 - [ ] Abstand der Formenzeile in `styles.css` — sie klebt unter der Wortart
@@ -55,7 +55,7 @@ Zu klein für eine eigene Datei, zu konkret zum Vergessen.
 
 ## Fertig, wenn
 
-- [ ] 15 Karten ergeben eine Note
+- [x] 15 Karten ergeben eine Note
 - [ ] Man kann einstellen, was geübt wird, und die Einstellung überlebt das
       Schließen der Seite
 - [ ] Die Vokabeln der 5. Klasse sind drin und lassen sich üben

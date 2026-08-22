@@ -395,7 +395,7 @@
       "id": "uv-031",
       "wortart": "unregelmäßiges Verb",
       "formen": {
-        "infinitive": { "en": ["to meet"], "de": ["treffen", "sich treffen", "kennenlernen"] },
+        "infinitive": { "en": ["to meet"], "de": ["(jemanden) treffen", "treffen", "sich treffen", "kennenlernen"] },
         "simple-past": { "en": ["met"], "de": ["traf"] },
         "past-participle": { "en": ["met"], "de": ["getroffen"] }
       },
@@ -657,7 +657,7 @@
       "wortart": "unregelmäßiges Verb",
       "bedeutung": "Kleidung",
       "formen": {
-        "infinitive": { "en": ["to wear"], "de": ["tragen"] },
+        "infinitive": { "en": ["to wear"], "de": ["(Kleidung) tragen"] },
         "simple-past": { "en": ["wore"], "de": ["trug"] },
         "past-participle": { "en": ["worn"], "de": ["getragen"] }
       },
