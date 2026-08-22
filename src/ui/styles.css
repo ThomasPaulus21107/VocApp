@@ -270,3 +270,42 @@ body {
   color: var(--akzent);
   border-bottom: 2px solid var(--akzent);
 }
+
+/* Das richtige Wort nach einem Fehlversuch. Groß und in der Falsch-Farbe:
+   die Formenzeile darüber zeigt es zwar auch, aber klein und neben zwei
+   anderen Wörtern -- hier steht nur das eine, das gefehlt hat. */
+.loesung {
+  margin: 0.5rem 0 0;
+  font-size: clamp(1.75rem, 9vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--falsch);
+  overflow-wrap: break-word;
+}
+
+/* Der Abschluss einer Runde: die Note ist das Größte auf dem Bildschirm. */
+.note {
+  margin: 0;
+  font-size: clamp(4rem, 22vw, 6rem);
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  color: var(--akzent);
+}
+
+.ende-text {
+  margin: 1rem 0 0;
+  font-size: clamp(1.125rem, 4.5vw, 1.375rem);
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+.punkte {
+  margin: 0.75rem 0 1.5rem;
+  font-size: 0.9375rem;
+  color: var(--leise);
+  text-align: center;
+}

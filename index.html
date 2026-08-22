@@ -60,11 +60,19 @@
 
         <!-- aria-live sorgt dafür, dass Vorlesesoftware die Rückmeldung ansagt -->
         <p id="rueckmeldung" class="rueckmeldung" role="status" aria-live="polite"></p>
+
+        <!-- Das richtige Wort, groß. Kommt nur, wenn die Antwort falsch war:
+             dann ist es das Einzige, was man sich noch merken kann. -->
+        <p id="loesung" class="loesung" hidden></p>
       </section>
 
-      <!-- Der Abschluss: sichtbar, wenn der Stapel durch ist -->
+      <!-- Der Abschluss: sichtbar, wenn der Stapel durch ist. Zuerst die
+           Note, dann Matildas Text dazu, dann klein die Punkte -- damit man
+           sieht, wo die Note herkommt. -->
       <section id="ende" class="karte" hidden>
-        <p id="ende-text" class="frage"></p>
+        <p id="note" class="note"></p>
+        <p id="ende-text" class="ende-text"></p>
+        <p id="punkte" class="punkte"></p>
         <button id="nochmal" class="knopf" type="button">Noch eine Runde</button>
       </section>
     </main>
