@@ -39,6 +39,11 @@ hat, steht mit in der Punktzahl:
 | falsch oder übersprungen (`s`) | 0 |
 | „keine Ahnung" | kostet nichts — es ist kein Fehlversuch |
 
+Zweiter Versuch und Tipp gibt es nur im Übungsblatt. In der
+[Arbeit](feature-arbeit-oder-uebungsblatt.md) ist jede Karte 1 oder 0 — die
+Tabelle darüber gilt trotzdem unverändert, sie kommt dort nur seltener zum
+Zug.
+
 Unter null geht eine Karte nie. Damit sind 15,0 Punkte das Maximum, und die
 Note bleibt der direkte Blick in die Tabelle.
 

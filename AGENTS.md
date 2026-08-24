@@ -82,7 +82,10 @@ macht beides kaputt.
   Niemals `new Date()` innerhalb einer Domänenfunktion.
 - `ui.js` kennt nur `textContent`, `classList`, `hidden`,
   Event-Registrierung und die Töne aus `klang.js`. Keine Lernlogik, keine
-  Entscheidung über richtig oder falsch.
+  Entscheidung über richtig oder falsch. Einzige Ausnahme ist die
+  Ergebnisliste: sie ist unterschiedlich lang und muss deshalb Zeilen
+  erzeugen. Das Markup dafür steht als `<template>` in `index.html` und wird
+  geklont — **kein `innerHTML`, keine zusammengebauten HTML-Strings.**
 - `klang.js` ist die zweite Datei der UI-Schicht: sie erzeugt die
   Rückmeldungstöne, fasst aber keinen DOM an. Sie bekommt nur einen Namen
   gesagt (`spiele('richtig')`) und entscheidet nichts selbst. Die Töne
@@ -243,7 +246,7 @@ Konstanten in `domain/pruefung.js` und sind **Absicht, kein toter Code**:
 | Eingabe | Konstante | Was passiert |
 |---|---|---|
 | `s` | `SPRINGEN` | Karte überspringen, sofort zur nächsten, ohne Lösung |
-| `keine ahnung` | `AUFGEBEN` | „DU SCHAFFST DAS" — die Karte bleibt offen, kein Versuch verbraucht |
+| `keine ahnung` | `AUFGEBEN` | „DU SCHAFFST DAS" — im Übungsblatt bleibt die Karte offen, kein Versuch verbraucht. In der Arbeit kommt der Zuspruch auch, aber die Karte ist danach durch (siehe `roadmap/feature-arbeit-oder-uebungsblatt.md`). |
 
 **In der Oberfläche steht bewusst nichts davon.** Sie sollen gefunden werden,
 nicht erklärt. Also bitte weder ins Label schreiben noch in `data/README.md`
