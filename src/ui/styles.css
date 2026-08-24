@@ -310,6 +310,15 @@ body {
   text-align: center;
 }
 
+/* Die Bilanz der zweiten Runde. Steht zwischen Punkten und Ergebnisliste
+   und ist bewusst leise: die Note kommt aus der ersten Runde. */
+.lernpotential {
+  margin: -0.75rem 0 1.5rem;
+  font-size: 0.9375rem;
+  color: var(--leise);
+  text-align: center;
+}
+
 /* Die Modus-Wahl: zwei Knöpfe untereinander, auf der Startseite und noch
    einmal am Ende einer Runde. Untereinander und nicht nebeneinander, damit
    die Beschriftung auch auf einem schmalen Handy in eine Zeile passt. */

@@ -21,6 +21,7 @@ const el = {
   note: document.querySelector('#note'),
   endeText: document.querySelector('#ende-text'),
   punkte: document.querySelector('#punkte'),
+  lernpotential: document.querySelector('#lernpotential'),
   ergebnisseKnopf: document.querySelector('#ergebnisse-knopf'),
   ergebnisse: document.querySelector('#ergebnisse'),
   ergebnisVorlage: document.querySelector('#ergebnis-vorlage'),
@@ -109,9 +110,11 @@ export function verbinde({ aufAbsenden, aufStart, aufRichtungswechsel, aufTipp }
 
 /**
  * Die nächste Karte. `tippsErlaubt` sagt, ob es den Tipp-Knopf überhaupt
- * gibt -- in der Arbeit gibt es ihn nicht.
+ * gibt -- in der Arbeit gibt es ihn nicht. `istLernpotential` sagt, ob wir
+ * schon in der zweiten Runde sind; die Karte sieht gleich aus, nur der
+ * Zähler oben heißt anders.
  */
-export function zeigeKarte(frage, nummer, gesamt, tippsErlaubt) {
+export function zeigeKarte(frage, nummer, gesamt, tippsErlaubt, istLernpotential = false) {
   el.start.hidden = true;
   el.karte.hidden = false;
   el.ende.hidden = true;
@@ -124,7 +127,9 @@ export function zeigeKarte(frage, nummer, gesamt, tippsErlaubt) {
   el.beiwort.hidden = el.beiwort.textContent === '';
 
   el.eingabeLabel.textContent = 'Deine Antwort';
-  el.zaehler.textContent = `Karte ${nummer} von ${gesamt}`;
+  el.zaehler.textContent = istLernpotential
+    ? `Lernpotential ${nummer} von ${gesamt}`
+    : `Karte ${nummer} von ${gesamt}`;
 
   el.eingabe.value = '';
   el.eingabe.disabled = false;
@@ -147,6 +152,14 @@ export function zeigeKarte(frage, nummer, gesamt, tippsErlaubt) {
 
   el.rueckmeldung.textContent = '';
   el.rueckmeldung.className = 'rueckmeldung';
+
+  // Beim Übergang in die zweite Runde sagt die App einmal, was jetzt kommt.
+  // Danach reicht der Zähler oben.
+  if (istLernpotential && nummer === 1) {
+    el.rueckmeldung.textContent =
+      'Diese Karten kommen noch einmal. Hier liegt dein Lernpotential!';
+    el.rueckmeldung.className = 'rueckmeldung rueckmeldung--hinweis';
+  }
 }
 
 export function zeigeTipp(text) {
@@ -244,8 +257,9 @@ function schliesseKarteAb() {
 /**
  * Der Abschluss einer Runde: die Note, Matildas Satz dazu und die Punkte.
  * Die Note wird hier nicht ausgerechnet -- sie kommt fertig herein.
+ * `lernpotential` ist null, wenn es keine zweite Runde gab.
  */
-export function zeigeEnde(note, punkte, hoechstpunktzahl, ergebnisse) {
+export function zeigeEnde(note, punkte, hoechstpunktzahl, ergebnisse, lernpotential = null) {
   el.start.hidden = true;
   el.karte.hidden = true;
   el.ende.hidden = false;
@@ -255,6 +269,7 @@ export function zeigeEnde(note, punkte, hoechstpunktzahl, ergebnisse) {
   el.punkte.textContent =
     `${schreibePunkte(punkte)} von ${hoechstpunktzahl} Punkten`;
 
+  zeigeLernpotential(lernpotential);
   fuelleErgebnisse(ergebnisse);
 
   // Nach einer neuen Runde ist die Liste wieder zugeklappt.
@@ -263,6 +278,21 @@ export function zeigeEnde(note, punkte, hoechstpunktzahl, ergebnisse) {
 
   // Der erste der beiden Modus-Knöpfe ist das Übungsblatt.
   el.ende.querySelector('[data-modus]').focus();
+}
+
+/**
+ * Die Bilanz der Lernpotential-Runde, klein unter den Punkten. Die Note
+ * ändert sie nicht mehr -- gezählt wird nur, was im zweiten Anlauf saß.
+ * Ohne zweite Runde steht hier nichts.
+ */
+function zeigeLernpotential(bilanz) {
+  el.lernpotential.hidden = bilanz === null;
+  if (bilanz === null) return;
+
+  el.lernpotential.textContent =
+    bilanz.geschafft === bilanz.gesamt
+      ? `Lernpotential: alles noch einmal geübt und diesmal richtig!`
+      : `Lernpotential: ${bilanz.geschafft} von ${bilanz.gesamt} saßen im zweiten Anlauf.`;
 }
 
 /**

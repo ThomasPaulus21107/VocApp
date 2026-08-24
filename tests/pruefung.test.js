@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  normalisiere, stelleFrage, stelleFormFrage, baueHinweis, zieheRunde,
+  normalisiere, stelleFrage, stelleFormFrage, stelleFrageZuForm, baueHinweis, zieheRunde,
   pruefeAntwort, mische, RICHTUNGEN,
 } from '../src/domain/pruefung.js';
 
@@ -79,6 +79,20 @@ describe('zieheRunde', () => {
     const stapel = [1, 2, 3];
     zieheRunde(stapel, 2, () => 0);
     expect(stapel).toEqual([1, 2, 3]);
+  });
+});
+
+describe('stelleFrageZuForm', () => {
+  it('fragt genau die genannte Form, ohne Zufall', () => {
+    const frage = stelleFrageZuForm(write, RICHTUNGEN.NACH_EN, 'simple-past');
+    expect(frage.gesuchteForm).toBe('simple-past');
+    expect(frage.antworten).toEqual(['wrote']);
+  });
+
+  it('stellt dieselbe Frage bei jedem Aufruf -- darauf baut die Wiederholung', () => {
+    const erste = stelleFrageZuForm(write, RICHTUNGEN.NACH_EN, 'infinitive');
+    const zweite = stelleFrageZuForm(write, RICHTUNGEN.NACH_EN, 'infinitive');
+    expect(zweite).toEqual(erste);
   });
 });
 

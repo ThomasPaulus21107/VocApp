@@ -10,13 +10,14 @@ export const MODI = {
 };
 
 /**
- * Die vier Unterschiede zwischen den beiden Modi, als Tabelle.
+ * Die Unterschiede zwischen den beiden Modi, als Tabelle.
  * Wer einen dritten Modus will, schreibt hier eine Zeile dazu.
  *
  * tippsErlaubt       Gibt es den Tipp-Knopf? (Er kostet 0,1 Punkte.)
  * zweiterVersuch     Gibt es nach einem Fehler noch eine Chance? (0,5 Punkte)
  * zeigtErgebnis      Erfährt man nach jeder Karte, ob sie richtig war?
  * hilferufOhneFolgen Bleibt die Karte nach "keine Ahnung" offen?
+ * lernpotential      Kommen falsche Karten am Ende noch einmal?
  */
 export const REGELN = {
   [MODI.UEBUNGSBLATT]: {
@@ -24,12 +25,14 @@ export const REGELN = {
     zweiterVersuch: true,
     zeigtErgebnis: true,
     hilferufOhneFolgen: true,
+    lernpotential: true,
   },
   [MODI.ARBEIT]: {
     tippsErlaubt: false,
     zweiterVersuch: false,
     zeigtErgebnis: false,
     hilferufOhneFolgen: false,
+    lernpotential: false,
   },
 };
 
