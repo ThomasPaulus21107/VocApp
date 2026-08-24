@@ -309,3 +309,83 @@ body {
   color: var(--leise);
   text-align: center;
 }
+
+/* Die Modus-Wahl: zwei Knöpfe untereinander, auf der Startseite und noch
+   einmal am Ende einer Runde. Untereinander und nicht nebeneinander, damit
+   die Beschriftung auch auf einem schmalen Handy in eine Zeile passt. */
+.wahl {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.knopf--wahl {
+  display: block;
+  width: 100%;
+  font-size: 1.25rem;
+}
+
+/* Die kleine Zeile unter dem Knopfnamen: was der Modus bedeutet. */
+.knopf__dazu {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+/* Die Ergebnisliste am Ende einer Runde. Eine Zeile je Karte:
+   oben Zeichen, Frage und Punkte, darunter die Lösung und -- wenn es
+   danebenging -- was getippt wurde. */
+.ergebnisse {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ergebnis {
+  display: grid;
+  grid-template-columns: 1.5rem 1fr auto;
+  grid-template-areas:
+    "zeichen frage   punkte"
+    ".       loesung ."
+    ".       getippt .";
+  gap: 0.1rem 0.5rem;
+  padding: 0.6rem 0;
+  border-top: 1px solid rgb(255 255 255 / 0.5);
+  text-align: left;
+}
+
+.ergebnis__zeichen {
+  grid-area: zeichen;
+  font-weight: 700;
+}
+
+.ergebnis--richtig .ergebnis__zeichen { color: var(--richtig); }
+.ergebnis--falsch  .ergebnis__zeichen { color: var(--falsch); }
+
+.ergebnis__frage {
+  grid-area: frage;
+  font-weight: 600;
+  overflow-wrap: break-word;
+}
+
+.ergebnis__punkte {
+  grid-area: punkte;
+  font-size: 0.875rem;
+  color: var(--leise);
+}
+
+.ergebnis__loesung {
+  grid-area: loesung;
+  font-size: 1.0625rem;
+  overflow-wrap: break-word;
+}
+
+.ergebnis__getippt {
+  grid-area: getippt;
+  font-size: 0.875rem;
+  color: var(--leise);
+  overflow-wrap: break-word;
+}

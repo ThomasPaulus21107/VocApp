@@ -23,8 +23,24 @@
         </label>
       </fieldset>
 
+      <!-- Die Startseite: erst wird gewählt, dann geübt. Der Modus steht
+           als data-modus am Knopf; ui.js reicht ihn nur nach oben weiter. -->
+      <section id="start" class="karte">
+        <p class="frage">Was möchtest du machen?</p>
+        <div class="wahl">
+          <button class="knopf knopf--wahl" type="button" data-modus="uebungsblatt">
+            Übungsblatt
+            <span class="knopf__dazu">mit Tipps und zweitem Versuch</span>
+          </button>
+          <button class="knopf knopf--wahl" type="button" data-modus="arbeit">
+            Arbeit
+            <span class="knopf__dazu">ohne Tipps, ein Versuch</span>
+          </button>
+        </div>
+      </section>
+
       <!-- Die Karte: sichtbar, solange noch Vokabeln übrig sind -->
-      <section id="karte" class="karte" aria-labelledby="frage">
+      <section id="karte" class="karte" aria-labelledby="frage" hidden>
         <p id="zaehler" class="zaehler"></p>
 
         <p id="frage" class="frage"></p>
@@ -73,8 +89,37 @@
         <p id="note" class="note"></p>
         <p id="ende-text" class="ende-text"></p>
         <p id="punkte" class="punkte"></p>
-        <button id="nochmal" class="knopf" type="button">Noch eine Runde</button>
+
+        <!-- Zurückschauen: die Liste steht erst da, wenn man sie sehen will.
+             Nach einer Arbeit ist das der einzige Ort, an dem die richtigen
+             Wörter überhaupt auftauchen. -->
+        <button id="ergebnisse-knopf" class="knopf-leise" type="button">
+          Ergebnisse ansehen
+        </button>
+        <ol id="ergebnisse" class="ergebnisse" hidden></ol>
+
+        <!-- Kein "nochmal": man wählt wieder, und es geht sofort los. -->
+        <div class="wahl">
+          <button class="knopf knopf--wahl" type="button" data-modus="uebungsblatt">
+            Übungsblatt
+          </button>
+          <button class="knopf knopf--wahl" type="button" data-modus="arbeit">
+            Arbeit
+          </button>
+        </div>
       </section>
+
+      <!-- Eine Zeile der Ergebnisliste. Die Zeile steht hier im HTML und
+           nicht in ui.js: dort wird nur noch Text eingesetzt. -->
+      <template id="ergebnis-vorlage">
+        <li class="ergebnis">
+          <span class="ergebnis__zeichen"></span>
+          <span class="ergebnis__frage"></span>
+          <span class="ergebnis__punkte"></span>
+          <span class="ergebnis__loesung"></span>
+          <span class="ergebnis__getippt"></span>
+        </li>
+      </template>
     </main>
 
     <script type="module" src="/src/app.js"></script>

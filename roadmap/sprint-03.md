@@ -17,6 +17,8 @@ und wer es macht.
 | [Die Optionsseite](feature-optionsseite.md) — zweite Seite, drei Schalter | Thomas, Gestaltung Matilda |
 | [Auswählen, was geübt wird](feature-uebungsauswahl.md) — Vokabeln, Verben oder beides | Thomas |
 | [Das Ergebnis als Schulnote](feature-schulnoten.md) — 15 Karten, 15 Punkte, eine Note | Thomas, Texte Matilda |
+| [Übungsblatt oder Arbeit](feature-arbeit-oder-uebungsblatt.md) — Startseite mit zwei Modi | Idee Matilda, Umsetzung Thomas |
+| [Die Ergebnisse nachlesen](feature-ergebnisliste.md) — Liste unter der Note | Idee Matilda, Umsetzung Thomas |
 | [Tipps, die bei der Form helfen](feature-verbtipps.md) | Matilda |
 | [Die App passt auf ein schmales Handy](feature-mobile-390.md) | Thomas |
 | [Rote Tests blockieren den Merge](feature-tests-in-ci.md) | Thomas |
@@ -56,6 +58,9 @@ Zu klein für eine eigene Datei, zu konkret zum Vergessen.
 ## Fertig, wenn
 
 - [x] 15 Karten ergeben eine Note
+- [x] Man kann vor einer Runde zwischen Übungsblatt und Arbeit wählen
+- [x] Nach einer Runde ist nachlesbar, welche Karte richtig war und was
+      richtig gewesen wäre
 - [ ] Man kann einstellen, was geübt wird, und die Einstellung überlebt das
       Schließen der Seite
 - [ ] Die Vokabeln der 5. Klasse sind drin und lassen sich üben
