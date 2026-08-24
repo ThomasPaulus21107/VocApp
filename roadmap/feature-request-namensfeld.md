@@ -28,8 +28,8 @@ noch einmal umbauen — der Schlüssel ist dann schon personengebunden.
 
 ## Voraussetzungen
 
-- [Einstellungen speichern](feature-einstellungen-speichern.md)
-- [Optionsseite](feature-optionsseite.md) als Ort für das Feld
+- [Einstellungen speichern](feature-request-einstellungen-speichern.md)
+- [Optionsseite](feature-request-optionsseite.md) als Ort für das Feld
 
 ## Zu beachten
 

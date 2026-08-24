@@ -33,14 +33,14 @@ umziehen.
 
 ## Voraussetzungen
 
-- [Einstellungen speichern](feature-einstellungen-speichern.md) — sonst ist
+- [Einstellungen speichern](feature-request-einstellungen-speichern.md) — sonst ist
   jede Einstellung beim Neuladen wieder weg
-- [Übungsauswahl](feature-uebungsauswahl.md) liefert den mittleren Schalter
+- [Übungsauswahl](feature-request-uebungsauswahl.md) liefert den mittleren Schalter
 
 ## Später
 
 Weitere Schalter kommen dazu, sobald es sie gibt: einzelne Lektionen, das
-[Namensfeld](feature-namensfeld.md), Rundenlänge. Die Seite ist dafür angelegt
+[Namensfeld](feature-request-namensfeld.md), Rundenlänge. Die Seite ist dafür angelegt
 — jeder Schalter ist eine Zeile mehr, kein Umbau.
 
 ## Matildas Teil

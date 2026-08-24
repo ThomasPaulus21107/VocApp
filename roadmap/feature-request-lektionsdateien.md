@@ -8,7 +8,7 @@ Entschieden am 2026-08-21. Matildas Lektionen bekommen jede eine eigene Datei
 wachsenden `vokabeln.json`.
 
 Sie arbeitet dann in kleinen, überschaubaren Dateien, und die
-[Optionsseite](feature-optionsseite.md) kann später einzelne Lektionen
+[Optionsseite](feature-request-optionsseite.md) kann später einzelne Lektionen
 anbieten. Nachträglich aufteilen hieße: dieselben Karten zweimal anfassen.
 
 Die unregelmäßigen Verben bleiben, wo sie sind — sie sind keine Lektion,

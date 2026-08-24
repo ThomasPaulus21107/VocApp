@@ -19,12 +19,12 @@ gibt die Datei, oder das Feature ist noch nicht so weit.** Eine Liste
 
 - **Leitner-Fächer mit Wiedervorlage.** „Diese Karte erst in drei Tagen wieder."
   `braucht:` einen gespeicherten Lernstand **pro Karte** — im Backlog
-  `braucht:` die [Lernpotential-Runde](feature-lernpotential.md) als Unterbau
+  `braucht:` die [Lernpotential-Runde](feature-implemented-lernpotential-2026-08-24-2211.md) als Unterbau
   — refined
   `offen:` wie viele Fächer, welche Abstände, und was beim ersten Start passiert
 
 - **Lernstand pro Karte speichern.** Der Unterbau für Leitner.
-  `braucht:` [`storage.js`](feature-einstellungen-speichern.md) — entsteht in
+  `braucht:` [`storage.js`](feature-request-einstellungen-speichern.md) — entsteht in
   Sprint 3, aber vorerst nur für Einstellungen
   `offen:` das Format. Sobald es auf der Platte liegt, ist jede Änderung eine
   Migration — deshalb steht es hier und nicht weiter oben.
@@ -33,7 +33,7 @@ gibt die Datei, oder das Feature ist noch nicht so weit.** Eine Liste
 
 - **Punkte und Streak speichern.** Der Punktestand überlebt das Schließen der
   Seite.
-  `braucht:` [`storage.js`](feature-einstellungen-speichern.md) — **in Sprint 3**
+  `braucht:` [`storage.js`](feature-request-einstellungen-speichern.md) — **in Sprint 3**
   `offen:` was überhaupt gezählt wird. Noten? Richtige Karten insgesamt?
   Gespielte Runden? Ohne diese Antwort ist das Speicherformat nicht zu bauen.
 

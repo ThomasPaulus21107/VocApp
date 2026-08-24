@@ -11,17 +11,22 @@ und wer es macht.
 
 | Feature | Wer |
 |---|---|
-| [Eine Datei pro Lektion](feature-lektionsdateien.md) — Datenformat und automatisches Einsammeln | Thomas |
-| [Die Vokabeln der 5. Klasse](feature-vokabeln-klasse-5.md) | Matilda |
-| [Einstellungen, die bleiben](feature-einstellungen-speichern.md) — `storage.js` | Thomas |
-| [Die Optionsseite](feature-optionsseite.md) — zweite Seite, drei Schalter | Thomas, Gestaltung Matilda |
-| [Auswählen, was geübt wird](feature-uebungsauswahl.md) — Vokabeln, Verben oder beides | Thomas |
-| [Das Ergebnis als Schulnote](feature-schulnoten.md) — 15 Karten, 15 Punkte, eine Note | Thomas, Texte Matilda |
-| [Übungsblatt oder Arbeit](feature-arbeit-oder-uebungsblatt.md) — Startseite mit zwei Modi | Idee Matilda, Umsetzung Thomas |
-| [Die Ergebnisse nachlesen](feature-ergebnisliste.md) — Liste unter der Note | Idee Matilda, Umsetzung Thomas |
-| [Tipps, die bei der Form helfen](feature-verbtipps.md) | Matilda |
-| [Die App passt auf ein schmales Handy](feature-mobile-390.md) | Thomas |
-| [Rote Tests blockieren den Merge](feature-tests-in-ci.md) | Thomas |
+| [Eine Datei pro Lektion](feature-request-lektionsdateien.md) — Datenformat und automatisches Einsammeln | Thomas |
+| [Die Vokabeln der 5. Klasse](feature-request-vokabeln-klasse-5.md) | Matilda |
+| [Einstellungen, die bleiben](feature-request-einstellungen-speichern.md) — `storage.js` | Thomas |
+| [Die Optionsseite](feature-request-optionsseite.md) — zweite Seite, drei Schalter | Thomas, Gestaltung Matilda |
+| [Auswählen, was geübt wird](feature-request-uebungsauswahl.md) — Vokabeln, Verben oder beides | Thomas |
+| [Das Ergebnis als Schulnote](feature-implemented-schulnoten-2026-08-22-1115.md) — 15 Karten, 15 Punkte, eine Note | Thomas, Texte Matilda |
+| [Übungsblatt oder Arbeit](feature-implemented-arbeit-oder-uebungsblatt-2026-08-24-2022.md) — Startseite mit zwei Modi | Idee Matilda, Umsetzung Thomas |
+| [Die Ergebnisse nachlesen](feature-implemented-ergebnisliste-2026-08-24-2022.md) — Liste unter der Note | Idee Matilda, Umsetzung Thomas |
+| [Die Lernpotential-Runde](feature-implemented-lernpotential-2026-08-24-2211.md) — falsche Karten kommen im Übungsblatt noch einmal | Thomas |
+| [Tipps, die bei der Form helfen](feature-request-verbtipps.md) | Matilda |
+| [Die App passt auf ein schmales Handy](feature-request-mobile-390.md) | Thomas |
+| [Rote Tests blockieren den Merge](feature-request-tests-in-ci.md) | Thomas |
+
+Die Lernpotential-Runde stand ursprünglich nicht in diesem Sprint — sie kam
+dazu, weil der Übungsmodus damit deutlich mehr bringt und die Auswahl-Logik
+später für die Leitner-Fächer gebraucht wird.
 
 Die Reihenfolge ist nicht beliebig: die Lektionsdateien und `storage.js` sind
 der Unterbau. Matilda kann erst anfangen, wenn das Dateiformat steht — dieses
@@ -40,7 +45,7 @@ erste davon schon zwei Sprints lang liegen geblieben.
   - Bei `to be` gelten „was" und „were" beide. Soll das so bleiben?
 - [x] **Zählt eine im zweiten Versuch richtige Karte als Punkt?** Einen halben.
       Ein Tipp kostet zusätzlich 0,1 — siehe
-      [feature-schulnoten.md](feature-schulnoten.md).
+      [feature-implemented-schulnoten-2026-08-22-1115.md](feature-implemented-schulnoten-2026-08-22-1115.md).
 - [x] **Wird die Note auch bei 0 von 15 gezeigt?** Ja, dann steht da eine 6.
 
 ## Kleinkram
@@ -61,6 +66,8 @@ Zu klein für eine eigene Datei, zu konkret zum Vergessen.
 - [x] Man kann vor einer Runde zwischen Übungsblatt und Arbeit wählen
 - [x] Nach einer Runde ist nachlesbar, welche Karte richtig war und was
       richtig gewesen wäre
+- [x] Im Übungsblatt kommen die falschen Karten am Ende noch einmal, ohne
+      dass sich die Note dadurch ändert
 - [ ] Man kann einstellen, was geübt wird, und die Einstellung überlebt das
       Schließen der Seite
 - [ ] Die Vokabeln der 5. Klasse sind drin und lassen sich üben

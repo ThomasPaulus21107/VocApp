@@ -35,7 +35,7 @@ umziehen. Solange nur Einstellungen durchgehen, kostet ein Umbau nichts.
 ## Was es freischaltet
 
 Das hier blockiert nichts und macht dafür mehreren Dingen den Weg frei:
-[Optionsseite](feature-optionsseite.md), [Namensfeld](feature-namensfeld.md),
+[Optionsseite](feature-request-optionsseite.md), [Namensfeld](feature-request-namensfeld.md),
 später Punkte und Streak und irgendwann Supabase. Wenn im Sprint etwas
 gestrichen werden muss, dann nicht das.
 
@@ -46,4 +46,4 @@ gestrichen werden muss, dann nicht das.
   Standardwert.
 - Der Speicher hängt am Browser, nicht an der Person. Wer sich einen Rechner
   teilt, teilt sich die Einstellungen. Dafür gibt es das
-  [Namensfeld](feature-namensfeld.md).
+  [Namensfeld](feature-request-namensfeld.md).

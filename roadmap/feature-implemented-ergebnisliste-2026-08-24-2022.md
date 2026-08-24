@@ -1,6 +1,6 @@
 # Feature: Die Ergebnisse nachlesen
 
-**Status:** gebaut, in [Sprint 3](sprint-03.md)
+**Status:** umgesetzt am 24.08.2026 um 20:22, in [Sprint 3](sprint-03.md)
 **Idee:** Matilda
 **Wo im Code:** `src/app.js`, `src/ui/ui.js`, `index.html`
 
@@ -10,7 +10,7 @@ mit Häkchen oder Kreuz, der richtigen Lösung und dem, was getippt wurde.
 
 ## Warum das gerade jetzt kommt
 
-In der [Arbeit](feature-arbeit-oder-uebungsblatt.md) erfährt man während der
+In der [Arbeit](feature-implemented-arbeit-oder-uebungsblatt-2026-08-24-2022.md) erfährt man während der
 Runde nichts — kein „Richtig!", keine Lösung, nur die nächste Karte. Ohne
 diese Liste wären die richtigen Wörter danach **nirgends** zu sehen. Die Note
 allein wäre dann ein Urteil ohne Begründung.
@@ -60,6 +60,6 @@ zusammengebauten HTML-Strings.
 
 ## Hängt zusammen mit
 
-- Der [Lernpotential-Runde](feature-lernpotential.md): sie braucht genau
+- Der [Lernpotential-Runde](feature-implemented-lernpotential-2026-08-24-2211.md): sie braucht genau
   diese falschen Karten. `ergebnisse` ist das Rohmaterial dafür — bisher nur
   für die Dauer einer Runde, gespeichert wird nichts.

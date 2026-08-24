@@ -1,6 +1,6 @@
 # Feature: Das Ergebnis als Schulnote
 
-**Status:** gebaut, in [Sprint 3](sprint-03.md)
+**Status:** umgesetzt am 22.08.2026 um 11:15, in [Sprint 3](sprint-03.md)
 **Wo im Code:** `src/domain/note.js`, `src/app.js`, `src/ui/ui.js`
 
 Am Ende einer Runde soll keine nackte Zahl stehen („11 von 15 richtig"),
@@ -40,7 +40,7 @@ hat, steht mit in der Punktzahl:
 | „keine Ahnung" | kostet nichts — es ist kein Fehlversuch |
 
 Zweiter Versuch und Tipp gibt es nur im Übungsblatt. In der
-[Arbeit](feature-arbeit-oder-uebungsblatt.md) ist jede Karte 1 oder 0 — die
+[Arbeit](feature-implemented-arbeit-oder-uebungsblatt-2026-08-24-2022.md) ist jede Karte 1 oder 0 — die
 Tabelle darüber gilt trotzdem unverändert, sie kommt dort nur seltener zum
 Zug.
 
@@ -85,7 +85,7 @@ nachvollziehbar, wo die Note herkommt.
 ## Noch offen
 
 Zieht man später weniger als 15 Karten — die
-[Übungsauswahl](feature-uebungsauswahl.md) kann das —, ist die
+[Übungsauswahl](feature-request-uebungsauswahl.md) kann das —, ist die
 Höchstpunktzahl kleiner und selbst eine fehlerfreie Runde ergäbe eine
 schlechte Note. Der Endbildschirm sagt deshalb ehrlich „von 9 Punkten", aber
 die Umrechnung passt dann nicht mehr. Gehört zur Übungsauswahl, nicht hierher.
