@@ -3,9 +3,16 @@
 
 import './ui/styles.css';
 import verben from '../data/unregelmaessige-verben.json';
-import { stelleFormFrage, pruefeAntwort, zieheRunde, RICHTUNGEN } from './domain/pruefung.js';
+import {
+  stelleFormFrage,
+  stelleFrageZuForm,
+  pruefeAntwort,
+  zieheRunde,
+  RICHTUNGEN,
+} from './domain/pruefung.js';
 import { note, punkteFuerKarte } from './domain/note.js';
 import { regeln } from './domain/modus.js';
+import { lernpotential } from './domain/lernpotential.js';
 import * as ui from './ui/ui.js';
 
 // Vorerst nur unregelmäßige Verben, und nur in eine Richtung: das deutsche
@@ -30,6 +37,23 @@ let tippBenutzt = false;
 // Am Ende wird daraus die Ergebnisliste -- und in der Arbeit ist das der
 // einzige Ort, an dem die richtigen Wörter überhaupt auftauchen.
 let ergebnisse = [];
+// Der Merkzettel für die Lernpotential-Runde: je ein { id, form } für jede
+// Karte, die nicht auf Anhieb und ohne Hilfe saß -- falsch beantwortet, erst
+// im zweiten Versuch richtig, oder mit Tipp. Übersprungene Karten und
+// "keine Ahnung" stehen bewusst nicht drin: da wurde es nicht versucht.
+//
+// Die Form steht mit drin, weil die zweite Runde eine reine Wiederholung ist:
+// dieselbe Karte MIT derselben Form, sonst übt man eine neue Aufgabe.
+let zuWiederholen = [];
+// Läuft gerade die zweite Runde? Es gibt nur diese eine -- wer eine Karte
+// zweimal falsch hat, hat sie heute nicht mehr im Kopf.
+let imLernpotential = false;
+// Wie viele der zweiten Runde gesessen haben. Zählt nur für den Satz am
+// Ende, nicht für die Note.
+let lernpotentialGeschafft = 0;
+// Wie viele Karten die erste Runde hatte, und damit die Höchstpunktzahl.
+// Die Lernpotential-Runde ist kürzer und darf diese Zahl nicht verändern.
+let hoechstpunktzahl = 0;
 // Die Regeln der laufenden Runde: Übungsblatt oder Arbeit. Sie werden beim
 // Start einmal geholt und gelten dann für die ganze Runde.
 let regel = regeln(null);
@@ -37,24 +61,52 @@ let regel = regeln(null);
 function start(modus) {
   regel = regeln(modus);
   stapel = zieheRunde(verben.karten, RUNDENGROESSE);
+  hoechstpunktzahl = stapel.length;
   index = 0;
   punkte = 0;
   ergebnisse = [];
+  zuWiederholen = [];
+  imLernpotential = false;
+  lernpotentialGeschafft = 0;
   zeigeAktuelle();
 }
 
 function zeigeAktuelle() {
   versuch = 0;
   tippBenutzt = false;
-  frage = stelleFormFrage(stapel[index], RICHTUNG);
-  ui.zeigeKarte(frage, index + 1, stapel.length, regel.tippsErlaubt);
+
+  const karte = stapel[index];
+  if (imLernpotential) {
+    // Wiederholung heißt: genau dieselbe Frage wie beim ersten Mal.
+    const gemerkt = zuWiederholen.find((eintrag) => eintrag.id === karte.id);
+    frage = stelleFrageZuForm(karte, RICHTUNG, gemerkt.form);
+  } else {
+    frage = stelleFormFrage(karte, RICHTUNG);
+  }
+
+  ui.zeigeKarte(frage, index + 1, stapel.length, regel.tippsErlaubt, imLernpotential);
+}
+
+/**
+ * Merkt eine Karte für die Lernpotential-Runde vor -- mit der Form, nach der
+ * gerade gefragt war. In der zweiten Runde selbst wächst der Zettel nicht
+ * mehr: es gibt nur diese eine Wiederholung.
+ */
+function merkeFuerSpaeter() {
+  if (imLernpotential) return;
+  zuWiederholen.push({ id: frage.id, form: frage.gesuchteForm });
 }
 
 /**
  * Schreibt auf, wie die aktuelle Karte ausgegangen ist. `getippt` bleibt
  * leer, wenn es keine echte Antwort gab -- bei "s" und bei "keine Ahnung".
+ *
+ * Die Liste zeigt die gespielte Runde. Was danach im Lernpotential passiert,
+ * ändert sie nicht mehr -- sonst stünde dieselbe Karte zweimal darin.
  */
 function merkeErgebnis({ richtig, getippt, kartenpunkte }) {
+  if (imLernpotential) return;
+
   ergebnisse.push({
     frage: frage.frage,
     gesuchteForm: frage.gesuchteForm,
@@ -104,11 +156,7 @@ function aufAbsenden(eingabe) {
   }
 
   if (ergebnis.richtig) {
-    // Punkte gibt es nur hier: für eine falsche oder übersprungene Karte
-    // wird gar nicht erst gezählt.
-    const kartenpunkte = punkteFuerKarte({ versuch, tipp: tippBenutzt });
-    punkte += kartenpunkte;
-    merkeErgebnis({ richtig: true, getippt: null, kartenpunkte });
+    zaehleRichtig();
 
     // In der Arbeit erfährt man zwischendurch nichts, auch kein Lob.
     if (!regel.zeigtErgebnis) {
@@ -130,6 +178,8 @@ function aufAbsenden(eingabe) {
   }
 
   // Ab hier ist die Karte endgültig danebengegangen -- in beiden Modi.
+  merkeFuerSpaeter();
+
   merkeErgebnis({ richtig: false, getippt: eingabe.trim(), kartenpunkte: 0 });
 
   // Falsch ist falsch: in der Arbeit ohne ein Wort, sofort zur nächsten Karte.
@@ -142,14 +192,63 @@ function aufAbsenden(eingabe) {
   ui.zeigeFalsch(ergebnis.erwartet, frage.loesung, frage.gesuchteForm);
 }
 
+/**
+ * Eine richtige Karte verbuchen. In der ersten Runde gibt es dafür Punkte und
+ * eine Zeile in der Ergebnisliste. In der Lernpotential-Runde wird nur noch
+ * mitgezählt: die Note stand da längst fest.
+ */
+function zaehleRichtig() {
+  if (imLernpotential) {
+    lernpotentialGeschafft += 1;
+    return;
+  }
+
+  // Richtig, aber nicht auf Anhieb: die Karte kommt trotzdem noch einmal.
+  // Der zweite Versuch und der Tipp sind genau die beiden Stellen, an denen
+  // eine Karte Punkte kostet -- also ist sie noch nicht sicher.
+  if (versuch > 0 || tippBenutzt) merkeFuerSpaeter();
+
+  // Punkte gibt es nur hier: für eine falsche oder übersprungene Karte wird
+  // gar nicht erst gezählt.
+  const kartenpunkte = punkteFuerKarte({ versuch, tipp: tippBenutzt });
+  punkte += kartenpunkte;
+  merkeErgebnis({ richtig: true, getippt: null, kartenpunkte });
+}
+
 function weiter() {
   index += 1;
   if (index >= stapel.length) {
-    // Die Höchstpunktzahl ist die Zahl der Karten -- eine Karte, ein Punkt.
-    ui.zeigeEnde(note(punkte), punkte, stapel.length, ergebnisse);
+    beendeStapel();
     return;
   }
   zeigeAktuelle();
+}
+
+/**
+ * Der Stapel ist durch. Jetzt kommt entweder die Lernpotential-Runde oder
+ * die Note -- die Note zuletzt, weil sie den Bildschirm abschließt.
+ */
+function beendeStapel() {
+  if (regel.lernpotential && !imLernpotential && zuWiederholen.length > 0) {
+    imLernpotential = true;
+    stapel = lernpotential(stapel, zuWiederholen.map((eintrag) => eintrag.id));
+    index = 0;
+    zeigeAktuelle();
+    return;
+  }
+
+  // Die Höchstpunktzahl ist die Zahl der Karten der ERSTEN Runde --
+  // eine Karte, ein Punkt.
+  ui.zeigeEnde(note(punkte), punkte, hoechstpunktzahl, ergebnisse, bilanz());
+}
+
+/**
+ * Was die Lernpotential-Runde gebracht hat, oder null, wenn es keine gab.
+ * Nur die Zahlen gehen an die UI -- den Satz daraus formuliert sie selbst.
+ */
+function bilanz() {
+  if (!imLernpotential) return null;
+  return { gesamt: zuWiederholen.length, geschafft: lernpotentialGeschafft };
 }
 
 function aufTipp() {

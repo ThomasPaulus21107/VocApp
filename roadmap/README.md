@@ -11,25 +11,45 @@ Der Code sagt, was sie *ist*; dieser Ordner sagt, wohin sie soll.
    ▼
 backlog.md          ein Satz, was es ist. Dazu: was es braucht, was offen ist.
    │
-   │  Refinement — jemand denkt es durch und schreibt eine feature-*.md
+   │  Refinement — jemand denkt es durch und schreibt eine Feature-Datei
    ▼
-feature-*.md        durchdacht: was, wo im Code, welche Voraussetzungen
+feature-request-*.md    durchdacht: was, wo im Code, welche Voraussetzungen
    │
    │  Planning — wir suchen aus, was in den nächsten Sprint passt
    ▼
-sprint-0X.md        die Auswahl, mit Namen dran und Häkchen zum Abhaken
+sprint-0X.md            die Auswahl, mit Namen dran und Häkchen zum Abhaken
+   │
+   │  Gebaut, getestet, gemergt — die Datei wird umbenannt
+   ▼
+feature-implemented-*-JJJJ-MM-TT-hhmm.md
 ```
 
 **Refinement heißt: eine Datei schreiben.** Damit ist „durchdacht" nichts
-Gefühltes — entweder es gibt die `feature-*.md`, oder das Feature ist noch
+Gefühltes — entweder es gibt die Feature-Datei, oder das Feature ist noch
 nicht so weit. Eine separate Liste „bereit für den nächsten Sprint" gibt es
 deshalb nicht: **die Feature-Dateien sind diese Liste.**
 
-Woran ein Sprint gerade arbeitet, steht in der Statuszeile jeder Feature-Datei:
+## Der Dateiname sagt, was schon steht
+
+Ein `ls roadmap/` soll reichen. Deshalb steht der Zustand **vorne im
+Dateinamen**, und die Dateien sortieren sich von allein in zwei Blöcke:
+
+| Name | Was das heißt |
+|---|---|
+| `feature-request-<thema>.md` | durchdacht, aber noch nicht gebaut. Kann drankommen. |
+| `feature-implemented-<thema>-<JJJJ-MM-TT-hhmm>.md` | gebaut. Datum und Uhrzeit sind der Zeitpunkt, an dem es in `main` lag. |
+
+**Umbenannt wird beim Merge**, nicht vorher — ein halb gebautes Feature heißt
+weiter `request`. Weil die `id` einer Datei ihr Name ist, ändern sich dabei
+auch die Links: wer umbenennt, sucht einmal nach dem alten Namen und zieht
+Roadmap, `AGENTS.md` und die anderen Feature-Dateien nach.
+
+Der Sprint dazu steht in der Statuszeile in der Datei selbst:
 
 ```
 **Status:** in [Sprint 3](sprint-03.md)
 **Status:** bereit — noch keinem Sprint zugeordnet
+**Status:** umgesetzt am 24.08.2026 um 22:11, in [Sprint 3](sprint-03.md)
 ```
 
 ## Was hier liegt
@@ -40,24 +60,27 @@ Woran ein Sprint gerade arbeitet, steht in der Statuszeile jeder Feature-Datei:
 | [sprint-02.md](sprint-02.md) | **abgeschlossen** — Fokus auf das aktuelle Lernziel |
 | [sprint-03.md](sprint-03.md) | **in Arbeit** — Auswählen, üben, eine Note bekommen |
 | [backlog.md](backlog.md) | Ideen, noch nicht durchdacht |
-| `feature-*.md` | je ein durchdachtes Feature |
+| `feature-request-*.md` | je ein durchdachtes Feature, noch nicht gebaut |
+| `feature-implemented-*.md` | je ein gebautes Feature, mit Datum im Namen |
 
 ### Die Features
 
 | Feature | Wer | Status |
 |---|---|---|
-| [Eine Datei pro Lektion](feature-lektionsdateien.md) | Thomas | Sprint 3 |
-| [Die Vokabeln der 5. Klasse](feature-vokabeln-klasse-5.md) | Matilda | Sprint 3 |
-| [Einstellungen, die bleiben](feature-einstellungen-speichern.md) | Thomas | Sprint 3 |
-| [Die Optionsseite](feature-optionsseite.md) | beide | Sprint 3 |
-| [Auswählen, was geübt wird](feature-uebungsauswahl.md) | Thomas | Sprint 3 |
-| [Das Ergebnis als Schulnote](feature-schulnoten.md) | beide | Sprint 3 |
-| [Tipps, die bei der Form helfen](feature-verbtipps.md) | Matilda | Sprint 3 |
-| [Die App passt auf ein schmales Handy](feature-mobile-390.md) | Thomas | Sprint 3 |
-| [Rote Tests blockieren den Merge](feature-tests-in-ci.md) | Thomas | Sprint 3 |
-| [Die Lernpotential-Runde](feature-lernpotential.md) | Thomas | bereit |
-| [Namensfeld statt Login](feature-namensfeld.md) | Thomas | bereit |
-| [Wie die Oberfläche getestet wird](feature-ui-tests.md) | Thomas | bereit |
+| [Eine Datei pro Lektion](feature-request-lektionsdateien.md) | Thomas | Sprint 3 |
+| [Die Vokabeln der 5. Klasse](feature-request-vokabeln-klasse-5.md) | Matilda | Sprint 3 |
+| [Einstellungen, die bleiben](feature-request-einstellungen-speichern.md) | Thomas | Sprint 3 |
+| [Die Optionsseite](feature-request-optionsseite.md) | beide | Sprint 3 |
+| [Auswählen, was geübt wird](feature-request-uebungsauswahl.md) | Thomas | Sprint 3 |
+| [Das Ergebnis als Schulnote](feature-implemented-schulnoten-2026-08-22-1115.md) | beide | **umgesetzt** 22.08. |
+| [Übungsblatt oder Arbeit](feature-implemented-arbeit-oder-uebungsblatt-2026-08-24-2022.md) | beide | **umgesetzt** 24.08. |
+| [Die Ergebnisse nachlesen](feature-implemented-ergebnisliste-2026-08-24-2022.md) | beide | **umgesetzt** 24.08. |
+| [Tipps, die bei der Form helfen](feature-request-verbtipps.md) | Matilda | Sprint 3 |
+| [Die App passt auf ein schmales Handy](feature-request-mobile-390.md) | Thomas | Sprint 3 |
+| [Rote Tests blockieren den Merge](feature-request-tests-in-ci.md) | Thomas | Sprint 3 |
+| [Die Lernpotential-Runde](feature-implemented-lernpotential-2026-08-24-2211.md) | Thomas | **umgesetzt** 24.08. |
+| [Namensfeld statt Login](feature-request-namensfeld.md) | Thomas | bereit |
+| [Wie die Oberfläche getestet wird](feature-request-ui-tests.md) | Thomas | bereit |
 
 Nicht jedes Feature ist Code. Die Vokabeln und die Verb-Tipps sind Matildas
 Arbeit und stehen gleichberechtigt daneben — ohne sie ist die App eine
@@ -65,7 +88,7 @@ Vorführung und kein Werkzeug.
 
 ## Was ein Feature aufnahmereif macht
 
-Eine `feature-*.md` zu schreiben lohnt sich erst, wenn vier Dinge stimmen —
+Eine `feature-request-*.md` zu schreiben lohnt sich erst, wenn vier Dinge stimmen —
 sonst bleibt der Punkt im Backlog:
 
 1. Die Voraussetzungen sind benannt und entweder erfüllt, oder sie entstehen

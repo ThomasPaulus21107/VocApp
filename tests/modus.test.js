@@ -27,6 +27,11 @@ describe('regeln', () => {
     expect(regeln(MODI.ARBEIT).hilferufOhneFolgen).toBe(false);
   });
 
+  it('holt falsche Karten nur im Übungsblatt noch einmal', () => {
+    expect(regeln(MODI.UEBUNGSBLATT).lernpotential).toBe(true);
+    expect(regeln(MODI.ARBEIT).lernpotential).toBe(false);
+  });
+
   it('übt im Zweifel, statt zu prüfen', () => {
     expect(regeln('quatsch')).toEqual(regeln(MODI.UEBUNGSBLATT));
     expect(regeln(undefined)).toEqual(regeln(MODI.UEBUNGSBLATT));

@@ -31,4 +31,4 @@ nur eine Gewohnheit.
 
 Hier geht es nur darum, die **vorhandenen** Tests verbindlich zu machen. Ob
 zusätzlich im Browser getestet wird, ist eine eigene Entscheidung mit einer
-neuen Abhängigkeit — siehe [feature-ui-tests.md](feature-ui-tests.md).
+neuen Abhängigkeit — siehe [feature-request-ui-tests.md](feature-request-ui-tests.md).

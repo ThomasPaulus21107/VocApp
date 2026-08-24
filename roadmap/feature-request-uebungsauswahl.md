@@ -40,13 +40,13 @@ stehen. Das kommt hier zurück.
 
 Bei Verben wird nur nach der englischen Form gefragt. Bei normalen Vokabeln
 sind beide Richtungen sinnvoll — der Richtungsschalter auf der
-[Optionsseite](feature-optionsseite.md) wird also erst mit diesem Feature
+[Optionsseite](feature-request-optionsseite.md) wird also erst mit diesem Feature
 wirklich nützlich.
 
 ## Voraussetzungen
 
-- [Optionsseite](feature-optionsseite.md) als Ort für den Schalter
-- [Lektionsdateien](feature-lektionsdateien.md) liefern die Vokabelseite
+- [Optionsseite](feature-request-optionsseite.md) als Ort für den Schalter
+- [Lektionsdateien](feature-request-lektionsdateien.md) liefern die Vokabelseite
 
 ## Später: einzelne Lektionen
 

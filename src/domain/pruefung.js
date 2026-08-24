@@ -79,25 +79,25 @@ export function zieheRunde(karten, anzahl, zufall = Math.random) {
 }
 
 /**
- * Baut die Frage zu einem unregelmäßigen Verb. Gezeigt wird das Verb in der
- * Fragesprache, gesucht ist eine Form in der Antwortsprache -- welche,
- * entscheidet der Zufall unter ABGEFRAGTE_FORMEN.
+ * Baut die Frage zu einem unregelmäßigen Verb zu einer BESTIMMTEN Form.
+ * Gezeigt wird das Verb in der Fragesprache, gesucht ist die genannte Form
+ * in der Antwortsprache.
  *
- * Der Zufall wird hereingereicht, damit der Test das Ergebnis vorhersagen
- * kann. Gleiches Prinzip wie bei mische().
+ * Gebraucht wird das für die Wiederholung: dort soll dieselbe Form noch
+ * einmal drankommen und nicht eine andere -- sonst übt man eine neue
+ * Aufgabe statt der, die danebenging.
  */
-export function stelleFormFrage(karte, richtung, zufall = Math.random) {
+export function stelleFrageZuForm(karte, richtung, gesuchteForm) {
   const nachDe = richtung === RICHTUNGEN.NACH_DE;
   const antwortsprache = nachDe ? 'de' : 'en';
   const fragesprache = nachDe ? 'en' : 'de';
 
-  const gesucht = ABGEFRAGTE_FORMEN[Math.floor(zufall() * ABGEFRAGTE_FORMEN.length)];
-  const antworten = karte.formen[gesucht][antwortsprache];
+  const antworten = karte.formen[gesuchteForm][antwortsprache];
 
   return {
     id: karte.id,
     frage: karte.formen.infinitive[fragesprache][0],
-    gesuchteForm: gesucht,
+    gesuchteForm,
     antworten,
     // Der Tipp wird gebaut, nicht aus der Karte gelesen: er soll bei der Form
     // helfen, nicht bei der Bedeutung.
@@ -111,6 +111,18 @@ export function stelleFormFrage(karte, richtung, zufall = Math.random) {
     bedeutung: karte.bedeutung ?? null,
     wortart: karte.wortart ?? null,
   };
+}
+
+/**
+ * Dieselbe Frage, nur sucht hier der Zufall die Form aus ABGEFRAGTE_FORMEN
+ * aus. So kommt eine Karte nicht immer mit derselben Form.
+ *
+ * Der Zufall wird hereingereicht, damit der Test das Ergebnis vorhersagen
+ * kann. Gleiches Prinzip wie bei mische().
+ */
+export function stelleFormFrage(karte, richtung, zufall = Math.random) {
+  const gesucht = ABGEFRAGTE_FORMEN[Math.floor(zufall() * ABGEFRAGTE_FORMEN.length)];
+  return stelleFrageZuForm(karte, richtung, gesucht);
 }
 
 // Ein einzelnes "s" heißt: diese Karte überspringen. Als Antwort kommt es

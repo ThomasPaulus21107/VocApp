@@ -52,7 +52,7 @@ einen alten Stand hochladen, ohne dass es auffällt. Der Workflow fügt keine
 Abhängigkeit und keine Zeile hinzu, die Matilda liest, und ein späterer Sprint
 hätte ihn ohnehin gebracht. Nur Build und Deploy sind vorgezogen; **CI im
 Sinne von Tests als Merge-Bedingung ist ein eigenes Vorhaben**, siehe
-`roadmap/feature-tests-in-ci.md`.
+`roadmap/feature-request-tests-in-ci.md`.
 
 ---
 
@@ -215,7 +215,11 @@ Paaren. Jedes Paar kennt wieder beide Sprachen:
 Abgefragt wird so eine Karte anders als eine normale Vokabel: **alle drei
 Formen werden gezeigt, eine davon bleibt leer und wird getippt.** Welche,
 entscheidet der Zufall — und der wird wie überall hereingereicht, nicht in der
-Domänenfunktion gezogen.
+Domänenfunktion gezogen. Dafür gibt es zwei Funktionen:
+`stelleFrageZuForm(karte, richtung, form)` baut die Frage zu einer genannten
+Form, `stelleFormFrage(karte, richtung, zufall)` würfelt die Form aus und ruft
+sie auf. Die Lernpotential-Runde nimmt die erste — dort wird dieselbe Form
+wiederholt, nicht neu gewürfelt.
 
 - Die drei Schlüssel heißen wie die Spalten im Schulheft und liegen fest.
 - **Nur der Infinitiv trägt alle Bedeutungen.** `to break` heißt „brechen,
@@ -246,7 +250,7 @@ Konstanten in `domain/pruefung.js` und sind **Absicht, kein toter Code**:
 | Eingabe | Konstante | Was passiert |
 |---|---|---|
 | `s` | `SPRINGEN` | Karte überspringen, sofort zur nächsten, ohne Lösung |
-| `keine ahnung` | `AUFGEBEN` | „DU SCHAFFST DAS" — im Übungsblatt bleibt die Karte offen, kein Versuch verbraucht. In der Arbeit kommt der Zuspruch auch, aber die Karte ist danach durch (siehe `roadmap/feature-arbeit-oder-uebungsblatt.md`). |
+| `keine ahnung` | `AUFGEBEN` | „DU SCHAFFST DAS" — im Übungsblatt bleibt die Karte offen, kein Versuch verbraucht. In der Arbeit kommt der Zuspruch auch, aber die Karte ist danach durch (siehe `roadmap/feature-implemented-arbeit-oder-uebungsblatt-2026-08-24-2022.md`). |
 
 **In der Oberfläche steht bewusst nichts davon.** Sie sollen gefunden werden,
 nicht erklärt. Also bitte weder ins Label schreiben noch in `data/README.md`
@@ -299,7 +303,7 @@ npm run build   # Produktionsstand nach dist/
 - `dist/` gehört deshalb **nie** ins Repo — es entsteht bei jedem Lauf neu und
   steht in der `.gitignore`.
 - Der Workflow prüft bewusst **nicht**, ob die Tests grün sind. Das kommt mit
-  `roadmap/feature-tests-in-ci.md` dazu. Bis dahin gilt: vor dem Pull Request
+  `roadmap/feature-request-tests-in-ci.md` dazu. Bis dahin gilt: vor dem Pull Request
   einmal `npm test`.
 
 ---
@@ -408,10 +412,15 @@ nicht passieren soll" als Arbeitsregel steht.
 ## Fahrplan (zur Einordnung, nicht zum Vorziehen)
 
 **Der Fahrplan steht in [`roadmap/`](roadmap/), nicht hier.** Dort liegen der
-laufende Sprint, die abgeschlossenen, je eine `feature-*.md` pro
-durchdachtem Feature und alles Weitere in `backlog.md`. Eine zweite Liste an
-dieser Stelle würde nur veralten. `roadmap/README.md` erklärt den Weg vom
-Backlog über das Refinement bis in einen Sprint.
+laufende Sprint, die abgeschlossenen, je eine Feature-Datei pro durchdachtem
+Feature und alles Weitere in `backlog.md`. Eine zweite Liste an dieser Stelle
+würde nur veralten. `roadmap/README.md` erklärt den Weg vom Backlog über das
+Refinement bis in einen Sprint.
+
+**Der Dateiname sagt den Zustand:** `feature-request-<thema>.md` ist
+durchdacht, aber noch nicht gebaut; `feature-implemented-<thema>-<JJJJ-MM-TT-hhmm>.md`
+ist gebaut, mit dem Zeitpunkt des Merges im Namen. Umbenannt wird beim Merge,
+und wer umbenennt, zieht die Links in der Roadmap und hier nach.
 
 Was wir bewusst **nicht** bauen, steht dagegen oben unter „Out of Scope" —
 nicht in der Roadmap, damit es dort nicht als Vorhaben missverstanden wird.

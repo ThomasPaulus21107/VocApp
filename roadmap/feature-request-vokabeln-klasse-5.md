@@ -19,7 +19,7 @@ welche Wörter dran sind.
 
 ## Voraussetzungen
 
-- [Eine Datei pro Lektion](feature-lektionsdateien.md) — das Format muss
+- [Eine Datei pro Lektion](feature-request-lektionsdateien.md) — das Format muss
   stehen, bevor sie anfängt. Nachträglich aufteilen hieße: dieselben Karten
   zweimal anfassen.
 
