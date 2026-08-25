@@ -82,6 +82,18 @@
         <p id="loesung" class="loesung" hidden></p>
       </section>
 
+      <!-- Der Übergang von der Übung in die Wiederholung. Kommt nur im
+           Übungsblatt, und nur wenn Karten offen geblieben sind. Bewusst
+           ohne Punkte und ohne Note: wer die schon sieht, spielt die
+           Wiederholung nicht mehr ernsthaft. -->
+      <section id="zwischen" class="karte" hidden>
+        <p id="zwischen-titel" class="zwischen-titel"></p>
+        <p id="zwischen-text" class="zwischen-text"></p>
+        <button id="zwischen-knopf" class="knopf" type="button">
+          Weiter üben
+        </button>
+      </section>
+
       <!-- Der Abschluss: sichtbar, wenn der Stapel durch ist. Zuerst die
            Note, dann Matildas Text dazu, dann klein die Punkte -- damit man
            sieht, wo die Note herkommt. -->
@@ -113,6 +125,13 @@
         </div>
       </section>
 
+      <!-- Ein Teilchen für die Effekte bei den drei besten Noten: ein
+           Konfettischnipsel, ein Funke, die Rakete. Wie es aussieht und
+           wohin es fliegt, steht in styles.css. -->
+      <template id="teilchen-vorlage">
+        <span class="teilchen" aria-hidden="true"></span>
+      </template>
+
       <!-- Eine Zeile der Ergebnisliste. Die Zeile steht hier im HTML und
            nicht in ui.js: dort wird nur noch Text eingesetzt. -->
       <template id="ergebnis-vorlage">
@@ -125,6 +144,11 @@
         </li>
       </template>
     </main>
+
+    <!-- Die Bühne für die Effekte liegt über allem und nimmt keine Klicks
+         an. Sie steht außerhalb von main, damit die Teilchen über die ganze
+         Seite fliegen können und nicht in der Karte eingesperrt sind. -->
+    <div id="effekt" class="effekt" aria-hidden="true"></div>
 
     <script type="module" src="/src/app.js"></script>
   </body>

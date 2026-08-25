@@ -9,7 +9,7 @@ als Häkchen in einer Sprint-Datei, weil Häkchen liegen bleiben — siehe
 lang eines war.
 
 Der Trenner zwischen Übung und Wiederholung stand ursprünglich hier mit drin.
-Er ist zu [Der Moment nach der Runde](feature-request-nach-der-runde.md)
+Er ist zu [Der Moment nach der Runde](feature-implemented-nach-der-runde-2026-08-25-2212.md)
 umgezogen, sobald klar war, dass es eine echte Zwischenseite mit Ton wird.
 
 ## 1. `to read` ist in allen drei Formen gleich

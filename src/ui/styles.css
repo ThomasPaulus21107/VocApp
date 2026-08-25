@@ -310,6 +310,113 @@ body {
   text-align: center;
 }
 
+/* ---------------------------------------------------------------
+   Die Zwischenseite zwischen Übung und Wiederholung
+   --------------------------------------------------------------- */
+
+.zwischen-titel {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.25rem, 5vw, 1.625rem);
+  font-weight: 700;
+  text-align: center;
+}
+
+.zwischen-text {
+  margin: 0 0 1.5rem;
+  font-size: clamp(1rem, 4vw, 1.125rem);
+  line-height: 1.4;
+  text-align: center;
+  color: var(--leise);
+}
+
+/* Der Knopf geht über die ganze Breite, wie die beiden auf der Startseite.
+   Sonst klebt er allein am linken Rand. */
+#zwischen-knopf {
+  display: block;
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------
+   Die Effekte bei den drei besten Noten
+
+   MATILDA: die Farben der Schnipsel stehen ganz oben im Farbblock.
+   Wie lange etwas fliegt und wie weit, steht in den @keyframes --
+   Zahlen ändern, speichern, Runde spielen.
+   --------------------------------------------------------------- */
+
+/* Die Bühne liegt über der ganzen Seite und nimmt keine Klicks an,
+   sonst könnte man den Knopf darunter nicht mehr drücken. */
+.effekt {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Ein Teilchen. --links, --drehung, --warten und --dauer setzt
+   effekte.js für jedes Stück einzeln, damit nicht alle gleich fliegen. */
+.teilchen {
+  position: absolute;
+  left: var(--links);
+  animation-delay: var(--warten);
+  animation-duration: var(--dauer);
+  animation-fill-mode: both;
+  animation-timing-function: ease-out;
+}
+
+/* Die Rakete startet unten in der Mitte und fliegt oben raus. */
+.teilchen--rakete {
+  left: 50%;
+  bottom: -3rem;
+  font-size: 3rem;
+  animation-name: rakete;
+  animation-timing-function: ease-in;
+}
+
+@keyframes rakete {
+  from { transform: translate(-50%, 0) rotate(-45deg); opacity: 1; }
+  to   { transform: translate(-50%, -110vh) rotate(-45deg); opacity: 0.2; }
+}
+
+/* Konfetti: bunte Schnipsel, die von oben fallen und dabei taumeln. */
+.teilchen--konfetti {
+  top: -2rem;
+  width: 0.6rem;
+  height: 1rem;
+  border-radius: 2px;
+  background: var(--richtig);
+  animation-name: konfetti;
+}
+
+/* Jeder dritte Schnipsel bekommt eine andere Farbe. */
+.teilchen--konfetti:nth-child(3n + 1) { background: var(--akzent); }
+.teilchen--konfetti:nth-child(3n + 2) { background: var(--falsch); }
+
+@keyframes konfetti {
+  from { transform: translateY(0) rotate(0deg); opacity: 1; }
+  to   { transform: translateY(105vh) rotate(var(--drehung)); opacity: 0.9; }
+}
+
+/* Sternenregen: Funken, die rund um die Note springen und verglühen. */
+.teilchen--sterne {
+  top: var(--hoch);
+  font-size: 2.25rem;
+  animation-name: sterne;
+}
+
+@keyframes sterne {
+  from { transform: translateY(0) scale(0.4); opacity: 0; }
+  40%  { transform: translateY(-2.5rem) scale(1.2); opacity: 1; }
+  to   { transform: translateY(4rem) scale(0.6) rotate(var(--drehung)); opacity: 0; }
+}
+
+/* Wer Bewegung abgeschaltet hat, bekommt keine. Den Ton gibt es trotzdem --
+   effekte.js baut die Teilchen dann gar nicht erst. */
+@media (prefers-reduced-motion: reduce) {
+  .teilchen { display: none; }
+}
+
 /* Die Bilanz der zweiten Runde. Steht zwischen Punkten und Ergebnisliste
    und ist bewusst leise: die Note kommt aus der ersten Runde. */
 .lernpotential {

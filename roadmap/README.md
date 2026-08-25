@@ -76,6 +76,7 @@ Von unten nach oben, neueste zuerst.
 
 | Feature | Wann |
 |---|---|
+| [Der Moment nach der Runde](feature-implemented-nach-der-runde-2026-08-25-2212.md) | 25.08. 22:12 |
 | [Die Lernpotential-Runde](feature-implemented-lernpotential-2026-08-24-2211.md) | 24.08. 22:11 |
 | [Übungsblatt oder Arbeit](feature-implemented-arbeit-oder-uebungsblatt-2026-08-24-2022.md) | 24.08. 20:22 |
 | [Die Ergebnisse nachlesen](feature-implemented-ergebnisliste-2026-08-24-2022.md) | 24.08. 20:22 |
@@ -94,7 +95,6 @@ Von unten nach oben, neueste zuerst.
 | Feature | Wer |
 |---|---|
 | [Wie streng die App prüft](feature-request-pruefstrenge.md) | Thomas |
-| [Der Moment nach der Runde](feature-request-nach-der-runde.md) | Thomas, Effekte und Töne Matilda |
 | [Tipps, die bei der Form helfen](feature-request-verbtipps.md) | Matilda |
 | [Zwei Kleinigkeiten in der Übungsrunde](feature-request-feinschliff.md) | Matilda |
 | [Einstellungen, die bleiben](feature-request-einstellungen-speichern.md) | Thomas |

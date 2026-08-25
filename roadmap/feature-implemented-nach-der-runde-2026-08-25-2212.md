@@ -1,7 +1,8 @@
 # Feature: Der Moment nach der Runde
 
-**Status:** bereit — durchdacht, noch nicht gebaut
-**Wo im Code:** `index.html`, `src/ui/ui.js`, `src/ui/klang.js`, `src/ui/effekte.js` — neu
+**Status:** umgesetzt am 25.08.2026 um 22:12
+**Wo im Code:** `index.html`, `src/ui/ui.js`, `src/ui/klang.js`,
+`src/ui/effekte.js` — neu, `src/ui/styles.css`, `src/app.js`
 
 Zwei Dinge, die denselben Augenblick betreffen: den Übergang von der Übung in
 die Wiederholung, und die Belohnung für eine sehr gute Runde. Beides ist
@@ -82,3 +83,66 @@ aus der `NOTEN`-Tabelle in `domain/note.js` und darf nicht umgetippt werden.
 Es ist derselbe Nachmittag: `klang.js` bekommt neue Melodien, `index.html`
 bekommt neue Abschnitte, und beides ist Oberfläche ohne Regeländerung. Getrennt
 wären es zwei Dateien, die dieselben drei Dateien anfassen.
+
+
+---
+
+## Wie es gebaut wurde
+
+Nachgetragen nach dem Bauen. Der Plan oben hat gehalten; hier steht, was beim
+Bauen dazukam oder anders entschieden wurde.
+
+### Die Zwischenseite
+
+`<section id="zwischen">` neben `#start`, `#karte` und `#ende`. Darauf steht
+„Die Runde ist durch!" und darunter, was noch kommt — bei einer einzelnen
+Karte im Singular, sonst mit Zahl. Der Knopf heißt „Weiter üben".
+
+Im Ablauf hängt sie in `beendeStapel()`: statt die Wiederholung direkt zu
+starten, zeigt `app.js` die Seite. Der Knopf ruft `starteLernpotential()`,
+das vorher namenlos mitten in `beendeStapel()` stand — die Funktion gab es
+also schon, sie hat nur einen Namen und einen Auslöser bekommen.
+
+Der einmalige Hinweissatz auf der ersten Wiederholungskarte ist entfallen,
+wie geplant. Die Zwischenseite sagt es besser.
+
+### Die Effekte
+
+`src/ui/effekte.js`, Schwester von `klang.js`: `zeige(note)` baut die
+Teilchen und gibt den Namen des Effekts zurück, damit `ui.js` den passenden
+Ton dazu spielen kann. Die Datei entscheidet nichts über Noten.
+
+| Note | Effekt | Teilchen |
+|---|---|---|
+| 1+ | Rakete, startet unten und fliegt oben raus | 1 |
+| 1 | Konfetti, fällt und taumelt | 30 |
+| 1− | Sternenregen rund um die Note | 12 |
+
+Vier neue Melodien in `MELODIEN`: `geschafft` für die Zwischenseite, dazu je
+eine zu Rakete, Konfetti und Sternen.
+
+`prefers-reduced-motion: reduce` schaltet die Bewegung ab, der Ton bleibt.
+
+### Zwei Kleinigkeiten aus dem Ausprobieren
+
+- Der Knopf auf der Zwischenseite stand allein am linken Rand. Er geht jetzt
+  über die ganze Breite, wie die beiden Knöpfe auf der Startseite.
+- Die Funken waren mit 1,5rem zu blass und lagen alle auf einer Höhe. Jetzt
+  2,25rem, und jeder bekommt eine eigene Höhe zwischen 20 % und 60 %.
+
+## Im Browser geprüft
+
+Nicht nur Tests und Build — eine echte Runde in Chrome bei 390px Breite,
+viermal durchgespielt:
+
+| Runde | Ergebnis |
+|---|---|
+| 15 Karten falsch | Zwischenseite mit „15 Karten haben noch Lernpotential", Ende-Bildschirm bleibt verdeckt, danach Zähler „Lernpotential 1 von 15" |
+| 15 richtig | keine Zwischenseite, Note 1+, 15 von 15 Punkten, Rakete |
+| 1 falsch | Note 1, 30 Konfetti-Teilchen |
+| 2 falsch | Note 1−, 12 Funken |
+| 4 falsch | Note 2, kein Effekt und kein Ton |
+
+Keine Fehler in der Browser-Konsole. Die 404-Meldung beim Laden ist
+`favicon.ico` — die gibt es im Projekt nicht, das ist älter als dieses
+Feature.
