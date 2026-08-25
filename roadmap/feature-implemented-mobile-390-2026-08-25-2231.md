@@ -1,6 +1,6 @@
 # Feature: Die App passt auf ein schmales Handy
 
-**Status:** bereit — durchdacht, noch nicht gebaut
+**Status:** nachgemessen am 25.08.2026 um 22:31 — nichts zu reparieren
 **Wo im Code:** `src/ui/styles.css`
 
 Bei 390 Pixeln Breite lief die Karte rechts aus dem Bild, bei 560 passte
@@ -40,3 +40,38 @@ In den Entwicklerwerkzeugen auf 390px stellen und **eine ganze Runde spielen**
 — Karte, Tipp, falsche Antwort, Formenzeile, Ergebnis. Der Sprint-1-Fehler
 (`display: flex` überstimmt `hidden`) ist genau deshalb durchgerutscht, weil
 niemand den Zustand *nach* der Antwort angesehen hat.
+
+
+---
+
+## Nachgemessen am 25.08.2026
+
+Die Vermutung dieser Datei hat gestimmt: **es gab nichts zu reparieren.** Das
+Problem ist beim Fokus-Umbau mitbehoben worden, ohne dass es jemand gemerkt
+hat.
+
+Gemessen in Chrome bei 390px Breite, in jedem Zustand `scrollWidth` gegen
+`clientWidth` des Dokuments — läuft irgendetwas rechts heraus, sind die beiden
+verschieden:
+
+```
+Startseite     scrollWidth 390 / 390  passt
+Karte          scrollWidth 390 / 390  passt
+Karte + Tipp   scrollWidth 390 / 390  passt
+Karte geloest  scrollWidth 390 / 390  passt
+Zwischenseite  scrollWidth 390 / 390  passt
+Ende           scrollWidth 390 / 390  passt
+Ergebnisliste  scrollWidth 390 / 390  passt
+```
+
+Auch die aufgeklappte Ergebnisliste mit fünfzehn Zeilen — der längste Inhalt,
+den die App hat — bleibt in der Breite.
+
+**Was das nicht heißt:** gemessen wurde die Breite, nicht die Bedienbarkeit.
+Ob sich die Knöpfe mit dem Daumen gut treffen lassen, sagt keine Zahl. Das
+bleibt Matildas Urteil auf ihrem eigenen Handy.
+
+Die Messung lief mit Playwright über `npx` und dem installierten Chrome,
+nicht aus dem Projekt heraus — `package.json` ist unberührt. Ob so etwas
+dauerhaft dazugehört, ist die offene Frage in
+[Wie die Oberfläche getestet wird](feature-request-ui-tests.md).
