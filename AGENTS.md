@@ -56,8 +56,8 @@ einen Fehlermodus, den der Workflow nicht kennt: `npm run build` vergessen und
 einen alten Stand hochladen, ohne dass es auffällt. Der Workflow fügt keine
 Abhängigkeit und keine Zeile hinzu, die Matilda liest, und irgendwann hätte
 es ihn ohnehin gebraucht. Nur Build und Deploy sind vorgezogen; **CI im
-Sinne von Tests als Merge-Bedingung ist ein eigenes Vorhaben**, siehe
-`roadmap/feature-request-tests-in-ci.md`.
+Sinne von Tests als Merge-Bedingung ist ein eigenes Vorhaben** und kam
+später dazu, siehe `roadmap/feature-implemented-tests-in-ci-2026-08-25-2243.md`.
 
 ---
 
@@ -307,9 +307,11 @@ npm run build   # Produktionsstand nach dist/
   **GitHub Actions**, nicht auf „Deploy from a branch".
 - `dist/` gehört deshalb **nie** ins Repo — es entsteht bei jedem Lauf neu und
   steht in der `.gitignore`.
-- Der Workflow prüft bewusst **nicht**, ob die Tests grün sind. Das kommt mit
-  `roadmap/feature-request-tests-in-ci.md` dazu. Bis dahin gilt: vor dem Pull Request
-  einmal `npm test`.
+- `.github/workflows/tests.yml` lässt bei jedem Pull Request `npm test`
+  laufen. Der Job heißt `testen` und ist im Ruleset von `main` als required
+  check eingetragen: **ist er rot, lässt sich der Pull Request nicht mergen.**
+  Vor dem Pull Request trotzdem einmal selbst `npm test` — das spart die
+  Wartezeit auf den Lauf.
 
 ---
 

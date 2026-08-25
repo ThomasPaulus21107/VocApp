@@ -76,6 +76,7 @@ Von unten nach oben, neueste zuerst.
 
 | Feature | Wann |
 |---|---|
+| [Rote Tests blockieren den Merge](feature-implemented-tests-in-ci-2026-08-25-2243.md) | 25.08. 22:43 |
 | [Wie streng die App prüft](feature-implemented-pruefstrenge-2026-08-25-2231.md) | 25.08. 22:31 |
 | [Kleinkram in der Oberfläche](feature-implemented-kleinkram-2026-08-25-2231.md) | 25.08. 22:31 |
 | [Die App passt auf ein schmales Handy](feature-implemented-mobile-390-2026-08-25-2231.md) | 25.08. 22:31 |
@@ -101,7 +102,6 @@ Von unten nach oben, neueste zuerst.
 | [Einstellungen, die bleiben](feature-request-einstellungen-speichern.md) | Thomas |
 | [Die Optionsseite](feature-request-optionsseite.md) | Thomas, Gestaltung Matilda |
 | [Namensfeld statt Login](feature-request-namensfeld.md) | Thomas |
-| [Rote Tests blockieren den Merge](feature-request-tests-in-ci.md) | Thomas — Datei steht, Häkchen fehlt |
 | [Ob die Abfragerichtung umschaltbar wird](feature-request-richtung.md) | Entscheidung |
 | [Wie die Oberfläche getestet wird](feature-request-ui-tests.md) | Entscheidung |
 
@@ -143,9 +143,10 @@ Sprint-Dateien hierher:
 - **Mindestens eine Änderung von Matilda geht selbst nach `main`** — eigener
   Branch, Pull Request, Merge. Der Git-Ablauf ist Teil des Lernziels und wird
   bewusst von Hand gemacht.
-- **Vor jedem Pull Request einmal `npm test`.** Bis
-  [rote Tests den Merge blockieren](feature-request-tests-in-ci.md), ist das
-  eine Absprache und keine Absicherung.
+- **Vor dem Pull Request einmal `npm test`.** Seit dem 25.08.2026 prüft das
+  auch [GitHub bei jedem Pull Request](feature-implemented-tests-in-ci-2026-08-25-2243.md)
+  und blockiert den Merge, wenn es rot ist. Vorher selbst zu testen spart
+  trotzdem die Wartezeit.
 
 Was wir **nicht** bauen, steht nicht hier, sondern in `AGENTS.md` unter
 „Out of Scope" — damit es nicht alle paar Monate neu diskutiert wird.
