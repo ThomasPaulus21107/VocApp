@@ -97,6 +97,14 @@ waren refined; die ausführlichen Fassungen liegen in der Historie unter
   nichts teilen.
   `braucht:` Accounts — im Backlog
 
+## Kleinigkeiten
+
+- **`to read` ist in allen drei Formen gleich.** Wenn die Karte drankommt, ist
+  die Frage geschenkt — in der Arbeit ein Freipunkt. Der Unterschied liegt in
+  der Aussprache, und die kann eine getippte Antwort nicht prüfen.
+  `offen:` Karte rausnehmen, drinlassen, oder anders behandeln? Gehört
+  Matilda, es ist ihre Vokabeldatei.
+
 ## Rund ums Projekt
 
 - **Matildas eigener GitHub-Account.** Ab ihrem 13. Geburtstag — vorher liegt
