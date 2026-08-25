@@ -146,3 +146,25 @@ viermal durchgespielt:
 Keine Fehler in der Browser-Konsole. Die 404-Meldung beim Laden ist
 `favicon.ico` — die gibt es im Projekt nicht, das ist älter als dieses
 Feature.
+
+
+## Nachgebessert am 25.08.2026
+
+Die Rakete war zu unscheinbar: ein Emoji, das kurz nach oben rutschte. Jetzt
+ist sie **größer (4rem), fliegt länger (2,8s) und macht mehr her**:
+
+- Sie **zittert erst wie beim Countdown** und hebt dann ab. Das Zittern ist
+  das erste Drittel der Bewegung; die Prozentzahlen in den `@keyframes` sagen,
+  wie lange.
+- Sie zieht eine **Funkenspur** aus dreizehn kleinen Zeichen, die erst
+  loslegen, wenn sie weg ist (`ABHEBEN = 0.9` Sekunden), leicht zur Seite
+  wehen und verglimmen. In `TEILCHEN` heißt das: die Rakete hat `14` Teilchen
+  — das erste ist sie selbst, die anderen sind die Spur.
+- Der **Ton macht mit**: drei tiefe Ticks während des Zitterns, dann der
+  Aufstieg. Vorher war die Melodie nach 0,8 Sekunden vorbei, während das Bild
+  noch lief.
+
+Neu dabei ist die Tabelle `DAUER` in `effekte.js`: Grundzeit plus
+Zufallszuschlag je Effekt, an einer Stelle statt verstreut im Code. Wer einen
+Effekt länger laufen lassen will, ändert dort eine Zahl — das CSS richtet sich
+nach der Dauer.

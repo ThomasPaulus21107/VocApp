@@ -58,14 +58,19 @@ const MELODIEN = {
     { hertz: 784, ab: 0.2, dauer: 0.12 },
     { hertz: 1047, ab: 0.3, dauer: 0.3 },
   ],
-  // Zur Rakete: startet tief und schraubt sich hoch, wie ein Abheben.
+  // Zur Rakete: erst drei tiefe Ticks wie ein Countdown, waehrend sie noch
+  // zittert -- dann schraubt sich der Ton hoch, wie ein Abheben.
   rakete: [
-    { hertz: 262, ab: 0, dauer: 0.1 },
-    { hertz: 392, ab: 0.08, dauer: 0.1 },
-    { hertz: 523, ab: 0.16, dauer: 0.1 },
-    { hertz: 784, ab: 0.24, dauer: 0.1 },
-    { hertz: 1047, ab: 0.32, dauer: 0.14 },
-    { hertz: 1568, ab: 0.44, dauer: 0.4 },
+    { hertz: 200, ab: 0, dauer: 0.08, laut: 0.12 },
+    { hertz: 200, ab: 0.3, dauer: 0.08, laut: 0.12 },
+    { hertz: 200, ab: 0.6, dauer: 0.08, laut: 0.12 },
+    { hertz: 262, ab: 0.9, dauer: 0.12 },
+    { hertz: 392, ab: 1.02, dauer: 0.12 },
+    { hertz: 523, ab: 1.14, dauer: 0.12 },
+    { hertz: 659, ab: 1.26, dauer: 0.12 },
+    { hertz: 784, ab: 1.38, dauer: 0.12 },
+    { hertz: 1047, ab: 1.5, dauer: 0.16 },
+    { hertz: 1568, ab: 1.66, dauer: 0.55 },
   ],
   // Zum Konfetti: ein heller Dreiklang, der oben stehen bleibt.
   konfetti: [
