@@ -25,23 +25,28 @@ optimieren, sind hier falsch.
 
 ---
 
-## Aktueller Stand: Sprint 1
+## Aktueller Stand
 
-**Ziel:** Eine Karte erscheint, man tippt die Antwort, die App sagt richtig
-oder falsch, das Ganze läuft unter einer öffentlichen URL.
+**Die App übt unregelmäßige Verben.** Eine Runde hat 15 Karten und endet mit
+einer Schulnote; vorher wählt man zwischen Übungsblatt und Arbeit. Was im
+Übungsblatt nicht auf Anhieb saß, kommt am Ende noch einmal. Das Ganze liegt
+unter einer öffentlichen URL.
 
-**Fertig, wenn** die App auf GitHub Pages liegt, die Vokabeln aus dem JSON
-kommen, die Tests grün sind und mindestens eine Änderung von Matilda in `main`
-gemergt ist.
+**Der Fokus liegt auf den Verben.** Die normalen Vokabeln in
+`data/vokabeln.json` sind bewusst nicht erreichbar — der ganze Vokabel-Strang
+ruht, siehe `roadmap/backlog.md`.
 
-### Ausdrücklich NICHT in Sprint 1
+Was gebaut ist, steht als `roadmap/feature-implemented-*.md` mit Datum im
+Namen; was durchdacht ist und wartet, als `roadmap/feature-request-*.md`.
+
+### Nicht ungefragt einbauen
 
 Punkte, Streaks, Leitner-Algorithmus, Accounts, PWA, Supabase, TypeScript,
 Framework.
 
 Wenn eine Aufgabe eines dieser Themen berührt: **nicht einbauen, sondern
-nachfragen.** Alle sind bewusst für spätere Sprints zurückgestellt. Das
-Projekt soll klein bleiben und früh laufen.
+nachfragen.** Alle sind bewusst zurückgestellt oder stehen unter „Out of
+Scope". Das Projekt soll klein bleiben und früh laufen.
 
 **GitHub Actions stand hier ursprünglich mit auf der Liste und wurde bewusst
 vorgezogen.** Der Deploy von Hand über einen `gh-pages`-Branch wären fünf
@@ -49,8 +54,8 @@ Befehle bei jedem Veröffentlichen — gegenüber einer Workflow-Datei, die man
 einmal schreibt und nie wieder anfasst. Vor allem aber hat der Handbetrieb
 einen Fehlermodus, den der Workflow nicht kennt: `npm run build` vergessen und
 einen alten Stand hochladen, ohne dass es auffällt. Der Workflow fügt keine
-Abhängigkeit und keine Zeile hinzu, die Matilda liest, und ein späterer Sprint
-hätte ihn ohnehin gebracht. Nur Build und Deploy sind vorgezogen; **CI im
+Abhängigkeit und keine Zeile hinzu, die Matilda liest, und irgendwann hätte
+es ihn ohnehin gebraucht. Nur Build und Deploy sind vorgezogen; **CI im
 Sinne von Tests als Merge-Bedingung ist ein eigenes Vorhaben**, siehe
 `roadmap/feature-request-tests-in-ci.md`.
 
@@ -71,7 +76,7 @@ Netzwerk, kein `Date.now()`. Alles dort sind reine Funktionen: Eingabe rein,
 Ergebnis raus, keine Seiteneffekte.
 
 **Warum das nicht verhandelbar ist:** Die Tests laufen dadurch in
-Millisekunden ohne Browser. Und in Sprint 4 soll Supabase dazukommen, ohne
+Millisekunden ohne Browser. Und irgendwann soll Supabase dazukommen, ohne
 dass Domänenlogik oder UI davon erfahren. Jede Verletzung dieses Schnitts
 macht beides kaputt.
 
@@ -331,8 +336,9 @@ Neue Tests bitte im gleichen Stil: deutsche Beschreibungen, ein Verhalten pro
 Test, keine Mocks (die Domänenschicht braucht keine).
 
 Faustregel zum Umfang: Tests auf die Domänenlogik, Tests auf die Daten. Keine
-Tests auf `ui.js` in Sprint 1. Bei einem gefundenen Fehler einen Test
-schreiben, der ihn festhält.
+Tests auf `ui.js` — ob und womit die Oberfläche getestet wird, ist eine offene
+Entscheidung, siehe `roadmap/feature-request-ui-tests.md`. Bei einem
+gefundenen Fehler einen Test schreiben, der ihn festhält.
 
 ---
 
@@ -371,7 +377,8 @@ Hand gemacht.
 
 ## Was ein guter Beitrag hier ist
 
-1. **Erst fragen, dann bauen**, wenn eine Aufgabe über Sprint 1 hinausgeht.
+1. **Erst fragen, dann bauen**, wenn eine Aufgabe eines der zurückgestellten
+   Themen berührt oder über das hinausgeht, was gerade dran ist.
 2. **Kleinstmögliche Änderung.** Kein Umbau nebenbei, keine Umbenennungen
    "bei der Gelegenheit".
 3. **Den Schichtschnitt respektieren.** Im Zweifel: gehört es zu den Regeln
@@ -386,7 +393,7 @@ Hand gemacht.
 - `localStorage` oder `fetch` in `domain/` benutzen.
 - Die Vokabeldatei umformatieren oder sortieren.
 - Den CSS-Variablenblock "aufräumen".
-- Features aus späteren Sprints vorziehen, weil sie schnell gehen.
+- Zurückgestellte Themen vorziehen, weil sie schnell gehen.
 - Bestehende `id`-Werte ändern.
 
 ---
@@ -411,11 +418,13 @@ nicht passieren soll" als Arbeitsregel steht.
 
 ## Fahrplan (zur Einordnung, nicht zum Vorziehen)
 
-**Der Fahrplan steht in [`roadmap/`](roadmap/), nicht hier.** Dort liegen der
-laufende Sprint, die abgeschlossenen, je eine Feature-Datei pro durchdachtem
-Feature und alles Weitere in `backlog.md`. Eine zweite Liste an dieser Stelle
-würde nur veralten. `roadmap/README.md` erklärt den Weg vom Backlog über das
-Refinement bis in einen Sprint.
+**Der Fahrplan steht in [`roadmap/`](roadmap/), nicht hier.** Dort liegt je
+eine Feature-Datei pro durchdachtem Feature und alles Weitere in `backlog.md`.
+Eine zweite Liste an dieser Stelle würde nur veralten. `roadmap/README.md`
+erklärt den Weg vom Backlog über das Refinement bis in den Code.
+
+Sprint-Dateien gab es bis zum 25.08.2026, sie sind aufgelöst. Wer sie in einem
+alten Stand sieht: ihr Inhalt steckt in den Feature-Dateien.
 
 **Der Dateiname sagt den Zustand:** `feature-request-<thema>.md` ist
 durchdacht, aber noch nicht gebaut; `feature-implemented-<thema>-<JJJJ-MM-TT-hhmm>.md`
@@ -425,8 +434,8 @@ und wer umbenennt, zieht die Links in der Roadmap und hier nach.
 Was wir bewusst **nicht** bauen, steht dagegen oben unter „Out of Scope" —
 nicht in der Roadmap, damit es dort nicht als Vorhaben missverstanden wird.
 
-Was für die Architektur wichtig ist: `src/infra/storage.js` entsteht in
-Sprint 3 als **einziger** Ort, der Persistenz kennt — zunächst
+Was für die Architektur wichtig ist: `src/infra/storage.js` entsteht als
+**einziger** Ort, der Persistenz kennt — zunächst
 ausschließlich für **Einstellungen** (Töne an/aus, was geübt wird, Richtung).
 Ein Lernstand **pro Karte** geht bewusst noch nicht durch diese Naht:
 Einstellungen kann man jederzeit erweitern, ein gespeicherter Lernstand legt

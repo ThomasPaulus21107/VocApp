@@ -230,16 +230,26 @@ function weiter() {
  */
 function beendeStapel() {
   if (regel.lernpotential && !imLernpotential && zuWiederholen.length > 0) {
-    imLernpotential = true;
-    stapel = lernpotential(stapel, zuWiederholen.map((eintrag) => eintrag.id));
-    index = 0;
-    zeigeAktuelle();
+    // Erst die Zwischenseite. Sie hält den Ablauf einmal an und sagt, was
+    // jetzt kommt -- ohne sie liefe die Wiederholung unbemerkt an.
+    ui.zeigeZwischenstand(zuWiederholen.length);
     return;
   }
 
   // Die Höchstpunktzahl ist die Zahl der Karten der ERSTEN Runde --
   // eine Karte, ein Punkt.
   ui.zeigeEnde(note(punkte), punkte, hoechstpunktzahl, ergebnisse, bilanz());
+}
+
+/**
+ * Der Knopf auf der Zwischenseite: ab hier läuft die Wiederholung.
+ * Sie zählt nicht mehr -- die Note stand vor der Zwischenseite fest.
+ */
+function starteLernpotential() {
+  imLernpotential = true;
+  stapel = lernpotential(stapel, zuWiederholen.map((eintrag) => eintrag.id));
+  index = 0;
+  zeigeAktuelle();
 }
 
 /**
@@ -262,4 +272,9 @@ function aufTipp() {
 
 // Kein start() beim Laden: zuerst steht die Wahl zwischen Übungsblatt und
 // Arbeit auf dem Bildschirm, und die stößt die Runde an.
-ui.verbinde({ aufAbsenden, aufStart: start, aufTipp });
+ui.verbinde({
+  aufAbsenden,
+  aufStart: start,
+  aufTipp,
+  aufWeiter: starteLernpotential,
+});

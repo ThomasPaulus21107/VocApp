@@ -2,6 +2,7 @@
 // Weiß nichts davon, was richtig oder falsch bedeutet -- bekommt das gesagt.
 
 import * as klang from './klang.js';
+import * as effekte from './effekte.js';
 
 const el = {
   frage: document.querySelector('#frage'),
@@ -17,6 +18,10 @@ const el = {
   loesung: document.querySelector('#loesung'),
   start: document.querySelector('#start'),
   karte: document.querySelector('#karte'),
+  zwischen: document.querySelector('#zwischen'),
+  zwischenTitel: document.querySelector('#zwischen-titel'),
+  zwischenText: document.querySelector('#zwischen-text'),
+  zwischenKnopf: document.querySelector('#zwischen-knopf'),
   ende: document.querySelector('#ende'),
   note: document.querySelector('#note'),
   endeText: document.querySelector('#ende-text'),
@@ -74,7 +79,7 @@ const FORM_NAME = {
  * Verbindet die Bedienelemente mit der App.
  * Ereignisse fließen nach oben: die UI meldet nur, WAS passiert ist.
  */
-export function verbinde({ aufAbsenden, aufStart, aufRichtungswechsel, aufTipp }) {
+export function verbinde({ aufAbsenden, aufStart, aufRichtungswechsel, aufTipp, aufWeiter }) {
   el.formular.addEventListener('submit', (ereignis) => {
     ereignis.preventDefault();
     aufAbsenden(el.eingabe.value);
@@ -87,6 +92,10 @@ export function verbinde({ aufAbsenden, aufStart, aufRichtungswechsel, aufTipp }
   });
 
   el.tippKnopf.addEventListener('click', aufTipp);
+
+  // Der Knopf auf der Zwischenseite startet die Wiederholung. Wann sie
+  // überhaupt kommt, entscheidet app.js -- die UI fragt nur nach.
+  el.zwischenKnopf.addEventListener('click', aufWeiter);
 
   // Das Auf- und Zuklappen der Liste geht die App nichts an: es steht nichts
   // auf dem Spiel, alle Daten sind schon da. Deshalb bleibt es hier.
@@ -117,6 +126,7 @@ export function verbinde({ aufAbsenden, aufStart, aufRichtungswechsel, aufTipp }
 export function zeigeKarte(frage, nummer, gesamt, tippsErlaubt, istLernpotential = false) {
   el.start.hidden = true;
   el.karte.hidden = false;
+  el.zwischen.hidden = true;
   el.ende.hidden = true;
 
   el.frage.textContent = frage.frage;
@@ -152,14 +162,26 @@ export function zeigeKarte(frage, nummer, gesamt, tippsErlaubt, istLernpotential
 
   el.rueckmeldung.textContent = '';
   el.rueckmeldung.className = 'rueckmeldung';
+}
 
-  // Beim Übergang in die zweite Runde sagt die App einmal, was jetzt kommt.
-  // Danach reicht der Zähler oben.
-  if (istLernpotential && nummer === 1) {
-    el.rueckmeldung.textContent =
-      'Diese Karten kommen noch einmal. Hier liegt dein Lernpotential!';
-    el.rueckmeldung.className = 'rueckmeldung rueckmeldung--hinweis';
-  }
+/**
+ * Die Zwischenseite zwischen Übung und Wiederholung. Sie bekommt nur die
+ * Zahl der offenen Karten -- Punkte und Note stehen bewusst NICHT hier:
+ * wer sie schon sieht, spielt die Wiederholung nicht mehr ernsthaft.
+ */
+export function zeigeZwischenstand(offene) {
+  el.start.hidden = true;
+  el.karte.hidden = true;
+  el.zwischen.hidden = false;
+  el.ende.hidden = true;
+
+  el.zwischenTitel.textContent = 'Die Runde ist durch!';
+  el.zwischenText.textContent = offene === 1
+    ? 'Eine Karte hat noch Lernpotential. Die kommt jetzt noch einmal.'
+    : `${offene} Karten haben noch Lernpotential. Die kommen jetzt noch einmal.`;
+
+  klang.spiele('geschafft');
+  el.zwischenKnopf.focus();
 }
 
 export function zeigeTipp(text) {
@@ -262,6 +284,7 @@ function schliesseKarteAb() {
 export function zeigeEnde(note, punkte, hoechstpunktzahl, ergebnisse, lernpotential = null) {
   el.start.hidden = true;
   el.karte.hidden = true;
+  el.zwischen.hidden = true;
   el.ende.hidden = false;
 
   el.note.textContent = note;
@@ -278,6 +301,11 @@ export function zeigeEnde(note, punkte, hoechstpunktzahl, ergebnisse, lernpotent
 
   // Der erste der beiden Modus-Knöpfe ist das Übungsblatt.
   el.ende.querySelector('[data-modus]').focus();
+
+  // Ganz zum Schluss die Belohnung: welche Note welchen Effekt bekommt,
+  // steht in effekte.js. Ohne Effekt bleibt es auch still.
+  const effekt = effekte.zeige(note);
+  if (effekt) klang.spiele(effekt);
 }
 
 /**

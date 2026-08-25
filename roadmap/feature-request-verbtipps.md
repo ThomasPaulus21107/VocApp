@@ -1,6 +1,6 @@
 # Feature: Tipps, die bei der Form helfen
 
-**Status:** in [Sprint 3](sprint-03.md)
+**Status:** bereit — durchdacht, noch nicht gebaut
 **Wo:** `data/unregelmaessige-verben.json` — Matildas Arbeit
 
 Die Tipps bei den unregelmäßigen Verben erklären gerade die **Bedeutung** des

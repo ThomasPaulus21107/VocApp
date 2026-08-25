@@ -1,6 +1,6 @@
 # Feature: Die Optionsseite
 
-**Status:** in [Sprint 3](sprint-03.md)
+**Status:** bereit — durchdacht, noch nicht gebaut
 **Wo im Code:** `optionen.html`, `src/ui/` — neu
 
 Eine eigene Seite, auf der man einstellt, wie geübt wird. Nicht als Klappe
@@ -14,28 +14,29 @@ Vite kann mehrere Einstiegspunkte — `optionen.html` kommt als Eintrag in
 Zustandsverwaltung.** Ein Link hin, ein Link zurück. Auf GitHub Pages
 funktioniert das ohne Server-Konfiguration, weil es eine echte Datei ist.
 
-## Die drei Schalter zum Start
+## Was auf die Seite kommt
 
-| Schalter | Werte |
+Aufgeteilt am 2026-08-25. Vorher standen hier drei Schalter, von denen unter
+dem Verb-Fokus keiner übrig blieb:
+
+| Schalter | Wo er jetzt steht |
 |---|---|
-| Töne | an / aus |
-| Was wird geübt | Vokabeln / unregelmäßige Verben / beides |
-| Richtung | Englisch → Deutsch / Deutsch → Englisch |
+| Töne an/aus | zieht mit [`storage.js`](feature-request-einstellungen-speichern.md) vor, vorerst auf der Startseite |
+| Was wird geübt | ruht mit dem Vokabel-Strang, siehe `backlog.md` |
+| Richtung | eigene Entscheidung, siehe [Richtung](feature-request-richtung.md) |
 
-Der Ton-Schalter ist der einfachste erste Kunde für die Speicher-Naht: ein
-`true`/`false`, an dem man sieht, ob sie funktioniert, bevor Wichtigeres
-durchgeht.
+**Die Seite selbst wird damit erst gebaut, wenn es zwei Schalter zu zeigen
+gibt.** Vorher ist sie eine leere Seite mit einem Link darauf. Das ist keine
+Absage, sondern eine Reihenfolge: erst die Schalter, dann der Ort für sie.
 
-Die Richtungswahl ist fast geschenkt — die Radios **stehen schon** in
-`index.html` und sind in `ui.js` verdrahtet, sie werden nur nicht aufgerufen
-und bleiben deshalb ausgeblendet. Sie müssen nur auf die Optionsseite
-umziehen.
+Was dann als Erstes darauf gehört, ist der Töne-Schalter — er zieht von der
+Startseite um, wo er nur zwischengeparkt ist.
 
 ## Voraussetzungen
 
 - [Einstellungen speichern](feature-request-einstellungen-speichern.md) — sonst ist
   jede Einstellung beim Neuladen wieder weg
-- [Übungsauswahl](feature-request-uebungsauswahl.md) liefert den mittleren Schalter
+- **Mindestens zwei Schalter**, die es zu zeigen lohnt
 
 ## Später
 
