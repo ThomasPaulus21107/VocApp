@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   normalisiere, stelleFrage, stelleFormFrage, stelleFrageZuForm, baueHinweis, zieheRunde,
-  pruefeAntwort, mische, RICHTUNGEN,
+  pruefeAntwort, fastGleich, mische, RICHTUNGEN,
 } from '../src/domain/pruefung.js';
 
 const bike = {
@@ -200,5 +200,60 @@ describe('mische', () => {
     const stapel = [1, 2, 3];
     mische(stapel, () => 0);
     expect(stapel).toEqual([1, 2, 3]);
+  });
+});
+
+describe('fastGleich', () => {
+  it('lässt einen vertauschten Buchstaben durch', () => {
+    expect(fastGleich('wrotr', 'wrote')).toBe(true);
+  });
+
+  it('lässt einen Buchstaben zu viel durch', () => {
+    expect(fastGleich('wrotee', 'wrote')).toBe(true);
+  });
+
+  it('lässt einen Buchstaben zu wenig durch', () => {
+    expect(fastGleich('wrte', 'wrote')).toBe(true);
+  });
+
+  it('lässt zwei Fehler nicht durch', () => {
+    expect(fastGleich('wrtr', 'wrote')).toBe(false);
+  });
+
+  it('ist bei kurzen Wörtern streng', () => {
+    // "war" ist das deutsche Wort und darf nie als "was" durchgehen.
+    expect(fastGleich('war', 'was')).toBe(false);
+    expect(fastGleich('sang', 'sung')).toBe(false);
+  });
+
+  it('nimmt das gleiche Wort natürlich auch', () => {
+    expect(fastGleich('wrote', 'wrote')).toBe(true);
+  });
+});
+
+describe('pruefeAntwort mit erlaubten Tippfehlern', () => {
+  const frage = { antworten: ['brought'] };
+
+  it('zählt einen Tippfehler als richtig und sagt es dazu', () => {
+    const ergebnis = pruefeAntwort('brougt', frage, true);
+    expect(ergebnis.richtig).toBe(true);
+    expect(ergebnis.tippfehler).toBe(true);
+  });
+
+  it('meldet bei genau richtiger Antwort keinen Tippfehler', () => {
+    const ergebnis = pruefeAntwort('brought', frage, true);
+    expect(ergebnis.richtig).toBe(true);
+    expect(ergebnis.tippfehler).toBe(false);
+  });
+
+  it('bleibt ohne die Erlaubnis streng', () => {
+    expect(pruefeAntwort('brougt', frage, false).richtig).toBe(false);
+    expect(pruefeAntwort('brougt', frage).richtig).toBe(false);
+  });
+
+  it('lässt die beiden Easter Eggs nicht über Ähnlichkeit durchrutschen', () => {
+    const eggs = { antworten: ['keine ahnungx'] };
+    expect(pruefeAntwort('keine ahnung', eggs, true).mutmachen).toBe(true);
+    expect(pruefeAntwort('keine ahnung', eggs, true).richtig).toBe(false);
   });
 });

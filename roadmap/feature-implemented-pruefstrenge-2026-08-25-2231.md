@@ -1,6 +1,6 @@
 # Feature: Wie streng die App prüft
 
-**Status:** bereit — durchdacht, noch nicht gebaut
+**Status:** umgesetzt am 25.08.2026 um 22:31
 **Wo im Code:** `src/domain/pruefung.js`, Regel in `src/domain/modus.js`
 
 Entschieden am 2026-08-25. Die Frage stand seit Sprint 1 als Häkchen in
@@ -68,3 +68,43 @@ nicht.
 Es ist reine Domänenarbeit, vollständig testbar, ohne neue Abhängigkeit. Und
 es betrifft jede Verbkarte: Formen wie „brought", „thought" oder „ridden"
 sind genau die Wörter, bei denen man sich vertippt, ohne sie nicht zu können.
+
+
+---
+
+## Wie es gebaut wurde
+
+`tippfehlerErlaubt` ist die sechste Zeile in der Regeltabelle: Übungsblatt
+`true`, Arbeit `false`. `pruefeAntwort(eingabe, frage, tippfehlerErlaubt)`
+nimmt sie als dritten Parameter, der ohne Angabe `false` ist — im Zweifel
+wird also streng geprüft.
+
+### `fastGleich(getippt, erwartet)`
+
+Vergleicht von vorne bis zur ersten Abweichung und von hinten genauso. Was
+dazwischen übrig bleibt, ist der Fehler: höchstens ein Zeichen auf jeder
+Seite. Damit sind alle drei Tippfehler abgedeckt — vertauscht, zu viel, zu
+wenig — ohne eine Distanzmatrix und ohne verschachtelte Schleife.
+
+Die drei Regeln aus dem Plan stehen alle im Code:
+
+- **Erst ab fünf Buchstaben** (`KURZ_GENUG_FUER_TOLERANZ`). Der Test hält
+  ausdrücklich fest, dass „war" nie als „was" durchgehen darf und „sang" nicht
+  als „sung".
+- **Die Toleranz greift zuletzt**, nach `s`, nach „keine ahnung" und nach dem
+  genauen Vergleich. Ein Test sichert das ab.
+- **Die Schreibweise kommt auf den Bildschirm:** das Ergebnis trägt
+  `tippfehler: true`, und die Rückmeldung heißt dann „Richtig! Kleiner
+  Tippfehler, schau dir die Schreibweise an:" statt nur „Richtig!". Die drei
+  Formen stehen ohnehin direkt darunter.
+
+### Punkte
+
+Unverändert: ein durchgelassener Tippfehler zählt als richtige Antwort und
+kostet nichts. In der Arbeit gibt es die Nachsicht nicht, und dort zählt die
+Note.
+
+### Tests
+
+Elf neue: sechs auf `fastGleich`, vier auf `pruefeAntwort` mit und ohne
+Erlaubnis, einer auf die Regeltabelle.

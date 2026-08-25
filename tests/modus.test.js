@@ -32,6 +32,11 @@ describe('regeln', () => {
     expect(regeln(MODI.ARBEIT).lernpotential).toBe(false);
   });
 
+  it('lässt Tippfehler nur im Übungsblatt durchgehen', () => {
+    expect(regeln(MODI.UEBUNGSBLATT).tippfehlerErlaubt).toBe(true);
+    expect(regeln(MODI.ARBEIT).tippfehlerErlaubt).toBe(false);
+  });
+
   it('übt im Zweifel, statt zu prüfen', () => {
     expect(regeln('quatsch')).toEqual(regeln(MODI.UEBUNGSBLATT));
     expect(regeln(undefined)).toEqual(regeln(MODI.UEBUNGSBLATT));
