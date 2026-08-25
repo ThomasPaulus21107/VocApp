@@ -124,7 +124,7 @@ function aufAbsenden(eingabe) {
     return;
   }
 
-  const ergebnis = pruefeAntwort(eingabe, frage);
+  const ergebnis = pruefeAntwort(eingabe, frage, regel.tippfehlerErlaubt);
 
   // Bei leerer Eingabe bleiben wir auf derselben Karte, ohne einen Versuch
   // zu verbrauchen.
@@ -165,7 +165,9 @@ function aufAbsenden(eingabe) {
     }
 
     versuch = ERLEDIGT;
-    ui.zeigeRichtig(frage.loesung, frage.gesuchteForm);
+    // Ein durchgelassener Tippfehler wird gezeigt, nicht verschwiegen --
+    // sonst übt man die falsche Schreibweise ein.
+    ui.zeigeRichtig(frage.loesung, frage.gesuchteForm, ergebnis.tippfehler);
     return;
   }
 

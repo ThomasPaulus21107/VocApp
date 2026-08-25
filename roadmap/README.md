@@ -76,6 +76,9 @@ Von unten nach oben, neueste zuerst.
 
 | Feature | Wann |
 |---|---|
+| [Wie streng die App prüft](feature-implemented-pruefstrenge-2026-08-25-2231.md) | 25.08. 22:31 |
+| [Kleinkram in der Oberfläche](feature-implemented-kleinkram-2026-08-25-2231.md) | 25.08. 22:31 |
+| [Die App passt auf ein schmales Handy](feature-implemented-mobile-390-2026-08-25-2231.md) | 25.08. 22:31 |
 | [Der Moment nach der Runde](feature-implemented-nach-der-runde-2026-08-25-2212.md) | 25.08. 22:12 |
 | [Die Lernpotential-Runde](feature-implemented-lernpotential-2026-08-24-2211.md) | 24.08. 22:11 |
 | [Übungsblatt oder Arbeit](feature-implemented-arbeit-oder-uebungsblatt-2026-08-24-2022.md) | 24.08. 20:22 |
@@ -94,14 +97,11 @@ Von unten nach oben, neueste zuerst.
 
 | Feature | Wer |
 |---|---|
-| [Wie streng die App prüft](feature-request-pruefstrenge.md) | Thomas |
 | [Tipps, die bei der Form helfen](feature-request-verbtipps.md) | Matilda |
-| [Zwei Kleinigkeiten in der Übungsrunde](feature-request-feinschliff.md) | Matilda |
 | [Einstellungen, die bleiben](feature-request-einstellungen-speichern.md) | Thomas |
 | [Die Optionsseite](feature-request-optionsseite.md) | Thomas, Gestaltung Matilda |
 | [Namensfeld statt Login](feature-request-namensfeld.md) | Thomas |
-| [Die App passt auf ein schmales Handy](feature-request-mobile-390.md) | Thomas |
-| [Rote Tests blockieren den Merge](feature-request-tests-in-ci.md) | Thomas |
+| [Rote Tests blockieren den Merge](feature-request-tests-in-ci.md) | Thomas — Datei steht, Häkchen fehlt |
 | [Ob die Abfragerichtung umschaltbar wird](feature-request-richtung.md) | Entscheidung |
 | [Wie die Oberfläche getestet wird](feature-request-ui-tests.md) | Entscheidung |
 

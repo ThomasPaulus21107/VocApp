@@ -215,8 +215,13 @@ export function zeigeMutmacher() {
   el.eingabe.focus();
 }
 
-export function zeigeRichtig(loesung, gesuchteForm) {
-  el.rueckmeldung.textContent = 'Richtig!';
+export function zeigeRichtig(loesung, gesuchteForm, tippfehler = false) {
+  // Bei einem durchgelassenen Tippfehler zählt die Karte als richtig, aber
+  // die Rückmeldung sagt es dazu. Die richtige Schreibweise steht ohnehin
+  // gleich darunter in den drei Formen.
+  el.rueckmeldung.textContent = tippfehler
+    ? 'Richtig! Kleiner Tippfehler, schau dir die Schreibweise an:'
+    : 'Richtig!';
   el.rueckmeldung.className = 'rueckmeldung rueckmeldung--richtig';
   klang.spiele('richtig');
   zeigeLoesung(loesung, gesuchteForm);

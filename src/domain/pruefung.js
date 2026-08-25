@@ -133,30 +133,86 @@ export const SPRINGEN = 's';
 // offen, es gibt Zuspruch statt einer Bewertung.
 export const AUFGEBEN = 'keine ahnung';
 
+// Erst ab dieser Länge darf ein Tippfehler durchgehen. Bei kurzen Wörtern ist
+// ein Zeichen zu viel Spielraum: "war" wäre sonst ein richtiges "was" --
+// ausgerechnet das deutsche Wort. Gemessen wird die erwartete Antwort.
+export const KURZ_GENUG_FUER_TOLERANZ = 5;
+
+/**
+ * Sind zwei Wörter bis auf höchstens EIN Zeichen gleich? Erlaubt sind: ein
+ * Buchstabe vertauscht ("wrotr"), einer zu viel ("wrotee"), einer zu wenig
+ * ("wrte").
+ *
+ * Kurze Wörter zählen nie als ähnlich -- siehe KURZ_GENUG_FUER_TOLERANZ.
+ * Beide Wörter kommen bereits normalisiert herein.
+ */
+export function fastGleich(getippt, erwartet) {
+  if (erwartet.length < KURZ_GENUG_FUER_TOLERANZ) return false;
+
+  // Mehr als ein Zeichen Längenunterschied kann nie ein einzelner Tippfehler
+  // sein. Das spart den Vergleich und macht die Schleife darunter einfacher.
+  if (Math.abs(getippt.length - erwartet.length) > 1) return false;
+
+  // Von vorne bis zur ersten Abweichung laufen ...
+  let vorne = 0;
+  while (vorne < getippt.length &&
+         vorne < erwartet.length &&
+         getippt[vorne] === erwartet[vorne]) {
+    vorne++;
+  }
+
+  // ... und von hinten genauso. Was dazwischen übrig bleibt, ist der Fehler.
+  let hinten = 0;
+  while (hinten < getippt.length - vorne &&
+         hinten < erwartet.length - vorne &&
+         getippt[getippt.length - 1 - hinten] === erwartet[erwartet.length - 1 - hinten]) {
+    hinten++;
+  }
+
+  // Höchstens ein Zeichen darf übrig bleiben, und zwar auf jeder Seite.
+  return getippt.length - vorne - hinten <= 1 &&
+         erwartet.length - vorne - hinten <= 1;
+}
+
 /**
  * Prüft eine getippte Antwort gegen eine gestellte Frage.
  * Gibt IMMER ein Ergebnis-Objekt zurück und verändert nichts.
+ *
+ * `tippfehlerErlaubt` kommt aus den Regeln des Modus: im Übungsblatt geht ein
+ * Buchstabe daneben durch, in der Arbeit nicht. Ein so erkannter Tippfehler
+ * ist richtig -- aber das Ergebnis sagt mit `tippfehler` dazu, dass die
+ * richtige Schreibweise gezeigt werden muss. Sonst lernt man ihn mit.
  */
-export function pruefeAntwort(eingabe, frage) {
+export function pruefeAntwort(eingabe, frage, tippfehlerErlaubt = false) {
   const getippt = normalisiere(eingabe);
 
   if (getippt === '') {
-    return { richtig: false, leer: true, springen: false, mutmachen: false, erwartet: frage.antworten };
+    return { richtig: false, leer: true, springen: false, mutmachen: false, tippfehler: false, erwartet: frage.antworten };
   }
 
   if (getippt === SPRINGEN) {
-    return { richtig: false, leer: false, springen: true, mutmachen: false, erwartet: frage.antworten };
+    return { richtig: false, leer: false, springen: true, mutmachen: false, tippfehler: false, erwartet: frage.antworten };
   }
 
   if (getippt === AUFGEBEN) {
-    return { richtig: false, leer: false, springen: false, mutmachen: true, erwartet: frage.antworten };
+    return { richtig: false, leer: false, springen: false, mutmachen: true, tippfehler: false, erwartet: frage.antworten };
   }
 
   const richtig = frage.antworten.some(
     (antwort) => normalisiere(antwort) === getippt
   );
 
-  return { richtig, leer: false, springen: false, mutmachen: false, erwartet: frage.antworten };
+  if (richtig) {
+    return { richtig: true, leer: false, springen: false, mutmachen: false, tippfehler: false, erwartet: frage.antworten };
+  }
+
+  // Die Nachsicht kommt ganz zuletzt: erst die beiden Easter Eggs, dann der
+  // genaue Vergleich, und erst wenn beides nicht greift, der nachsichtige.
+  const tippfehler = tippfehlerErlaubt && frage.antworten.some(
+    (antwort) => fastGleich(getippt, normalisiere(antwort))
+  );
+
+  return { richtig: tippfehler, leer: false, springen: false, mutmachen: false, tippfehler, erwartet: frage.antworten };
 }
 
 /**

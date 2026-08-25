@@ -1,6 +1,6 @@
 # Feature: Rote Tests blockieren den Merge
 
-**Status:** bereit — durchdacht, noch nicht gebaut
+**Status:** halb — die Workflow-Datei steht, das Häkchen auf GitHub fehlt
 **Wo im Code:** `.github/workflows/`
 
 Ein Pull Request lässt sich nicht mehr mergen, wenn `npm test` fehlschlägt.
@@ -14,8 +14,20 @@ bis es eilig ist.
 
 ## Was zu tun ist
 
-- Ein Workflow, der bei jedem Pull Request `npm ci` und `npm test` ausführt
-- In den Branch-Protection-Regeln von `main` als **required check** eintragen
+- [x] Ein Workflow, der bei jedem Pull Request `npm ci` und `npm test`
+      ausführt — `.github/workflows/tests.yml`, seit dem 25.08.2026
+- [ ] In den Branch-Protection-Regeln von `main` als **required check**
+      eintragen
+
+**Erst der zweite Punkt macht das Feature fertig.** Solange er fehlt, läuft
+der Test zwar und ist am Pull Request zu sehen, blockiert aber nichts — und
+genau das Blockieren ist der Zweck. Die Datei heißt deshalb weiter
+`feature-request-*`.
+
+Der Weg auf GitHub: **Settings → Branches → Branch protection rule für `main`
+→ „Require status checks to pass before merging" → als Check `testen`
+auswählen.** Der Check taucht in der Liste erst auf, nachdem er einmal
+gelaufen ist — also nach dem ersten Pull Request mit dieser Datei.
 
 Das ist kein Code, den Matilda liest, und keine Zeile in der App. Es ist eine
 Workflow-Datei und ein Häkchen in den Repo-Einstellungen.

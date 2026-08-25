@@ -250,7 +250,9 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.5rem;
-  margin: 1rem 0 0;
+  /* Oben mehr Luft als unten: sonst klebt die Zeile am Fragewort und sieht
+     aus, als gehörte sie dazu. */
+  margin: 1.75rem 0 0.5rem;
   text-align: center;
 }
 

@@ -1,0 +1,30 @@
+# Laesst bei jedem Pull Request die Tests laufen. Damit ist "vor dem PR einmal
+# npm test" keine Absprache mehr, sondern eine Bedingung.
+#
+# Damit ein roter Lauf den Merge wirklich blockiert, muss dieser Job in den
+# Repo-Einstellungen unter Branch protection fuer main als "required status
+# check" eingetragen sein. Die Workflow-Datei allein reicht dafuer nicht.
+
+name: Tests
+
+on:
+  pull_request:
+  # Auch auf main, damit der Status dort sichtbar ist, wenn doch einmal
+  # jemand direkt pusht.
+  push:
+    branches: [main]
+
+jobs:
+  testen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      # npm ci installiert exakt nach package-lock.json und aendert sie nicht.
+      - run: npm ci
+      - run: npm test
