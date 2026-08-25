@@ -1,6 +1,6 @@
 # Feature: Die Ergebnisse nachlesen
 
-**Status:** umgesetzt am 24.08.2026 um 20:22, in [Sprint 3](sprint-03.md)
+**Status:** umgesetzt am 24.08.2026 um 20:22, [PR #13](https://github.com/ThomasPaulus21107/VocApp/pull/13)
 **Idee:** Matilda
 **Wo im Code:** `src/app.js`, `src/ui/ui.js`, `index.html`
 

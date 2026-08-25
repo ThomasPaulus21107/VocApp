@@ -1,6 +1,6 @@
 # Feature: Das Ergebnis als Schulnote
 
-**Status:** umgesetzt am 22.08.2026 um 11:15, in [Sprint 3](sprint-03.md)
+**Status:** umgesetzt am 22.08.2026 um 11:15, [PR #12](https://github.com/ThomasPaulus21107/VocApp/pull/12)
 **Wo im Code:** `src/domain/note.js`, `src/app.js`, `src/ui/ui.js`
 
 Am Ende einer Runde soll keine nackte Zahl stehen („11 von 15 richtig"),
@@ -84,11 +84,11 @@ nachvollziehbar, wo die Note herkommt.
 
 ## Noch offen
 
-Zieht man später weniger als 15 Karten — die
-[Übungsauswahl](feature-request-uebungsauswahl.md) kann das —, ist die
-Höchstpunktzahl kleiner und selbst eine fehlerfreie Runde ergäbe eine
-schlechte Note. Der Endbildschirm sagt deshalb ehrlich „von 9 Punkten", aber
-die Umrechnung passt dann nicht mehr. Gehört zur Übungsauswahl, nicht hierher.
+Zieht man später weniger als 15 Karten — die Übungsauswahl im
+[Backlog](backlog.md) kann das —, ist die Höchstpunktzahl kleiner und selbst
+eine fehlerfreie Runde ergäbe eine schlechte Note. Der Endbildschirm sagt
+deshalb ehrlich „von 9 Punkten", aber die Umrechnung passt dann nicht mehr.
+Gehört zur Übungsauswahl, nicht hierher.
 
 ## Hängt zusammen mit
 

@@ -1,6 +1,6 @@
 # Feature: Die App passt auf ein schmales Handy
 
-**Status:** in [Sprint 3](sprint-03.md)
+**Status:** bereit — durchdacht, noch nicht gebaut
 **Wo im Code:** `src/ui/styles.css`
 
 Bei 390 Pixeln Breite lief die Karte rechts aus dem Bild, bei 560 passte

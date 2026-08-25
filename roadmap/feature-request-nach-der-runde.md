@@ -1,0 +1,84 @@
+# Feature: Der Moment nach der Runde
+
+**Status:** bereit — durchdacht, noch nicht gebaut
+**Wo im Code:** `index.html`, `src/ui/ui.js`, `src/ui/klang.js`, `src/ui/effekte.js` — neu
+
+Zwei Dinge, die denselben Augenblick betreffen: den Übergang von der Übung in
+die Wiederholung, und die Belohnung für eine sehr gute Runde. Beides ist
+Oberfläche und Ton, keine Regel — die Note ändert sich durch nichts davon.
+
+## 1. Die Zwischenseite
+
+Heute läuft nach der letzten Karte die
+[Lernpotential-Runde](feature-implemented-lernpotential-2026-08-24-2211.md)
+direkt an. Sichtbar ist das nur am Zähler oben und an einem Satz in der
+Rückmeldungszeile — wer gerade tippt, übersieht beides.
+
+Der Wechsel ist aber ein echter Einschnitt: **ab hier zählt nichts mehr.** Die
+Note steht, die Ergebnisliste steht, es geht nur noch ums Können.
+
+**Was gebaut wird:** ein eigener Abschnitt `<section id="zwischen">` in
+`index.html`, wie `#start` und `#ende` schon einer ist. Darauf:
+
+- „Die Runde ist durch." als Überschrift
+- „Vier Karten haben noch Lernpotential." — die Zahl kommt aus `app.js`
+- ein Knopf, der die zweite Runde startet
+- ein **positiver Signalton** beim Erscheinen: eine sechste Melodie in
+  `klang.js`, etwa `spiele('runde-geschafft')`
+
+**Wichtig: keine Punkte, keine Note auf dieser Seite.** Wer hier schon die Note
+sieht, spielt die Wiederholung nicht mehr ernsthaft. Die Zahl der offenen
+Karten ist alles, was gezeigt wird.
+
+**Wenn alles richtig war**, gibt es keine Zwischenseite — dann geht es wie
+heute direkt zur Note. Es gäbe nichts anzukündigen. In der Arbeit gibt es sie
+ohnehin nicht, dort gibt es keine Wiederholung.
+
+Der einmalige Hinweissatz auf der ersten Wiederholungskarte in `ui.zeigeKarte`
+wird damit überflüssig und kann weg — die Zwischenseite sagt es besser.
+
+## 2. Spezialeffekte für die Spitzennoten
+
+Für die drei besten Ergebnisse je ein eigener Effekt auf dem Ende-Bildschirm:
+
+| Punkte | Note | Effekt |
+|---|---|---|
+| 15 | 1+ | **Rakete** — startet unten, fliegt nach oben aus dem Bild, mit Funkenspur |
+| 14 | 1 | **Konfetti** — bunte Schnipsel fallen und taumeln |
+| 13 | 1− | **Sternenregen** — Funken springen aus der Note heraus und verglühen |
+
+Andere Ideen, falls Matilda lieber etwas anderes will: Feuerwerk (Punkte, die
+aus einem Zentrum wegfliegen), Luftschlangen, ein Pokal, der hereinfällt und
+wackelt, oder die Note selbst, die pulsiert und die Farbe wechselt.
+
+### Wie es gebaut wird
+
+Eine neue Datei `src/ui/effekte.js`, die zweite Schwester von `klang.js`: sie
+bekommt einen Namen gesagt (`zeige('rakete')`) und entscheidet nichts selbst.
+
+- **Reines DOM und CSS**, kein Canvas, keine neue Abhängigkeit. Ein Schnipsel
+  ist ein `<span>` mit `transform` und `@keyframes`, dreißig davon mit
+  versetztem `animation-delay` sind das Konfetti.
+- **Kein `innerHTML`.** Das Teilchen steht als `<template>` in `index.html` und
+  wird geklont — dieselbe Regel wie bei der Ergebnisliste.
+- **Hinterher aufräumen:** die Elemente bei `animationend` wieder entfernen,
+  sonst wachsen sie über mehrere Runden an.
+- **`prefers-reduced-motion: reduce`** respektieren: dann bleibt der Ton, die
+  Bewegung fällt weg.
+- Je eine kurze Fanfare dazu in `MELODIEN`.
+
+### Was daran Matilda gehört
+
+Die Zuordnung Note → Effekt steht als Tabelle in `effekte.js`, direkt neben
+`NOTEN_TEXTE` im Geist: Zeile ändern, speichern, Runde spielen. Die Farben
+kommen aus dem Variablenblock in `styles.css`, sind also schon ihre.
+
+**Eine Falle beim Bauen:** die Schlüssel sind die Noten als Zeichenkette, und
+das Zeichen in „1−" ist ein echtes Minus (U+2212), kein Bindestrich. Es kommt
+aus der `NOTEN`-Tabelle in `domain/note.js` und darf nicht umgetippt werden.
+
+## Warum beides zusammen in einer Datei steht
+
+Es ist derselbe Nachmittag: `klang.js` bekommt neue Melodien, `index.html`
+bekommt neue Abschnitte, und beides ist Oberfläche ohne Regeländerung. Getrennt
+wären es zwei Dateien, die dieselben drei Dateien anfassen.

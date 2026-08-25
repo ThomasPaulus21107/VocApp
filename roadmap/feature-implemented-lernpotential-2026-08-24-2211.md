@@ -1,6 +1,6 @@
 # Feature: Die Lernpotential-Runde
 
-**Status:** umgesetzt am 24.08.2026 um 22:11, in [Sprint 3](sprint-03.md)
+**Status:** umgesetzt am 24.08.2026 um 22:11, [PR #14](https://github.com/ThomasPaulus21107/VocApp/pull/14)
 **Wo im Code:** `src/domain/lernpotential.js`, Regel in `src/domain/modus.js`,
 Wiederholung derselben Form über `stelleFrageZuForm()` in `src/domain/pruefung.js`
 

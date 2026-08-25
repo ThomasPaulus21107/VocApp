@@ -1,6 +1,6 @@
 # Feature: Entscheiden, wie die Oberfläche getestet wird
 
-**Status:** bereit — noch keinem Sprint zugeordnet
+**Status:** bereit — durchdacht, noch nicht gebaut
 **Wo im Code:** `tests/`, `package.json`
 
 Kein Feature für die App, sondern eine Entscheidung über eine neue
@@ -9,7 +9,8 @@ andere.
 
 ## Der Anlass
 
-In Sprint 1 ist ein Fehler durchgerutscht, den kein Test finden konnte:
+Am 20.08.2026 ist ein Fehler durchgerutscht, den kein Test finden konnte
+([PR #8](https://github.com/ThomasPaulus21107/VocApp/pull/8)):
 `display: flex` hat das `hidden`-Attribut überstimmt, die Formenzeile blieb
 sichtbar stehen. Reine Funktionstests sehen so etwas nie — sie kennen kein
 Layout.

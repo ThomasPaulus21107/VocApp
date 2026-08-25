@@ -1,6 +1,6 @@
 # Feature: Namensfeld statt Login
 
-**Status:** bereit — noch keinem Sprint zugeordnet
+**Status:** bereit — durchdacht, noch nicht gebaut
 **Wo im Code:** `optionen.html`, `src/infra/storage.js`
 
 Ein Textfeld auf der Optionsseite. Der eingetragene Name wird dem
