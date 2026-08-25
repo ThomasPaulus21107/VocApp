@@ -28,11 +28,31 @@ const EFFEKTE = {
 
 // Wie viele Teilchen ein Effekt bekommt. Mehr sieht voller aus und kostet
 // mehr Rechenzeit -- auf einem alten Handy merkt man das.
+//
+// Bei der Rakete ist das ERSTE Teilchen die Rakete selbst, alle weiteren sind
+// die Funken ihrer Spur. 1 + 13 also.
 const TEILCHEN = {
-  rakete: 1,
+  rakete: 14,
   konfetti: 30,
   sterne: 12,
 };
+
+// Wie lange ein Teilchen fliegt: eine feste Grundzeit und ein Zufallszuschlag
+// obendrauf, damit nicht alles gleichzeitig ankommt. In Sekunden.
+//
+// Die Rakete braucht am längsten -- sie zittert erst und hebt dann ab. Wer
+// sie länger fliegen lassen will, ändert hier die Zahl und in styles.css
+// nichts: die Bewegung richtet sich nach der Dauer.
+const DAUER = {
+  rakete:   { grund: 2.8, zufall: 0 },
+  funke:    { grund: 1.2, zufall: 0.4 },
+  konfetti: { grund: 1.4, zufall: 0.8 },
+  sterne:   { grund: 1.4, zufall: 0.8 },
+};
+
+// Wann die Funken der Raketenspur loslegen: erst wenn die Rakete abgehoben
+// hat. Vorher zittert sie noch, da wäre eine Spur unter ihr Unsinn.
+const ABHEBEN = 0.9;
 
 const el = {
   buehne: document.querySelector('#effekt'),
@@ -78,20 +98,29 @@ export function zeige(note) {
  */
 function baueTeilchen(effekt, nummer) {
   const teilchen = el.vorlage.content.firstElementChild.cloneNode(true);
-  teilchen.classList.add(`teilchen--${effekt}`);
+
+  // Bei der Rakete sieht das erste Teilchen anders aus als alle weiteren:
+  // eins ist die Rakete, der Rest ist ihre Spur.
+  const art = effekt === 'rakete' && nummer > 0 ? 'funke' : effekt;
+  teilchen.classList.add(`teilchen--${art}`);
 
   // Ohne Zufall sähen alle dreißig Schnipsel gleich aus und fielen im
   // Gleichschritt. Der Zufall darf hier stehen: das ist Anzeige, keine Regel.
+  const dauer = DAUER[art];
   teilchen.style.setProperty('--links', `${Math.random() * 100}%`);
   teilchen.style.setProperty('--drehung', `${Math.random() * 720 - 360}deg`);
-  teilchen.style.setProperty('--warten', `${nummer * 0.04}s`);
-  teilchen.style.setProperty('--dauer', `${1.4 + Math.random() * 0.8}s`);
-  // Nur die Funken brauchen auch eine Höhe: sie springen rund um die Note,
+  teilchen.style.setProperty('--dauer', `${dauer.grund + Math.random() * dauer.zufall}s`);
+  teilchen.style.setProperty('--warten',
+    art === 'funke' ? `${ABHEBEN + nummer * 0.05}s` : `${nummer * 0.04}s`);
+  // Nur die Sternfunken brauchen eine Höhe: sie springen rund um die Note,
   // statt wie das Konfetti von oben zu fallen.
   teilchen.style.setProperty('--hoch', `${20 + Math.random() * 40}%`);
+  // Die Raketenspur weht leicht zur Seite, sonst wäre sie ein Strich.
+  teilchen.style.setProperty('--seite', `${Math.random() * 3 - 1.5}rem`);
 
-  if (effekt === 'rakete') teilchen.textContent = '🚀';
-  if (effekt === 'sterne') teilchen.textContent = '✨';
+  if (art === 'rakete') teilchen.textContent = '🚀';
+  if (art === 'sterne') teilchen.textContent = '✨';
+  if (art === 'funke') teilchen.textContent = '✦';
 
   // Aufräumen, sobald das Teilchen ausgeflogen ist. Sonst sammeln sich über
   // mehrere Runden hunderte unsichtbare Elemente an.

@@ -367,18 +367,42 @@ body {
   animation-timing-function: ease-out;
 }
 
-/* Die Rakete startet unten in der Mitte und fliegt oben raus. */
+/* Die Rakete steht unten in der Mitte, zittert erst wie beim Countdown und
+   hebt dann ab. Das Zittern ist der erste Drittel der Bewegung -- wer es
+   laenger oder kuerzer will, verschiebt die Prozentzahlen unten. */
 .teilchen--rakete {
   left: 50%;
-  bottom: -3rem;
-  font-size: 3rem;
+  bottom: 2rem;
+  font-size: 4rem;
   animation-name: rakete;
   animation-timing-function: ease-in;
 }
 
 @keyframes rakete {
-  from { transform: translate(-50%, 0) rotate(-45deg); opacity: 1; }
-  to   { transform: translate(-50%, -110vh) rotate(-45deg); opacity: 0.2; }
+  0%   { transform: translate(-50%, 0) rotate(-45deg) scale(1); }
+  6%   { transform: translate(-56%, 0) rotate(-50deg) scale(1.05); }
+  12%  { transform: translate(-44%, 0) rotate(-40deg) scale(1); }
+  18%  { transform: translate(-56%, 0) rotate(-50deg) scale(1.05); }
+  24%  { transform: translate(-44%, 0) rotate(-40deg) scale(1); }
+  30%  { transform: translate(-50%, 0) rotate(-45deg) scale(1.15); }
+  100% { transform: translate(-50%, -125vh) rotate(-45deg) scale(0.9); }
+}
+
+/* Die Funken der Raketenspur. Sie starten unten in der Mitte, sobald die
+   Rakete weg ist, wehen leicht zur Seite und verglimmen. */
+.teilchen--funke {
+  left: 50%;
+  bottom: 2.5rem;
+  font-size: 1.25rem;
+  color: var(--richtig);
+  animation-name: funke;
+}
+
+.teilchen--funke:nth-child(2n) { color: var(--falsch); }
+
+@keyframes funke {
+  from { transform: translate(-50%, 0) scale(1.1); opacity: 0.95; }
+  to   { transform: translate(calc(-50% + var(--seite)), -75vh) scale(0.2); opacity: 0; }
 }
 
 /* Konfetti: bunte Schnipsel, die von oben fallen und dabei taumeln. */

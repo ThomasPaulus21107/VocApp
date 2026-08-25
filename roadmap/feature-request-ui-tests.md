@@ -39,6 +39,6 @@ Keine. Kann jederzeit passieren.
 
 ## Nicht verwechseln mit
 
-[Rote Tests blockieren den Merge](feature-request-tests-in-ci.md) — dort geht es
+[Rote Tests blockieren den Merge](feature-implemented-tests-in-ci-2026-08-25-2243.md) — dort geht es
 darum, die vorhandenen Tests verbindlich zu machen. Das ist unabhängig davon
 und braucht keine neue Abhängigkeit.
