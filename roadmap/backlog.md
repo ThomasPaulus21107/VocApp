@@ -34,8 +34,9 @@ in der Git-Historie.
   Summand in der Gewichtsformel, dazu die Zeile `auswahlGewichtet` in
   `modus.js` und der Verhältnis-Deckel, damit eine Übungsrunde nicht nur aus
   Karten besteht, die wehtun.
-  `braucht:` [den Lernstand](implemented/feature-lernstand-2026-08-29-1531.md) — **steht**, dort
-  zählt schon, was danebengeht
+  `braucht:` [den Lernstand](implemented/feature-lernstand-2026-08-29-1531.md) — **steht**,
+  und mit `score()` gibt es die Zahl schon fertig: der zweite Summand ist
+  `1 - score / 100`.
   `offen:` nichts Grundsätzliches. Es ist die ausführlichste Beschreibung im
   Ordner und wartet nur darauf, gebaut zu werden.
 
@@ -64,12 +65,14 @@ sich damit gerade **nicht** festlegt.
   Solange sie offen ist, wird an [Mehrere Nutzer](feature-request-mehrere-nutzer.md)
   nichts gebaut.
 
-- **Streak über mehrere Tage.** „Vier Tage hintereinander geübt."
-  `braucht:` die Antwort oben, und
-  [den Lernstand](implemented/feature-lernstand-2026-08-29-1531.md) — dort steht das Datum ohnehin
-  in jeder Zeile
-  `braucht:` das Datum von außen: `berechneStreak(ereignisse, heute)`, nie
-  `new Date()` in der Domäne
+- **Aus der Serie soll etwas folgen.** *Gezählt* wird sie seit dem 29.08.2026
+  auf der [Fleiß-Seite](feature-request-fleiss.md) — „vier Tage
+  hintereinander geübt" steht dort. Offen ist nur noch, ob sie auch etwas
+  **wert** ist: Punkte, ein Abzeichen, ein Satz zur Begrüßung.
+  `braucht:` die Antwort oben. Solange nicht feststeht, was ein Punkt ist,
+  wäre eine belohnte Serie eine zweite Währung neben der ersten.
+  `offen:` was passiert, wenn sie reißt. Bei null anfangen ist ehrlich und
+  hart; die längste Serie daneben stehenzulassen ist freundlicher.
 
 ## Über ein Gerät hinaus
 
