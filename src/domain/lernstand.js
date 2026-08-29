@@ -19,13 +19,18 @@ export const AUSGAENGE = {
 };
 
 /** Der Stand, bevor je etwas geuebt wurde. */
-export const LEER = { rundeNr: 0, einheiten: {}, verlauf: [] };
+export const LEER = { rundeNr: 0, einheiten: {}, verlauf: [], tage: {} };
 
 // Etwa 50 Runden zu 15 Antworten. Der Verlauf ist das Gegengift gegen das
 // Festlegen: aus ihm laesst sich ein anderes Koennen-Modell neu rechnen,
 // statt es nur fortzuschreiben. Er waechst nicht -- was hinten hereinkommt,
 // faellt vorne heraus.
 export const VERLAUF_MAX = 750;
+
+// Wie viele Tage aufgehoben werden. Ein Tag kostet ein paar Dutzend Byte, ein
+// Jahr also kaum mehr als eine Runde. Der Verlauf oben taugt dafuer NICHT:
+// wer viel uebt, verliert dort die alten Tage nach ein paar Wochen.
+export const TAGE_MAX = 400;
 
 /**
  * Der Name, unter dem eine Einheit gemerkt wird.
@@ -86,7 +91,7 @@ export function merkeGezogen(stand, gezogen) {
  * mehr zu retten.
  */
 export function verrechne(stand, ergebnis, jetzt) {
-  const { id, form, ausgang, versuch, tipp, modus, punkte = 0 } = ergebnis;
+  const { id, form, ausgang, versuch, tipp, modus, punkte = 0, tag } = ergebnis;
   const name = schluessel(id, form);
   const alt = stand.einheiten[name] ?? frisch();
 
@@ -112,7 +117,34 @@ export function verrechne(stand, ergebnis, jetzt) {
     ...stand,
     einheiten: { ...stand.einheiten, [name]: neu },
     verlauf: verlauf.slice(-VERLAUF_MAX),
+    tage: zaehleTag(stand.tage, tag, ausgang, punkte),
   };
+}
+
+/**
+ * Schreibt eine Antwort auf ihren Tag. Der Tag kommt als "JJJJ-MM-TT" von
+ * aussen -- welcher Tag gerade ist, weiss nur, wer die Uhr kennt.
+ */
+function zaehleTag(tage = {}, tag, ausgang, punkte) {
+  if (!tag) return tage;
+
+  const alt = tage[tag] ?? { antworten: 0, richtig: 0, summe: 0 };
+  const neu = {
+    ...tage,
+    [tag]: {
+      antworten: alt.antworten + 1,
+      richtig: alt.richtig + (ausgang === AUSGAENGE.RICHTIG ? 1 : 0),
+      summe: alt.summe + punkte,
+    },
+  };
+
+  // Aeltestes fliegt raus, wenn es zu viel wird. Die Schluessel sind Datums-
+  // texte, die sortieren sich von allein richtig.
+  const schluessel = Object.keys(neu).sort();
+  if (schluessel.length <= TAGE_MAX) return neu;
+
+  for (const alt of schluessel.slice(0, schluessel.length - TAGE_MAX)) delete neu[alt];
+  return neu;
 }
 
 /**
@@ -194,4 +226,43 @@ export function uebersicht(stand, namen) {
     antworten: beantwortet.reduce((summe, e) => summe + e.dran, 0),
     zuletztGeuebt: stand.verlauf.at(-1)?.zeit ?? null,
   };
+}
+
+/**
+ * Die letzten `anzahl` Tage, aeltester zuerst -- auch die, an denen nichts
+ * passiert ist. Ein Balkendiagramm mit Luecken zeigt Fleiss ehrlicher als
+ * eines, das nur die guten Tage kennt.
+ *
+ * `heute` ist ein Datumstext "JJJJ-MM-TT". Date wird hier nur zum Rechnen
+ * benutzt, nicht zum Fragen, wie spaet es ist -- das bleibt draussen.
+ */
+export function fleiss(stand, heute, anzahl = 30) {
+  const tage = [];
+  const ms = Date.parse(`${heute}T00:00:00Z`);
+
+  for (let zurueck = anzahl - 1; zurueck >= 0; zurueck--) {
+    const tag = new Date(ms - zurueck * 86400000).toISOString().slice(0, 10);
+    const eintrag = stand.tage?.[tag] ?? { antworten: 0, richtig: 0, summe: 0 };
+
+    tage.push({
+      tag,
+      antworten: eintrag.antworten,
+      richtig: eintrag.richtig,
+      // Die Trefferquote gibt es nur an Tagen, an denen geuebt wurde.
+      quote: eintrag.antworten === 0
+        ? null
+        : Math.round((eintrag.richtig / eintrag.antworten) * 100),
+    });
+  }
+  return tage;
+}
+
+/** Wie viele Tage am Stueck zuletzt geuebt wurde, heute mitgezaehlt. */
+export function serie(tage) {
+  let serie = 0;
+  for (let i = tage.length - 1; i >= 0; i--) {
+    if (tage[i].antworten === 0) break;
+    serie += 1;
+  }
+  return serie;
 }

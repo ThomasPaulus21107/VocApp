@@ -3,7 +3,8 @@
 import { describe, it, expect } from 'vitest';
 import {
   merkeGezogen, verrechne, zuletztVon, schluessel,
-  score, verteile, uebersicht, SICHER_AB_PROZENT,
+  score, verteile, uebersicht, fleiss, serie,
+  SICHER_AB_PROZENT, TAGE_MAX,
   AUSGAENGE, LEER, VERLAUF_MAX,
 } from '../src/domain/lernstand.js';
 
@@ -20,6 +21,7 @@ function antwort(ueberschreiben = {}) {
     tipp: false,
     modus: 'uebungsblatt',
     punkte: 1,          // auf Anhieb richtig, ohne Tipp
+    tag: '2026-08-29',
     ...ueberschreiben,
   };
 }
@@ -54,7 +56,7 @@ describe('merkeGezogen', () => {
 
   it('laesst den alten Stand unveraendert', () => {
     merkeGezogen(LEER, gezogen('uv-001'));
-    expect(LEER).toEqual({ rundeNr: 0, einheiten: {}, verlauf: [] });
+    expect(LEER).toEqual({ rundeNr: 0, einheiten: {}, verlauf: [], tage: {} });
   });
 });
 
@@ -247,5 +249,80 @@ describe('uebersicht', () => {
     expect(uebersicht(stand, namen)).toMatchObject({
       gesamt: 3, geuebt: 2, sicher: 1, runden: 1, antworten: 3, zuletztGeuebt: 3,
     });
+  });
+});
+
+describe('die Tage', () => {
+  it('zaehlt Antworten, Treffer und Punkte je Tag', () => {
+    let stand = verrechne(LEER, antwort({ tag: '2026-08-28' }), 1);
+    stand = verrechne(stand, antwort({ tag: '2026-08-29' }), 2);
+    stand = verrechne(stand, antwort({
+      tag: '2026-08-29', ausgang: AUSGAENGE.FALSCH, punkte: 0,
+    }), 3);
+
+    expect(stand.tage['2026-08-28']).toEqual({ antworten: 1, richtig: 1, summe: 1 });
+    expect(stand.tage['2026-08-29']).toEqual({ antworten: 2, richtig: 1, summe: 1 });
+  });
+
+  it('vergisst die aeltesten Tage, wenn es zu viele werden', () => {
+    let stand = LEER;
+    // Ein Tag mehr als erlaubt -- der erste muss verschwinden.
+    for (let i = 0; i <= TAGE_MAX; i++) {
+      const tag = new Date(Date.UTC(2020, 0, 1) + i * 86400000).toISOString().slice(0, 10);
+      stand = verrechne(stand, antwort({ tag }), i);
+    }
+
+    expect(Object.keys(stand.tage)).toHaveLength(TAGE_MAX);
+    expect(stand.tage['2020-01-01']).toBeUndefined();
+    expect(stand.tage['2020-01-02']).toBeDefined();
+  });
+});
+
+describe('fleiss', () => {
+  it('gibt genau so viele Tage zurueck wie gewuenscht, aeltester zuerst', () => {
+    const tage = fleiss(LEER, '2026-08-29', 30);
+
+    expect(tage).toHaveLength(30);
+    expect(tage[0].tag).toBe('2026-07-31');
+    expect(tage.at(-1).tag).toBe('2026-08-29');
+  });
+
+  it('zeigt auch die Tage, an denen nichts passiert ist', () => {
+    // Ein Diagramm, das nur die guten Tage kennt, zeigt keinen Fleiss.
+    const stand = verrechne(LEER, antwort({ tag: '2026-08-29' }), 1);
+    const tage = fleiss(stand, '2026-08-29', 3);
+
+    expect(tage.map((t) => t.antworten)).toEqual([0, 0, 1]);
+    expect(tage.map((t) => t.quote)).toEqual([null, null, 100]);
+  });
+
+  it('rechnet die Trefferquote aus Treffern und Antworten', () => {
+    let stand = verrechne(LEER, antwort({ tag: '2026-08-29' }), 1);
+    stand = verrechne(stand, antwort({
+      tag: '2026-08-29', ausgang: AUSGAENGE.FALSCH, punkte: 0,
+    }), 2);
+    stand = verrechne(stand, antwort({
+      tag: '2026-08-29', ausgang: AUSGAENGE.UEBERSPRUNGEN, punkte: 0,
+    }), 3);
+
+    expect(fleiss(stand, '2026-08-29', 1)[0]).toMatchObject({
+      antworten: 3, richtig: 1, quote: 33,
+    });
+  });
+});
+
+describe('serie', () => {
+  it('zaehlt die Tage am Stueck bis heute', () => {
+    let stand = LEER;
+    for (const tag of ['2026-08-25', '2026-08-27', '2026-08-28', '2026-08-29']) {
+      stand = verrechne(stand, antwort({ tag }), 1);
+    }
+    // Der 26. fehlt, also reicht die Serie nur bis zum 27.
+    expect(serie(fleiss(stand, '2026-08-29', 30))).toBe(3);
+  });
+
+  it('ist null, wenn heute noch nichts war', () => {
+    const stand = verrechne(LEER, antwort({ tag: '2026-08-28' }), 1);
+    expect(serie(fleiss(stand, '2026-08-29', 30))).toBe(0);
   });
 });

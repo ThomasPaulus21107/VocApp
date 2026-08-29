@@ -165,6 +165,11 @@ function merkeErgebnis({ ausgang, getippt, kartenpunkte }) {
       // Dieselbe Zahl, die auch in die Note eingeht. Aufsummiert und durch
       // die Zahl der Antworten geteilt ergibt sie den Score der Vokabel.
       punkte: kartenpunkte,
+      // Welcher Tag gerade ist, weiß nur, wer die Uhr kennt -- also hier.
+      // "sv" liefert das Datum als JJJJ-MM-TT, und zwar in der Zeitzone des
+      // Geräts: um halb eins nachts gehört die Runde noch zum Vortag, so wie
+      // Matilda es auch empfinden würde.
+      tag: new Date().toLocaleDateString('sv'),
     },
     Date.now()
   );
