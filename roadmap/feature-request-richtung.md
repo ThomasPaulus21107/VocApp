@@ -54,7 +54,7 @@ also nicht mehr „ob je", sondern „ob nur für Vokabeln und nicht für Formen
       und sie heißt: die Richtung ist keine globale Einstellung, sondern hängt
       an der Kartensorte.
 - [ ] Falls sie kommt: gehört der Schalter auf die
-      [Seitenmenü](feature-request-seitenmenue.md), und der Lernstand muss
+      [Seitenmenü](feature-implemented-seitenmenue-2026-08-29-1348.md), und der Lernstand muss
       Richtung und Form unterscheiden — „`brach` gewusst" ist nicht dasselbe
       wie „`broke` gewusst".
 

@@ -37,6 +37,15 @@ unter einer öffentlichen URL.
 am 29.08.2026 wieder aufgenommen worden, gebaut ist davon aber noch nichts —
 siehe `roadmap/feature-request-vokabel-import-klasse-5.md`.
 
+**Welche Karte drankommt, ist nicht mehr zufällig.** Die App merkt sich je
+Karte und Form, wann sie zuletzt dran war, und zieht die, die am längsten
+warten — nach vier Runden war jedes Verb einmal dran. Seit dem 29.08.2026
+merkt sie sich auch, wie es ausging: acht Zähler je Einheit und ein Verlauf
+der letzten 750 Antworten, alles in `localStorage`.
+
+Dazu gibt es ein **Seitenmenü** (Töne an/aus, Weg zur Statistik) und eine
+zweite Seite `fortschritt.html`: was schon sitzt und was noch nicht.
+
 **Geübt wird primär auf Matildas iPhone.** Seit dem 29.08.2026 ist das eine
 Randbedingung und keine Nebensache: Layouts werden für ein Telefon mit offener
 Tastatur entworfen, nicht für einen Bildschirm, der danach auch mal klein wird.
@@ -44,7 +53,8 @@ Tastatur entworfen, nicht für einen Bildschirm, der danach auch mal klein wird.
 
 Es hat auch eine unsichtbare Folge. **Safari löscht `localStorage` nach sieben
 Tagen ohne Benutzung.** Alles, was gespeichert wird, muss damit rechnen —
-siehe `roadmap/feature-request-homebildschirm.md`, das genau deshalb existiert.
+siehe `roadmap/feature-implemented-homebildschirm-2026-08-29-1327.md`, das
+genau deshalb existiert. Die App darf deswegen auf den Homebildschirm.
 
 Was gebaut ist, steht als `roadmap/feature-implemented-*.md` mit Datum im
 Namen; was durchdacht ist und wartet, als `roadmap/feature-request-*.md`.
@@ -443,7 +453,7 @@ bauen. Wer einen davon doch aufnehmen will, ändert zuerst diesen Abschnitt.
 | **Ein CSS-Preprozessor** | Der Variablenblock in `styles.css` ist Matildas Einstieg in Code. Er muss im Browser direkt wirken. |
 
 **Nicht mit der PWA zu verwechseln** ist das Icon auf dem Homebildschirm
-(`roadmap/feature-request-homebildschirm.md`). Was oben abgelehnt wird, ist der
+(`roadmap/feature-implemented-homebildschirm-2026-08-29-1327.md`). Was oben abgelehnt wird, ist der
 Service Worker samt Cache-Invalidierung — ein `manifest.json` ist eine
 Textdatei mit Name, Farbe und Icon, ändert nichts am Laden und macht die App
 nicht offline-fähig. Es steht dort, weil iOS `localStorage` sonst nach sieben

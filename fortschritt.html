@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#9f5de4" />
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📇</text></svg>"
+    />
+
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Vokabeln" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <title>Dein Fortschritt</title>
+  </head>
+  <body class="seite">
+    <!-- Der Weg zurueck. Auf dem Homebildschirm laeuft die App ohne
+         Adressleiste -- ohne diesen Link saesse man hier fest. -->
+    <a href="index.html" class="zurueck">
+      <span aria-hidden="true">←</span> Zurück zum Üben
+    </a>
+
+    <main class="buehne buehne--seite">
+      <h1 class="titel">Dein Fortschritt</h1>
+
+      <!-- Noch nichts geuebt: dann steht hier ein Satz statt einer leeren
+           Statistik. Drei Zahlen aus drei Antworten waeren keine Aussage. -->
+      <section id="leer" class="karte" hidden>
+        <p class="abschnitt">Noch nichts zu zeigen</p>
+        <p class="ende-text">
+          Spiel eine Runde, dann steht hier, was schon sitzt und was noch nicht.
+        </p>
+      </section>
+
+      <section id="ueberblick" class="karte" hidden>
+        <p class="fortschritt__gross"><span id="sicher">0</span> von <span id="gesamt">0</span></p>
+        <p class="fortschritt__dazu">Formen sitzen sicher</p>
+
+        <div class="balken">
+          <div id="balken-sicher" class="balken__teil balken__teil--sicher"></div>
+          <div id="balken-geuebt" class="balken__teil balken__teil--geuebt"></div>
+        </div>
+
+        <dl class="zahlen">
+          <div><dt>Geübt</dt><dd id="geuebt">0</dd></div>
+          <div><dt>Runden</dt><dd id="runden">0</dd></div>
+          <div><dt>Antworten</dt><dd id="antworten">0</dd></div>
+          <div><dt>Zuletzt</dt><dd id="zuletzt">–</dd></div>
+        </dl>
+      </section>
+
+      <section id="schwaechen" class="karte" hidden>
+        <p class="abschnitt">Das sitzt noch nicht</p>
+        <ol id="liste" class="ergebnisse"></ol>
+      </section>
+    </main>
+
+    <script type="module" src="/src/fortschritt.js"></script>
+  </body>
+</html>

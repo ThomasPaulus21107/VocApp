@@ -62,6 +62,12 @@ Ein Tipp lautet dann nicht mehr „das machst du im Kopf", sondern „gehört zu
 Mustertipps lernt sie die Systematik dahinter und kann Verben einordnen, die
 noch gar nicht drankamen.
 
+Seit dem 29.08.2026 hängt noch etwas daran: die
+[Fortschrittsseite](feature-request-fortschritt.md) zeigt unter „Das sitzt
+noch nicht" eine **Wortliste**. Mit `muster` würde daraus eine Diagnose —
+nicht „sang geht daneben", sondern „`i – a – u` sitzt nicht". Das ist
+derselbe Unterschied wie beim Tipp selbst, nur eine Seite weiter.
+
 ## Wie es gebaut wird
 
 `stelleFrageZuForm` liefert statt eines `hinweis` eine **Liste**, vom

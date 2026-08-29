@@ -11,8 +11,12 @@ import { ABGEFRAGTE_FORMEN, hatFormen } from './pruefung.js';
 // Der Name einer Einheit gehoert dorthin, wo gemerkt wird.
 import { schluessel } from './lernstand.js';
 
-/** Jede Karte in ihre abfragbaren Einheiten zerlegt. */
-function einheiten(karten) {
+/**
+ * Jede Karte in ihre abfragbaren Einheiten zerlegt. Auch die
+ * Fortschrittsseite fragt danach -- sie will wissen, wie viele es ueberhaupt
+ * gibt, und soll dafuer nicht dieselbe Rechnung noch einmal aufschreiben.
+ */
+export function einheiten(karten) {
   return karten.flatMap((karte) =>
     hatFormen(karte)
       ? ABGEFRAGTE_FORMEN.map((form) => ({ karte, form }))
@@ -38,7 +42,7 @@ function einheiten(karten) {
  * Karte genau einen Eintrag.
  *
  * Spaeter kommt in den Sortierschluessel die Schwierigkeit dazu (Stufe 2 in
- * roadmap/feature-request-auswahl.md). Das ist ein Summand mehr, kein Umbau.
+ * roadmap/feature-implemented-auswahl-2026-08-29-1327.md). Das ist ein Summand mehr, kein Umbau.
  */
 export function zieheRunde(karten, anzahl, zuletzt = {}, rundeNr = 0, zufall = Math.random) {
   const alle = einheiten(karten);

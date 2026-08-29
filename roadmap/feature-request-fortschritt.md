@@ -22,9 +22,19 @@ Vier Dinge, mehr nicht:
    und nicht nur einen Zustand.
 4. **Was lange nicht dran war.** Fällt als Nebenprodukt aus der Auswahl ab.
 
+**Punkt 3 fehlt noch, und zwar aus einem konkreten Grund.** Der Lernstand
+zählt je Einheit und führt einen Verlauf je *Antwort* — eine *Runde* als
+Einheit gibt es darin nicht. Ihre Note ließe sich aus den Antworten
+nachrechnen, aber nur ungefähr: eine abgebrochene Runde ist von einer
+gespielten nicht zu unterscheiden.
+
+Sauber wird es mit einem Eintrag je Runde (`{ rundeNr, punkte, karten, zeit }`)
+im Lernstand. Das ist ein kleines eigenes Stück Arbeit und kein Nebenbei —
+deshalb steht es hier und nicht im nächsten Commit.
+
 ## Warum eine eigene Seite
 
-Wie bei der [Seitenmenü](feature-request-seitenmenue.md): Vite kann mehrere
+Wie bei der [Seitenmenü](feature-implemented-seitenmenue-2026-08-29-1348.md): Vite kann mehrere
 Einstiegspunkte, `fortschritt.html` kommt als Eintrag in `rollupOptions.input`.
 Kein Router, keine Abhängigkeit. Üben und Nachsehen sind zwei Situationen, und
 die Karte soll leer bleiben.

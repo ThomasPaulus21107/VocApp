@@ -71,7 +71,7 @@ senkrecht dazu. Beide Aufgabenarten gibt es in beiden Strengegraden.
 
 ## Es ist der zweite Schalter
 
-Die [Seitenmenü](feature-request-seitenmenue.md) wartet auf „mindestens
+Die [Seitenmenü](feature-implemented-seitenmenue-2026-08-29-1348.md) wartet auf „mindestens
 zwei Schalter, die es zu zeigen lohnt". Bisher gab es nur einen (Töne an/aus),
 weil der Vokabel-Strang ruht und die [Richtung](feature-request-richtung.md)
 unentschieden ist. **Die Wahl der Aufgabenart ist dieser zweite Schalter** —
@@ -83,7 +83,7 @@ Keine für die Domäne und die Karte selbst — die drei Formen stehen alle in
 `data/unregelmaessige-verben.json`, es wird kein Datenformat geändert.
 
 Für die *Auswahl* zwischen den Aufgabenarten:
-[Die Speicher-Naht am Gerät](feature-request-storage.md). Solange
+[Die Speicher-Naht am Gerät](feature-implemented-storage-2026-08-29-1327.md). Solange
 die fehlt, kann die Zeiten-Runde als einziger Startknopf mehr auf der
 Startseite anfangen, neben Übungsblatt und Arbeit.
 

@@ -1,6 +1,6 @@
 # Feature: Das Seitenmenü
 
-**Status:** bereit — durchdacht, noch nicht gebaut
+**Status:** umgesetzt am 29.08.2026 um 13:48, [PR #22](https://github.com/ThomasPaulus21107/VocApp/pull/22)
 **Wo im Code:** `index.html`, `src/ui/ui.js`, `src/ui/styles.css`, `src/ui/klang.js`
 
 Ein Knopf oben rechts, der eine Lade von der Seite hereinfahren lässt. Darin
@@ -19,7 +19,7 @@ Einstellen sind zwei Situationen, und die Karte soll leer bleiben.
 Zwei Dinge haben sich seitdem geändert:
 
 **Im Standalone-Modus gibt es keinen Zurück-Knopf.** Seit
-[Auf dem Homebildschirm](feature-request-homebildschirm.md) startet die App
+[Auf dem Homebildschirm](feature-implemented-homebildschirm-2026-08-29-1327.md) startet die App
 ohne Adressleiste. Jede eigene Seite muss ihren Weg zurück selbst mitbringen,
 und wer ihn übersieht, sitzt fest. Ein Overlay hat das Problem nicht: es liegt
 über der Karte, und das X schließt es.
@@ -37,17 +37,16 @@ zu, solange es niemand öffnet.
 | Eintrag | Art | Wann |
 |---|---|---|
 | **Töne an/aus** | ein Schalter, direkt im Menü | mit dem Menü |
-| **Lernstatistik** | ein Weg dorthin, kein Inhalt im Menü | erst, wenn es etwas zu zeigen gibt |
+| **Lernstatistik** | ein Weg dorthin, kein Inhalt im Menü | steht |
 
-**Der Eintrag zur Statistik kommt später, und zwar mit Absicht.** Heute schreibt
-die App nur mit, welche Karte wann dran war — nicht, wie es ausging. Ein Menü-
-eintrag, der auf eine leere Seite führt, ist schlechter als keiner. Erst
-[der Lernstand](feature-request-lernstand.md) Stufe 1, dann
-[die Seite](feature-request-fortschritt.md), dann die Zeile hier.
+Der Unterschied zwischen den beiden ist Absicht: ein Schalter ist eine Zeile
+und gehört ins Menü, die Statistik ist Inhalt zum Scrollen und gehört auf eine
+eigene Seite.
 
-Das hat eine Reihenfolge zur Folge, die man leicht falsch herum baut:
-**mit dem Mitschreiben anfangen, bevor die Seite steht.** Sonst ist die Seite
-am Tag ihrer Fertigstellung leer und wird es für Wochen bleiben.
+Gebaut wurde in dieser Reihenfolge, und sie ist leicht falsch herum zu bauen:
+erst [das Mitschreiben](feature-request-lernstand.md), dann
+[die Seite](feature-request-fortschritt.md), dann die Zeile hier. Wer mit der
+Seite anfängt, hat sie am Tag ihrer Fertigstellung leer — und für Wochen.
 
 Der Unterschied ist Absicht. Ein Schalter ist eine Zeile und gehört ins Menü.
 Die [Statistik](feature-request-fortschritt.md) sind 106 Einheiten, nach
@@ -63,7 +62,7 @@ Später kommen weitere Zeilen dazu: die Aufgabenart aus
 
 ## Der Töne-Schalter
 
-Er stand in [`storage.js`](feature-request-storage.md) als erster Kunde der
+Er stand in [`storage.js`](feature-implemented-storage-2026-08-29-1327.md) als erster Kunde der
 Speicher-Naht und ist dort beim Bauen liegengeblieben, weil der Auswahlstand
 diesen Zweck besser erfüllt hat. Hier kommt er nach.
 
