@@ -687,10 +687,65 @@ body {
   visibility: hidden;
 }
 
-.menue__zeile input {
-  width: 22px;
-  height: 22px;
-  accent-color: var(--akzent);
+.menue__zeile--schalter {
+  justify-content: space-between;
+}
+
+/* Der Schieberegler, wie man ihn vom Telefon kennt. Darunter steckt eine
+   ganz normale Checkbox -- appearance:none nimmt ihr das Kaestchen, den
+   Rest zeichnen wir selbst. Sie bleibt damit anklickbar, tabbar und fuer
+   den Screenreader ein Schalter, ohne eine Zeile JavaScript.
+
+   Die Masse sind die von iOS: 51 breit, 31 hoch, der Knopf 27. */
+.menue__zeile input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  flex: none;
+
+  width: 51px;
+  height: 31px;
+  margin: 0;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 20%);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+/* Der weisse Knopf, der hin und her rutscht. */
+.menue__zeile input[type='checkbox']::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
+  transition: transform 0.2s ease;
+}
+
+.menue__zeile input[type='checkbox']:checked {
+  background: var(--akzent);
+}
+
+.menue__zeile input[type='checkbox']:checked::after {
+  transform: translateX(20px);
+}
+
+.menue__zeile input[type='checkbox']:focus-visible {
+  outline: 3px solid var(--schrift);
+  outline-offset: 2px;
+}
+
+/* Wer Bewegung abgeschaltet hat, bekommt den Schalter ohne Rutschen. */
+@media (prefers-reduced-motion: reduce) {
+  .menue__zeile input[type='checkbox'],
+  .menue__zeile input[type='checkbox']::after {
+    transition: none;
+  }
 }
 
 /* Der Schatten dahinter faengt Klicks ab und macht klar, dass die Karte
@@ -976,19 +1031,19 @@ details[open] .fach__pfeil {
   border-radius: calc(var(--rundung) / 4);
 }
 
-/* Die Liste der Sitzungen unter dem Diagramm. Eine Zeile je Mal Ueben. */
-.sitzungen {
+/* Die Liste der Runden unter dem Diagramm. Eine Zeile je Runde. */
+.runden-liste {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.sitzung {
+.runde {
   padding: 10px 0;
   border-top: 1px solid rgb(0 0 0 / 10%);
 }
 
-.sitzung__kopf {
+.runde__kopf {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -997,40 +1052,27 @@ details[open] .fach__pfeil {
   font-size: 0.875rem;
 }
 
-.sitzung__zahlen {
+.runde__zahlen {
   color: var(--leise);
   font-variant-numeric: tabular-nums;
 }
 
-/* Derselbe Balken wie im Diagramm oben, nur liegend: hinten und blass alle
-   Antworten, davor und kraeftig die Treffer. Beide am selben Massstab --
-   die laengste Sitzung ist die volle Breite. */
-.sitzung__leiste {
-  display: grid;
-  align-items: center;
-
+/* Die Quote als liegender Balken: die volle Breite sind 100 %. Anders als
+   im Diagramm oben misst er NICHT auch die Menge -- die steht als Zahl
+   daneben, und zwei Groessen in einem Balken liest niemand richtig. */
+.runde__leiste {
   height: 8px;
   border-radius: 4px;
-  background: var(--eingabefeld);
+  background: rgb(0 0 0 / 10%);
 }
 
-.sitzung__gesamt,
-.sitzung__richtig {
-  grid-area: 1 / 1;
+.runde__richtig {
   height: 100%;
   border-radius: 4px;
-}
-
-.sitzung__gesamt {
-  background: var(--akzent);
-  opacity: 0.3;
-}
-
-.sitzung__richtig {
   background: var(--richtig);
 }
 
-.sitzungen__ende {
+.runden__ende {
   margin: 12px 0 0;
   font-size: 0.8125rem;
   color: var(--leise);

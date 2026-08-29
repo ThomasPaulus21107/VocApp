@@ -288,46 +288,71 @@ export function verlaufZu(stand, name) {
     .reverse();
 }
 
-// Ab dieser Pause faengt eine neue Sitzung an. Eine halbe Stunde ist lang
-// genug fuer eine Unterbrechung am Abendbrottisch und kurz genug, dass der
-// naechste Tag nicht mehr dazugehoert.
-export const SITZUNG_PAUSE_MS = 30 * 60 * 1000;
+// Nach dieser Pause hat jemand aufgehoert und spaeter neu angefangen -- eine
+// abgebrochene Runde wird dadurch nicht mit der naechsten verklebt.
+export const PAUSE_MS = 30 * 60 * 1000;
 
 /**
- * Der Verlauf, in Sitzungen zerlegt: neueste zuerst.
+ * Der Verlauf, in Runden zerlegt: neueste zuerst.
  *
- * Eine Sitzung ist, was ohne laengere Pause hintereinander beantwortet wurde
- * -- nicht eine Runde. Wer zwei Runden hintereinander spielt, hat einmal
- * geuebt, und genau das soll die Liste zeigen.
+ * Der Verlauf schreibt keine Rundennummer mit, also wird sie hier
+ * zurueckgerechnet. Eine neue Runde faengt an, wenn eines davon zutrifft:
  *
- * Bewusst aus dem Verlauf gerechnet und nicht mitgeschrieben: dann gilt es
- * auch fuer alles, was schon gespeichert ist.
+ *   1. es ist die erste Antwort ueberhaupt
+ *   2. der Modus wechselt -- Uebungsblatt und Arbeit sind nie dieselbe Runde
+ *   3. eben lief die Wiederholung, jetzt nicht mehr: die Wiederholung ist
+ *      das Ende einer Runde, was danach kommt, ist die naechste
+ *   4. die laufende Runde hat ihre `groesse` Karten voll (die Wiederholung
+ *      zaehlt dabei NICHT mit, sie zieht keine neuen Karten)
+ *   5. es lag eine lange Pause dazwischen -- jemand hat abgebrochen
+ *
+ * Warum nicht einfach ein Feld mitschreiben? Weil das nur fuer alles gaelte,
+ * was ab heute dazukommt. So gilt es auch fuer den Bestand: alte Antworten
+ * kennen die Wiederholung noch gar nicht, bei ihnen greift Regel 4 allein --
+ * und das ist genau richtig, denn frueher stand die Wiederholung nicht im
+ * Verlauf.
+ *
+ * Sollte die Rundengroesse einmal schwanken (Leitner), traegt diese Rechnung
+ * nicht mehr, und dann ist eine mitgeschriebene Nummer faellig.
  */
-export function sitzungen(stand, pause = SITZUNG_PAUSE_MS) {
+export function runden(stand, groesse = 15, pause = PAUSE_MS) {
   const alle = [];
+  let vorige = null;
 
   for (const eintrag of stand.verlauf) {
-    const letzte = alle.at(-1);
+    const laufend = alle.at(-1);
 
-    if (!letzte || eintrag.zeit - letzte.ende > pause) {
+    const neueRunde = !laufend
+      || eintrag.modus !== vorige.modus
+      || (vorige.wiederholung && !eintrag.wiederholung)
+      // Nur eine neue KARTE kann die Runde vollmachen. Eine Wiederholung
+      // zieht keine, sie gehoert immer noch zur laufenden Runde.
+      || (!eintrag.wiederholung && laufend.karten >= groesse)
+      || eintrag.zeit - laufend.ende > pause;
+
+    if (neueRunde) {
       alle.push({
-        beginn: eintrag.zeit, ende: eintrag.zeit,
-        antworten: 0, richtig: 0, punkte: 0,
+        beginn: eintrag.zeit, ende: eintrag.zeit, modus: eintrag.modus,
+        antworten: 0, karten: 0, richtig: 0, punkte: 0,
       });
     }
 
-    const sitzung = alle.at(-1);
-    sitzung.ende = eintrag.zeit;
-    sitzung.antworten += 1;
-    sitzung.punkte += eintrag.punkte ?? 0;
-    if (eintrag.ausgang === AUSGAENGE.RICHTIG) sitzung.richtig += 1;
+    const runde = alle.at(-1);
+    runde.ende = eintrag.zeit;
+    runde.antworten += 1;
+    // `karten` zaehlt nur den ersten Durchgang -- daran haengt Regel 4.
+    if (!eintrag.wiederholung) runde.karten += 1;
+    runde.punkte += eintrag.punkte ?? 0;
+    if (eintrag.ausgang === AUSGAENGE.RICHTIG) runde.richtig += 1;
+
+    vorige = eintrag;
   }
 
   // Die Quote ist dieselbe Rechnung wie bei den Tagen: Treffer durch
-  // Antworten. Ohne Antworten gibt es keine Sitzung, also teilt hier
-  // niemand durch null.
-  for (const sitzung of alle) {
-    sitzung.quote = Math.round((sitzung.richtig / sitzung.antworten) * 100);
+  // Antworten. Ohne Antworten gibt es keine Runde, also teilt hier niemand
+  // durch null.
+  for (const runde of alle) {
+    runde.quote = Math.round((runde.richtig / runde.antworten) * 100);
   }
 
   return alle.reverse();

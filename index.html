@@ -69,9 +69,12 @@
 
       <h2 class="menue__titel">Einstellungen</h2>
 
-      <label class="menue__zeile" for="toene">
-        <input id="toene" type="checkbox" checked />
+      <!-- Beschriftung links, Schalter rechts -- so herum kennt man es vom
+           Telefon. Der Schalter ist eine ganz normale Checkbox, sie sieht
+           nur anders aus; das macht styles.css. -->
+      <label class="menue__zeile menue__zeile--schalter" for="toene">
         <span>Töne</span>
+        <input id="toene" type="checkbox" checked />
       </label>
 
       <h2 class="menue__titel">Ansehen</h2>
