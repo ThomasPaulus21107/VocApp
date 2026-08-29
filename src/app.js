@@ -11,7 +11,7 @@ import {
 import { zieheRunde } from './domain/auswahl.js';
 import { merkeGezogen, verrechne, zuletztVon, AUSGAENGE, LEER } from './domain/lernstand.js';
 import { note, punkteFuerKarte } from './domain/note.js';
-import { regeln } from './domain/modus.js';
+import { regeln, MODI } from './domain/modus.js';
 import { lernpotential } from './domain/lernpotential.js';
 import * as storage from './infra/storage.js';
 import * as ui from './ui/ui.js';
@@ -308,7 +308,12 @@ function beendeStapel() {
 
   // Die Höchstpunktzahl ist die Zahl der Karten der ERSTEN Runde --
   // eine Karte, ein Punkt.
-  ui.zeigeEnde(note(punkte), punkte, hoechstpunktzahl, ergebnisse, bilanz());
+  ui.zeigeEnde(
+    note(punkte), punkte, hoechstpunktzahl, ergebnisse, bilanz(),
+    // Ob es eine Arbeit war, entscheidet hier oben -- die UI kennt die Modi
+    // nicht, sie bekommt nur gesagt, ob die große Melodie dran ist.
+    gespielterModus === MODI.ARBEIT
+  );
 }
 
 /**

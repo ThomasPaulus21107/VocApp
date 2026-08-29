@@ -44,15 +44,15 @@ const TEILCHEN = {
 // sie länger fliegen lassen will, ändert hier die Zahl und in styles.css
 // nichts: die Bewegung richtet sich nach der Dauer.
 const DAUER = {
-  rakete:   { grund: 2.8, zufall: 0 },
-  funke:    { grund: 1.2, zufall: 0.4 },
-  konfetti: { grund: 1.4, zufall: 0.8 },
-  sterne:   { grund: 1.4, zufall: 0.8 },
+  rakete:   { grund: 4.8, zufall: 0 },
+  funke:    { grund: 2.2, zufall: 0.4 },
+  konfetti: { grund: 2.4, zufall: 0.8 },
+  sterne:   { grund: 2.4, zufall: 0.8 },
 };
 
 // Wann die Funken der Raketenspur loslegen: erst wenn die Rakete abgehoben
 // hat. Vorher zittert sie noch, da wäre eine Spur unter ihr Unsinn.
-const ABHEBEN = 0.9;
+const ABHEBEN = 1.9;
 
 const el = {
   buehne: document.querySelector('#effekt'),

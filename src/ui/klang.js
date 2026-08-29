@@ -86,6 +86,64 @@ const MELODIEN = {
   ],
 };
 
+/* =========================================================
+   DIE TETRIS-MELODIE, MATILDA
+   Sie kommt nur bei einer 1+ in einer ARBEIT -- das Beste,
+   was die App zu vergeben hat.
+
+   Die Melodie ist zu lang, um jeden Ton einzeln zu tippen.
+   Deshalb steht sie als Folge von [Ton, Länge] da: 'E5' ist
+   das E in der fünften Oktave, die Zahl daneben sagt, wie
+   viele Achtel er klingt. 'pause' ist Stille.
+
+   Ändern? Tausch Töne aus oder häng welche an. Wie lange
+   ein Achtel dauert, steht in ACHTEL -- kleiner heißt
+   schneller.
+   ========================================================= */
+
+// Die Töne, die in der Melodie vorkommen, mit ihrer Höhe in Hertz.
+const TOENE = {
+  A4: 440, B4: 494, C5: 523, D5: 587, E5: 659,
+  F5: 698, G5: 784, A5: 880, pause: 0,
+};
+
+// Wie lange ein Achtel dauert, in Sekunden.
+const ACHTEL = 0.15;
+
+// Korobeiniki, ein russisches Volkslied -- die Melodie, die jeder als
+// Tetris kennt. Vier Zeilen hin, vier Zeilen zurück: rund zehn Sekunden.
+const TETRIS = [
+  ['E5', 2], ['B4', 1], ['C5', 1], ['D5', 2], ['C5', 1], ['B4', 1],
+  ['A4', 2], ['A4', 1], ['C5', 1], ['E5', 2], ['D5', 1], ['C5', 1],
+  ['B4', 3], ['C5', 1], ['D5', 2], ['E5', 2],
+  ['C5', 2], ['A4', 2], ['A4', 2], ['pause', 2],
+
+  ['D5', 3], ['F5', 1], ['A5', 2], ['G5', 1], ['F5', 1],
+  ['E5', 3], ['C5', 1], ['E5', 2], ['D5', 1], ['C5', 1],
+  ['B4', 2], ['B4', 1], ['C5', 1], ['D5', 2], ['E5', 2],
+  ['C5', 2], ['A4', 2], ['A4', 2], ['pause', 2],
+];
+
+/**
+ * Rechnet eine Folge aus [Ton, Länge] in die Form um, die spiele() versteht:
+ * jeder Ton bekommt seine Startzeit, Pausen fallen einfach heraus.
+ */
+function ausNoten(folge, achtel = ACHTEL) {
+  const melodie = [];
+  let ab = 0;
+
+  for (const [ton, laenge] of folge) {
+    const dauer = laenge * achtel;
+    // Ein bisschen Luft zwischen zwei Tönen, sonst klingt es wie ein
+    // einziger langer -- besonders bei zwei gleichen hintereinander.
+    if (TOENE[ton]) melodie.push({ hertz: TOENE[ton], ab, dauer: dauer * 0.9 });
+    ab += dauer;
+  }
+  return melodie;
+}
+
+MELODIEN.tetris = ausNoten(TETRIS);
+
 // Browser erlauben Töne erst, nachdem jemand geklickt oder getippt hat.
 // Deshalb entsteht der AudioContext beim ersten Ton und wird danach
 // wiederverwendet -- nicht schon beim Laden der Seite.

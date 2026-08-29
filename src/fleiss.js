@@ -2,7 +2,7 @@
 // Eigener Einstiegspunkt wie fortschritt.html. Sie liest nur.
 
 import './ui/styles.css';
-import { fleiss, serie, LEER } from './domain/lernstand.js';
+import { fleiss, serie, sitzungen, LEER } from './domain/lernstand.js';
 import * as storage from './infra/storage.js';
 import { verbindeMenue } from './ui/menue.js';
 
@@ -22,6 +22,21 @@ const tage = fleiss(stand, new Date().toLocaleDateString('sv'), TAGE);
 const geuebt = tage.filter((tag) => tag.antworten > 0);
 const antworten = tage.reduce((summe, tag) => summe + tag.antworten, 0);
 const treffer = tage.reduce((summe, tag) => summe + tag.richtig, 0);
+
+function span(klasse, text) {
+  const knoten = document.createElement('span');
+  knoten.className = klasse;
+  knoten.textContent = text;
+  return knoten;
+}
+
+/** "29.08. um 16:40" -- wann eine Sitzung angefangen hat. */
+function wannGenau(zeit) {
+  const wann = new Date(zeit);
+  const tag = wann.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+  const uhr = wann.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+  return `${tag} um ${uhr}`;
+}
 
 /** "29.08." -- kurz genug für die Achse. */
 function kurz(tag) {
@@ -90,4 +105,51 @@ if (geuebt.length === 0) {
     }
     el('diagramm').append(saeule);
   }
+}
+
+/**
+ * Jede Sitzung als Zeile: wann sie war, wie viel beantwortet wurde, und ein
+ * liegender Balken dazu. Der Balken ist derselbe wie oben im Diagramm, nur
+ * quer: die Länge sind alle Antworten, der grüne Teil davor die Treffer.
+ * Beide am selben Maßstab, damit eine kurze gute Sitzung nicht aussieht wie
+ * eine lange.
+ */
+const alleSitzungen = sitzungen(stand);
+
+if (alleSitzungen.length > 0) {
+  el('sitzungen-karte').hidden = false;
+
+  const laengste = alleSitzungen.reduce(
+    (a, b) => (b.antworten > a.antworten ? b : a)
+  ).antworten;
+
+  for (const sitzung of alleSitzungen) {
+    const zeile = document.createElement('li');
+    zeile.className = 'sitzung';
+
+    const kopf = document.createElement('p');
+    kopf.className = 'sitzung__kopf';
+    kopf.append(span('sitzung__wann', wannGenau(sitzung.beginn)));
+    kopf.append(span('sitzung__zahlen',
+      `${sitzung.antworten} Antworten · ${sitzung.quote} %`));
+
+    const leiste = document.createElement('div');
+    leiste.className = 'sitzung__leiste';
+
+    const gesamt = document.createElement('div');
+    gesamt.className = 'sitzung__gesamt';
+    gesamt.style.width = `${(sitzung.antworten / laengste) * 100}%`;
+
+    const richtig = document.createElement('div');
+    richtig.className = 'sitzung__richtig';
+    richtig.style.width = `${(sitzung.richtig / laengste) * 100}%`;
+
+    leiste.append(gesamt, richtig);
+    zeile.append(kopf, leiste);
+    el('sitzungen').append(zeile);
+  }
+
+  // Ehrlich sagen, wo die Liste aufhört: der Verlauf reicht nur so weit.
+  el('sitzungen-ende').textContent =
+    `Weiter zurück reicht der Verlauf nicht — er merkt sich die letzten 750 Antworten.`;
 }
