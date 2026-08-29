@@ -225,16 +225,50 @@ export const SICHER_AB_ANTWORTEN = 3;
  * der Lernstand nicht, die kommt von den Karten. Was dort steht und hier
  * keinen Eintrag hat, war noch nie dran.
  *
- * Sortiert wird so, dass oben steht, was zaehlt: in Arbeit der NIEDRIGSTE
- * Score zuerst (das ist die Arbeit, die ansteht), bei den sicheren der
- * hoechste (das ist der Lohn). Was noch nie dran war, behaelt die
- * Reihenfolge der Karten.
+ * Sortiert wird so, dass oben steht, was gerade an der Kippe ist: in Arbeit
+ * der HOECHSTE Score zuerst (das ist fast geschafft), bei den stabilen der
+ * NIEDRIGSTE (das rutscht als Erstes wieder ab). Was noch nie dran war,
+ * behaelt die Reihenfolge der Karten.
  */
+function zaehlerAusVerlauf(verlauf) {
+  const zu = {};
+
+  for (const eintrag of verlauf) {
+    const name = schluessel(eintrag.id, eintrag.form);
+    const alt = zu[name] ?? { dran: 0, summe: 0 };
+    zu[name] = { dran: alt.dran + 1, summe: alt.summe + punkteVon(eintrag) };
+  }
+  return zu;
+}
+
+/**
+ * Die Zaehler einer Einheit -- und wenn die nichts taugen, die aus dem
+ * Verlauf.
+ *
+ * Zwei Faelle brauchen das, beide aus der Zeit vor dem Score:
+ *
+ *   - Ein Eintrag, den vollstaendig() zurueckgesetzt hat, weil ihm die Summe
+ *     fehlte. Er steht auf null und die Vokabel saehe aus, als waere sie nie
+ *     dran gewesen -- obwohl der Verlauf ihre Antworten noch kennt.
+ *   - Ein alter Eintrag, der seitdem nicht wieder beantwortet wurde. Er hat
+ *     `dran`, aber keine `summe`, und der Score kaeme als NaN heraus.
+ *
+ * In beiden Faellen weiss der Verlauf mehr als der Zaehler, und dann hat der
+ * Verlauf recht. Er reicht 750 Antworten zurueck; was aelter ist, bleibt
+ * verloren.
+ */
+function brauchbar(eintrag, vomVerlauf) {
+  const wert = score(eintrag);
+  if (wert !== null && Number.isFinite(wert)) return eintrag;
+  return vomVerlauf ?? eintrag ?? null;
+}
+
 export function verteile(stand, namen) {
   const faecher = { nie: [], arbeit: [], sicher: [] };
+  const ausVerlauf = zaehlerAusVerlauf(stand.verlauf);
 
   for (const name of namen) {
-    const eintrag = stand.einheiten[name];
+    const eintrag = brauchbar(stand.einheiten[name], ausVerlauf[name]);
     const wert = score(eintrag);
 
     if (wert === null) faecher.nie.push({ name, score: null, dran: 0 });
@@ -245,10 +279,12 @@ export function verteile(stand, namen) {
     } else faecher.arbeit.push({ name, score: wert, dran: eintrag.dran });
   }
 
-  // Bei gleichem Score steht vorn, was oefter dran war -- das ist der
-  // sicherere Befund.
-  faecher.arbeit.sort((a, b) => a.score - b.score || b.dran - a.dran);
-  faecher.sicher.sort((a, b) => b.score - a.score || b.dran - a.dran);
+  // Oben steht jeweils, was gerade an der Kippe ist: in Arbeit das, was fast
+  // geschafft ist, und bei den stabilen das, was als Erstes wieder
+  // abzurutschen droht. Bei gleichem Score steht vorn, was oefter dran war --
+  // das ist der sicherere Befund.
+  faecher.arbeit.sort((a, b) => b.score - a.score || b.dran - a.dran);
+  faecher.sicher.sort((a, b) => a.score - b.score || b.dran - a.dran);
   return faecher;
 }
 

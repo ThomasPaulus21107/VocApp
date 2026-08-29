@@ -16,7 +16,7 @@
 
   /* Die drei Faecher auf der Fortschrittsseite -- im Balken oben und
      in den Listen darunter dieselbe Farbe. */
-  --nie: #fea0a0;           /* noch nie geübt */
+  --nie: var(--falsch);           /* noch nie geübt */
   --in-arbeit: #fe9d43;     /* schon geübt, sitzt aber noch nicht */
   --sitzt: var(--richtig);  /* ab 75 % der Punkte: dasselbe Grün wie bei einer
                                richtigen Antwort */

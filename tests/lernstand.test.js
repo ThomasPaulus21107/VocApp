@@ -229,23 +229,72 @@ describe('verteile', () => {
     expect(faecher.nie.map((e) => e.name)).toEqual(['uv-003|simple-past']);
   });
 
-  it('sortiert "in Arbeit" mit dem niedrigsten Score oben', () => {
+  it('sortiert "in Arbeit" mit dem hoechsten Score oben', () => {
     let stand = verrechne(LEER, antwort({ id: 'uv-001', punkte: 0, ausgang: AUSGAENGE.FALSCH }), 1);
     stand = verrechne(stand, antwort({ id: 'uv-002' }), 2);
     stand = verrechne(stand, antwort({ id: 'uv-002', punkte: 0, ausgang: AUSGAENGE.FALSCH }), 3);
 
-    // uv-001 hat 0 %, uv-002 hat 50 %.
-    expect(verteile(stand, namen).arbeit.map((e) => e.score)).toEqual([0, 50]);
+    // uv-001 hat 0 %, uv-002 hat 50 %. Oben steht, was fast geschafft ist.
+    expect(verteile(stand, namen).arbeit.map((e) => e.score)).toEqual([50, 0]);
   });
 
-  it('sortiert "sitzt" mit dem hoechsten Score oben', () => {
+  it('sortiert "stabil gelernt" mit dem niedrigsten Score oben', () => {
     // uv-001: 4 von 4 = 100 %. uv-002: 4 von 5 = 80 %.
     let stand = LEER;
     for (let i = 0; i < 4; i++) stand = verrechne(stand, antwort(), i);
     for (let i = 0; i < 4; i++) stand = verrechne(stand, antwort({ id: 'uv-002' }), i);
     stand = verrechne(stand, antwort({ id: 'uv-002', punkte: 0, ausgang: AUSGAENGE.FALSCH }), 9);
 
-    expect(verteile(stand, namen).sicher.map((e) => e.score)).toEqual([100, 80]);
+    // Oben steht, was als Erstes wieder abzurutschen droht.
+    expect(verteile(stand, namen).sicher.map((e) => e.score)).toEqual([80, 100]);
+  });
+});
+
+describe('wenn die Zaehler nichts wissen, hilft der Verlauf', () => {
+  const namen = ['uv-001|simple-past'];
+
+  it('holt eine zurueckgesetzte Einheit aus "noch nie geuebt" heraus', () => {
+    // So sieht ein Stand aus, den vollstaendig() zurueckgesetzt hat: die
+    // Zaehler stehen auf null, der Verlauf kennt die Antworten aber noch.
+    const stand = {
+      ...LEER,
+      einheiten: {
+        'uv-001|simple-past': {
+          zuletzt: 3, dran: 0, summe: 0, ersterVersuch: 0, zweiterVersuch: 0,
+          falsch: 0, uebersprungen: 0, aufgegeben: 0, tipps: 0,
+        },
+      },
+      verlauf: [
+        { id: 'uv-001', form: 'simple-past', ausgang: AUSGAENGE.RICHTIG, versuch: 0, tipp: false, punkte: 1, zeit: 1 },
+        { id: 'uv-001', form: 'simple-past', ausgang: AUSGAENGE.FALSCH, versuch: 0, tipp: false, punkte: 0, zeit: 2 },
+      ],
+    };
+
+    const faecher = verteile(stand, namen);
+    expect(faecher.nie).toHaveLength(0);
+    expect(faecher.arbeit).toEqual([{ name: 'uv-001|simple-past', score: 50, dran: 2 }]);
+  });
+
+  it('rettet auch einen alten Eintrag ohne Summe vor dem NaN', () => {
+    const stand = {
+      ...LEER,
+      einheiten: { 'uv-001|simple-past': { zuletzt: 3, dran: 2 } },
+      verlauf: [
+        // Alte Zeilen kennen weder `punkte` noch `summe` -- beides wird
+        // nachgerechnet.
+        { id: 'uv-001', form: 'simple-past', ausgang: AUSGAENGE.RICHTIG, versuch: 0, tipp: false, zeit: 1 },
+        { id: 'uv-001', form: 'simple-past', ausgang: AUSGAENGE.RICHTIG, versuch: 1, tipp: false, zeit: 2 },
+      ],
+    };
+
+    // 1 + 0,5 auf zwei Antworten = 75 % -- und damit knapp NICHT stabil.
+    expect(verteile(stand, namen).arbeit).toEqual([
+      { name: 'uv-001|simple-past', score: 75, dran: 2 },
+    ]);
+  });
+
+  it('laesst eine wirklich unberuehrte Einheit in Ruhe', () => {
+    expect(verteile(LEER, namen).nie.map((e) => e.name)).toEqual(namen);
   });
 });
 

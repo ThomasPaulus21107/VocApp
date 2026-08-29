@@ -22,13 +22,31 @@ Beispiele:
 | Fach | Was hineingehört | Sortiert nach |
 |---|---|---|
 | **Noch nie geübt** | war noch nie dran, oder nur gezogen und nicht beantwortet | Reihenfolge der Karten |
-| **In Arbeit** | schon dran, aber Score ≤ 75 % | niedrigster Score oben |
-| **Sitzt** | Score über 75 % | höchster Score oben |
+| **In Arbeit** | schon dran, aber Score ≤ 75 % oder unter drei Antworten | höchster Score oben |
+| **Stabil gelernt** | Score über 75 % **und** mindestens drei Antworten | niedrigster Score oben |
+
+Die Sortierung ist am 29.08.2026 in beiden Fächern umgedreht worden. Vorher
+stand oben, was am weitesten weg war; jetzt steht oben, **was gerade an der
+Kippe ist** — in Arbeit das, was fast geschafft ist, bei den stabilen das,
+was als Erstes wieder abzurutschen droht.
+
+Am selben Tag ist die Hürde von **drei Antworten** dazugekommen. Ohne sie
+stünde eine Vokabel, die genau einmal richtig war, sofort bei 100 % und
+gälte als stabil — ein einziger Treffer ist aber kein Beweis. Die Zahl steht
+als `SICHER_AB_ANTWORTEN` neben der Prozentmarke.
 
 **Der Score ist die erreichte Punktzahl geteilt durch die Zahl der
 Antworten** — dieselbe Bewertung, aus der auch die Note entsteht: auf Anhieb
 richtig ist ein ganzer Punkt, im zweiten Versuch ein halber, ein Tipp kostet
-ein Zehntel, falsch und übersprungen bringen nichts. Wer eine Vokabel fünfmal
+ein Zehntel, ein durchgelassener Tippfehler zwei, falsch und übersprungen
+bringen nichts.
+
+**Wenn die Zähler einer Einheit nichts hergeben, springt der Verlauf ein.**
+Zwei Sorten Altlast brauchen das: ein Eintrag, den `vollstaendig()` mangels
+Summe zurückgesetzt hat — er stünde sonst unter „noch nie geübt", obwohl der
+Verlauf seine Antworten kennt —, und ein alter Eintrag ohne Summe, dessen
+Score als `NaN` herauskäme. In beiden Fällen weiß der Verlauf mehr, und dann
+hat er recht. Wer eine Vokabel fünfmal
 geübt und dabei 4,6 Punkte geholt hat, steht bei 92 %.
 
 Das ist bewusst dieselbe Währung wie in der Runde. Eine zweite Bewertungslogik
