@@ -85,11 +85,11 @@ funktionieren, bevor Wichtigeres durchgeht.
 
 Er sitzt vorerst klein auf der **Startseite**, unter der Wahl zwischen
 Übungsblatt und Arbeit, und zieht auf die
-[Optionsseite](feature-request-optionsseite.md) um, sobald es die gibt.
+[Seitenmenü](feature-request-seitenmenue.md) um, sobald es die gibt.
 
 ## Was es freischaltet
 
-Optionsseite und die Wahl der Aufgabenart aus
+Das Seitenmenü und die Wahl der Aufgabenart aus
 [Alle drei Zeiten](feature-request-drei-zeiten.md). Es blockiert nichts,
 kostet einen Abend und ist danach nie wieder Thema.
 

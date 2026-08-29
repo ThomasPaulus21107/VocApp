@@ -32,6 +32,11 @@ const el = {
   ergebnisVorlage: document.querySelector('#ergebnis-vorlage'),
   // Die vier Modus-Knöpfe: zwei auf der Startseite, zwei am Ende.
   modusKnoepfe: document.querySelectorAll('[data-modus]'),
+  menue: document.querySelector('#menue'),
+  menueKnopf: document.querySelector('#menue-knopf'),
+  menueZu: document.querySelector('#menue-zu'),
+  menueSchatten: document.querySelector('#menue-schatten'),
+  toene: document.querySelector('#toene'),
   richtung: document.querySelector('#richtung'),
   richtungen: document.querySelectorAll('input[name="richtung"]'),
   formen: document.querySelector('#formen'),
@@ -79,7 +84,45 @@ const FORM_NAME = {
  * Verbindet die Bedienelemente mit der App.
  * Ereignisse fließen nach oben: die UI meldet nur, WAS passiert ist.
  */
-export function verbinde({ aufAbsenden, aufStart, aufRichtungswechsel, aufTipp, aufWeiter }) {
+/**
+ * Stellt den Töne-Schalter auf den gespeicherten Wert. Wird einmal beim Start
+ * gerufen -- was gespeichert war, weiß nur app.js.
+ */
+export function setzeToene(an) {
+  el.toene.checked = an;
+  klang.schalte(an);
+}
+
+/** Auf und zu. Der Fokus wandert mit, sonst ist die Lade eine Falle. */
+function zeigeMenue(offen) {
+  el.menue.classList.toggle('menue--offen', offen);
+  el.menueSchatten.classList.toggle('menue-schatten--offen', offen);
+  el.menueKnopf.setAttribute('aria-expanded', String(offen));
+
+  if (offen) el.menueZu.focus();
+  else el.menueKnopf.focus();
+}
+
+export function verbinde({ aufAbsenden, aufStart, aufRichtungswechsel, aufTipp, aufWeiter, aufToene }) {
+  el.menueKnopf.addEventListener('click', () => zeigeMenue(true));
+  el.menueZu.addEventListener('click', () => zeigeMenue(false));
+  el.menueSchatten.addEventListener('click', () => zeigeMenue(false));
+
+  // Escape schließt, wie bei jedem Overlay. Ohne das säße man fest, sobald
+  // die App ohne Adressleiste auf dem Homebildschirm läuft.
+  document.addEventListener('keydown', (ereignis) => {
+    if (ereignis.key === 'Escape' && el.menue.classList.contains('menue--offen')) {
+      zeigeMenue(false);
+    }
+  });
+
+  // Der Schalter wirkt sofort, damit man den Unterschied hört. Gespeichert
+  // wird er oben in app.js -- die UI kennt keinen Speicher.
+  el.toene.addEventListener('change', () => {
+    klang.schalte(el.toene.checked);
+    aufToene(el.toene.checked);
+  });
+
   el.formular.addEventListener('submit', (ereignis) => {
     ereignis.preventDefault();
     aufAbsenden(el.eingabe.value);

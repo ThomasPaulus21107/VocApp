@@ -74,7 +74,7 @@ Keine. Kann sofort passieren und dauert einen Abend.
   Telefon als Hauptgerät will man beides.
 - **`display: standalone` nimmt die Adressleiste weg.** Damit gibt es keinen
   Zurück-Knopf mehr — sobald es
-  [Optionen](feature-request-optionsseite.md) und
+  [Seitenmenü](feature-request-seitenmenue.md) und
   [Fortschritt](feature-request-fortschritt.md) als eigene Seiten gibt, muss
   jede davon einen sichtbaren Weg zurück haben. In Safari trägt das der
   Browser, hier nicht mehr.

@@ -24,7 +24,7 @@ Vier Dinge, mehr nicht:
 
 ## Warum eine eigene Seite
 
-Wie bei der [Optionsseite](feature-request-optionsseite.md): Vite kann mehrere
+Wie bei der [Seitenmenü](feature-request-seitenmenue.md): Vite kann mehrere
 Einstiegspunkte, `fortschritt.html` kommt als Eintrag in `rollupOptions.input`.
 Kein Router, keine Abhängigkeit. Üben und Nachsehen sind zwei Situationen, und
 die Karte soll leer bleiben.

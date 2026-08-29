@@ -35,6 +35,9 @@ const ERLEDIGT = 2;
 // Geht er verloren, ist nichts kaputt: dann sehen alle Karten gleich alt aus,
 // es wird zufaellig gezogen, und nach vier Runden ist der Zustand von selbst
 // wieder da.
+// Töne an oder aus. Ein true/false, der erste Schalter, der durch die
+// Speicher-Naht geht. Standard ist an: wer nichts einstellt, hört sie.
+const TOENE = 'toene';
 const AUSWAHL = 'auswahl';
 let auswahlstand = storage.lesen(AUSWAHL, { rundeNr: 0, zuletzt: {} });
 
@@ -307,9 +310,12 @@ function aufTipp() {
 
 // Kein start() beim Laden: zuerst steht die Wahl zwischen Übungsblatt und
 // Arbeit auf dem Bildschirm, und die stößt die Runde an.
+ui.setzeToene(storage.lesen(TOENE, true));
+
 ui.verbinde({
   aufAbsenden,
   aufStart: start,
   aufTipp,
   aufWeiter: starteLernpotential,
+  aufToene: (an) => storage.speichern(TOENE, an),
 });

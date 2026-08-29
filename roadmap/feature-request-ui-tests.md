@@ -49,7 +49,7 @@ die Sorte Änderung, bei der der Sprint-1-Fehler wieder passiert:
 - **Drei Eingabefelder** statt einem in [Alle drei Zeiten](feature-request-drei-zeiten.md),
   auf 390 px, mit Tab-Reihenfolge — dieselbe Formenzeile, die schon einmal am
   Layout gescheitert ist
-- **Zwei weitere Seiten** ([Optionen](feature-request-optionsseite.md),
+- **Zwei weitere Seiten** ([Seitenmenü](feature-request-seitenmenue.md),
   [Fortschritt](feature-request-fortschritt.md)), die kein Test je öffnet
 - **Fremde Nutzer.** Heute sagt Matilda beim Abendessen, dass etwas kaputt ist.
   Ein Dutzend Kinder sagt gar nichts, sie hören auf.

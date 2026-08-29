@@ -28,7 +28,7 @@ größer. Der nächste Zuwachs an Nutzen liegt im Stoff, nicht in der Mechanik.
 
 `data/lektion-01.json`, `data/lektion-02.json` und so weiter, statt einer
 immer weiter wachsenden `vokabeln.json`. Matilda arbeitet dann in kleinen,
-überschaubaren Dateien, und die [Optionsseite](feature-request-optionsseite.md)
+überschaubaren Dateien, und die [Seitenmenü](feature-request-seitenmenue.md)
 kann später einzelne Lektionen anbieten.
 
 Die unregelmäßigen Verben bleiben, wo sie sind — sie sind keine Lektion,

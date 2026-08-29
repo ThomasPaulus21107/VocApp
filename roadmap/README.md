@@ -106,7 +106,7 @@ Von unten nach oben, neueste zuerst.
 | [Der Lernstand je Vokabel](feature-request-lernstand.md) | Thomas |
 | [Den Lernfortschritt sehen](feature-request-fortschritt.md) | Thomas, Gestaltung Matilda |
 | [Die Speicher-Naht am Gerät](feature-request-storage.md) | Thomas |
-| [Die Optionsseite](feature-request-optionsseite.md) | Thomas, Gestaltung Matilda |
+| [Das Seitenmenü](feature-request-seitenmenue.md) | Thomas, Gestaltung Matilda |
 | [Technisches Monitoring](feature-request-monitoring.md) | Thomas |
 | [Ob die App mehrere Nutzer kennt](feature-request-mehrere-nutzer.md) | Entscheidung |
 | [Ob die Abfragerichtung umschaltbar wird](feature-request-richtung.md) | Entscheidung |
@@ -128,7 +128,7 @@ stimmen — sonst bleibt der Punkt im Backlog:
 4. Der Umfang ist grob abschätzbar.
 
 Punkt 1 ist der Grund, warum `storage.js` refined ist, obwohl es allein nichts
-sichtbar macht: es blockiert nichts und macht dafür der Optionsseite und der
+sichtbar macht: es blockiert nichts und macht dafür dem Seitenmenü und der
 Wahl der Aufgabenart den Weg frei. Und Punkt 3 ist der Grund, warum
 **„Was ist ein Punkt?" im Backlog steht** — an dieser einen unbeantworteten
 Frage hängt alles, was mehrere Nutzer betrifft.
