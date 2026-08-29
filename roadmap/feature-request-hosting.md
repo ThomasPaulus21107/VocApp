@@ -44,7 +44,7 @@ gezählten Tag.
 **Also gilt eine Reihenfolge, und sie ist nicht verhandelbar:**
 
 ```
-1-4  der Lernstand liegt auf dem Server   <- feature-request-backend-naht.md ff.
+1-4  der Lernstand liegt auf dem Server   <- implemented/feature-backend-naht-2026-08-29-2225.md ff.
      |
      v
      DANN erst umziehen
@@ -105,7 +105,7 @@ Wenig, aber an drei Stellen, die zusammenhängen:
 
 ## Voraussetzung
 
-**Phase 1 vollständig** — [Naht](feature-request-backend-naht.md),
+**Phase 1 vollständig** — [Naht](implemented/feature-backend-naht-2026-08-29-2225.md),
 [Tabelle](feature-request-ereignistabelle.md),
 [Melden](feature-request-ereignisse-melden.md),
 [Umzug](feature-request-umzug-des-bestands.md) — und besser noch

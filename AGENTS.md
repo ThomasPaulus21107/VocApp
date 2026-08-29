@@ -81,7 +81,7 @@ verschiedenen Dingen hängt:
 
 - **Der Lernstand darf nach Postgres.** Supabase ist eingerichtet, und der
   Weg dorthin steht in sieben Dateien ab
-  `roadmap/feature-request-backend-naht.md` — erst die Datenbank, dann die
+  `roadmap/implemented/feature-backend-naht-2026-08-29-2225.md` — erst die Datenbank, dann die
   Anmeldung, jede Datei einzeln baubar. Der Grund, warum das nicht wartet: der
   Lernstand speichert **Ereignisse und keine Punktekonten**, und `localStorage`
   in einem fremden Browser ist weder zu prüfen noch zu sichern noch
@@ -131,7 +131,7 @@ gleich:
 
 - **Supabase und Accounts sind freigegeben.** Das Projekt ist eingerichtet,
   das Refinement steht in sieben Dateien ab
-  `roadmap/feature-request-backend-naht.md`. Wer daran baut, hält sich an die
+  `roadmap/implemented/feature-backend-naht-2026-08-29-2225.md`. Wer daran baut, hält sich an die
   Reihenfolge dort und fragt nicht mehr jedes Mal nach — aber baut auch
   nichts, was in keiner der sieben Dateien steht.
 - **Punkte sind definiert, aber nicht überall erlaubt.** Was ein Punkt ist,
@@ -408,7 +408,7 @@ npx playwright install webkit   # einmalig, holt den Browser dazu
 - **`@supabase/supabase-js`** ist die erste echte Laufzeit-Abhängigkeit — alle
   anderen sind `devDependencies` und landen nie im Bundle. Am 29.08.2026
   nachgefragt und freigegeben; die Begründung steht in
-  `roadmap/feature-request-backend-naht.md`.
+  `roadmap/implemented/feature-backend-naht-2026-08-29-2225.md`.
 - **Die Supabase-CLI** kommt dazu, aber **nur im Workflow** — nicht in
   `package.json`, nicht in `npm install`. Sie spielt Migrationen ein, siehe
   `roadmap/feature-request-releases.md`.

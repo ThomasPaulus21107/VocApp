@@ -118,7 +118,7 @@ vorbereitet". Die `profile`-Tabelle bekommt deshalb genau zwei Spalten.
 ## Voraussetzung
 
 Phase 1 vollständig, also
-[die Naht](feature-request-backend-naht.md),
+[die Naht](implemented/feature-backend-naht-2026-08-29-2225.md),
 [die Tabelle](feature-request-ereignistabelle.md),
 [das Melden](feature-request-ereignisse-melden.md) und
 [der Umzug](feature-request-umzug-des-bestands.md).

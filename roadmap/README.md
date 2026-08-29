@@ -83,6 +83,7 @@ Von unten nach oben, neueste zuerst.
 
 | Feature | Wann |
 |---|---|
+| [Die zweite Naht zum Server](implemented/feature-backend-naht-2026-08-29-2225.md) | 29.08. 22:25 |
 | [Wie die Oberfläche getestet wird](implemented/feature-ui-tests-2026-08-29-1943.md) | 29.08. 19:43 |
 | [Dein Fleiß](implemented/feature-fleiss-2026-08-29-1551.md) | 29.08. 15:51 |
 | [Den Lernfortschritt sehen](implemented/feature-fortschritt-2026-08-29-1531.md) | 29.08. 15:31 |
@@ -130,7 +131,7 @@ Vorgeschichte steht in
 [Ob die App mehrere Nutzer kennt](feature-request-mehrere-nutzer.md).
 
 ```
-      1 backend-naht ─────┐
+      1 backend-naht ✓ ───┐
                           ├──▶ 3 ereignisse-melden ──▶ 4 umzug-des-bestands
       2 ereignistabelle ──┘   │                (die Datenbank steht)
               │               │                        │
@@ -144,7 +145,6 @@ Vorgeschichte steht in
 
 | # | Feature | Wer |
 |---|---|---|
-| 1 | [Die zweite Naht zum Server](feature-request-backend-naht.md) | Thomas |
 | 2 | [Die Ereignistabelle mit Row Level Security](feature-request-ereignistabelle.md) | Thomas |
 | 3 | [Jede Antwort geht zum Server](feature-request-ereignisse-melden.md) | Thomas |
 | 4 | [Der Bestand zieht um](feature-request-umzug-des-bestands.md) | Thomas |

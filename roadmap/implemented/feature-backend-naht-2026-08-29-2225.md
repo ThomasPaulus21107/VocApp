@@ -1,6 +1,6 @@
 # Feature: Die zweite Naht zum Server
 
-**Status:** bereit — durchdacht, noch nicht gebaut
+**Status:** umgesetzt am 29.08.2026 um 22:25, PR #44
 **Wo im Code:** `src/infra/backend.js` — neu, dazu `package.json`,
 `.env.example`, `.gitignore`, `.github/workflows/deploy.yml`
 
@@ -9,7 +9,7 @@ baut **nur die Leitung**: den Client, die Konfiguration und eine Sitzung. Es
 fließt noch nichts durch sie.
 
 Das ist Absicht und derselbe Fall wie
-[Die Speicher-Naht am Gerät](implemented/feature-storage-2026-08-29-1327.md):
+[Die Speicher-Naht am Gerät](feature-storage-2026-08-29-1327.md):
 sie macht allein nichts sichtbar, blockiert nichts und macht drei anderen
 Features den Weg frei. `roadmap/README.md` nennt das Punkt 1 der
 Aufnahmekriterien.
@@ -53,7 +53,7 @@ Nutzer an — mit einer echten `auth.uid()`, nur ohne Mailadresse. Damit gilt:
   Nutzer; er bekommt nachträglich eine Mailadresse und behält dieselbe uid mit
   allen Zeilen. Weil es ohne Mailanbindung keine Bestätigungsmail gibt, macht
   Thomas diesen einen Handgriff im Dashboard — siehe
-  [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md).
+  [Aus der anonymen Sitzung wird ein Konto](../feature-request-konten.md).
 
 Die Alternative wäre ein selbst erfundener Geräteschlüssel in `localStorage`
 gewesen. Der hat den Fehler, dass RLS nichts prüfen kann: die Tabelle wäre für
@@ -62,7 +62,7 @@ aller Zeilen. Verworfen.
 
 ## Die API
 
-Das Muster steht in [Ob die App mehrere Nutzer kennt](feature-request-mehrere-nutzer.md)
+Das Muster steht in [Ob die App mehrere Nutzer kennt](../feature-request-mehrere-nutzer.md)
 und lautet: **einmal beim Start laden, danach aus dem Speicher im RAM lesen.**
 Damit färbt die Asynchronität nicht durch die ganze App.
 
@@ -98,7 +98,7 @@ heißen die Projekte im Dashboard erkennbar verschieden, und die Abnahme unten
 schaut nach, in welchem die Zeile gelandet ist.
 
 **Wie das Schema in beide kommt und was ein Release ist**, steht in
-[Test und Produktion](feature-request-releases.md) — kurz: nicht von Hand.
+[Test und Produktion](../feature-request-releases.md) — kurz: nicht von Hand.
 
 ## Die Schlüssel
 
@@ -112,13 +112,13 @@ VITE_SUPABASE_PUBLISHABLE_KEY=
 
 Im Deploy-Workflow zwei Secrets mit den Werten von **VocApp**, die beim
 `npm run build`-Schritt als `env:` hereinkommen. Sie gehören in eine
-geschützte Environment, siehe [Test und Produktion](feature-request-releases.md).
+geschützte Environment, siehe [Test und Produktion](../feature-request-releases.md).
 
 **Beide Werte sind öffentlich gedacht** — sie landen im Bundle, das GitHub
 Pages ausliefert, und das ist bei Supabase der vorgesehene Weg. Der Grund für
 die Variablen ist nicht Geheimhaltung, sondern Rotation: ein getauschter Key
 soll keine Code-Änderung sein. **Was schützt, ist RLS**, siehe
-[Die Ereignistabelle mit Row Level Security](feature-request-ereignistabelle.md).
+[Die Ereignistabelle mit Row Level Security](../feature-request-ereignistabelle.md).
 
 ## Die neue Abhängigkeit
 
@@ -159,5 +159,5 @@ Keine. Diese Datei kommt zuerst.
 
 ## Was danach kommt
 
-[Die Ereignistabelle](feature-request-ereignistabelle.md) (parallel möglich),
-dann [Jede Antwort geht zum Server](feature-request-ereignisse-melden.md).
+[Die Ereignistabelle](../feature-request-ereignistabelle.md) (parallel möglich),
+dann [Jede Antwort geht zum Server](../feature-request-ereignisse-melden.md).
