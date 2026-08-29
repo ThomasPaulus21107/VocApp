@@ -101,7 +101,19 @@ function holeHoerer() {
  * Spielt eine der Melodien ab. Ein unbekannter Name bleibt still --
  * ein fehlender Ton soll die App nicht anhalten.
  */
+// Ob ueberhaupt Toene kommen. Der Schalter steht hier und nicht in ui.js:
+// diese Datei weiss, ob und wie ein Ton klingt -- also weiss sie auch, dass
+// gerade keiner klingen soll.
+let angeschaltet = true;
+
+/** Toene an oder aus. Wer nichts einstellt, hoert sie -- Standard ist an. */
+export function schalte(an) {
+  angeschaltet = an;
+}
+
 export function spiele(name) {
+  if (!angeschaltet) return;
+
   const melodie = MELODIEN[name];
   if (!melodie) return;
 

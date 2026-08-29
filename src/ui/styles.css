@@ -531,3 +531,135 @@ body {
   color: var(--leise);
   overflow-wrap: break-word;
 }
+
+/* =========================================================
+   Das Seitenmenue
+   ========================================================= */
+
+/* Klein und leise: es ist kein zweiter Hauptknopf neben "Pruefen".
+   44 px ist die kleinste Flaeche, die sich am Handy zuverlaessig treffen
+   laesst -- deshalb ist der Knopf groesser als das, was man von ihm sieht. */
+.menue-knopf {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--karte);
+  cursor: pointer;
+}
+
+.menue-knopf svg {
+  width: 24px;
+  height: 24px;
+}
+
+.menue-knopf:focus-visible {
+  outline: 3px solid var(--karte);
+}
+
+/* Die Lade selbst. Sie bleibt immer im Dokument und wird geschoben, nicht
+   versteckt -- mit "hidden" gaebe es keine Bewegung, weil [hidden] weiter
+   oben display:none erzwingt. visibility nimmt sie dafuer aus der
+   Tabulator-Reihenfolge, solange sie zu ist. */
+.menue {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 5;
+
+  width: min(320px, 85vw);
+  height: 100dvh;
+  padding: 64px 24px 24px;
+
+  background: var(--karte);
+  color: var(--schrift);
+  box-shadow: -8px 0 24px rgb(0 0 0 / 25%);
+
+  visibility: hidden;
+  transform: translateX(100%);
+
+  /* visibility laesst sich nicht weich ueberblenden -- der Browser springt
+     bei der Haelfte der Zeit um. Beim OEFFNEN ist das fatal: die Lade waere
+     eine acht Hundertstel lang noch unsichtbar, und ein unsichtbares Element
+     kann keinen Fokus bekommen. Der Fokus landete dann im Nichts.
+     Deshalb: beim Oeffnen sofort umschalten (0s), beim Schliessen erst,
+     wenn die Bewegung durch ist (0s mit Verzoegerung). */
+  transition: transform 0.25s ease, visibility 0s linear 0.25s;
+}
+
+.menue--offen {
+  visibility: visible;
+  transform: translateX(0);
+  transition: transform 0.25s ease, visibility 0s;
+}
+
+/* Derselbe Knopf, nur innerhalb der Lade und in der dunklen Farbe. */
+.menue__zu {
+  position: absolute;
+  color: var(--leise);
+}
+
+.menue__zu:focus-visible {
+  outline: 3px solid var(--akzent);
+}
+
+.menue__titel {
+  margin: 0 0 12px;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--leise);
+}
+
+.menue__zeile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 12px 0;
+  font-size: 1.125rem;
+  cursor: pointer;
+}
+
+.menue__zeile input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--akzent);
+}
+
+/* Der Schatten dahinter faengt Klicks ab und macht klar, dass die Karte
+   gerade nicht dran ist. */
+.menue-schatten {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+
+  background: rgb(0 0 0 / 40%);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+}
+
+.menue-schatten--offen {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.25s ease, visibility 0s;
+}
+
+/* Wer im Betriebssystem weniger Bewegung eingestellt hat, bekommt sie auch
+   hier nicht. Die Lade ist dann sofort da statt zu fahren. */
+@media (prefers-reduced-motion: reduce) {
+  .menue,
+  .menue-schatten {
+    transition: none;
+  }
+}

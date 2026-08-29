@@ -71,11 +71,11 @@ senkrecht dazu. Beide Aufgabenarten gibt es in beiden Strengegraden.
 
 ## Es ist der zweite Schalter
 
-Die [Optionsseite](feature-request-optionsseite.md) wartet auf „mindestens
+Die [Seitenmenü](feature-request-seitenmenue.md) wartet auf „mindestens
 zwei Schalter, die es zu zeigen lohnt". Bisher gab es nur einen (Töne an/aus),
 weil der Vokabel-Strang ruht und die [Richtung](feature-request-richtung.md)
 unentschieden ist. **Die Wahl der Aufgabenart ist dieser zweite Schalter** —
-und damit macht dieses Feature nebenbei die Optionsseite baubar.
+und damit macht dieses Feature nebenbei das Seitenmenü reicher.
 
 ## Voraussetzungen
 
