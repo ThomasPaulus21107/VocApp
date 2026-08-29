@@ -79,8 +79,11 @@ und keine Policy auf `ereignisse`:
   sicher. Nicht: wann jemand übt, welche Vokabel er elfmal falsch hatte, wie
   lange er weg war. Das steht im Ereignis-Tagebuch und geht niemanden an.
 - **Sie schließt anonyme Sitzungen aus.** `signInAnonymously()` steht jedem
-  offen, der die Seite lädt — ohne diese Zeile wäre „alle Angemeldeten" gleich
-  „das offene Netz". Der Schalter ist die `is_anonymous`-Angabe im Token.
+  offen, der die Seite lädt, **und liefert die Rolle `authenticated`** — ohne
+  diese Zeile wäre „alle Angemeldeten" gleich „das offene Netz". Der einzige
+  Unterschied zwischen einem Kind und einem Fremden steht nicht in der Rolle,
+  sondern in der `is_anonymous`-Angabe im Token. Deshalb wird genau die
+  geprüft und nicht die Rolle.
 - **`security definer`, aber eng.** Die Funktion darf mehr als der Aufrufer;
   deshalb steht `set search_path` dabei und deshalb ist sie kurz genug, um sie
   ganz zu lesen.

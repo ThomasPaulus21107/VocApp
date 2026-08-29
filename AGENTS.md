@@ -97,6 +97,9 @@ verschiedenen Dingen hängt:
   steht jedem offen, der die Seite lädt, und die Ereignistabelle ist ein
   Tagebuch, kein Punktestand. **Wer eine Lesepolicy auf `ereignisse` aufmacht,
   öffnet die App fürs offene Netz, und zwar still.**
+- **Merksatz für jede Policy: `to authenticated` schließt niemanden aus.** Eine
+  anonyme Sitzung hat genau diese Rolle. Was schützt, ist immer die Bedingung
+  dahinter — `using (nutzer = auth.uid())`, nie `using (true)`.
 - **Eine Rangliste ist weiter nicht freigegeben.** Entschieden ist nur die
   Richtung: wenn ein Vergleich kommt, dann **würdigend statt rangordnend**.
   Die Form ist offen, siehe `roadmap/feature-request-wuerdigung.md`.
