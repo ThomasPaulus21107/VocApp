@@ -49,8 +49,11 @@ die Sorte Änderung, bei der der Sprint-1-Fehler wieder passiert:
 - **Drei Eingabefelder** statt einem in [Alle drei Zeiten](feature-request-drei-zeiten.md),
   auf 390 px, mit Tab-Reihenfolge — dieselbe Formenzeile, die schon einmal am
   Layout gescheitert ist
-- **Zwei weitere Seiten** ([Seitenmenü](implemented/feature-seitenmenue-2026-08-29-1348.md),
-  [Fortschritt](implemented/feature-fortschritt-2026-08-29-1531.md)), die kein Test je öffnet
+- **Drei weitere Seiten** ([Seitenmenü](implemented/feature-seitenmenue-2026-08-29-1348.md),
+  [Fortschritt](implemented/feature-fortschritt-2026-08-29-1531.md),
+  [Fleiß](implemented/feature-fleiss-2026-08-29-1551.md)), die kein Test je öffnet —
+  auf der Fleiß-Seite inzwischen mit anklickbaren Balken, also mit Verhalten
+  und nicht nur mit Layout
 - **Fremde Nutzer.** Heute sagt Matilda beim Abendessen, dass etwas kaputt ist.
   Ein Dutzend Kinder sagt gar nichts, sie hören auf.
 

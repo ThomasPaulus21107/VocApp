@@ -1,10 +1,10 @@
 # Feature: Dein Fleiß
 
-**Status:** bereit — durchdacht, noch nicht gebaut
-**Wo im Code:** `fleiss.html`, `src/fleiss.js` — neu, dazu `src/domain/lernstand.js`
+**Status:** umgesetzt am 29.08.2026 um 15:51, [PR #28](https://github.com/ThomasPaulus21107/VocApp/pull/28)
+**Wo im Code:** `fleiss.html`, `src/fleiss.js`, dazu `fleiss()` und `serie()` in `src/domain/lernstand.js`
 
 Eine zweite Statistikseite neben
-[Dein Fortschritt](implemented/feature-fortschritt-2026-08-29-1531.md). Die
+[Dein Fortschritt](feature-fortschritt-2026-08-29-1531.md). Die
 zeigt, **was** sitzt. Diese zeigt, **wann geübt wurde** — an welchem Tag wie
 viel, und wie gut es an dem Tag lief.
 
@@ -33,7 +33,7 @@ heute mitgezählt.
 
 ## Der Speicher zählt jetzt auch Tage
 
-Der [Lernstand](implemented/feature-lernstand-2026-08-29-1531.md) bekommt ein
+Der [Lernstand](feature-lernstand-2026-08-29-1531.md) bekommt ein
 Feld `tage`: je Datum die Zahl der Antworten, der Treffer und die Summe der
 Punkte.
 
@@ -63,9 +63,38 @@ zum Vortag, so wie Matilda es auch empfinden würde.
   vergibt keine Punkte — die Frage „was ist ein Punkt?" aus dem Backlog wird
   damit nicht vorweggenommen.
 
+## Wie es geworden ist
+
+Gebaut wie beschrieben. Zwei Dinge sind unterwegs dazugekommen:
+
+**Die Balken sind Knöpfe.** Geplant war „wer genau hinsehen will, hält auf
+einen Balken" — als `title`-Tooltip gebaut, und der braucht Hover. Auf dem
+iPhone gibt es keinen: ausgerechnet auf dem Hauptgerät war der einzelne Tag
+damit nicht zu lesen. Jetzt ist jeder Tag ein `<button>`, und der angetippte
+schreibt sich in eine Zeile unter das Diagramm. Die Trefferfläche ist die
+ganze Säule und nicht nur der gefärbte Teil — bei 30 Tagen nebeneinander ist
+eine Spalte schmal, in der Höhe holt sie zurück, was ihr in der Breite fehlt.
+
+Am Container darf deshalb **kein `role="img"`** stehen. Das hatte die erste
+Fassung, und es hätte die Knöpfe für einen Screenreader zu einem einzigen
+Bild verschmolzen. Jetzt ist es eine `role="group"`, und jeder Knopf trägt
+seinen Satz als `aria-label`.
+
+**Der Weg hierher ist kürzer.** Unter der Ergebnisliste am Ende einer Runde
+stehen seit dem 29.08. zwei Links auf diese Seite und auf den Fortschritt.
+Vorher führte der Weg nur über das Seitenmenü — ausgerechnet in dem Moment,
+in dem man wissen will, wie es insgesamt steht, war er am weitesten.
+
+## Was noch offen ist
+
+**Kein Test öffnet diese Seite.** `src/fleiss.js` ist ungetestet; geprüft ist
+nur die Domäne darunter (`fleiss()` und `serie()` in `lernstand.js`). Das ist
+derselbe blinde Fleck wie bei der Fortschrittsseite und steht in
+[Wie die Oberfläche getestet wird](../feature-request-ui-tests.md).
+
 ## Später
 
-- **Streak über Wochen** und was daraus folgt: siehe `backlog.md` unter Punkte.
+- **Streak über Wochen** und was daraus folgt: siehe [`backlog.md`](../backlog.md) unter Punkte.
 - **Nach Modus trennen** — im Verlauf steht schon, ob eine Antwort im
   Übungsblatt oder in der Arbeit fiel. Eine Arbeit an einem Tag sagt mehr als
   fünf Übungsrunden.

@@ -83,6 +83,7 @@ Von unten nach oben, neueste zuerst.
 
 | Feature | Wann |
 |---|---|
+| [Dein Fleiß](implemented/feature-fleiss-2026-08-29-1551.md) | 29.08. 15:51 |
 | [Den Lernfortschritt sehen](implemented/feature-fortschritt-2026-08-29-1531.md) | 29.08. 15:31 |
 | [Der Lernstand je Vokabel](implemented/feature-lernstand-2026-08-29-1531.md) (Stufe 1) | 29.08. 15:31 |
 | [Das Seitenmenü](implemented/feature-seitenmenue-2026-08-29-1348.md) | 29.08. 13:48 |
@@ -111,7 +112,6 @@ Von unten nach oben, neueste zuerst.
 
 | Feature | Wer |
 |---|---|
-| [Dein Fleiß](feature-request-fleiss.md) | Thomas, Gestaltung Matilda |
 | [Die Vokabeln der 5. Klasse hereinholen](feature-request-vokabel-import-klasse-5.md) | Matilda, Einsammeln Thomas |
 | [Alle drei Zeiten auf einer Karte](feature-request-drei-zeiten.md) | Thomas |
 | [Tipps, die zur Frage passen](feature-request-tipps.md) | Thomas, Texte Matilda |
