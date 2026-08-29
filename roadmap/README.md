@@ -132,11 +132,14 @@ Vorgeschichte steht in
 ```
       1 backend-naht ─────┐
                           ├──▶ 3 ereignisse-melden ──▶ 4 umzug-des-bestands
-      2 ereignistabelle ──┘                    (die Datenbank steht)
-                                    │
-                                    ▼
-                              5 konten ──┬──▶ 6 server-ist-die-wahrheit
-                                         └──▶ 7 kinderdaten
+      2 ereignistabelle ──┘   │                (die Datenbank steht)
+              │               │                        │
+              └─▶ 10 releases ┘                        ├──▶ 11 hosting
+                                                       ▼
+                              5 konten ──┬──▶ 6 server-ist-die-wahrheit ──▶ 8 missionen
+                                         └──▶ 7 kinderdaten                  │
+                                                                             ▼
+                                                                    9 wuerdigung (offen)
 ```
 
 | # | Feature | Wer |
@@ -150,6 +153,18 @@ Vorgeschichte steht in
 | 7 | [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md) | Thomas |
 | 8 | [Gemeinsame Lernmissionen](feature-request-missionen.md) | Thomas, Ziele Matilda |
 | 9 | [Würdigung statt Rangliste](feature-request-wuerdigung.md) | **offen** — Thomas und Matilda gemeinsam |
+
+Zwei kommen dazu, die nicht am Lernstand hängen, sondern am Betrieb — sie
+reihen sich nach 1 und 2 ein:
+
+| # | Feature | Wer |
+|---|---|---|
+| 10 | [Test und Produktion, und was ein Release ist](feature-request-releases.md) | Thomas |
+| 11 | [GitHub Pages ablösen](feature-request-hosting.md) | Thomas |
+
+**Datei 11 darf nicht vor 1–4 kommen.** Ein Adresswechsel leert `localStorage`,
+und solange der Lernstand nur dort liegt, kostet der Umzug ihn. Der Grund steht
+in der Datei.
 
 Darauf bauen die letzten beiden auf, möglich geworden, seit *„Was ist ein
 Punkt?"* am 29.08.2026 beantwortet ist. **Datei 9 ist die einzige der neun, die
