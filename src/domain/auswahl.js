@@ -8,17 +8,8 @@
 // Woche Ueben -- waren im Schnitt zehn Verben noch nie zu sehen gewesen.
 
 import { ABGEFRAGTE_FORMEN, hatFormen } from './pruefung.js';
-
-/**
- * Der Name, unter dem eine Einheit gemerkt wird.
- *
- * Die Einheit ist Karte PLUS Form, nicht die Karte: "to write" kann im
- * simple past sitzen und im Partizip nicht. Eine normale Vokabel hat keine
- * Formen, dort ist der Name einfach die id.
- */
-export function schluessel(id, form) {
-  return form ? `${id}|${form}` : id;
-}
+// Der Name einer Einheit gehoert dorthin, wo gemerkt wird.
+import { schluessel } from './lernstand.js';
 
 /** Jede Karte in ihre abfragbaren Einheiten zerlegt. */
 function einheiten(karten) {
@@ -96,17 +87,4 @@ export function zieheRunde(karten, anzahl, zuletzt = {}, rundeNr = 0, zufall = M
     gezogen.push({ karte: eintrag.karte, form: eintrag.form });
   }
   return gezogen;
-}
-
-/**
- * Schreibt die gezogenen Einheiten auf die aktuelle Rundennummer fort.
- * Rein kommt der alte Stand, raus ein neuer -- das alte Objekt bleibt, wie
- * es war.
- */
-export function merke(zuletzt, rundeNr, gezogen) {
-  const neu = { ...zuletzt };
-  for (const { karte, form } of gezogen) {
-    neu[schluessel(karte.id, form)] = rundeNr;
-  }
-  return neu;
 }

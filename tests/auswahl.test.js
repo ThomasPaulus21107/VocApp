@@ -1,7 +1,8 @@
 // Prueft, WELCHE Karten drankommen. Der Kern ist nicht der Zufall, sondern
 // die Abdeckung: dass kein Verb wochenlang durchrutscht.
 import { describe, it, expect } from 'vitest';
-import { zieheRunde, merke, schluessel } from '../src/domain/auswahl.js';
+import { zieheRunde } from '../src/domain/auswahl.js';
+import { merkeGezogen, zuletztVon, schluessel, LEER } from '../src/domain/lernstand.js';
 
 /** Ein paar erfundene Verben. Der Inhalt ist egal, die Struktur nicht. */
 function verben(anzahl) {
@@ -73,19 +74,17 @@ describe('zieheRunde', () => {
 describe('die Abdeckung', () => {
   /** Spielt Runden und sammelt, was drankam. */
   function spiele(karten, anzahl, runden) {
-    let stand = { rundeNr: 0, zuletzt: {} };
+    let stand = LEER;
     const gesehen = { karten: new Set(), einheiten: new Set() };
 
     for (let i = 0; i < runden; i++) {
-      const gezogen = zieheRunde(karten, anzahl, stand.zuletzt, stand.rundeNr);
+      const zuletzt = zuletztVon(stand.einheiten);
+      const gezogen = zieheRunde(karten, anzahl, zuletzt, stand.rundeNr);
       for (const e of gezogen) {
         gesehen.karten.add(e.karte.id);
         gesehen.einheiten.add(schluessel(e.karte.id, e.form));
       }
-      stand = {
-        rundeNr: stand.rundeNr + 1,
-        zuletzt: merke(stand.zuletzt, stand.rundeNr, gezogen),
-      };
+      stand = merkeGezogen(stand, gezogen);
     }
     return gesehen;
   }
@@ -104,21 +103,5 @@ describe('die Abdeckung', () => {
   it('zeigt nach drei Runden noch nicht alles -- 45 von 53', () => {
     // Die Gegenprobe: der Test oben ist nicht zufaellig gruen.
     expect(spiele(verben(53), 15, 3).karten.size).toBe(45);
-  });
-});
-
-describe('merke', () => {
-  it('schreibt die gezogenen Einheiten auf die Rundennummer', () => {
-    const karten = verben(2);
-    const gezogen = [{ karte: karten[0], form: 'simple-past' }];
-    expect(merke({}, 7, gezogen)).toEqual({ 'uv-000|simple-past': 7 });
-  });
-
-  it('laesst den alten Stand in Ruhe', () => {
-    const alt = { 'uv-000|infinitive': 1 };
-    const neu = merke(alt, 2, [{ karte: verben(1)[0], form: 'infinitive' }]);
-
-    expect(alt).toEqual({ 'uv-000|infinitive': 1 });
-    expect(neu).toEqual({ 'uv-000|infinitive': 2 });
   });
 });
