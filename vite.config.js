@@ -15,6 +15,7 @@ export default defineConfig({
       input: {
         index: resolve(import.meta.dirname, 'index.html'),
         fortschritt: resolve(import.meta.dirname, 'fortschritt.html'),
+        fleiss: resolve(import.meta.dirname, 'fleiss.html'),
       },
     },
   },

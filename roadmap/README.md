@@ -111,6 +111,7 @@ Von unten nach oben, neueste zuerst.
 
 | Feature | Wer |
 |---|---|
+| [Dein Fleiß](feature-request-fleiss.md) | Thomas, Gestaltung Matilda |
 | [Die Vokabeln der 5. Klasse hereinholen](feature-request-vokabel-import-klasse-5.md) | Matilda, Einsammeln Thomas |
 | [Alle drei Zeiten auf einer Karte](feature-request-drei-zeiten.md) | Thomas |
 | [Tipps, die zur Frage passen](feature-request-tipps.md) | Thomas, Texte Matilda |

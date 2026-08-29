@@ -57,7 +57,7 @@ public/      wird unverändert mitgeliefert: Icons und manifest.json
 src/domain/  die Regeln: was ist richtig, welche Karte kommt dran
 src/infra/   das Einzige, was etwas speichert
 src/ui/      alles, was mit Anzeige zu tun hat
-src/app.js   das Üben, src/fortschritt.js die Statistikseite
+src/app.js   das Üben, src/fortschritt.js und src/fleiss.js die Statistiken
 tests/       automatische Tests für die Regeln
 ```
 

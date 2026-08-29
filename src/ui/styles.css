@@ -831,3 +831,54 @@ body {
   color: var(--leise);
   font-size: 0.875rem;
 }
+
+/* =========================================================
+   Das Fleiss-Diagramm
+   ========================================================= */
+
+/* Dreissig Balken nebeneinander. Sie teilen sich den Platz gleichmaessig --
+   auf einem breiten Bildschirm werden sie dicker, nicht mehr. */
+.diagramm {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+
+  height: 140px;
+  margin: 20px 0 6px;
+}
+
+.diagramm__tag {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+
+  /* Auch ein leerer Tag bekommt eine Spur, sonst sieht man die Luecke nicht. */
+  background: linear-gradient(var(--eingabefeld), var(--eingabefeld)) bottom / 100% 2px no-repeat;
+  border-radius: 2px;
+}
+
+.diagramm__balken {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+
+  background: var(--akzent);
+  border-radius: 2px;
+}
+
+/* Der gruene Teil steht unten: das ist der Anteil, der gesessen hat. */
+.diagramm__richtig {
+  width: 100%;
+  background: var(--richtig);
+  border-radius: 2px;
+}
+
+.diagramm__achse {
+  display: flex;
+  justify-content: space-between;
+
+  margin: 0 0 20px;
+  color: var(--leise);
+  font-size: 0.8125rem;
+}

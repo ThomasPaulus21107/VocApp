@@ -45,8 +45,10 @@ der erreichten Kartenpunkte, dazu ein Verlauf der letzten 750 Antworten —
 alles in `localStorage`. Aus Summe geteilt durch Anzahl wird der **Score** je
 Vokabel, in derselben Währung wie die Note.
 
-Dazu gibt es ein **Seitenmenü** (Töne an/aus, Weg zur Statistik) und eine
-zweite Seite `fortschritt.html`: was schon sitzt und was noch nicht.
+Dazu gibt es ein **Seitenmenü** (Töne an/aus, Weg zu den Statistiken) und
+zwei weitere Seiten: `fortschritt.html` zeigt in drei Fächern, was sitzt und
+was nicht, `fleiss.html` als Balkendiagramm, an welchen der letzten 30 Tage
+wie viel geübt wurde.
 
 **Geübt wird primär auf Matildas iPhone.** Seit dem 29.08.2026 ist das eine
 Randbedingung und keine Nebensache: Layouts werden für ein Telefon mit offener
