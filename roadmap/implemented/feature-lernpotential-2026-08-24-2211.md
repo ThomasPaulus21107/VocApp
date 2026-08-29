@@ -33,7 +33,16 @@ Die offenen Punkte aus dem Planning, beantwortet beim Bauen:
 
 - **Zählt die zweite Runde zur Note?** Nein. Die Note steht nach dem ersten
   Durchgang fest. In der zweiten Runde wachsen weder `punkte` noch die
-  Ergebnisliste — `merkeErgebnis()` steigt dort gleich wieder aus.
+  Ergebnisliste — sonst stünde dieselbe Karte zweimal in der Liste.
+
+  **Für den Lernstand zählt sie seit dem 29.08.2026 mit.** Anfangs stieg
+  `merkeErgebnis()` in der Wiederholung gleich wieder aus und nahm den
+  Lernstand mit — der sah die zweite Runde also gar nicht. Das war zu viel des
+  Guten: eine Wiederholung ist eine echte Antwort auf eine echte Frage, sie
+  gehört in den Score und in den Fleiß. Eine Übungseinheit hat seitdem mehr
+  Antworten, als der Stapel Karten hatte. Im Verlauf steht `wiederholung:
+  true` dabei, denn sie wiegt anders: die Lösung stand eben noch auf dem
+  Bildschirm.
 - **Wie oft?** Einmal. `imLernpotential` sorgt dafür, dass es keine dritte
   Runde gibt: wer eine Karte zweimal falsch hat, hat sie heute nicht mehr im
   Kopf.

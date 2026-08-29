@@ -133,20 +133,24 @@ function merkeFuerSpaeter() {
  * Schreibt auf, wie die aktuelle Karte ausgegangen ist. `getippt` bleibt
  * leer, wenn es keine echte Antwort gab -- bei "s" und bei "keine Ahnung".
  *
- * Die Liste zeigt die gespielte Runde. Was danach im Lernpotential passiert,
+ * Die LISTE zeigt die gespielte Runde. Was danach im Lernpotential passiert,
  * ändert sie nicht mehr -- sonst stünde dieselbe Karte zweimal darin.
+ *
+ * Der LERNSTAND sieht die Wiederholung dagegen sehr wohl. Sie ist eine echte
+ * Antwort auf eine echte Frage, und eine Übungseinheit hat deshalb mehr
+ * Antworten als der Stapel Karten hatte.
  */
 function merkeErgebnis({ ausgang, getippt, kartenpunkte }) {
-  if (imLernpotential) return;
-
-  ergebnisse.push({
-    frage: frage.frage,
-    gesuchteForm: frage.gesuchteForm,
-    erwartet: frage.antworten.join(' oder '),
-    richtig: ausgang === AUSGAENGE.RICHTIG,
-    getippt,
-    punkte: kartenpunkte,
-  });
+  if (!imLernpotential) {
+    ergebnisse.push({
+      frage: frage.frage,
+      gesuchteForm: frage.gesuchteForm,
+      erwartet: frage.antworten.join(' oder '),
+      richtig: ausgang === AUSGAENGE.RICHTIG,
+      getippt,
+      punkte: kartenpunkte,
+    });
+  }
 
   // Dieselbe Karte wandert in den Lernstand -- dort zählt sie über Wochen und
   // nicht nur für diese Runde. Die Zeit kommt von hier, nie aus der Domäne.
@@ -162,6 +166,9 @@ function merkeErgebnis({ ausgang, getippt, kartenpunkte }) {
       versuch,
       tipp: tippBenutzt,
       modus: gespielterModus,
+      // Eine Wiederholung wiegt anders: die Lösung stand eben noch da.
+      // Gezählt wird sie trotzdem, nur eben als das, was sie ist.
+      wiederholung: imLernpotential,
       // Dieselbe Zahl, die auch in die Note eingeht. Aufsummiert und durch
       // die Zahl der Antworten geteilt ergibt sie den Score der Vokabel.
       punkte: kartenpunkte,
@@ -259,20 +266,22 @@ function aufAbsenden(eingabe) {
  * mitgezählt: die Note stand da längst fest.
  */
 function zaehleRichtig() {
-  if (imLernpotential) {
-    lernpotentialGeschafft += 1;
-    return;
-  }
+  if (imLernpotential) lernpotentialGeschafft += 1;
 
   // Richtig, aber nicht auf Anhieb: die Karte kommt trotzdem noch einmal.
   // Der zweite Versuch und der Tipp sind genau die beiden Stellen, an denen
   // eine Karte Punkte kostet -- also ist sie noch nicht sicher.
+  // (In der Wiederholung selbst hält merkeFuerSpaeter sich zurück.)
   if (versuch > 0 || tippBenutzt) merkeFuerSpaeter();
 
   // Punkte gibt es nur hier: für eine falsche oder übersprungene Karte wird
   // gar nicht erst gezählt.
   const kartenpunkte = punkteFuerKarte({ versuch, tipp: tippBenutzt });
-  punkte += kartenpunkte;
+
+  // Für die NOTE zählt nur die erste Runde -- die Note stand vor der
+  // Zwischenseite fest. Im Lernstand zählt die Wiederholung mit.
+  if (!imLernpotential) punkte += kartenpunkte;
+
   merkeErgebnis({ ausgang: AUSGAENGE.RICHTIG, getippt: null, kartenpunkte });
 }
 
@@ -304,7 +313,8 @@ function beendeStapel() {
 
 /**
  * Der Knopf auf der Zwischenseite: ab hier läuft die Wiederholung.
- * Sie zählt nicht mehr -- die Note stand vor der Zwischenseite fest.
+ * Für die NOTE zählt sie nicht mehr, die stand vor der Zwischenseite fest.
+ * Für den Lernstand zählt sie wie jede andere Antwort.
  */
 function starteLernpotential() {
   imLernpotential = true;
