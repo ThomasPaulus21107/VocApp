@@ -39,19 +39,23 @@ siehe `roadmap/feature-request-vokabel-import-klasse-5.md`.
 
 **Welche Karte drankommt, ist nicht mehr zufällig.** Die App merkt sich je
 Karte und Form, wann sie zuletzt dran war, und zieht die, die am längsten
-warten. Seit dem 29.08.2026 entscheidet zusätzlich eine **Quote** die
-Mischung: 5 noch nie geübte, 7 in Arbeit, 3 stabil gelernte je Runde
-(`QUOTE` in `auswahl.js`). Vorher waren sieben Runden lang alle Karten neu
-und danach nie wieder eine. Seit dem 29.08.2026
-merkt sie sich auch, wie es ausging: je Einheit ein paar Zähler und die Summe
-der erreichten Kartenpunkte, dazu ein Verlauf der letzten 750 Antworten —
-alles in `localStorage`. Aus Summe geteilt durch Anzahl wird der **Score** je
-Vokabel, in derselben Währung wie die Note.
+warten. Seit dem 29.08.2026 merkt sie sich auch, wie es ausging: je Einheit
+ein paar Zähler und die Summe der erreichten Kartenpunkte, dazu ein Verlauf
+der letzten 750 Antworten — alles in `localStorage`. Aus Summe geteilt durch
+Anzahl wird der **Score** je Vokabel, in derselben Währung wie die Note.
 
-Dazu gibt es ein **Seitenmenü** (Töne an/aus, Weg zu den Statistiken) und
-zwei weitere Seiten: `fortschritt.html` zeigt in drei Fächern, was sitzt und
-was nicht, `fleiss.html` als Balkendiagramm, an welchen der letzten 30 Tage
-wie viel geübt wurde.
+**Eine Quote entscheidet die Mischung einer Runde:** 5 noch nie geübte, 7 in
+Arbeit, 3 stabil gelernte (`QUOTE` in `auswahl.js`). Ohne sie waren sieben
+Runden lang alle fünfzehn Karten neu und danach nie wieder eine — ein
+Kippschalter statt einer Lernkurve. Gibt ein Fach nicht genug her, rücken die
+freien Plätze nach: erst an die neuen, dann an die in Arbeit.
+
+Dazu gibt es ein **Seitenmenü** auf jeder Seite (Töne an/aus, Weg zu den
+Statistiken) und zwei weitere Seiten. `fortschritt.html` zeigt in drei
+Fächern, was stabil gelernt ist und was nicht; jede Vokabel klappt auf und
+zeigt, wann sie dran war und was sie geholt hat. `fleiss.html` zeigt als
+Balkendiagramm, an welchen der letzten 30 Tage wie viel geübt wurde, und
+darunter jede einzelne Runde mit Uhrzeit und Trefferquote.
 
 **Geübt wird primär auf Matildas iPhone.** Seit dem 29.08.2026 ist das eine
 Randbedingung und keine Nebensache: Layouts werden für ein Telefon mit offener
@@ -80,7 +84,9 @@ Minderjährige), steht in `roadmap/feature-request-mehrere-nutzer.md`.
 
 ### Nicht ungefragt einbauen
 
-Punkte, Streaks, Leitner-Algorithmus, Accounts, PWA, Supabase, TypeScript,
+Punkte, Streaks, Leitner-Algorithmus (seit dem 29.08.2026 durchdacht und in
+`roadmap/feature-request-leitner.md` beschrieben, aber weiter nicht
+freigegeben), Accounts, PWA, Supabase, TypeScript,
 Framework.
 
 Wenn eine Aufgabe eines dieser Themen berührt: **nicht einbauen, sondern

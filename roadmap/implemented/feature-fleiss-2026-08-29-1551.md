@@ -85,6 +85,31 @@ stehen seit dem 29.08. zwei Links auf diese Seite und auf den Fortschritt.
 Vorher führte der Weg nur über das Seitenmenü — ausgerechnet in dem Moment,
 in dem man wissen will, wie es insgesamt steht, war er am weitesten.
 
+### Jede Runde einzeln, unter dem Diagramm
+
+Am 29.08.2026 dazugekommen: unter dem Balkendiagramm steht jede Runde als
+eigene Zeile — wann sie anfing, ob Übungsblatt oder Arbeit, wie viele
+Antworten, welche Quote, und ein liegender Balken dazu. Das Diagramm sagt, an
+welchen **Tagen** geübt wurde; diese Liste sagt, **wann genau und wie es lief**.
+
+Der Balken zeigt **nur die Quote**, volle Breite sind 100 %. Der erste Anlauf
+maß zwei Größen gleichzeitig — Länge gleich Antwortzahl, grüner Teil gleich
+Treffer — und war damit unlesbar: eine Runde mit 45 Antworten und 91 % hatte
+einen kürzeren grünen Balken als eine mit 75 Antworten und 59 %. Wie viel
+beantwortet wurde, steht als Zahl daneben und muss nicht zweimal dastehen.
+
+**Die Runden werden aus dem Verlauf zurückgerechnet**, denn eine Rundennummer
+schreibt er nicht mit. Eine neue Runde fängt an, wenn der Modus wechselt, wenn
+eben die Wiederholung lief und jetzt nicht mehr, wenn die laufende Runde ihre
+15 Karten voll hat, oder wenn eine lange Pause dazwischenliegt. Die
+Wiederholung zählt zur Runde davor und macht sie **nicht** voll — sie zieht
+keine neuen Karten.
+
+Ein mitgeschriebenes Feld wäre einfacher gewesen, hätte aber nur für Neues
+gegolten; so gilt es auch für den Bestand. **Sollte die Rundengröße einmal
+schwanken (Leitner), trägt die Rechnung nicht mehr** — das steht als Warnung
+an `runden()`.
+
 ## Was noch offen ist
 
 **Kein Test öffnet diese Seite.** `src/fleiss.js` ist ungetestet; geprüft ist
