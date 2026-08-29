@@ -44,12 +44,12 @@ und gehört ins Menü, die Statistik ist Inhalt zum Scrollen und gehört auf ein
 eigene Seite.
 
 Gebaut wurde in dieser Reihenfolge, und sie ist leicht falsch herum zu bauen:
-erst [das Mitschreiben](../feature-request-lernstand.md), dann
-[die Seite](../feature-request-fortschritt.md), dann die Zeile hier. Wer mit der
+erst [das Mitschreiben](feature-lernstand-2026-08-29-1531.md), dann
+[die Seite](feature-fortschritt-2026-08-29-1531.md), dann die Zeile hier. Wer mit der
 Seite anfängt, hat sie am Tag ihrer Fertigstellung leer — und für Wochen.
 
 Der Unterschied ist Absicht. Ein Schalter ist eine Zeile und gehört ins Menü.
-Die [Statistik](../feature-request-fortschritt.md) sind 106 Einheiten, nach
+Die [Statistik](feature-fortschritt-2026-08-29-1531.md) sind 106 Einheiten, nach
 Mustern gruppiert, plus die letzten Runden — das ist Inhalt zum Scrollen und
 gehört auf eine eigene Seite, auch auf einem Telefon. Sie bekommt dann einen
 sichtbaren Weg zurück, siehe oben.

@@ -29,7 +29,7 @@ Matilda und muss ihr auf jedes Gerät folgen. Beides in eine Naht zu zwingen
 hieße, eines von beiden falsch zu machen.
 
 Diese Datei beschreibt nur die erste. Die zweite steht in
-[Der Lernstand je Vokabel](../feature-request-lernstand.md).
+[Der Lernstand je Vokabel](feature-lernstand-2026-08-29-1531.md).
 
 ## Was drinsteht
 
@@ -59,7 +59,7 @@ aus, und nach vier Runden ist der Zustand von selbst wiederhergestellt.
 
 ### Eine benannte Ausnahme, befristet
 
-Der [Lernstand je Vokabel](../feature-request-lernstand.md) in seiner Stufe 1
+Der [Lernstand je Vokabel](feature-lernstand-2026-08-29-1531.md) in seiner Stufe 1
 erfüllt die Faustregel **nicht** — eine über Monate gewachsene Statistik will
 niemand wegwerfen. Er liegt trotzdem hier, und zwar bewusst und unter drei
 Bedingungen:

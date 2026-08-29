@@ -63,7 +63,7 @@ Mustertipps lernt sie die Systematik dahinter und kann Verben einordnen, die
 noch gar nicht drankamen.
 
 Seit dem 29.08.2026 hängt noch etwas daran: die
-[Fortschrittsseite](feature-request-fortschritt.md) zeigt unter „Das sitzt
+[Fortschrittsseite](implemented/feature-fortschritt-2026-08-29-1531.md) zeigt unter „Das sitzt
 noch nicht" eine **Wortliste**. Mit `muster` würde daraus eine Diagnose —
 nicht „sang geht daneben", sondern „`i – a – u` sitzt nicht". Das ist
 derselbe Unterschied wie beim Tipp selbst, nur eine Seite weiter.

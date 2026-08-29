@@ -40,8 +40,10 @@ siehe `roadmap/feature-request-vokabel-import-klasse-5.md`.
 **Welche Karte drankommt, ist nicht mehr zufällig.** Die App merkt sich je
 Karte und Form, wann sie zuletzt dran war, und zieht die, die am längsten
 warten — nach vier Runden war jedes Verb einmal dran. Seit dem 29.08.2026
-merkt sie sich auch, wie es ausging: acht Zähler je Einheit und ein Verlauf
-der letzten 750 Antworten, alles in `localStorage`.
+merkt sie sich auch, wie es ausging: je Einheit ein paar Zähler und die Summe
+der erreichten Kartenpunkte, dazu ein Verlauf der letzten 750 Antworten —
+alles in `localStorage`. Aus Summe geteilt durch Anzahl wird der **Score** je
+Vokabel, in derselben Währung wie die Note.
 
 Dazu gibt es ein **Seitenmenü** (Töne an/aus, Weg zur Statistik) und eine
 zweite Seite `fortschritt.html`: was schon sitzt und was noch nicht.
@@ -507,7 +509,7 @@ Davon gibt es **eine benannte Ausnahme**: die lokale Statistik je Vokabel
 die App einen Nutzer hat, und nur mit einem Knopf, der sie als Datei sichert —
 auf einem iPhone ist das die einzige Kopie, die eine Ferienlücke übersteht. Gespeichert werden dort **Ereignisse** (eine Zeile je Antwort), nicht
 errechnete Zustände — das ist das einzige Format, das sich später nicht
-festlegt. Siehe `roadmap/feature-request-lernstand.md`.
+festlegt. Siehe `roadmap/implemented/feature-lernstand-2026-08-29-1531.md`.
 
 `domain/` erfährt von beidem nichts: dort kommen Ereignisse als Argumente
 herein und Bewertungen heraus.

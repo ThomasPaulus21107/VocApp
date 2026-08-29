@@ -34,13 +34,13 @@ in der Git-Historie.
   Summand in der Gewichtsformel, dazu die Zeile `auswahlGewichtet` in
   `modus.js` und der Verhältnis-Deckel, damit eine Übungsrunde nicht nur aus
   Karten besteht, die wehtun.
-  `braucht:` [den Lernstand](feature-request-lernstand.md) — **steht**, dort
+  `braucht:` [den Lernstand](implemented/feature-lernstand-2026-08-29-1531.md) — **steht**, dort
   zählt schon, was danebengeht
   `offen:` nichts Grundsätzliches. Es ist die ausführlichste Beschreibung im
   Ordner und wartet nur darauf, gebaut zu werden.
 
 - **Leitner-Fächer mit Wiedervorlage.** „Diese Karte erst in drei Tagen wieder."
-  `braucht:` [Der Lernstand je Vokabel](feature-request-lernstand.md) —
+  `braucht:` [Der Lernstand je Vokabel](implemented/feature-lernstand-2026-08-29-1531.md) —
   refined. Danach ist Leitner nur noch ein anderes Modell über denselben
   Zeilen: es ersetzt die Gewichtsformel aus
   [Welche Karten drankommen](implemented/feature-auswahl-2026-08-29-1327.md), nicht das Ziehen.
@@ -48,7 +48,7 @@ in der Git-Historie.
 
 Der Punkt „Lernstand pro Karte speichern" ist am 29.08.2026 hier
 ausgezogen — er steht jetzt als
-[Der Lernstand je Vokabel](feature-request-lernstand.md). Sein `offen:`
+[Der Lernstand je Vokabel](implemented/feature-lernstand-2026-08-29-1531.md). Sein `offen:`
 war das Format, und das ist beantwortet: Ereignisse statt Zustände, weil man
 sich damit gerade **nicht** festlegt.
 
@@ -66,7 +66,7 @@ sich damit gerade **nicht** festlegt.
 
 - **Streak über mehrere Tage.** „Vier Tage hintereinander geübt."
   `braucht:` die Antwort oben, und
-  [den Lernstand](feature-request-lernstand.md) — dort steht das Datum ohnehin
+  [den Lernstand](implemented/feature-lernstand-2026-08-29-1531.md) — dort steht das Datum ohnehin
   in jeder Zeile
   `braucht:` das Datum von außen: `berechneStreak(ereignisse, heute)`, nie
   `new Date()` in der Domäne
