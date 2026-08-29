@@ -87,9 +87,15 @@ einen Ausnahme oben, und die macht Thomas von Hand.
 - **Abmelden und „wer bin ich"** in `src/ui/menue.js`. Ein Name und ein Knopf,
   mehr nicht.
 - **Ein Pseudonym als Anzeigename** in einer kleinen `profile`-Tabelle (uid,
-  pseudonym), RLS wie bei den Ereignissen: jeder sieht sein eigenes.
-  **Klarnamen kommen nicht hinein**, siehe
+  pseudonym). **Klarnamen kommen nicht hinein**, siehe
   [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md).
+
+  Das Pseudonym ist seit dem 29.08.2026 **tragend und nicht mehr Zierde**: alle
+  sehen den Fortschritt aller, und das Pseudonym ist genau das, woran sie
+  einander erkennen. Daraus folgt dreierlei — **Thomas vergibt es** (nicht das
+  Kind, sonst heißt eines nach einer Woche wie ein anderes), **er kann es
+  ändern** (Anzeigenamen können beleidigend sein), und **es darf den Klarnamen
+  nicht durchscheinen lassen**. „matilda-p" ist kein Pseudonym.
 
 ## Was ausdrücklich nicht gebaut wird
 

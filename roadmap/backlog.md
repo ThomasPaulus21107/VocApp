@@ -61,9 +61,10 @@ sich damit gerade **nicht** festlegt.
   zurück; addiert werden die beiden nie. Die Begründung steht in
   [Mehrere Nutzer](feature-request-mehrere-nutzer.md), das erste Feature
   darauf in [Gemeinsame Lernmissionen](feature-request-missionen.md).
-  `offen bleibt:` wie ein Vergleich zwischen Kindern aussieht. Entschieden ist
-  nur die Richtung — **würdigend statt rangordnend**, „fleißigste dieser
-  Woche" statt Platz 1 bis 12. Die Form soll nicht am Schreibtisch entstehen.
+  `offen bleibt:` wie ein Vergleich zwischen Kindern aussieht. Das ist am
+  29.08.2026 aus dem Backlog ausgezogen und steht jetzt als
+  [Würdigung statt Rangliste](feature-request-wuerdigung.md) — mit drei Formen
+  zur Wahl und einem Vorschlag. Entschieden wird es nicht am Schreibtisch.
 
 - **Aus der Serie soll etwas folgen.** *Gezählt* wird sie seit dem 29.08.2026
   auf der [Fleiß-Seite](implemented/feature-fleiss-2026-08-29-1551.md) — „vier Tage

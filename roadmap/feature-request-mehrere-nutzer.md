@@ -150,22 +150,49 @@ beide.
 Gemeinsame Missionen sind damit refinebar und stehen in
 [Gemeinsame Lernmissionen](feature-request-missionen.md).
 
+## Wer darf wessen Fortschritt sehen? Beantwortet am 29.08.2026
+
+**Alle sehen den Fortschritt aller — unter Pseudonymen.** Das war ursprünglich
+enger gedacht („Eltern den ihres Kindes, nicht den der anderen") und ist
+bewusst geöffnet worden: gemeinsam üben heißt auch, voneinander zu wissen.
+
+Bei der Umsetzung ist daraus **keine** Lesepolicy auf `ereignisse` geworden,
+und dafür gibt es zwei Gründe, die beide zählen:
+
+1. **`signInAnonymously()` steht jedem offen, der die Seite lädt.** „Alle
+   Angemeldeten dürfen lesen" hieße wörtlich: das offene Netz darf lesen. Wer
+   die URL kennt, hat in einer Sekunde eine Sitzung.
+2. **`ereignisse` ist ein Tagebuch, kein Punktestand.** Jede Antwort mit
+   Zeitstempel — wer um 23:40 übt, wer eine Vokabel elfmal falsch hatte, wer
+   drei Wochen weg war. Das ist mehr, als „den Fortschritt sehen" verlangt.
+
+Geteilt wird deshalb eine **Zusammenfassung**: Pseudonym, Wochenpunkte, Anteil
+sicher. Sie kommt aus `fortschritte()` in
+[Gemeinsame Lernmissionen](feature-request-missionen.md), schließt anonyme
+Sitzungen aus und gibt Zahlen zurück, keine Zeilen.
+
+Daraus folgen zwei Dinge, die anderswo stehen:
+
+- **Das Pseudonym ist jetzt tragend** — es ist das, was die anderen sehen.
+  Siehe [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md).
+- **Die Datenschutzseite muss es sagen.** „Nur du siehst deinen Stand" stimmt
+  nicht mehr. Siehe [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md).
+
 ## Was noch entschieden werden muss
 
-- [ ] **Wie der Vergleich zwischen Kindern aussieht.** Entschieden ist die
-      Richtung: Missionen zuerst, ein Vergleich später — und wenn, dann
-      **würdigend statt rangordnend**. „Fleißigste dieser Woche" ist etwas
-      anderes als Platz 1 bis 12. Die Form dafür ist noch nicht gefunden und
-      soll auch nicht am Schreibtisch entstehen.
-- [ ] **Wer darf wessen Fortschritt sehen?** Eltern den ihres Kindes, nicht
-      den der anderen. Das ist eine RLS-Regel und keine Frage der Oberfläche.
 - [x] **Was ist ein Punkt** — oben beantwortet.
 - [x] **Wer legt Konten an** — entschieden in
       [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md):
       Thomas, von Hand, mit einem Link je Kind und ohne Mailanbindung.
+- [x] **Wer darf wessen Fortschritt sehen** — oben beantwortet.
+- [ ] **Wie aus den Zahlen eine Würdigung wird.** Steht als eigene Datei in
+      [Würdigung statt Rangliste](feature-request-wuerdigung.md). Entschieden
+      ist nur, dass es keine Rangliste von Platz 1 bis 12 gibt; die Form soll
+      nicht am Schreibtisch entstehen.
 
-Der Datenbank-Strang oben hängt an keinem der offenen Punkte und läuft
-weiter — ebenso alles andere in der Roadmap.
+**Damit ist diese Datei bis auf einen Punkt abgearbeitet.** Der Rest steht in
+den neun Dateien, auf die sie oben verweist, und keiner davon blockiert den
+Datenbank-Strang.
 
 ## Zu beachten
 

@@ -41,29 +41,61 @@ Wenig, weil die Ereignisse schon liegen:
 - **Eine `missionen`-Tabelle**: Titel, Ziel, Beginn, Ende. Wird von Hand
   gefüllt, so wie die Konten — bei einer Mission pro Woche ist ein Formular
   dafür verfrüht.
-- **Eine Sicht, die zusammenzählt.** Die Summe über alle Teilnehmenden in
-  einem Zeitraum. Als `view` oder Funktion in Postgres, damit die App keine
-  fremden Zeilen zu sehen bekommt — nur die Summe.
+- **`fortschritte()`** — die Funktion unten. Sie trägt die Mission und alles,
+  was später an Vergleich dazukommt.
 - **Ein Balken auf der Startseite.** Titel, Stand, Ziel. Kein eigener
   Einstiegspunkt: eine Mission gehört dorthin, wo geübt wird.
 
-## Die RLS-Regel, auf die es ankommt
+## `fortschritte()` — die einzige Stelle, an der man andere sieht
 
-**Niemand sieht die Zeilen eines anderen — auch nicht für die Mission.** Die
-Summe kommt aus einer Funktion mit `security definer`, die genau eine Zahl
-zurückgibt und keine Zeilen. Ohne diese Trennung wäre die Mission ein
-Nebeneingang zu allen Ereignissen aller Kinder, und die Policies aus
-[der Ereignistabelle](feature-request-ereignistabelle.md) wären umsonst
-geschrieben.
+Am 29.08.2026 ist entschieden worden: **alle dürfen den Fortschritt aller
+sehen, unter Pseudonymen.** Diese Funktion ist die Umsetzung, und sie ist
+bewusst die einzige.
 
-Damit ist die Mission auch die ehrlichste Form des Vergleichs: **man sieht,
-dass beigetragen wurde, nicht wer wie viel.**
+```sql
+create function fortschritte()
+returns table (pseudonym text, woche real, sicher int)
+security definer                -- liest ereignisse, ohne sie zu oeffnen
+set search_path = public
+language sql stable
+as $$
+  select p.pseudonym,
+         coalesce(sum(e.punkte) filter (where e.tag >= date_trunc('week', now())::date), 0),
+         ...
+  from profile p left join ereignisse e on e.nutzer = p.uid
+  -- Wer nur zum Gucken vorbeikommt, sieht nichts.
+  where (auth.jwt() ->> 'is_anonymous')::boolean is not true
+  group by p.pseudonym
+$$;
+
+revoke all on function fortschritte() from anon;
+grant execute on function fortschritte() to authenticated;
+```
+
+Drei Eigenschaften, und jede davon ist der Grund, warum es eine Funktion ist
+und keine Policy auf `ereignisse`:
+
+- **Sie gibt Zahlen zurück, keine Zeilen.** Pseudonym, Wochenpunkte, Anteil
+  sicher. Nicht: wann jemand übt, welche Vokabel er elfmal falsch hatte, wie
+  lange er weg war. Das steht im Ereignis-Tagebuch und geht niemanden an.
+- **Sie schließt anonyme Sitzungen aus.** `signInAnonymously()` steht jedem
+  offen, der die Seite lädt — ohne diese Zeile wäre „alle Angemeldeten" gleich
+  „das offene Netz". Der Schalter ist die `is_anonymous`-Angabe im Token.
+- **`security definer`, aber eng.** Die Funktion darf mehr als der Aufrufer;
+  deshalb steht `set search_path` dabei und deshalb ist sie kurz genug, um sie
+  ganz zu lesen.
+
+**Welche Zahlen drinstehen, ist an genau dieser Stelle zu ändern** — die App
+zeigt, was herauskommt.
 
 ## Was ausdrücklich nicht dazugehört
 
-- **Kein Rangordnen.** Keine Platzierung, keine Liste von oben nach unten.
-- **Kein eigener Beitrag im Vergleich zu anderen.** Wer wissen will, was er
-  selbst getan hat, sieht auf seine Fleiß-Seite.
+- **Kein Rangordnen.** Keine Platzierung, keine Liste von oben nach unten. Wie
+  aus den Zahlen eine Würdigung wird, steht in
+  [Würdigung statt Rangliste](feature-request-wuerdigung.md) und ist offen.
+- **Kein Zugriff auf fremde Ereignisse.** Die Policies in
+  [der Ereignistabelle](feature-request-ereignistabelle.md) bleiben, wie sie
+  sind. Wer sie aufmacht, hebt die zweite Eigenschaft oben auf.
 - **Keine Belohnung für die Serie.** Sie wird weiter nur gezählt, siehe
   [Backlog](backlog.md).
 
@@ -72,6 +104,9 @@ dass beigetragen wurde, nicht wer wie viel.**
 - Zwei Konten üben, der Balken zählt beides.
 - **In der Konsole des einen Kontos `select('*')` auf `ereignisse`: weiterhin
   nur die eigenen Zeilen.** Die Mission darf daran nichts geändert haben.
+- **Ohne Anmeldung `fortschritte()` aufrufen** — also aus einer frischen
+  anonymen Sitzung, wie sie jeder Besucher bekommt: **es kommt nichts zurück.**
+  Das ist die Abnahme, die wirklich zählt.
 - Montag: die Wochenzahl steht auf null, die Gesamtzahl nicht.
 
 ## Voraussetzung

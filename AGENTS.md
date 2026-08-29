@@ -91,8 +91,15 @@ verschiedenen Dingen hängt:
   `punkteFuerKarte()` aus `domain/note.js`, gezählt über die laufende Woche.
   Damit sind **gemeinsame Missionen** frei, siehe
   `roadmap/feature-request-missionen.md`.
+- **Alle sehen den Fortschritt aller, unter Pseudonymen** — aber **nicht** über
+  eine Lesepolicy auf `ereignisse`. Geteilt wird eine Zusammenfassung aus einer
+  Funktion, die anonyme Sitzungen ausschließt. Grund: `signInAnonymously()`
+  steht jedem offen, der die Seite lädt, und die Ereignistabelle ist ein
+  Tagebuch, kein Punktestand. **Wer eine Lesepolicy auf `ereignisse` aufmacht,
+  öffnet die App fürs offene Netz, und zwar still.**
 - **Eine Rangliste ist weiter nicht freigegeben.** Entschieden ist nur die
   Richtung: wenn ein Vergleich kommt, dann **würdigend statt rangordnend**.
+  Die Form ist offen, siehe `roadmap/feature-request-wuerdigung.md`.
 - **Die Serie wird weiter nur gezählt**, nicht belohnt.
 
 Die Abwägung samt der Pflichten, die mit fremden Kinderdaten dazukommen
