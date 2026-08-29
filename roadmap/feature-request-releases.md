@@ -133,7 +133,7 @@ sie nur der Release-Job sieht und kein Workflow aus einem fremden Pull Request.
 
 ## Voraussetzung
 
-[Die zweite Naht zum Server](feature-request-backend-naht.md) und
+[Die zweite Naht zum Server](implemented/feature-backend-naht-2026-08-29-2225.md) und
 [Die Ereignistabelle](feature-request-ereignistabelle.md). Diese Datei ersetzt
 deren Abschnitte zu „Spielwiese und Ernst" und zum Einspielen von Hand.
 

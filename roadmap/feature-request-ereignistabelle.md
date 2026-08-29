@@ -179,6 +179,6 @@ wartet.
 ## Voraussetzung
 
 Keine — die Tabelle lässt sich vor, nach oder neben
-[Die zweite Naht zum Server](feature-request-backend-naht.md) anlegen. Beide
+[Die zweite Naht zum Server](implemented/feature-backend-naht-2026-08-29-2225.md) anlegen. Beide
 zusammen sind die Voraussetzung für
 [Jede Antwort geht zum Server](feature-request-ereignisse-melden.md).

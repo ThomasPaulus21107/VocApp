@@ -16,7 +16,7 @@ einzeln baubar und einzeln mergebar:
 
 | # | Datei | Was sie baut |
 |---|---|---|
-| 1 | [Die zweite Naht zum Server](feature-request-backend-naht.md) | `infra/backend.js`, Client, Konfiguration, anonyme Sitzung |
+| 1 | [Die zweite Naht zum Server](implemented/feature-backend-naht-2026-08-29-2225.md) | `infra/backend.js`, Client, Konfiguration, anonyme Sitzung |
 | 2 | [Die Ereignistabelle mit RLS](feature-request-ereignistabelle.md) | `supabase/schema.sql` |
 | 3 | [Jede Antwort geht zum Server](feature-request-ereignisse-melden.md) | `melde()`, Ausgangskorb, Anschlüsse in `app.js` |
 | 4 | [Der Bestand zieht um](feature-request-umzug-des-bestands.md) | den vorhandenen `verlauf` einmalig hochschieben |
@@ -82,7 +82,7 @@ sich als schädlich, ist sie dann ein Schalter und kein Rückbau.
 
 ## Die zweite Naht
 
-Gebaut wird sie in [Die zweite Naht zum Server](feature-request-backend-naht.md);
+Gebaut wird sie in [Die zweite Naht zum Server](implemented/feature-backend-naht-2026-08-29-2225.md);
 das Muster steht hier, weil es für alles gilt, was noch dazukommt.
 
 `infra/backend.js`, neben [`storage.js`](implemented/feature-storage-2026-08-29-1327.md) und

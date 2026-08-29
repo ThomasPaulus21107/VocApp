@@ -62,7 +62,7 @@ Ereignisse als Argumente herein und Bewertungen heraus, und dabei bleibt es.
 
 ### Angemeldet wird erst, wenn es etwas zu sichern gibt
 
-[Die zweite Naht](feature-request-backend-naht.md) ruft `starte()` beim Laden
+[Die zweite Naht](implemented/feature-backend-naht-2026-08-29-2225.md) ruft `starte()` beim Laden
 der Seite. Das war zum Prüfen richtig und ist auf Dauer falsch: **jeder
 Seitenaufruf legt dann einen anonymen Nutzer an.** Am 29.08.2026 in
 `VocApp TEST` nachgezählt — ein paar Testläufe, zehn Nutzer.
@@ -127,7 +127,7 @@ Dazu von Hand, weil kein Test es prüfen kann:
 
 ## Voraussetzung
 
-[Die zweite Naht zum Server](feature-request-backend-naht.md) und
+[Die zweite Naht zum Server](implemented/feature-backend-naht-2026-08-29-2225.md) und
 [Die Ereignistabelle](feature-request-ereignistabelle.md), beide gebaut.
 
 ## Was danach kommt
