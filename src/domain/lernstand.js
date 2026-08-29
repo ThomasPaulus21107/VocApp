@@ -3,7 +3,7 @@
 // Kein DOM, kein Speichern, und vor allem kein new Date(): die Zeit wird
 // hereingereicht, sonst waere kein Test vorhersagbar.
 //
-// Stufe 1 aus roadmap/feature-request-lernstand.md: alles liegt lokal und
+// Stufe 1 aus roadmap/implemented/feature-lernstand-2026-08-29-1531.md: alles liegt lokal und
 // gehoert einer Person -- naemlich der, die dieses Geraet benutzt. Stufe 2
 // schiebt dieselben Zahlen nach Postgres, wenn es mehrere Leute gibt.
 //
@@ -43,6 +43,7 @@ function frisch() {
   return {
     zuletzt: -1,        // in welcher Runde zuletzt gezogen
     dran: 0,            // wie oft beantwortet
+    summe: 0,           // die Kartenpunkte aller Antworten zusammen
     ersterVersuch: 0,   // auf Anhieb richtig
     zweiterVersuch: 0,  // richtig, aber erst nach der Korrekturchance
     falsch: 0,
@@ -75,17 +76,21 @@ export function merkeGezogen(stand, gezogen) {
  * Eine beantwortete Karte verbuchen. `versuch` ist 0 beim ersten Anlauf und
  * 1 nach der Korrekturchance; `tipp` sagt, ob ein Tipp geholt wurde.
  *
+ * `punkte` ist dieselbe Zahl zwischen 0 und 1, die auch in die Note eingeht --
+ * app.js rechnet sie mit punkteFuerKarte() aus. Sie wird hier aufsummiert;
+ * geteilt durch `dran` ergibt das den Score der Vokabel.
+ *
  * Der Modus steht mit im Verlauf, und das ist wichtig: eine Antwort im
  * Uebungsblatt (mit Tipp und zweitem Versuch) ist nicht dieselbe Evidenz wie
  * eine in der Arbeit. Ohne dieses Feld waere die Auswertung spaeter nicht
  * mehr zu retten.
  */
 export function verrechne(stand, ergebnis, jetzt) {
-  const { id, form, ausgang, versuch, tipp, modus } = ergebnis;
+  const { id, form, ausgang, versuch, tipp, modus, punkte = 0 } = ergebnis;
   const name = schluessel(id, form);
   const alt = stand.einheiten[name] ?? frisch();
 
-  const neu = { ...alt, dran: alt.dran + 1 };
+  const neu = { ...alt, dran: alt.dran + 1, summe: alt.summe + punkte };
   if (tipp) neu.tipps += 1;
 
   if (ausgang === AUSGAENGE.RICHTIG) {
@@ -100,7 +105,8 @@ export function verrechne(stand, ergebnis, jetzt) {
   }
 
   // Was hinten hereinkommt, faellt vorne heraus.
-  const verlauf = [...stand.verlauf, { id, form, ausgang, versuch, tipp, modus, zeit: jetzt }];
+  const verlauf = [...stand.verlauf,
+    { id, form, ausgang, versuch, tipp, modus, punkte, zeit: jetzt }];
 
   return {
     ...stand,
@@ -122,62 +128,70 @@ export function zuletztVon(einheiten) {
 }
 
 /**
- * Wie schwer eine Einheit faellt: 0 heisst sitzt, 1 heisst geht immer daneben.
- * Ein zweiter Versuch zaehlt halb -- gewusst hat sie es, aber nicht sofort.
+ * Der Score einer Einheit in Prozent: die erreichten Kartenpunkte geteilt
+ * durch die Zahl der Antworten.
+ *
+ * Es ist dieselbe Bewertung, aus der auch die Note entsteht -- auf Anhieb
+ * richtig ist ein ganzer Punkt, im zweiten Versuch ein halber, ein Tipp
+ * kostet ein Zehntel, falsch und uebersprungen bringen nichts. Wer eine
+ * Vokabel fuenfmal geuebt und dabei 4,6 Punkte geholt hat, steht bei 92 %.
  *
  * `null`, wenn noch nie beantwortet. Ueber Unbekanntes laesst sich nichts
  * sagen, und eine 0 waere hier eine Luege.
  */
-export function schwierigkeit(eintrag) {
+export function score(eintrag) {
   if (!eintrag || eintrag.dran === 0) return null;
-
-  const gekonnt = eintrag.ersterVersuch + eintrag.zweiterVersuch / 2;
-  return Math.max(0, Math.min(1, 1 - gekonnt / eintrag.dran));
+  return Math.round((eintrag.summe / eintrag.dran) * 100);
 }
 
-// Ab wann eine Einheit als "sitzt" gilt: mindestens zweimal beantwortet und
-// hoechstens ein Viertel danebengegangen. Einmal richtig kann Glueck sein.
-export const SICHER_AB = 2;
-export const SICHER_BIS = 0.25;
+// Ab hier gilt eine Einheit als sicher. Die Zahl ist eine Entscheidung und
+// keine Wahrheit -- wer sie strenger will, aendert sie hier.
+export const SICHER_AB_PROZENT = 75;
 
-export function sitzt(eintrag) {
-  const schwer = schwierigkeit(eintrag);
-  return schwer !== null && eintrag.dran >= SICHER_AB && schwer <= SICHER_BIS;
+/**
+ * Teilt alle Einheiten in drei Faecher: noch nie geuebt, in Arbeit, sicher.
+ *
+ * `namen` ist die Liste aller Einheiten, die es ueberhaupt gibt -- die kennt
+ * der Lernstand nicht, die kommt von den Karten. Was dort steht und hier
+ * keinen Eintrag hat, war noch nie dran.
+ *
+ * Sortiert wird so, dass oben steht, was zaehlt: in Arbeit der NIEDRIGSTE
+ * Score zuerst (das ist die Arbeit, die ansteht), bei den sicheren der
+ * hoechste (das ist der Lohn). Was noch nie dran war, behaelt die
+ * Reihenfolge der Karten.
+ */
+export function verteile(stand, namen) {
+  const faecher = { nie: [], arbeit: [], sicher: [] };
+
+  for (const name of namen) {
+    const eintrag = stand.einheiten[name];
+    const wert = score(eintrag);
+
+    if (wert === null) faecher.nie.push({ name, score: null, dran: 0 });
+    else if (wert > SICHER_AB_PROZENT) faecher.sicher.push({ name, score: wert, dran: eintrag.dran });
+    else faecher.arbeit.push({ name, score: wert, dran: eintrag.dran });
+  }
+
+  // Bei gleichem Score steht vorn, was oefter dran war -- das ist der
+  // sicherere Befund.
+  faecher.arbeit.sort((a, b) => a.score - b.score || b.dran - a.dran);
+  faecher.sicher.sort((a, b) => b.score - a.score || b.dran - a.dran);
+  return faecher;
 }
 
 /**
- * Die Zahlen fuer den Ueberblick. `gesamt` ist die Zahl aller Einheiten, die
- * es ueberhaupt gibt -- die kennt der Lernstand nicht, die kommt von den
- * Karten.
+ * Die Zahlen fuer den Ueberblick. `namen` wie bei verteile().
  */
-export function uebersicht(stand, gesamt) {
-  const alle = Object.values(stand.einheiten);
-  const beantwortet = alle.filter((eintrag) => eintrag.dran > 0);
+export function uebersicht(stand, namen) {
+  const faecher = verteile(stand, namen);
+  const beantwortet = Object.values(stand.einheiten).filter((e) => e.dran > 0);
 
   return {
-    gesamt,
-    gezogen: alle.length,
-    geuebt: beantwortet.length,
-    sicher: beantwortet.filter(sitzt).length,
+    gesamt: namen.length,
+    geuebt: faecher.arbeit.length + faecher.sicher.length,
+    sicher: faecher.sicher.length,
     runden: stand.rundeNr,
-    antworten: beantwortet.reduce((summe, eintrag) => summe + eintrag.dran, 0),
+    antworten: beantwortet.reduce((summe, e) => summe + e.dran, 0),
     zuletztGeuebt: stand.verlauf.at(-1)?.zeit ?? null,
   };
-}
-
-/**
- * Was am haeufigsten danebengeht, das Schwerste zuerst. Bei gleicher
- * Schwierigkeit steht vorn, was oefter dran war -- das ist der sicherere
- * Befund.
- *
- * Solange die Karten kein Feld `muster` haben, ist das eine Wortliste. Mit
- * Mustern wuerde daraus eine Diagnose: nicht "sang geht daneben", sondern
- * "i - a - u sitzt nicht". Siehe roadmap/feature-request-tipps.md.
- */
-export function schwaechste(stand, anzahl) {
-  return Object.entries(stand.einheiten)
-    .filter(([, eintrag]) => eintrag.dran > 0 && !sitzt(eintrag))
-    .map(([name, eintrag]) => ({ name, eintrag, schwierigkeit: schwierigkeit(eintrag) }))
-    .sort((a, b) => b.schwierigkeit - a.schwierigkeit || b.eintrag.dran - a.eintrag.dran)
-    .slice(0, anzahl);
 }

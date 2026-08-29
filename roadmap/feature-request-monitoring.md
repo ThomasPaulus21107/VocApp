@@ -4,7 +4,7 @@
 **Wo im Code:** `src/app.js` (eine Stelle), `package.json`
 
 Läuft die App, gibt es Fehler, lädt sie schnell genug. Nicht zu verwechseln
-mit [Den Lernfortschritt sehen](feature-request-fortschritt.md) — das ist die
+mit [Den Lernfortschritt sehen](implemented/feature-fortschritt-2026-08-29-1531.md) — das ist die
 inhaltliche Auswertung und hat damit nur das Wort „Monitoring" gemeinsam.
 
 ## Warum es ab einem bestimmten Punkt Pflicht wird
@@ -24,7 +24,7 @@ Deshalb: **nicht vorher bauen, aber spätestens mit dem ersten fremden Konto.**
 | Fehlgeschlagene Supabase-Aufrufe | Netz weg, RLS falsch, Tabelle umbenannt |
 | Sind heute überhaupt Runden gespielt worden? | Die billigste Antwort auf „läuft es" |
 
-Der dritte Punkt fällt aus dem [Lernstand](feature-request-lernstand.md) ab
+Der dritte Punkt fällt aus dem [Lernstand](implemented/feature-lernstand-2026-08-29-1531.md) ab
 und kostet nichts: keine Zeilen heute heißt entweder Ferien oder kaputt, und
 beides will man wissen.
 

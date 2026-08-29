@@ -25,7 +25,7 @@
       <span aria-hidden="true">←</span> Zurück zum Üben
     </a>
 
-    <main class="buehne buehne--seite">
+    <main class="buehne buehne--seite buehne--breit">
       <h1 class="titel">Dein Fortschritt</h1>
 
       <!-- Noch nichts geuebt: dann steht hier ein Satz statt einer leeren
@@ -39,7 +39,10 @@
 
       <section id="ueberblick" class="karte" hidden>
         <p class="fortschritt__gross"><span id="sicher">0</span> von <span id="gesamt">0</span></p>
-        <p class="fortschritt__dazu">Formen sitzen sicher</p>
+        <p class="fortschritt__dazu">
+          Formen sitzen sicher — mehr als <span id="schwelle">75</span> % der
+          Punkte geholt
+        </p>
 
         <div class="balken">
           <div id="balken-sicher" class="balken__teil balken__teil--sicher"></div>
@@ -54,10 +57,31 @@
         </dl>
       </section>
 
-      <section id="schwaechen" class="karte" hidden>
-        <p class="abschnitt">Das sitzt noch nicht</p>
-        <ol id="liste" class="ergebnisse"></ol>
-      </section>
+      <!-- Drei Faecher nebeneinander, sobald der Bildschirm breit genug ist.
+           Auf dem Telefon stehen sie untereinander -- drei Spalten auf 390 px
+           waeren drei Spalten, in die nichts passt. -->
+      <div id="faecher" class="faecher" hidden>
+        <section class="karte fach">
+          <p class="abschnitt">Noch nie geübt</p>
+          <p class="fach__menge"><span id="menge-nie">0</span> Formen</p>
+          <ol id="liste-nie" class="fach__liste"></ol>
+          <p id="mehr-nie" class="fach__mehr" hidden></p>
+        </section>
+
+        <section class="karte fach">
+          <p class="abschnitt">In Arbeit</p>
+          <p class="fach__menge"><span id="menge-arbeit">0</span> Formen</p>
+          <ol id="liste-arbeit" class="fach__liste"></ol>
+          <p id="mehr-arbeit" class="fach__mehr" hidden></p>
+        </section>
+
+        <section class="karte fach">
+          <p class="abschnitt">Sitzt</p>
+          <p class="fach__menge"><span id="menge-sicher">0</span> Formen</p>
+          <ol id="liste-sicher" class="fach__liste"></ol>
+          <p id="mehr-sicher" class="fach__mehr" hidden></p>
+        </section>
+      </div>
     </main>
 
     <script type="module" src="/src/fortschritt.js"></script>

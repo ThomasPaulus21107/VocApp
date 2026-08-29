@@ -50,7 +50,7 @@ die Sorte Änderung, bei der der Sprint-1-Fehler wieder passiert:
   auf 390 px, mit Tab-Reihenfolge — dieselbe Formenzeile, die schon einmal am
   Layout gescheitert ist
 - **Zwei weitere Seiten** ([Seitenmenü](implemented/feature-seitenmenue-2026-08-29-1348.md),
-  [Fortschritt](feature-request-fortschritt.md)), die kein Test je öffnet
+  [Fortschritt](implemented/feature-fortschritt-2026-08-29-1531.md)), die kein Test je öffnet
 - **Fremde Nutzer.** Heute sagt Matilda beim Abendessen, dass etwas kaputt ist.
   Ein Dutzend Kinder sagt gar nichts, sie hören auf.
 

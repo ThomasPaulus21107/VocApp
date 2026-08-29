@@ -73,7 +73,7 @@ Drei Dinge werden dadurch einfacher:
 - **Es ist kein veränderlicher Zustand**, sondern eine Beobachtung. Sie kann
   nicht in einen unmöglichen Zustand geraten.
 - **Es ist dasselbe Feld, das die Statistik ohnehin führt** — siehe
-  [Der Lernstand](../feature-request-lernstand.md). Zwei Features, ein Datensatz.
+  [Der Lernstand](feature-lernstand-2026-08-29-1531.md). Zwei Features, ein Datensatz.
 
 ## Eine Formel für beide Stufen
 
@@ -156,7 +156,7 @@ schwerer, nur vollständiger.
   und genau darum geht es hier: eine Übungssitzung hat zwei bis drei Runden,
   das Abdeckungsproblem baut sich über Tage auf. Der Beutel ist damit der
   zweite Kunde der Naht, neben dem Töne-Schalter.
-- **Stufe 2:** [Der Lernstand](../feature-request-lernstand.md), Stufe 1 (lokal).
+- **Stufe 2:** [Der Lernstand](feature-lernstand-2026-08-29-1531.md), Stufe 1 (lokal).
   Ohne Statistik gibt es keine Schwierigkeit, und `SCHWERE` bleibt auf null.
 
 ## Was davon noch offen ist
@@ -167,7 +167,7 @@ dran, nach acht jede seiner abgefragten Formen.
 **Stufe 2 fehlt** — die Gewichtung nach Schwierigkeit, und damit auch die
 Zeile `auswahlGewichtet` in `modus.js` und der Verhältnis-Deckel. Die
 Voraussetzung dafür steht inzwischen: der
-[Lernstand](../feature-request-lernstand.md) zählt, was danebengeht. Es fehlt
+[Lernstand](feature-lernstand-2026-08-29-1531.md) zählt, was danebengeht. Es fehlt
 nur noch der zweite Summand in der Formel.
 
 ## Zu beachten

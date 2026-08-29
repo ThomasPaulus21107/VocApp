@@ -162,6 +162,9 @@ function merkeErgebnis({ ausgang, getippt, kartenpunkte }) {
       versuch,
       tipp: tippBenutzt,
       modus: gespielterModus,
+      // Dieselbe Zahl, die auch in die Note eingeht. Aufsummiert und durch
+      // die Zahl der Antworten geteilt ergibt sie den Score der Vokabel.
+      punkte: kartenpunkte,
     },
     Date.now()
   );

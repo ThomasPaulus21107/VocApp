@@ -1,12 +1,13 @@
 # Feature: Der Lernstand je Vokabel
 
-**Status:** bereit — durchdacht, noch nicht gebaut
+**Status:** Stufe 1 umgesetzt am 29.08.2026 um 15:31, [PR #23](https://github.com/ThomasPaulus21107/VocApp/pull/23) (in `main` mit [PR #25](https://github.com/ThomasPaulus21107/VocApp/pull/25))
+**Offen:** Stufe 2 — dieselben Zahlen in Postgres, sobald es mehrere Nutzer gibt
 **Wo im Code:** `src/domain/lernstand.js` — neu, `src/app.js`, später `src/infra/backend.js`
 
 Wie oft kam ein Wort dran, wie gingen die Versuche aus, und was geht immer
 wieder schief. Das ist der Unterbau für
-[die Gewichtung](implemented/feature-auswahl-2026-08-29-1327.md), für
-[die Fortschrittsseite](feature-request-fortschritt.md) und für alles, was
+[die Gewichtung](feature-auswahl-2026-08-29-1327.md), für
+[die Fortschrittsseite](feature-fortschritt-2026-08-29-1531.md) und für alles, was
 später Punkte heißt.
 
 **In zwei Stufen**, seit dem 29.08.2026: die erste läuft lokal und braucht
@@ -29,7 +30,7 @@ nicht die `id` der Karte. Für die Anzeige reicht das, für Auswertung nicht.
 
 ## Stufe 1: lokal, ein Nutzer
 
-Zwei Dinge nebeneinander in [`storage.js`](implemented/feature-storage-2026-08-29-1327.md):
+Zwei Dinge nebeneinander in [`storage.js`](feature-storage-2026-08-29-1327.md):
 
 **Das Aggregat** — je Karte und Form ein paar Zähler. Beantwortet „wie oft
 dran, wie ging es aus" für immer und wächst nie:
@@ -41,7 +42,7 @@ dran, wie ging es aus" für immer und wächst nie:
 }
 ```
 
-`zuletzt` ist **dasselbe Feld, das die [Auswahl](implemented/feature-auswahl-2026-08-29-1327.md)
+`zuletzt` ist **dasselbe Feld, das die [Auswahl](feature-auswahl-2026-08-29-1327.md)
 für die Abdeckung braucht.** Zwei Features, ein Datensatz.
 
 **Der Ringpuffer** — die letzten 50 Runden als einzelne Antworten mit
@@ -61,7 +62,7 @@ ein ungekürztes Protokoll über ein Jahr läge bei etwa 2 MB — es gibt hier k
 Platzproblem, nur ein Formatproblem.
 
 Aus 106 werden 159 Einheiten, sobald
-[Alle drei Zeiten](feature-request-drei-zeiten.md) auch nach dem Partizip
+[Alle drei Zeiten](../feature-request-drei-zeiten.md) auch nach dem Partizip
 fragt. An der Größenordnung ändert das nichts.
 
 ### Was Stufe 1 freischaltet
@@ -70,8 +71,8 @@ fragt. An der Größenordnung ändert das nichts.
 saß es" braucht kein Punktemodell — das braucht nur die Rangliste. Sofort
 baubar werden damit:
 
-- [Den Lernfortschritt sehen](feature-request-fortschritt.md), als lokale Seite
-- [Gewichtung Stufe 2](implemented/feature-auswahl-2026-08-29-1327.md) — „schwer" steht jetzt im Aggregat
+- [Den Lernfortschritt sehen](feature-fortschritt-2026-08-29-1531.md), als lokale Seite
+- [Gewichtung Stufe 2](feature-auswahl-2026-08-29-1327.md) — „schwer" steht jetzt im Aggregat
 - Wiederkehrende Potentiale, sobald das Feld `muster` da ist
 
 Gesperrt bleibt nur, was wirklich mehrere Menschen braucht: Vergleiche,
@@ -87,7 +88,7 @@ Missionen, gemeinsamer Punktestand.
   benutzt wurde. Die Uhr setzt sich bei jedem Öffnen zurück — wer regelmäßig
   übt, merkt nie etwas. Es trifft die Lücken: Krankheit, Ferien, Schuljahresende.
   **Genau die Momente, nach denen die Statistik am meisten wert wäre.**
-  Dagegen hilft [Auf dem Homebildschirm](implemented/feature-homebildschirm-2026-08-29-1327.md) —
+  Dagegen hilft [Auf dem Homebildschirm](feature-homebildschirm-2026-08-29-1327.md) —
   dort gilt die Regel nicht.
 - **Ein geleerter Cache löscht Monate.** Beim `zuletzt` der Auswahl war das
   egal, hier nicht.
@@ -144,7 +145,7 @@ unterscheidet das ohnehin schon: `zuWiederholen` merkt sich `{ id, form }`.
 `swim` und `drink` hilft.
 
 Den Gruppierungsschlüssel dafür führt
-[Tipps, die zur Frage passen](feature-request-tipps.md) als Feld `muster` ein.
+[Tipps, die zur Frage passen](../feature-request-tipps.md) als Feld `muster` ein.
 Es tut damit zwei Dinge: es liefert den Tipptext **und** die Achse, über die
 ausgewertet wird.
 
@@ -172,11 +173,11 @@ Daten: es ersetzt die Gewichtsformel, nicht das Ziehen.
 
 ## Voraussetzungen
 
-- **Stufe 1:** [Die Speicher-Naht am Gerät](implemented/feature-storage-2026-08-29-1327.md). Sonst
+- **Stufe 1:** [Die Speicher-Naht am Gerät](feature-storage-2026-08-29-1327.md). Sonst
   nichts.
-- **Stufe 2:** [Mehrere Nutzer](feature-request-mehrere-nutzer.md) — ohne
+- **Stufe 2:** [Mehrere Nutzer](../feature-request-mehrere-nutzer.md) — ohne
   Konten gibt es kein `user_id`.
-- [Tipps](feature-request-tipps.md) für das Feld `muster`, sobald es um
+- [Tipps](../feature-request-tipps.md) für das Feld `muster`, sobald es um
   wiederkehrende Potentiale geht. Für die Statistik selbst nicht nötig.
 
 ## Zu beachten

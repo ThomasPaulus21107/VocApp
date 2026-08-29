@@ -771,3 +771,63 @@ body {
   font-size: 1.25rem;
   font-weight: 700;
 }
+
+/* Die drei Faecher der Fortschrittsseite. Nebeneinander, sobald der
+   Bildschirm Platz hat -- untereinander auf dem Telefon. Drei Spalten auf
+   390 px waeren drei Spalten, in die nichts passt. */
+.buehne--breit {
+  max-width: 60rem;
+}
+
+.faecher {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  margin-top: 16px;
+}
+
+.fach__menge {
+  margin: -8px 0 12px;
+  color: var(--leise);
+  font-size: 0.9375rem;
+}
+
+.fach__menge span {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--schrift);
+}
+
+.fach__liste {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fach__zeile {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+
+  padding: 8px 0;
+  border-top: 1px solid rgb(0 0 0 / 10%);
+}
+
+.fach__wort {
+  overflow-wrap: anywhere;
+}
+
+/* Die Zahl soll rechts stehenbleiben, auch wenn das Wort lang ist. */
+.fach__score {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--leise);
+}
+
+.fach__mehr {
+  margin: 12px 0 0;
+  color: var(--leise);
+  font-size: 0.875rem;
+}
