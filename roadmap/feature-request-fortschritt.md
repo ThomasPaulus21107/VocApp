@@ -50,6 +50,9 @@ offene Entscheidung und muss vorher fallen.
 
 ## Zu beachten
 
+- **Für ein Telefon entworfen, nicht für einen Bildschirm.** Geübt wird
+  primär auf dem iPhone. Balken untereinander, keine breiten Tabellen, nichts,
+  was quer scrollt.
 - **Keine Diagrammbibliothek.** Ein Balken ist ein `div` mit einer Breite in
   Prozent. Die App hat kein Framework und braucht für vier Zahlen keins.
 - **Fortschritt zeigen, nicht Versagen.** „Von 159 sitzen 94" ist dieselbe

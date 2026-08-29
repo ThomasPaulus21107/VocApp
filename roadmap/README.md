@@ -102,6 +102,7 @@ Von unten nach oben, neueste zuerst.
 | [Alle drei Zeiten auf einer Karte](feature-request-drei-zeiten.md) | Thomas |
 | [Welche Karten drankommen](feature-request-auswahl.md) | Thomas |
 | [Tipps, die zur Frage passen](feature-request-tipps.md) | Thomas, Texte Matilda |
+| [Auf dem Homebildschirm](feature-request-homebildschirm.md) | Thomas, Icon Matilda |
 | [Der Lernstand je Vokabel](feature-request-lernstand.md) | Thomas |
 | [Den Lernfortschritt sehen](feature-request-fortschritt.md) | Thomas, Gestaltung Matilda |
 | [Die Speicher-Naht am Gerät](feature-request-storage.md) | Thomas |

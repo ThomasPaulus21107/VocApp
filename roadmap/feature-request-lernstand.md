@@ -72,10 +72,16 @@ Missionen, gemeinsamer Punktestand.
 
 ### Der Preis, ehrlich
 
-- **Handy und Laptop führen getrennte Statistiken.** Bei Einstellungen ist das
-  richtig, hier ist es schädlich: eine Statistik, die die Hälfte des Übens
-  nicht kennt, ist nicht unvollständig, sondern **irreführend**. Wird auf zwei
-  Geräten geübt, lieber nur auf einem zählen als auf beiden halb.
+- **Der Speicher hängt am Gerät.** Das ist seit dem 29.08.2026 kein Problem
+  mehr: geübt wird primär auf Matildas iPhone, und damit ist die lokale
+  Statistik nicht die halbe, sondern die ganze.
+- **iOS löscht `localStorage` nach sieben Tagen ohne Benutzung.** Safari räumt
+  skriptgeschriebenen Speicher weg, wenn eine Seite eine Woche lang nicht
+  benutzt wurde. Die Uhr setzt sich bei jedem Öffnen zurück — wer regelmäßig
+  übt, merkt nie etwas. Es trifft die Lücken: Krankheit, Ferien, Schuljahresende.
+  **Genau die Momente, nach denen die Statistik am meisten wert wäre.**
+  Dagegen hilft [Auf dem Homebildschirm](feature-request-homebildschirm.md) —
+  dort gilt die Regel nicht.
 - **Ein geleerter Cache löscht Monate.** Beim `zuletzt` der Auswahl war das
   egal, hier nicht.
 - **Format ändern geht**, solange es der eigene Browser ist: der Code läuft ja
@@ -83,8 +89,14 @@ Missionen, gemeinsamer Punktestand.
   ist etwas anderes — prüfen, ob es geklappt hat, sichern, wiederherstellen.
 
 Deshalb gehört **ein „Statistik sichern"-Knopf** dazu, der die JSON als Datei
-herunterlädt. Zehn Zeilen, und aus einem unwiederbringlichen Verlust wird ein
+herunterlädt. Auf einem iPhone als Hauptgerät ist er keine Kür, sondern
+**Pflicht von Anfang an**: er ist die einzige Kopie, die eine Ferienlücke
+übersteht. Zehn Zeilen, und aus einem unwiederbringlichen Verlust wird ein
 ärgerlicher.
+
+Und: **erst den Homebildschirm, dann sammeln.** Eine Web-App auf dem
+Homebildschirm hat unter iOS ihren eigenen Speicher, getrennt von Safari — wer
+später installiert, steht vor einer scheinbar leeren Statistik.
 
 ## Stufe 2: Postgres, mehrere Nutzer
 

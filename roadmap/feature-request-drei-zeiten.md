@@ -100,8 +100,13 @@ Startseite anfangen, neben Übungsblatt und Arbeit.
 - **`to read` wird zum Dreifach-Freipunkt.** Die Karte steht im
   `backlog.md` unter „Kleinigkeiten"; in der Zeiten-Runde wiegt sie dreimal so
   schwer. Die Entscheidung darüber gehört Matilda, aber sie wird hier dringender.
-- **Drei Eingabefelder auf 390 px.** Untereinander, nicht nebeneinander. Die
-  Formenzeile ist schon einmal am Layout gescheitert
+- **Drei Eingabefelder auf einem iPhone, mit offener Tastatur.** Das ist die
+  Randbedingung, gegen die entworfen wird, seit klar ist, dass primär mobil
+  geübt wird — nicht ein „auch noch prüfen". Über der Tastatur bleiben rund
+  350 px: Verb, drei beschriftete Felder, Knopf. Das ist knapp und machbar.
+  Passt es nicht, wird **ein Feld nach dem anderen** abgefragt statt drei
+  gleichzeitig — dieselbe Aufgabe, anderer Bildschirm. Untereinander in jedem
+  Fall, nie nebeneinander. Die Formenzeile ist schon einmal am Layout gescheitert
   ([PR #8](https://github.com/ThomasPaulus21107/VocApp/pull/8)), und genau so
   ein Fehler ist der Anlass für [Wie die Oberfläche getestet wird](feature-request-ui-tests.md).
 - **`enterkeyhint` und Tab-Reihenfolge.** Enter im ersten Feld darf nicht die

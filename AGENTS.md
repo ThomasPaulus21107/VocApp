@@ -37,6 +37,15 @@ unter einer öffentlichen URL.
 am 29.08.2026 wieder aufgenommen worden, gebaut ist davon aber noch nichts —
 siehe `roadmap/feature-request-vokabel-import-klasse-5.md`.
 
+**Geübt wird primär auf Matildas iPhone.** Seit dem 29.08.2026 ist das eine
+Randbedingung und keine Nebensache: Layouts werden für ein Telefon mit offener
+Tastatur entworfen, nicht für einen Bildschirm, der danach auch mal klein wird.
+Über der Tastatur bleiben rund 350 px.
+
+Es hat auch eine unsichtbare Folge. **Safari löscht `localStorage` nach sieben
+Tagen ohne Benutzung.** Alles, was gespeichert wird, muss damit rechnen —
+siehe `roadmap/feature-request-homebildschirm.md`, das genau deshalb existiert.
+
 Was gebaut ist, steht als `roadmap/feature-implemented-*.md` mit Datum im
 Namen; was durchdacht ist und wartet, als `roadmap/feature-request-*.md`.
 
@@ -431,6 +440,13 @@ bauen. Wer einen davon doch aufnehmen will, ändert zuerst diesen Abschnitt.
 | **Ein Framework** | Die App hat zwei Bildschirme. React würde mehr Code hinzufügen, als es entfernt. |
 | **Ein CSS-Preprozessor** | Der Variablenblock in `styles.css` ist Matildas Einstieg in Code. Er muss im Browser direkt wirken. |
 
+**Nicht mit der PWA zu verwechseln** ist das Icon auf dem Homebildschirm
+(`roadmap/feature-request-homebildschirm.md`). Was oben abgelehnt wird, ist der
+Service Worker samt Cache-Invalidierung — ein `manifest.json` ist eine
+Textdatei mit Name, Farbe und Icon, ändert nichts am Laden und macht die App
+nicht offline-fähig. Es steht dort, weil iOS `localStorage` sonst nach sieben
+Tagen löscht und Web-Apps auf dem Homebildschirm davon ausgenommen sind.
+
 Das ist die Produktseite derselben Entscheidung, die oben unter „Was hier
 nicht passieren soll" als Arbeitsregel steht.
 
@@ -474,7 +490,8 @@ als einen Nutzer gibt.
 
 Davon gibt es **eine benannte Ausnahme**: die lokale Statistik je Vokabel
 (`feature-request-lernstand.md`, Stufe 1). Sie liegt in `storage.js`, solange
-die App einen Nutzer hat, und nur mit einem Knopf, der sie als Datei sichert. Gespeichert werden dort **Ereignisse** (eine Zeile je Antwort), nicht
+die App einen Nutzer hat, und nur mit einem Knopf, der sie als Datei sichert —
+auf einem iPhone ist das die einzige Kopie, die eine Ferienlücke übersteht. Gespeichert werden dort **Ereignisse** (eine Zeile je Antwort), nicht
 errechnete Zustände — das ist das einzige Format, das sich später nicht
 festlegt. Siehe `roadmap/feature-request-lernstand.md`.
 

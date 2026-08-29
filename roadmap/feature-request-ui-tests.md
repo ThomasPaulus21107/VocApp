@@ -33,6 +33,14 @@ Nichts einbauen und stattdessen weiter am Handy nachsehen. Bei zwei
 Bildschirmen ist das vertretbar — es sollte dann aber eine Entscheidung sein
 und keine Unterlassung.
 
+**Seit dem 29.08.2026 hat das mehr Gewicht:** geübt wird primär auf dem
+iPhone, also ist der Blick aufs Telefon nicht mehr die Notlösung, sondern der
+realistischste Test, den es gibt. Das spricht gegen jsdom — ein nachgebautes
+DOM sagt über eine offene iOS-Tastatur genau nichts. Es spricht aber auch
+dafür, die Sache endlich zu entscheiden: Playwright kann iPhone-Abmessungen
+nachstellen, von Hand nachsehen kann das auch, und nur eines von beidem
+passiert zuverlässig vor jedem Merge.
+
 ## Es ist dringender geworden
 
 Stand 29.08.2026. Drei Dinge, die inzwischen in der Roadmap stehen, sind genau

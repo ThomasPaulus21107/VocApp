@@ -67,8 +67,10 @@ Bedingungen:
 1. Solange die App **einen** Nutzer hat. Ab dem ersten fremden Kind gilt die
    Regel wieder ohne Ausnahme.
 2. Mit einem **„Statistik sichern"-Knopf**, der die JSON als Datei
-   herunterlädt. Zehn Zeilen, und aus einem unwiederbringlichen Verlust wird
-   ein ärgerlicher.
+   herunterlädt — auf dem iPhone die einzige Kopie, die eine Ferienlücke
+   übersteht, und deshalb keine Kür. Dazu
+   [Auf dem Homebildschirm](feature-request-homebildschirm.md), weil iOS
+   `localStorage` sonst nach sieben Tagen ohne Benutzung löscht.
 3. Mit Postgres als **geplantem** Ziel, nicht als vagem Später — der
    Ringpuffer aus Stufe 1 ist genau das, was später hochgeladen wird.
 
