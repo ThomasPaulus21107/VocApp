@@ -6,7 +6,7 @@ import verben from '../data/unregelmaessige-verben.json';
 import { einheiten } from './domain/auswahl.js';
 import {
   uebersicht, verteile, stufe, verlaufZu, punkteVon, schluessel,
-  LEER, SICHER_AB_PROZENT,
+  LEER, SICHER_AB_PROZENT, SICHER_AB_ANTWORTEN,
 } from './domain/lernstand.js';
 import { FORM_NAME } from './ui/formnamen.js';
 import * as storage from './infra/storage.js';
@@ -196,7 +196,11 @@ if (zahlen.geuebt === 0) {
   el('runden').textContent = zahlen.runden;
   el('antworten').textContent = zahlen.antworten;
   el('zuletzt').textContent = wann(zahlen.zuletztGeuebt);
+  // Beide Bedingungen stehen im Satz und beide kommen aus lernstand.js:
+  // "stabil gelernt" verlangt genug Antworten UND genug Punkte. Wer eine der
+  // Zahlen dort aendert, aendert sie hier mit.
   el('schwelle').textContent = SICHER_AB_PROZENT;
+  el('mindestens').textContent = SICHER_AB_ANTWORTEN;
 
   // Zwei Balken nebeneinander: was sicher sitzt, und was erst in Arbeit ist.
   // Der Rest der Leiste ist, was noch kommt.

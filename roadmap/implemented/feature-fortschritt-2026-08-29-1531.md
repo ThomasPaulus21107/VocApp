@@ -35,6 +35,14 @@ stünde eine Vokabel, die genau einmal richtig war, sofort bei 100 % und
 gälte als stabil — ein einziger Treffer ist aber kein Beweis. Die Zahl steht
 als `SICHER_AB_ANTWORTEN` neben der Prozentmarke.
 
+Auf der Seite stand davon zunächst nur die Hälfte: „über 75 % der Punkte".
+Seit dem 29.08.2026 **nennt der Satz unter der großen Zahl beide
+Bedingungen** — mindestens dreimal geübt *und* über 75 %. Eine Seite, die nur
+die eine Hürde nennt, erklärt die andere nicht: wer eine Vokabel einmal
+fehlerfrei hatte, sucht sie sonst vergeblich unter „stabil gelernt". Beide
+Zahlen holt `src/fortschritt.js` aus `domain/lernstand.js` und schreibt sie
+in den Satz — sie stehen nicht im Markup, damit sie nicht auseinanderlaufen.
+
 **Der Score ist die erreichte Punktzahl geteilt durch die Zahl der
 Antworten** — dieselbe Bewertung, aus der auch die Note entsteht: auf Anhieb
 richtig ist ein ganzer Punkt, im zweiten Versuch ein halber, ein Tipp kostet
