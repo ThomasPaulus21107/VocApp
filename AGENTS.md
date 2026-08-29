@@ -92,10 +92,12 @@ später dazu, siehe `roadmap/feature-implemented-tests-in-ci-2026-08-25-2243.md`
 
 ```
 data/          Vokabellisten und die Wortartenliste als JSON. Daten, kein Code.
-src/domain/    Regeln: was ist richtig, wie wird gemischt, wie gedreht.
+public/        wird unverändert mitgeliefert: Icons und manifest.json.
+src/domain/    Regeln: was ist richtig, wie wird gemischt, wie gewählt.
+src/infra/     das Einzige, was Persistenz kennt. Heute: localStorage.
 src/ui/        Alles, was der Nutzer sieht und hört: DOM und Töne.
 src/app.js     Steckt die Schichten zusammen.
-tests/         Tests auf domain/ und auf die Daten.
+tests/         Tests auf domain/, auf infra/ und auf die Daten.
 ```
 
 **Die Regel:** `domain/` kennt kein DOM, keinen `localStorage`, kein
