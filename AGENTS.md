@@ -76,11 +76,24 @@ Aus der Einzelplatz-App soll ein kleiner Dienst für Matilda und **ein Dutzend
 Kinder** werden: Konten, gespeicherter Lernstand je Vokabel, gemeinsame
 Lernmissionen und ein userübergreifend sichtbarer Punktestand.
 
-**Entschieden ist die Richtung, nicht der Bau.** Die Voraussetzung dafür ist
-eine einzige unbeantwortete Frage — *was ist ein Punkt?* — und solange sie
-offen ist, wird an diesem Strang nichts gebaut. Die Abwägung samt der Pflichten,
-die mit fremden Kinderdaten dazukommen (Anmeldung, Row Level Security,
-Minderjährige), steht in `roadmap/feature-request-mehrere-nutzer.md`.
+**Der Strang ist seit dem 29.08.2026 zweigeteilt**, weil er an zwei
+verschiedenen Dingen hängt:
+
+- **Der Lernstand darf nach Postgres.** Supabase ist eingerichtet, und der
+  Weg dorthin steht in sieben Dateien ab
+  `roadmap/feature-request-backend-naht.md` — erst die Datenbank, dann die
+  Anmeldung, jede Datei einzeln baubar. Der Grund, warum das nicht wartet: der
+  Lernstand speichert **Ereignisse und keine Punktekonten**, und `localStorage`
+  in einem fremden Browser ist weder zu prüfen noch zu sichern noch
+  wiederherzustellen.
+- **Rangliste, Missionen und Punktestand warten weiter** auf die eine
+  unbeantwortete Frage — *was ist ein Punkt?* Solange sie offen ist, wird
+  daran nichts gebaut.
+
+Die Abwägung samt der Pflichten, die mit fremden Kinderdaten dazukommen
+(Anmeldung, Row Level Security, Minderjährige), steht in
+`roadmap/feature-request-mehrere-nutzer.md` und in
+`roadmap/feature-request-kinderdaten.md`.
 
 ### Nicht ungefragt einbauen
 
@@ -97,10 +110,16 @@ Eine Serie über mehrere Tage wird auf der Fleiß-Seite inzwischen **gezählt**,
 aber nicht belohnt — beschreiben ist erlaubt, aus einer Zahl eine Währung zu
 machen nicht.
 
-Für Punkte, Accounts und Supabase gilt das seit dem 29.08.2026 mit einer
-Änderung: sie sind **gewollt**, aber noch nicht freigegeben. Die Liste bleibt
-also stehen — wer sie anfasst, fragt weiterhin nach, und die Antwort ist jetzt
-„erst, wenn die Punktefrage beantwortet ist" statt „nein".
+Für Punkte, Accounts und Supabase gilt das seit dem 29.08.2026 nicht mehr
+gleich:
+
+- **Supabase und Accounts sind freigegeben.** Das Projekt ist eingerichtet,
+  das Refinement steht in sieben Dateien ab
+  `roadmap/feature-request-backend-naht.md`. Wer daran baut, hält sich an die
+  Reihenfolge dort und fragt nicht mehr jedes Mal nach — aber baut auch
+  nichts, was in keiner der sieben Dateien steht.
+- **Punkte, Streaks und Rangliste bleiben stehen.** Antwort weiterhin: „erst,
+  wenn die Punktefrage beantwortet ist" statt „nein".
 
 **GitHub Actions stand hier ursprünglich mit auf der Liste und wurde bewusst
 vorgezogen.** Der Deploy von Hand über einen `gh-pages`-Branch wären fünf
@@ -121,7 +140,9 @@ später dazu, siehe `roadmap/implemented/feature-tests-in-ci-2026-08-25-2243.md`
 data/          Vokabellisten und die Wortartenliste als JSON. Daten, kein Code.
 public/        wird unverändert mitgeliefert: Icons und manifest.json.
 src/domain/    Regeln: was ist richtig, wie wird gemischt, wie gewählt.
-src/infra/     das Einzige, was Persistenz kennt. Heute: localStorage.
+src/infra/     das Einzige, was Persistenz kennt. Zwei Nähte, siehe unten:
+               storage.js (Geraet, localStorage) und backend.js (Person,
+               Supabase).
 src/ui/        Alles, was der Nutzer sieht und hört: DOM und Töne.
 src/app.js     Steckt die Schichten zusammen.
 tests/         Tests auf domain/, auf infra/ und auf die Daten.
@@ -361,6 +382,10 @@ npx playwright install webkit   # einmalig, holt den Browser dazu
 - **Playwright** für die Oberfläche. Am 29.08.2026 bewusst dazugenommen und
   damit die bisher einzige Ausnahme von der Regel darunter — warum, steht
   unter „Tests".
+- **`@supabase/supabase-js`** ist die erste echte Laufzeit-Abhängigkeit — alle
+  anderen sind `devDependencies` und landen nie im Bundle. Am 29.08.2026
+  nachgefragt und freigegeben; die Begründung steht in
+  `roadmap/feature-request-backend-naht.md`.
 - Keine weiteren Abhängigkeiten hinzufügen ohne Rückfrage. Jede neue
   Abhängigkeit ist etwas, das Matilda nicht mehr überblickt.
 - `vite.config.js` enthält `base: '/VocApp/'` — nötig für GitHub Pages.
@@ -554,6 +579,7 @@ sie dürfen nicht vermischt werden.
 | Inhalt | Töne an/aus, Aufgabenart, Kartenbeutel | Lernstand, Punkte, Missionen |
 | Technik | `localStorage`, synchron | Supabase, asynchron |
 | Wird getauscht | nie | ist von Anfang an das Ziel |
+| Zustand | gebaut am 29.08.2026 | beschlossen am 29.08.2026, sieben Dateien in `roadmap/` |
 
 Ob am Küchentisch der Ton an ist, gehört dem Laptop. Ob `caught` sitzt, gehört
 Matilda und muss ihr auf jedes Gerät folgen.
