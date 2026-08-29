@@ -66,7 +66,7 @@ sich damit gerade **nicht** festlegt.
   nichts gebaut.
 
 - **Aus der Serie soll etwas folgen.** *Gezählt* wird sie seit dem 29.08.2026
-  auf der [Fleiß-Seite](feature-request-fleiss.md) — „vier Tage
+  auf der [Fleiß-Seite](implemented/feature-fleiss-2026-08-29-1551.md) — „vier Tage
   hintereinander geübt" steht dort. Offen ist nur noch, ob sie auch etwas
   **wert** ist: Punkte, ein Abzeichen, ein Satz zur Begrüßung.
   `braucht:` die Antwort oben. Solange nicht feststeht, was ein Punkt ist,
