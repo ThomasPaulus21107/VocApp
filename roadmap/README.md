@@ -98,10 +98,16 @@ Von unten nach oben, neueste zuerst.
 
 | Feature | Wer |
 |---|---|
-| [Tipps, die bei der Form helfen](feature-request-verbtipps.md) | Matilda |
-| [Einstellungen, die bleiben](feature-request-einstellungen-speichern.md) | Thomas |
+| [Die Vokabeln der 5. Klasse hereinholen](feature-request-vokabel-import-klasse-5.md) | Matilda, Einsammeln Thomas |
+| [Alle drei Zeiten auf einer Karte](feature-request-drei-zeiten.md) | Thomas |
+| [Welche Karten drankommen](feature-request-auswahl.md) | Thomas |
+| [Tipps, die zur Frage passen](feature-request-tipps.md) | Thomas, Texte Matilda |
+| [Der Lernstand als Ereignisse](feature-request-lernstand.md) | Thomas |
+| [Den Lernfortschritt sehen](feature-request-fortschritt.md) | Thomas, Gestaltung Matilda |
+| [Die Speicher-Naht am Gerät](feature-request-storage.md) | Thomas |
 | [Die Optionsseite](feature-request-optionsseite.md) | Thomas, Gestaltung Matilda |
-| [Namensfeld statt Login](feature-request-namensfeld.md) | Thomas |
+| [Technisches Monitoring](feature-request-monitoring.md) | Thomas |
+| [Ob die App mehrere Nutzer kennt](feature-request-mehrere-nutzer.md) | Entscheidung |
 | [Ob die Abfragerichtung umschaltbar wird](feature-request-richtung.md) | Entscheidung |
 | [Wie die Oberfläche getestet wird](feature-request-ui-tests.md) | Entscheidung |
 
@@ -121,12 +127,13 @@ stimmen — sonst bleibt der Punkt im Backlog:
 4. Der Umfang ist grob abschätzbar.
 
 Punkt 1 ist der Grund, warum `storage.js` refined ist, obwohl es allein nichts
-sichtbar macht: es blockiert nichts und macht dafür der Optionsseite, dem
-Namensfeld und später Supabase den Weg frei. Und er ist der Grund, warum
-„Punkte und Streak speichern" im Backlog steht, obwohl die Voraussetzung
-absehbar ist — dort ist Punkt 3 offen: was überhaupt gezählt wird.
+sichtbar macht: es blockiert nichts und macht dafür der Optionsseite und der
+Wahl der Aufgabenart den Weg frei. Und Punkt 3 ist der Grund, warum
+**„Was ist ein Punkt?" im Backlog steht** — an dieser einen unbeantworteten
+Frage hängt alles, was mehrere Nutzer betrifft.
 
-Zwei Dateien sind bewusst **keine** Bauanleitung, sondern eine Entscheidung:
+Drei Dateien sind bewusst **keine** Bauanleitung, sondern eine Entscheidung:
+[Ob die App mehrere Nutzer kennt](feature-request-mehrere-nutzer.md),
 [Wie die Oberfläche getestet wird](feature-request-ui-tests.md) und
 [Ob die Abfragerichtung umschaltbar wird](feature-request-richtung.md). Sie
 stehen hier, weil sie sonst als halb fertiger Code oder als Bauchgefühl

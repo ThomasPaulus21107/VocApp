@@ -20,82 +20,62 @@ Die durchdachte Fassung ist dann nicht weg, sie liegt in der Git-Historie.
 
 ## Der Vokabel-Strang
 
-Ruht seit dem 25.08.2026. Der Fokus bleibt vorerst auf den unregelmäßigen
-Verben — solange das gilt, hat keiner der drei Punkte einen Nutzen. Alle drei
-waren refined; die ausführlichen Fassungen liegen in der Historie unter
-`roadmap/feature-request-lektionsdateien.md`, `-vokabeln-klasse-5.md` und
-`-uebungsauswahl.md`.
-
-- **Eine Datei pro Lektion.** `data/lektion-01.json` statt einer wachsenden
-  `vokabeln.json`, eingesammelt per `import.meta.glob('../data/lektion-*.json')`.
-  `braucht:` nichts — es ist der Unterbau für die beiden nächsten
-  `offen:` nur die Fokus-Entscheidung. Wenn sie fällt, ist es sofort baubar.
-  **Achtung:** `tests/daten.test.js` führt die Dateiliste von Hand. Wer die
-  App per Glob einsammeln lässt und den Test nicht, hat Lektionen, die niemand
-  prüft.
-
-- **Die Vokabeln der 5. Klasse.** Matildas eigentliche Arbeit — ohne sie ist
-  die App eine Vorführung und kein Werkzeug. Heute stehen neun Demo-Karten da.
-  `braucht:` eine Datei pro Lektion — das Format muss stehen, bevor sie
-  anfängt. Nachträglich aufteilen hieße: dieselben Karten zweimal anfassen.
-
-- **Auswählen, was geübt wird.** Vokabeln, unregelmäßige Verben oder beides.
-  Die Domäne kann das schon (`stelleFrage`, `hatFormen`, `mische`), es ist
-  überwiegend ein Wiederanschließen. In der UI ist es keins: `el.beiwort`
-  trägt seit dem Fokus-Umbau den Formnamen, die Fallunterscheidung auf
-  `wortart · bedeutung` muss zurück.
-  `braucht:` echte Vokabeln, sonst wählt man zwischen 53 Verben und 9
-  Demo-Karten
-
-- **`wortart` und `bedeutung` wieder anzeigen.** Das Datenformat sieht beide
-  unter der Frage vor, die App zeigt sie seit dem Fokus-Umbau nicht mehr.
-  `braucht:` dieselbe Fallunterscheidung wie die Übungsauswahl — gehört
-  zusammen gebaut
+Ruhte vom 25.08. bis zum 29.08.2026. Aufgenommen als
+[Die Vokabeln der 5. Klasse hereinholen](feature-request-vokabel-import-klasse-5.md) —
+dort steht jetzt alles, was hier in vier Einträgen stand: eine Datei je
+Lektion, die Vokabeln selbst, das Wiederanschließen von `wortart` und
+`bedeutung` und die Auswahl, was geübt wird. Die alten Einzelfassungen liegen
+in der Git-Historie.
 
 ## Lernen und Wiederholen
 
 - **Leitner-Fächer mit Wiedervorlage.** „Diese Karte erst in drei Tagen wieder."
-  `braucht:` einen gespeicherten Lernstand **pro Karte** — im Backlog
-  `braucht:` die [Lernpotential-Runde](feature-implemented-lernpotential-2026-08-24-2211.md)
-  als Unterbau — **steht**, die Auswahl-Logik ist da und muss nur um das
-  Datum erweitert werden
+  `braucht:` [Der Lernstand als Ereignisse](feature-request-lernstand.md) —
+  refined. Danach ist Leitner nur noch ein anderes Modell über denselben
+  Zeilen: es ersetzt die Gewichtsformel aus
+  [Welche Karten drankommen](feature-request-auswahl.md), nicht das Ziehen.
   `offen:` wie viele Fächer, welche Abstände, und was beim ersten Start passiert
 
-- **Lernstand pro Karte speichern.** Der Unterbau für Leitner.
-  `braucht:` [`storage.js`](feature-request-einstellungen-speichern.md) — refined,
-  aber vorerst nur für Einstellungen
-  `offen:` das Format. Sobald es auf der Platte liegt, ist jede Änderung eine
-  Migration — deshalb steht es hier und nicht weiter oben.
+Der Punkt „Lernstand pro Karte speichern" ist am 29.08.2026 hier
+ausgezogen — er steht jetzt als
+[Der Lernstand als Ereignisse](feature-request-lernstand.md). Sein `offen:`
+war das Format, und das ist beantwortet: Ereignisse statt Zustände, weil man
+sich damit gerade **nicht** festlegt.
 
 ## Punkte
 
-- **Punkte und Streak speichern.** Der Punktestand überlebt das Schließen der
-  Seite.
-  `braucht:` [`storage.js`](feature-request-einstellungen-speichern.md)
-  `offen:` was überhaupt gezählt wird. Noten? Richtige Karten insgesamt?
-  Gespielte Runden? Ohne diese Antwort ist das Speicherformat nicht zu bauen.
+- **Was ist ein Punkt?** Die eine Frage, an der alles Userübergreifende hängt.
+  `note.js` liefert heute eine Note **je Runde**, 0–15. Das ist kein
+  Kontostand: wer viele Runden spielt, sammelt mehr, und eine „2+" ist nicht
+  addierbar.
+  `offen:` was zählt, über welchen Zeitraum, und wie unterschiedlich schwere
+  Runden vergleichbar werden. **Gehört Thomas und Matilda gemeinsam** — es ist
+  eine Frage danach, was belohnt werden soll, keine technische.
+  Solange sie offen ist, wird an [Mehrere Nutzer](feature-request-mehrere-nutzer.md)
+  nichts gebaut.
 
 - **Streak über mehrere Tage.** „Vier Tage hintereinander geübt."
-  `braucht:` Punkte und Streak speichern — im Backlog
-  `braucht:` das Datum von außen: `berechneStreak(zustand, heute)`, nie
+  `braucht:` die Antwort oben, und
+  [den Lernstand](feature-request-lernstand.md) — dort steht das Datum ohnehin
+  in jeder Zeile
+  `braucht:` das Datum von außen: `berechneStreak(ereignisse, heute)`, nie
   `new Date()` in der Domäne
 
 ## Über ein Gerät hinaus
 
-- **Supabase hinter derselben Naht.** `storage.js` wird ausgetauscht, Domäne
-  und UI merken nichts davon.
-  `braucht:` einen gespeicherten Lernstand, der sich zu synchronisieren lohnt
-  — im Backlog
+Dieser Abschnitt ist am 29.08.2026 weitgehend ausgezogen. Supabase, Accounts
+und „gleicher Stand auf Handy und Laptop" waren drei Einträge für dieselbe
+Sache und stehen jetzt als
+[Entscheiden, ob die App mehrere Nutzer kennt](feature-request-mehrere-nutzer.md).
 
-- **Accounts / User Management.**
-  `braucht:` Supabase — im Backlog
-
-- **Gleicher Stand auf Handy und Laptop.** Das ist das eigentliche Motiv für
-  Accounts — nicht „mehrere Leute", sondern dieselbe Person auf einem anderen
-  Gerät. Auf GitHub Pages gibt es keinen Server: jeder Browser führt seinen
-  eigenen Speicher, und mehrere Nutzer gleichzeitig stören sich nie, weil sie
-  nichts teilen.
-  `braucht:` Accounts — im Backlog
+- **Namensfeld statt Login.** Ein Textfeld, dessen Inhalt dem
+  Speicherschlüssel vorangestellt wird — zwei Leute an einem Rechner, ohne
+  Anmeldung. War refined und ist am 29.08.2026 hierher zurückgewandert: mit
+  echten Konten aus [Mehrere Nutzer](feature-request-mehrere-nutzer.md) ist es
+  hinfällig, es war ja gerade der Verzicht darauf.
+  `offen:` nur noch, ob es als Übergangslösung lohnt, bis die Konten stehen.
+  Die ausführliche Fassung liegt in der Git-Historie unter
+  `roadmap/feature-request-namensfeld.md`.
 
 ## Kleinigkeiten
 
@@ -104,6 +84,8 @@ waren refined; die ausführlichen Fassungen liegen in der Historie unter
   der Aussprache, und die kann eine getippte Antwort nicht prüfen.
   `offen:` Karte rausnehmen, drinlassen, oder anders behandeln? Gehört
   Matilda, es ist ihre Vokabeldatei.
+  **Wird dringender mit** [Alle drei Zeiten](feature-request-drei-zeiten.md):
+  dort wiegt die Karte drei Punkte statt einem.
 
 ## Rund ums Projekt
 

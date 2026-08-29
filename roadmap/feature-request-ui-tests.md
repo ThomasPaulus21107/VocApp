@@ -33,6 +33,22 @@ Nichts einbauen und stattdessen weiter am Handy nachsehen. Bei zwei
 Bildschirmen ist das vertretbar — es sollte dann aber eine Entscheidung sein
 und keine Unterlassung.
 
+## Es ist dringender geworden
+
+Stand 29.08.2026. Drei Dinge, die inzwischen in der Roadmap stehen, sind genau
+die Sorte Änderung, bei der der Sprint-1-Fehler wieder passiert:
+
+- **Drei Eingabefelder** statt einem in [Alle drei Zeiten](feature-request-drei-zeiten.md),
+  auf 390 px, mit Tab-Reihenfolge — dieselbe Formenzeile, die schon einmal am
+  Layout gescheitert ist
+- **Zwei weitere Seiten** ([Optionen](feature-request-optionsseite.md),
+  [Fortschritt](feature-request-fortschritt.md)), die kein Test je öffnet
+- **Fremde Nutzer.** Heute sagt Matilda beim Abendessen, dass etwas kaputt ist.
+  Ein Dutzend Kinder sagt gar nichts, sie hören auf.
+
+Die dritte Möglichkeit unten — nichts einbauen und am Handy nachsehen — trägt
+genau bis zu diesem Punkt und nicht weiter.
+
 ## Voraussetzungen
 
 Keine. Kann jederzeit passieren.

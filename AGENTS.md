@@ -33,11 +33,24 @@ einer Schulnote; vorher wählt man zwischen Übungsblatt und Arbeit. Was im
 unter einer öffentlichen URL.
 
 **Der Fokus liegt auf den Verben.** Die normalen Vokabeln in
-`data/vokabeln.json` sind bewusst nicht erreichbar — der ganze Vokabel-Strang
-ruht, siehe `roadmap/backlog.md`.
+`data/vokabeln.json` sind bis heute nicht erreichbar. Der Vokabel-Strang ist
+am 29.08.2026 wieder aufgenommen worden, gebaut ist davon aber noch nichts —
+siehe `roadmap/feature-request-vokabel-import-klasse-5.md`.
 
 Was gebaut ist, steht als `roadmap/feature-implemented-*.md` mit Datum im
 Namen; was durchdacht ist und wartet, als `roadmap/feature-request-*.md`.
+
+### Die Richtung hat sich am 29.08.2026 erweitert
+
+Aus der Einzelplatz-App soll ein kleiner Dienst für Matilda und **ein Dutzend
+Kinder** werden: Konten, gespeicherter Lernstand je Vokabel, gemeinsame
+Lernmissionen und ein userübergreifend sichtbarer Punktestand.
+
+**Entschieden ist die Richtung, nicht der Bau.** Die Voraussetzung dafür ist
+eine einzige unbeantwortete Frage — *was ist ein Punkt?* — und solange sie
+offen ist, wird an diesem Strang nichts gebaut. Die Abwägung samt der Pflichten,
+die mit fremden Kinderdaten dazukommen (Anmeldung, Row Level Security,
+Minderjährige), steht in `roadmap/feature-request-mehrere-nutzer.md`.
 
 ### Nicht ungefragt einbauen
 
@@ -47,6 +60,11 @@ Framework.
 Wenn eine Aufgabe eines dieser Themen berührt: **nicht einbauen, sondern
 nachfragen.** Alle sind bewusst zurückgestellt oder stehen unter „Out of
 Scope". Das Projekt soll klein bleiben und früh laufen.
+
+Für Punkte, Accounts und Supabase gilt das seit dem 29.08.2026 mit einer
+Änderung: sie sind **gewollt**, aber noch nicht freigegeben. Die Liste bleibt
+also stehen — wer sie anfasst, fragt weiterhin nach, und die Antwort ist jetzt
+„erst, wenn die Punktefrage beantwortet ist" statt „nein".
 
 **GitHub Actions stand hier ursprünglich mit auf der Liste und wurde bewusst
 vorgezogen.** Der Deploy von Hand über einen `gh-pages`-Branch wären fünf
@@ -436,11 +454,25 @@ und wer umbenennt, zieht die Links in der Roadmap und hier nach.
 Was wir bewusst **nicht** bauen, steht dagegen oben unter „Out of Scope" —
 nicht in der Roadmap, damit es dort nicht als Vorhaben missverstanden wird.
 
-Was für die Architektur wichtig ist: `src/infra/storage.js` entsteht als
-**einziger** Ort, der Persistenz kennt — zunächst
-ausschließlich für **Einstellungen** (Töne an/aus, was geübt wird, Richtung).
-Ein Lernstand **pro Karte** geht bewusst noch nicht durch diese Naht:
-Einstellungen kann man jederzeit erweitern, ein gespeicherter Lernstand legt
-sein Format dagegen fest und müsste später migriert werden. Dieselbe Naht wird
-später gegen Supabase getauscht, ohne dass Domäne oder UI davon erfahren. Sie
-muss sauber bleiben.
+Was für die Architektur wichtig ist: `src/infra/` bekommt **zwei** Nähte, und
+sie dürfen nicht vermischt werden.
+
+| | `infra/storage.js` | `infra/backend.js` |
+|---|---|---|
+| Gehört zu | dem **Gerät** | der **Person** |
+| Inhalt | Töne an/aus, Aufgabenart, Kartenbeutel | Lernstand, Punkte, Missionen |
+| Technik | `localStorage`, synchron | Supabase, asynchron |
+| Wird getauscht | nie | ist von Anfang an das Ziel |
+
+Ob am Küchentisch der Ton an ist, gehört dem Laptop. Ob `caught` sitzt, gehört
+Matilda und muss ihr auf jedes Gerät folgen.
+
+**In `storage.js` darf nur liegen, was man jederzeit wegwerfen würde.**
+`localStorage` in fremden Browsern ist weder migrierbar noch
+wiederherstellbar; ein Lernstand gehört deshalb nach Postgres und nicht in den
+Browser. Gespeichert werden dort **Ereignisse** (eine Zeile je Antwort), nicht
+errechnete Zustände — das ist das einzige Format, das sich später nicht
+festlegt. Siehe `roadmap/feature-request-lernstand.md`.
+
+`domain/` erfährt von beidem nichts: dort kommen Ereignisse als Argumente
+herein und Bewertungen heraus.
