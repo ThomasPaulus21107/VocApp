@@ -23,6 +23,52 @@
       <span aria-hidden="true">←</span> Zurück zum Üben
     </a>
 
+    <!-- Dasselbe Menü wie beim Üben. Es steht in jeder Seite im Markup --
+         auf und zu macht es src/ui/menue.js, für alle Seiten dieselbe Datei.
+         Der Ton-Schalter fehlt hier mit Absicht: gehört wird beim Üben. -->
+    <button
+      id="menue-knopf"
+      class="menue-knopf"
+      type="button"
+      aria-expanded="false"
+      aria-controls="menue"
+    >
+      <span class="sr-only">Menü öffnen</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
+    </button>
+
+    <div id="menue-schatten" class="menue-schatten"></div>
+
+    <aside id="menue" class="menue" aria-label="Menü">
+      <button id="menue-zu" class="menue-knopf menue__zu" type="button">
+        <span class="sr-only">Menü schließen</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+
+      <h2 class="menue__titel">Ansehen</h2>
+
+      <a class="menue__zeile menue__zeile--link" href="index.html">
+        Zum Üben
+        <span aria-hidden="true" class="menue__pfeil">→</span>
+      </a>
+
+      <a class="menue__zeile menue__zeile--link" href="fortschritt.html">
+        Dein Fortschritt
+        <span aria-hidden="true" class="menue__pfeil">→</span>
+      </a>
+
+      <a class="menue__zeile menue__zeile--link" href="fleiss.html" aria-current="page">
+        Dein Fleiß
+        <span aria-hidden="true" class="menue__pfeil">→</span>
+      </a>
+    </aside>
+
     <main class="buehne buehne--seite">
       <h1 class="titel">Dein Fleiß</h1>
 

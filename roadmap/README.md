@@ -119,6 +119,7 @@ Von unten nach oben, neueste zuerst.
 | [Ob die App mehrere Nutzer kennt](feature-request-mehrere-nutzer.md) | Entscheidung |
 | [Ob die Abfragerichtung umschaltbar wird](feature-request-richtung.md) | Entscheidung |
 | [Wie die Oberfläche getestet wird](feature-request-ui-tests.md) | Entscheidung |
+| [Leitner-Fächer mit Wiedervorlage](feature-request-leitner.md) | Thomas, Entscheidung gegen die Gewichtung |
 
 Nicht jedes Feature ist Code. Die Vokabeln, die Verb-Tipps, die Töne und die
 Farben sind Matildas Arbeit und stehen gleichberechtigt daneben — ohne sie ist

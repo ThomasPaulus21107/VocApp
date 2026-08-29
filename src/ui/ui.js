@@ -2,6 +2,7 @@
 // Weiß nichts davon, was richtig oder falsch bedeutet -- bekommt das gesagt.
 
 import * as klang from './klang.js';
+import { verbindeMenue } from './menue.js';
 import * as effekte from './effekte.js';
 import { FORM_NAME } from './formnamen.js';
 
@@ -33,10 +34,6 @@ const el = {
   ergebnisVorlage: document.querySelector('#ergebnis-vorlage'),
   // Die vier Modus-Knöpfe: zwei auf der Startseite, zwei am Ende.
   modusKnoepfe: document.querySelectorAll('[data-modus]'),
-  menue: document.querySelector('#menue'),
-  menueKnopf: document.querySelector('#menue-knopf'),
-  menueZu: document.querySelector('#menue-zu'),
-  menueSchatten: document.querySelector('#menue-schatten'),
   toene: document.querySelector('#toene'),
   richtung: document.querySelector('#richtung'),
   richtungen: document.querySelectorAll('input[name="richtung"]'),
@@ -88,28 +85,10 @@ export function setzeToene(an) {
   klang.schalte(an);
 }
 
-/** Auf und zu. Der Fokus wandert mit, sonst ist die Lade eine Falle. */
-function zeigeMenue(offen) {
-  el.menue.classList.toggle('menue--offen', offen);
-  el.menueSchatten.classList.toggle('menue-schatten--offen', offen);
-  el.menueKnopf.setAttribute('aria-expanded', String(offen));
-
-  if (offen) el.menueZu.focus();
-  else el.menueKnopf.focus();
-}
-
 export function verbinde({ aufAbsenden, aufStart, aufRichtungswechsel, aufTipp, aufWeiter, aufToene }) {
-  el.menueKnopf.addEventListener('click', () => zeigeMenue(true));
-  el.menueZu.addEventListener('click', () => zeigeMenue(false));
-  el.menueSchatten.addEventListener('click', () => zeigeMenue(false));
-
-  // Escape schließt, wie bei jedem Overlay. Ohne das säße man fest, sobald
-  // die App ohne Adressleiste auf dem Homebildschirm läuft.
-  document.addEventListener('keydown', (ereignis) => {
-    if (ereignis.key === 'Escape' && el.menue.classList.contains('menue--offen')) {
-      zeigeMenue(false);
-    }
-  });
+  // Das Menü verhält sich auf jeder Seite gleich und liegt deshalb in einer
+  // eigenen Datei -- die Statistikseiten benutzen dieselbe.
+  verbindeMenue();
 
   // Der Schalter wirkt sofort, damit man den Unterschied hört. Gespeichert
   // wird er oben in app.js -- die UI kennt keinen Speicher.

@@ -7,12 +7,16 @@ import { einheiten } from './domain/auswahl.js';
 import { uebersicht, verteile, stufe, schluessel, LEER, SICHER_AB_PROZENT } from './domain/lernstand.js';
 import { FORM_NAME } from './ui/formnamen.js';
 import * as storage from './infra/storage.js';
+import { verbindeMenue } from './ui/menue.js';
 
 // Wie viele Beispiele je Fach. Mehr wäre keine Übersicht mehr, sondern eine
 // zweite Vokabelliste -- die Menge darüber sagt ja schon, wie groß das Fach ist.
 const BEISPIELE = 10;
 
 const el = (id) => document.getElementById(id);
+
+// Auch wenn hier nichts steht: der Weg zu den anderen Seiten geht immer.
+verbindeMenue();
 
 const stand = storage.lesen('lernstand', LEER);
 
@@ -80,27 +84,38 @@ function span(klasse, text) {
   return knoten;
 }
 
+/** Eine Zeile der Liste: das Wort und, wo einer gemessen wurde, sein Score. */
+function zeile({ name, score }) {
+  const knoten = document.createElement('li');
+  knoten.className = 'fach__zeile';
+  knoten.append(span('fach__wort', beschriftung(name)));
+  if (score !== null) knoten.append(span('fach__score', `${score} %`));
+  return knoten;
+}
+
 /**
  * Füllt ein Fach: die Menge, bis zu zehn Beispiele und, wenn mehr da sind,
- * eine Zeile die sagt, wie viele nicht gezeigt werden.
+ * einen Knopf, der den Rest nachreicht.
  */
 function fuelle(fach, eintraege) {
   el(`menge-${fach}`).textContent = eintraege.length;
 
-  for (const { name, score } of eintraege.slice(0, BEISPIELE)) {
-    const zeile = document.createElement('li');
-    zeile.className = 'fach__zeile';
-    zeile.append(span('fach__wort', beschriftung(name)));
-    // Ein Score steht nur da, wo einer gemessen wurde.
-    if (score !== null) zeile.append(span('fach__score', `${score} %`));
-    el(`liste-${fach}`).append(zeile);
-  }
+  const liste = el(`liste-${fach}`);
+  for (const eintrag of eintraege.slice(0, BEISPIELE)) liste.append(zeile(eintrag));
 
-  if (eintraege.length > BEISPIELE) {
-    const mehr = el(`mehr-${fach}`);
-    mehr.textContent = `… und ${eintraege.length - BEISPIELE} weitere`;
-    mehr.hidden = false;
-  }
+  if (eintraege.length <= BEISPIELE) return;
+
+  // Zehn Zeilen sind eine Übersicht, hundert wären eine zweite Vokabelliste.
+  // Wer sie trotzdem sehen will, sagt es -- dann kommen sie alle.
+  const mehr = el(`mehr-${fach}`);
+  mehr.textContent = `… und ${eintraege.length - BEISPIELE} weitere zeigen`;
+  mehr.hidden = false;
+
+  mehr.addEventListener('click', () => {
+    for (const eintrag of eintraege.slice(BEISPIELE)) liste.append(zeile(eintrag));
+    // Der Knopf hat getan, wofür er da war.
+    mehr.hidden = true;
+  }, { once: true });
 }
 
 // Ohne eine einzige Antwort gibt es nichts zu zeigen. Drei Zahlen aus drei
@@ -125,11 +140,9 @@ if (zahlen.geuebt === 0) {
   el('balken-sicher').style.width = breite(zahlen.sicher);
   el('balken-geuebt').style.width = breite(zahlen.geuebt - zahlen.sicher);
 
-  // Die Stufe faerbt den Balken -- rot am Anfang, grün wenn das meiste sitzt --
-  // und waehlt den Satz darunter. Beide sagen dasselbe, nur anders.
-  const wieWeit = stufe(zahlen);
-  el('balken').classList.add(`balken--${wieWeit}`);
-  el('lage').textContent = lagesatz(zahlen, wieWeit);
+  // Die Farben im Balken gehören den drei Fächern und sagen nichts über den
+  // Gesamtstand -- den sagt der Satz darunter. Dafür ist die Stufe da.
+  el('lage').textContent = lagesatz(zahlen, stufe(zahlen));
 
   fuelle('nie', faecher.nie);
   fuelle('arbeit', faecher.arbeit);

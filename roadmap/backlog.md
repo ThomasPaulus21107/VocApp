@@ -39,13 +39,9 @@ in der Git-Historie.
   `1 - score / 100`.
   `offen:` nichts Grundsätzliches. Es ist die ausführlichste Beschreibung im
   Ordner und wartet nur darauf, gebaut zu werden.
+  **Alternative, keine Ergänzung:** [Leitner](feature-request-leitner.md) ersetzt
+  denselben Sortierschlüssel. Gebaut wird eines von beiden zuerst.
 
-- **Leitner-Fächer mit Wiedervorlage.** „Diese Karte erst in drei Tagen wieder."
-  `braucht:` [Der Lernstand je Vokabel](implemented/feature-lernstand-2026-08-29-1531.md) —
-  refined. Danach ist Leitner nur noch ein anderes Modell über denselben
-  Zeilen: es ersetzt die Gewichtsformel aus
-  [Welche Karten drankommen](implemented/feature-auswahl-2026-08-29-1327.md), nicht das Ziehen.
-  `offen:` wie viele Fächer, welche Abstände, und was beim ersten Start passiert
 
 Der Punkt „Lernstand pro Karte speichern" ist am 29.08.2026 hier
 ausgezogen — er steht jetzt als

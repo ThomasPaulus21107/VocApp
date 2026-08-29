@@ -14,6 +14,13 @@
   --falsch: #fd0000;        /* wenn nicht */
   --eingabefeld: #fefcfe;    /* Hintergrundfarbe der Eingabefelder */
 
+  /* Die drei Faecher auf der Fortschrittsseite -- im Balken oben und
+     in den Listen darunter dieselbe Farbe. */
+  --nie: #ff8787;           /* noch nie geübt */
+  --in-arbeit: #ffb066;     /* schon geübt, sitzt aber noch nicht */
+  --sitzt: var(--richtig);  /* ab 75 % der Punkte: dasselbe Grün wie bei einer
+                               richtigen Antwort */
+
   --rundung: 25px;          /* wie rund die Ecken sind */
 
   /* Schrift. Willst du eine andere? Sag Papa Bescheid,
@@ -669,6 +676,16 @@ body {
   color: var(--leise);
 }
 
+/* Die Seite, auf der man schon steht. Sie bleibt anklickbar -- sie blass zu
+   machen sagt genug, und ein toter Eintrag waere eine Falle. */
+.menue__zeile[aria-current='page'] {
+  color: var(--leise);
+}
+
+.menue__zeile[aria-current='page'] .menue__pfeil {
+  visibility: hidden;
+}
+
 .menue__zeile input {
   width: 22px;
   height: 22px;
@@ -763,6 +780,10 @@ body {
 
 /* Zwei Balken nebeneinander in einer Leiste: was sicher sitzt, und was erst
    in Arbeit ist. Was uebrig bleibt, ist noch nicht geuebt. */
+/* Drei Faecher in einer Leiste, von links nach rechts: was sitzt, was in
+   Arbeit ist, was noch nie dran war. Das dritte braucht kein eigenes
+   Element -- was die beiden anderen uebrig lassen, IST das dritte Fach.
+   Deshalb ist der Hintergrund der Leiste seine Farbe. */
 .balken {
   display: flex;
   overflow: hidden;
@@ -770,31 +791,15 @@ body {
   height: 14px;
   margin-bottom: 12px;
   border-radius: 7px;
-  background: var(--eingabefeld);
+  background: var(--nie);
 }
 
-/* Auch bei null sicheren Formen bleibt ein Stueck stehen. Der Balken soll
-   zeigen, WO man steht -- und das ist dann eben ganz links und rot. */
 .balken__teil--sicher {
-  min-width: 10px;
-  background: var(--falsch);
+  background: var(--sitzt);
 }
 
-/* In Arbeit ist noch kein Erfolg, also blass. Sonst saehe eine Leiste, in
-   der nichts sitzt, halb geschafft aus. */
 .balken__teil--geuebt {
-  background: var(--akzent);
-  opacity: 0.3;
-}
-
-/* Die Farbe des sicheren Teils sagt, wie weit es insgesamt ist. Die Marken
-   dafuer stehen in lernstand.js, nicht hier. */
-.balken--unterwegs .balken__teil--sicher {
-  background: var(--akzent);
-}
-
-.balken--gut .balken__teil--sicher {
-  background: var(--richtig);
+  background: var(--in-arbeit);
 }
 
 .zahlen {
@@ -877,10 +882,28 @@ body {
   color: var(--leise);
 }
 
+/* Ein Knopf, der wie eine Bemerkung aussieht: er reicht den Rest des Fachs
+   nach. Unterstrichen, damit man ihm ansieht, dass er etwas tut. */
 .fach__mehr {
+  display: block;
   margin: 12px 0 0;
+  padding: 8px 0;
+
   color: var(--leise);
+  font-family: inherit;
   font-size: 0.875rem;
+  text-align: left;
+  text-decoration: underline;
+
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.fach__mehr:focus-visible {
+  outline: 3px solid var(--schrift);
+  outline-offset: 2px;
+  border-radius: calc(var(--rundung) / 4);
 }
 
 /* =========================================================
