@@ -111,6 +111,29 @@ Ereignistabelle, in der man nachträglich ändern kann, ist keine. Gelöscht wir
 über den Nutzer — das `on delete cascade` oben räumt hinterher, siehe
 [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md).
 
+### Warum hier trotzdem niemand fremde Zeilen sieht
+
+Am 29.08.2026 ist entschieden worden, dass **alle den Fortschritt aller sehen
+dürfen, unter Pseudonymen**. Das ändert an dieser Tabelle nichts, und der Grund
+dafür gehört genau hierher, weil er sonst beim nächsten Anfassen verlorengeht:
+
+1. **`signInAnonymously()` steht jedem offen, der die Seite lädt.** Eine Policy
+   `for select to authenticated using (true)` hieße wörtlich: wer die URL
+   kennt, macht sich in einer Sekunde eine Sitzung und liest alles. „Angemeldet"
+   ist hier keine Hürde.
+2. **`ereignisse` ist kein Punktestand, sondern ein Tagebuch.** Jede Antwort mit
+   Zeitstempel: wer um 23:40 übt, wer eine Vokabel elfmal falsch hatte, wer drei
+   Wochen weg war. Das ist mehr, als „alle sehen alle Fortschritte" verlangt,
+   und es lässt sich nicht wieder einsammeln.
+
+**Geteilt wird deshalb nicht die Tabelle, sondern eine Zusammenfassung** —
+Pseudonym und Zahlen, nicht Zeilen. Sie steht in
+[Gemeinsame Lernmissionen](feature-request-missionen.md) und kommt erst mit den
+Konten. Bis dahin bleibt es bei den zwei Policies oben.
+
+**Wer später eine Lesepolicy auf dieser Tabelle aufmacht, hebt Punkt 1 auf.**
+Dann ist die App offen, und zwar still.
+
 ## Die Abnahme
 
 Nicht nebenbei, sondern als Bedingung: **solange dieser Test nicht gelaufen

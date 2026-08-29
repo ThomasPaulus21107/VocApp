@@ -23,7 +23,8 @@ darunter braucht es die der Eltern. Praktisch heißt das vier Dinge:
   formal den Eltern, geübt wird vom Kind.
 - **Pseudonyme statt Klarnamen.** Die `profile`-Tabelle aus
   [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md) nimmt
-  gar nichts anderes entgegen.
+  gar nichts anderes entgegen. Seit dem 29.08.2026 trägt das Pseudonym mehr
+  als vorher: es ist das, woran die anderen Kinder einander erkennen.
 - **Ein Löschknopf, der wirklich löscht.**
 - **Eine Seite, die in einem Satz sagt, was gespeichert wird.**
 
@@ -49,7 +50,21 @@ Zwei Dinge gehören dazu:
 `datenschutz.html`, fünfter Einstiegspunkt, verlinkt aus dem Seitenmenü. Kein
 Rechtstext — ein Absatz in der Sprache, in der auch `data/README.md`
 geschrieben ist: was gespeichert wird (jede Antwort mit Zeitpunkt), wo es liegt
-(Supabase), wer es sehen kann (nur du) und wie man es loswird.
+(Supabase), wer es sehen kann und wie man es loswird.
+
+**Der dritte Punkt hat sich am 29.08.2026 geändert und ist der wichtigste.**
+Vorher wäre dort „nur du" gestanden. Jetzt gilt:
+
+> Deinen Fortschritt — wie viele Punkte du diese Woche geholt hast und wie viel
+> schon sitzt — sehen die anderen, die mitüben. Sie sehen dich unter deinem
+> Spitznamen, nicht unter deinem richtigen. Was du wann geantwortet hast, sieht
+> niemand außer dir.
+
+Diese drei Sätze sind der Unterschied zwischen einer Einwilligung und einer
+Überraschung. **Sie gehören auf die Seite, bevor das erste fremde Kind
+mitübt** — und sie gehören auch in das, was du den Eltern sagst, wenn du den
+Link weitergibst. Eltern, die zustimmen, stimmen jetzt einer Gruppe zu und
+nicht mehr nur einer App.
 
 ## Jemand ist zuständig
 
