@@ -386,6 +386,46 @@ body {
   animation-timing-function: ease-in;
 }
 
+/* Das Einhorn zu einer 1 in der Arbeit. Es kommt von unten herein, bleibt
+   stehen und verschwindet nach oben -- fuenf Sekunden insgesamt. */
+.teilchen--einhorn {
+  left: 50%;
+  top: 30%;
+  font-size: 6rem;
+  animation-name: einhorn;
+}
+
+/* Der Satz darunter. Er kommt einen Moment spaeter als das Tier, sonst
+   erscheinen beide wie ein Block. */
+.teilchen--aura {
+  left: 50%;
+  top: 58%;
+  animation-name: aura;
+
+  font-size: 1.75rem;
+  font-weight: 800;
+  white-space: nowrap;
+  color: var(--karte);
+  text-shadow: 0 2px 8px rgb(0 0 0 / 35%);
+}
+
+@keyframes einhorn {
+  0%   { transform: translate(-50%, 60px) scale(0.4) rotate(-12deg); opacity: 0; }
+  10%  { transform: translate(-50%, 0) scale(1.15) rotate(4deg); opacity: 1; }
+  16%  { transform: translate(-50%, 0) scale(1) rotate(0deg); opacity: 1; }
+  50%  { transform: translate(-50%, -10px) scale(1) rotate(-3deg); opacity: 1; }
+  84%  { transform: translate(-50%, 0) scale(1) rotate(0deg); opacity: 1; }
+  100% { transform: translate(-50%, -40px) scale(0.9); opacity: 0; }
+}
+
+@keyframes aura {
+  0%   { transform: translate(-50%, 20px); opacity: 0; }
+  14%  { transform: translate(-50%, 20px); opacity: 0; }
+  24%  { transform: translate(-50%, 0); opacity: 1; }
+  84%  { transform: translate(-50%, 0); opacity: 1; }
+  100% { transform: translate(-50%, -20px); opacity: 0; }
+}
+
 @keyframes rakete {
   0%   { transform: translate(-50%, 0) rotate(-45deg) scale(1); }
   6%   { transform: translate(-56%, 0) rotate(-50deg) scale(1.05); }
