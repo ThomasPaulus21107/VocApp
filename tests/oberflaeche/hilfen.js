@@ -136,8 +136,32 @@ export function trotzdemSichtbar(seite) {
   );
 }
 
-/** Oeffnet die Lade an der rechten Seite. */
+/**
+ * Oeffnet die Lade an der rechten Seite und wartet, bis sie steht.
+ *
+ * Das Warten ist kein Uebereifer. Die Lade schiebt sich in einer viertel
+ * Sekunde herein (`transition: transform 0.25s` in styles.css), und
+ * `toBeVisible()` ist sofort wahr -- `visibility` schaltet beim Oeffnen ohne
+ * Verzoegerung um. Wer danach misst oder danebentippt, erwischt einen
+ * beliebigen Zwischenstand der Bewegung: auf einer schnellen Maschine eine
+ * halb hereingefahrene Lade, auf einer langsamen die fertige. Genau daran ist
+ * `der Schatten schliesst die Lade auch` in der CI gescheitert, nachdem es
+ * lokal zweimal gruen war.
+ */
 export async function oeffneMenue(seite) {
   await seite.locator('#menue-knopf').click();
-  await expect(seite.locator('#menue')).toBeVisible();
+
+  const lade = seite.locator('#menue');
+  await expect(lade).toBeVisible();
+
+  // Zweimal dieselbe Position hintereinander heisst: die Bewegung ist durch.
+  let vorher = null;
+  await expect.poll(async () => {
+    const jetzt = await lade.boundingBox();
+    const steht = vorher !== null && jetzt.x === vorher.x;
+    vorher = jetzt;
+    return steht;
+  }, { message: 'Die Lade hoert nicht auf, sich zu bewegen.' }).toBe(true);
+
+  return lade;
 }
