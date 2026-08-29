@@ -8,7 +8,8 @@ import {
   pruefeAntwort,
   RICHTUNGEN,
 } from './domain/pruefung.js';
-import { zieheRunde, merke } from './domain/auswahl.js';
+import { zieheRunde } from './domain/auswahl.js';
+import { merkeGezogen, verrechne, zuletztVon, AUSGAENGE, LEER } from './domain/lernstand.js';
 import { note, punkteFuerKarte } from './domain/note.js';
 import { regeln } from './domain/modus.js';
 import { lernpotential } from './domain/lernpotential.js';
@@ -27,19 +28,21 @@ const RICHTUNG = RICHTUNGEN.NACH_EN;
 // 0 = erster Versuch, 1 = Korrekturchance, 2 = erledigt
 const ERLEDIGT = 2;
 
-// Der Stand der Kartenauswahl: welche Karte-Form-Einheit war in welcher
-// Runde dran. Er ueberlebt das Schliessen des Browsers -- ohne das finge die
-// Abdeckung bei jedem Start von vorn an, und eine Uebungssitzung hat nur zwei
-// bis drei Runden.
-//
-// Geht er verloren, ist nichts kaputt: dann sehen alle Karten gleich alt aus,
-// es wird zufaellig gezogen, und nach vier Runden ist der Zustand von selbst
-// wieder da.
 // Töne an oder aus. Ein true/false, der erste Schalter, der durch die
 // Speicher-Naht geht. Standard ist an: wer nichts einstellt, hört sie.
 const TOENE = 'toene';
-const AUSWAHL = 'auswahl';
-let auswahlstand = storage.lesen(AUSWAHL, { rundeNr: 0, zuletzt: {} });
+
+// Was die App sich über Wochen merkt: je Karte-Form-Einheit, wann sie zuletzt
+// dran war und wie es ausging. Zwei Dinge hängen daran -- die Abdeckung beim
+// Ziehen und die Statistik -- und beide lesen denselben Datensatz.
+//
+// Er überlebt das Schließen des Browsers. Geht er verloren, ist die Auswahl
+// nicht kaputt: dann sehen alle Karten gleich alt aus, es wird zufällig
+// gezogen, und nach vier Runden ist die Abdeckung von selbst wieder da. Die
+// gezählten Wochen sind dann allerdings weg -- deshalb gehört der Stand
+// später nach Postgres und nicht in den Browser.
+const LERNSTAND = 'lernstand';
+let lernstand = storage.lesen(LERNSTAND, LEER);
 
 // Der Stapel ist eine Liste aus { karte, form }: WAS gefragt wird, steht
 // schon beim Ziehen fest und nicht erst beim Anzeigen.
@@ -73,10 +76,15 @@ let hoechstpunktzahl = 0;
 // Die Regeln der laufenden Runde: Übungsblatt oder Arbeit. Sie werden beim
 // Start einmal geholt und gelten dann für die ganze Runde.
 let regel = regeln(null);
+// Der Name des Modus, so wie er vom Knopf kam. `regel` selbst kennt ihn
+// nicht -- sie ist nur die Tabelle dahinter, und der Lernstand will wissen,
+// unter welchen Bedingungen eine Antwort zustande kam.
+let gespielterModus = null;
 
 function start(modus) {
+  gespielterModus = modus;
   regel = regeln(modus);
-  stapel = zieheRunde(verben.karten, RUNDENGROESSE, auswahlstand.zuletzt, auswahlstand.rundeNr);
+  stapel = zieheRunde(verben.karten, RUNDENGROESSE, zuletztVon(lernstand.einheiten), lernstand.rundeNr);
   merkeAuswahl();
   hoechstpunktzahl = stapel.length;
   index = 0;
@@ -95,11 +103,8 @@ function start(modus) {
  * Neues, sie wiederholt.
  */
 function merkeAuswahl() {
-  auswahlstand = {
-    rundeNr: auswahlstand.rundeNr + 1,
-    zuletzt: merke(auswahlstand.zuletzt, auswahlstand.rundeNr, stapel),
-  };
-  storage.speichern(AUSWAHL, auswahlstand);
+  lernstand = merkeGezogen(lernstand, stapel);
+  storage.speichern(LERNSTAND, lernstand);
 }
 
 function zeigeAktuelle() {
@@ -131,17 +136,36 @@ function merkeFuerSpaeter() {
  * Die Liste zeigt die gespielte Runde. Was danach im Lernpotential passiert,
  * ändert sie nicht mehr -- sonst stünde dieselbe Karte zweimal darin.
  */
-function merkeErgebnis({ richtig, getippt, kartenpunkte }) {
+function merkeErgebnis({ ausgang, getippt, kartenpunkte }) {
   if (imLernpotential) return;
 
   ergebnisse.push({
     frage: frage.frage,
     gesuchteForm: frage.gesuchteForm,
     erwartet: frage.antworten.join(' oder '),
-    richtig,
+    richtig: ausgang === AUSGAENGE.RICHTIG,
     getippt,
     punkte: kartenpunkte,
   });
+
+  // Dieselbe Karte wandert in den Lernstand -- dort zählt sie über Wochen und
+  // nicht nur für diese Runde. Die Zeit kommt von hier, nie aus der Domäne.
+  //
+  // Gespeichert wird nach jeder Karte und nicht am Rundenende: am Handy wird
+  // eine Runde oft unterbrochen, und was beantwortet wurde, wurde beantwortet.
+  lernstand = verrechne(
+    lernstand,
+    {
+      id: frage.id,
+      form: frage.gesuchteForm,
+      ausgang,
+      versuch,
+      tipp: tippBenutzt,
+      modus: gespielterModus,
+    },
+    Date.now()
+  );
+  storage.speichern(LERNSTAND, lernstand);
 }
 
 // Ein Knopf, zwei Bedeutungen: erst prüfen, dann weiter.
@@ -162,7 +186,7 @@ function aufAbsenden(eingabe) {
 
   // "s" überspringt die Karte -- ohne Lösung, direkt zur nächsten.
   if (ergebnis.springen) {
-    merkeErgebnis({ richtig: false, getippt: null, kartenpunkte: 0 });
+    merkeErgebnis({ ausgang: AUSGAENGE.UEBERSPRUNGEN, getippt: null, kartenpunkte: 0 });
     weiter();
     return;
   }
@@ -176,7 +200,7 @@ function aufAbsenden(eingabe) {
       ui.zeigeMutmacher();
       return;
     }
-    merkeErgebnis({ richtig: false, getippt: null, kartenpunkte: 0 });
+    merkeErgebnis({ ausgang: AUSGAENGE.AUFGEGEBEN, getippt: null, kartenpunkte: 0 });
     weiter();
     ui.zeigeMutmacher();
     return;
@@ -209,7 +233,7 @@ function aufAbsenden(eingabe) {
   // Ab hier ist die Karte endgültig danebengegangen -- in beiden Modi.
   merkeFuerSpaeter();
 
-  merkeErgebnis({ richtig: false, getippt: eingabe.trim(), kartenpunkte: 0 });
+  merkeErgebnis({ ausgang: AUSGAENGE.FALSCH, getippt: eingabe.trim(), kartenpunkte: 0 });
 
   // Falsch ist falsch: in der Arbeit ohne ein Wort, sofort zur nächsten Karte.
   if (!regel.zeigtErgebnis) {
@@ -241,7 +265,7 @@ function zaehleRichtig() {
   // gar nicht erst gezählt.
   const kartenpunkte = punkteFuerKarte({ versuch, tipp: tippBenutzt });
   punkte += kartenpunkte;
-  merkeErgebnis({ richtig: true, getippt: null, kartenpunkte });
+  merkeErgebnis({ ausgang: AUSGAENGE.RICHTIG, getippt: null, kartenpunkte });
 }
 
 function weiter() {

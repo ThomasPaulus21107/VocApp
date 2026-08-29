@@ -50,12 +50,19 @@ Können-Modell neu rechnen, statt es nur fortzuschreiben.
 
 | | Größe |
 |---|---|
-| Aggregat, 159 Einheiten × acht Zahlen | ~13 KB, wächst nie |
-| Ringpuffer, 750 Antworten | ~50 KB, wächst nie |
+| Aggregat, 106 Einheiten × acht Zahlen | ~15 KB, wächst nie |
+| Ringpuffer, 750 Antworten | ~80 KB, wächst nie |
 | Verfügbar in `localStorage` | ~5 MB |
 
-Rund ein Prozent des Platzes. Selbst ein ungekürztes Protokoll über ein Jahr
-läge bei etwa 1 MB — es gibt hier kein Platzproblem, nur ein Formatproblem.
+Nachgemessen am 29.08.2026: eine gespielte Runde belegt 2,4 KB, im Vollausbau
+sind es rund **100 KB — zwei Prozent des Platzes.** (Die Schätzung stand hier
+vorher bei 63 KB; die Verlaufszeilen sind etwas dicker als angenommen.) Selbst
+ein ungekürztes Protokoll über ein Jahr läge bei etwa 2 MB — es gibt hier kein
+Platzproblem, nur ein Formatproblem.
+
+Aus 106 werden 159 Einheiten, sobald
+[Alle drei Zeiten](feature-request-drei-zeiten.md) auch nach dem Partizip
+fragt. An der Größenordnung ändert das nichts.
 
 ### Was Stufe 1 freischaltet
 
