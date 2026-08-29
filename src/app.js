@@ -16,6 +16,7 @@ import { note, punkteFuerKarte } from './domain/note.js';
 import { regeln, MODI } from './domain/modus.js';
 import { lernpotential } from './domain/lernpotential.js';
 import * as storage from './infra/storage.js';
+import * as backend from './infra/backend.js';
 import * as ui from './ui/ui.js';
 
 // Vorerst nur unregelmäßige Verben, und nur in eine Richtung: das deutsche
@@ -385,3 +386,12 @@ ui.verbinde({
   aufWeiter: starteLernpotential,
   aufToene: (an) => storage.speichern(TOENE, an),
 });
+
+// Die Sitzung zum Server, absichtlich OHNE await.
+//
+// Solange der Lernstand lokal die Wahrheit ist, hängt nichts am Server: die
+// App startet sofort, auch wenn Supabase gerade nicht antwortet oder gar
+// nicht konfiguriert ist. Das eine `await` aus dem Muster in
+// roadmap/feature-request-mehrere-nutzer.md kommt erst, wenn der Server die
+// Wahrheit wird.
+backend.starte();

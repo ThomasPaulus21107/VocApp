@@ -11,6 +11,10 @@ npm install     # einmalig, holt die Werkzeuge
 npm run dev     # startet den Server, öffnet http://localhost:5173
 ```
 
+Ohne weiteres läuft die App vollständig — nur eben ohne Server, alles bleibt
+im Browser. Wer sie mit Supabase verbinden will, kopiert `.env.example` nach
+`.env` und trägt die beiden Werte ein; was dort hingehört, steht in der Datei.
+
 ## Weitere Befehle
 
 ```bash
@@ -55,7 +59,8 @@ Alles Übrige steht im Backlog.
 data/        die Vokabeln (Daten, kein Code)
 public/      wird unverändert mitgeliefert: Icons und manifest.json
 src/domain/  die Regeln: was ist richtig, welche Karte kommt dran
-src/infra/   das Einzige, was etwas speichert
+src/infra/   das Einzige, was etwas speichert: storage.js gehört dem Gerät,
+             backend.js der Person
 src/ui/      alles, was mit Anzeige zu tun hat
 src/app.js   das Üben, src/fortschritt.js und src/fleiss.js die Statistiken
 tests/       automatische Tests für die Regeln
