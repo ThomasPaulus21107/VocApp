@@ -58,14 +58,44 @@ Ereignisse als Argumente herein und Bewertungen heraus, und dabei bleibt es.
 |---|---|
 | `merkeAuswahl()` | je gezogener Einheit ein `melde({ art: 'gezogen', … })` |
 | nach `verrechne(...)` | `melde({ art: 'antwort', … })` — dasselbe Objekt, das schon an `verrechne()` geht |
-| ganz unten | `backend.starte();` |
+| ganz unten | `backend.starte();` **fällt weg** — siehe unten |
+
+### Angemeldet wird erst, wenn es etwas zu sichern gibt
+
+[Die zweite Naht](feature-request-backend-naht.md) ruft `starte()` beim Laden
+der Seite. Das war zum Prüfen richtig und ist auf Dauer falsch: **jeder
+Seitenaufruf legt dann einen anonymen Nutzer an.** Am 29.08.2026 in
+`VocApp TEST` nachgezählt — ein paar Testläufe, zehn Nutzer.
+
+Die Seite liegt öffentlich im Netz. Ein neugieriger Klick, ein Crawler, ein
+geteilter Link, ein privates Fenster: jedes Mal eine Zeile in `auth.users`, für
+immer. Gefährlich ist das nicht — RLS hält, diese Nutzer sehen und schreiben
+nichts — aber es wächst, und anonyme Nutzer zählen bei Supabase als aktive
+Nutzer.
+
+Also wandert der Aufruf nach innen: **`melde()` sorgt selbst dafür, dass eine
+Sitzung da ist**, bevor der Ausgangskorb geleert wird. Wer die Seite nur
+ansieht, bekommt kein Konto; wer eine Karte beantwortet, schon.
+
+Das kostet nichts, und zwar aus zwei Gründen:
+
+- **`melde()` legt nur ab und wartet auf niemanden.** Ob die Anmeldung eine
+  halbe Sekunde braucht, merkt keiner — die Zeile liegt so lange im Korb.
+- **Die `uid` braucht der Client gar nicht.** `nutzer uuid not null default
+  auth.uid()` setzt der Server beim Einfügen. Der Korb funktioniert ohne sie,
+  und eine Zeile, die vor der Anmeldung entstanden ist, bekommt beim Versenden
+  denselben Nutzer wie alle anderen.
 
 ## Kein einziges `await` in app.js
 
-`backend.starte()` wird **ohne `await`** aufgerufen, und das ist keine
+`app.js` wartet auf nichts, was mit dem Server zu tun hat — und das ist keine
 Nachlässigkeit, sondern der Punkt: weil lokal die Wahrheit ist, hängt nichts am
 Server. Die App startet wie bisher sofort, auch wenn Supabase gerade nicht
 antwortet.
+
+Auch die Anmeldung aus dem Abschnitt oben bleibt **innerhalb** von
+`backend.js`. Sie färbt nicht durch, weil niemand auf sie wartet: `melde()`
+gibt nichts zurück, worauf man warten könnte.
 
 Das eine `await` aus dem Muster in
 [Ob die App mehrere Nutzer kennt](feature-request-mehrere-nutzer.md) kommt erst,
@@ -89,6 +119,11 @@ Dazu von Hand, weil kein Test es prüfen kann:
    an, neu laden: die Zeilen gehen nach.
 2. **Zweimal neu laden**, während der Korb voll ist: die Zeilenzahl in Supabase
    bleibt gleich.
+3. **Die Seite öffnen und wieder schließen, ohne zu üben** — in
+   `Authentication → Users` darf **kein** neuer Nutzer stehen. Das ist die
+   Abnahme für den Abschnitt oben, und sie ist leicht zu vergessen, weil
+   nichts kaputtgeht, wenn sie fehlschlägt: man merkt es erst an einer Zahl,
+   die drei Monate später zu hoch ist.
 
 ## Voraussetzung
 
