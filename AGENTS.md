@@ -53,11 +53,11 @@ Tastatur entworfen, nicht für einen Bildschirm, der danach auch mal klein wird.
 
 Es hat auch eine unsichtbare Folge. **Safari löscht `localStorage` nach sieben
 Tagen ohne Benutzung.** Alles, was gespeichert wird, muss damit rechnen —
-siehe `roadmap/feature-implemented-homebildschirm-2026-08-29-1327.md`, das
+siehe `roadmap/implemented/feature-homebildschirm-2026-08-29-1327.md`, das
 genau deshalb existiert. Die App darf deswegen auf den Homebildschirm.
 
-Was gebaut ist, steht als `roadmap/feature-implemented-*.md` mit Datum im
-Namen; was durchdacht ist und wartet, als `roadmap/feature-request-*.md`.
+Was gebaut ist, liegt in `roadmap/implemented/` mit Datum im Namen; was
+durchdacht ist und wartet, direkt in `roadmap/` als `feature-request-*.md`.
 
 ### Die Richtung hat sich am 29.08.2026 erweitert
 
@@ -94,7 +94,7 @@ einen alten Stand hochladen, ohne dass es auffällt. Der Workflow fügt keine
 Abhängigkeit und keine Zeile hinzu, die Matilda liest, und irgendwann hätte
 es ihn ohnehin gebraucht. Nur Build und Deploy sind vorgezogen; **CI im
 Sinne von Tests als Merge-Bedingung ist ein eigenes Vorhaben** und kam
-später dazu, siehe `roadmap/feature-implemented-tests-in-ci-2026-08-25-2243.md`.
+später dazu, siehe `roadmap/implemented/feature-tests-in-ci-2026-08-25-2243.md`.
 
 ---
 
@@ -294,7 +294,7 @@ Konstanten in `domain/pruefung.js` und sind **Absicht, kein toter Code**:
 | Eingabe | Konstante | Was passiert |
 |---|---|---|
 | `s` | `SPRINGEN` | Karte überspringen, sofort zur nächsten, ohne Lösung |
-| `keine ahnung` | `AUFGEBEN` | „DU SCHAFFST DAS" — im Übungsblatt bleibt die Karte offen, kein Versuch verbraucht. In der Arbeit kommt der Zuspruch auch, aber die Karte ist danach durch (siehe `roadmap/feature-implemented-arbeit-oder-uebungsblatt-2026-08-24-2022.md`). |
+| `keine ahnung` | `AUFGEBEN` | „DU SCHAFFST DAS" — im Übungsblatt bleibt die Karte offen, kein Versuch verbraucht. In der Arbeit kommt der Zuspruch auch, aber die Karte ist danach durch (siehe `roadmap/implemented/feature-arbeit-oder-uebungsblatt-2026-08-24-2022.md`). |
 
 **In der Oberfläche steht bewusst nichts davon.** Sie sollen gefunden werden,
 nicht erklärt. Also bitte weder ins Label schreiben noch in `data/README.md`
@@ -453,7 +453,7 @@ bauen. Wer einen davon doch aufnehmen will, ändert zuerst diesen Abschnitt.
 | **Ein CSS-Preprozessor** | Der Variablenblock in `styles.css` ist Matildas Einstieg in Code. Er muss im Browser direkt wirken. |
 
 **Nicht mit der PWA zu verwechseln** ist das Icon auf dem Homebildschirm
-(`roadmap/feature-implemented-homebildschirm-2026-08-29-1327.md`). Was oben abgelehnt wird, ist der
+(`roadmap/implemented/feature-homebildschirm-2026-08-29-1327.md`). Was oben abgelehnt wird, ist der
 Service Worker samt Cache-Invalidierung — ein `manifest.json` ist eine
 Textdatei mit Name, Farbe und Icon, ändert nichts am Laden und macht die App
 nicht offline-fähig. Es steht dort, weil iOS `localStorage` sonst nach sieben
@@ -466,7 +466,7 @@ nicht passieren soll" als Arbeitsregel steht.
 
 ## Fahrplan (zur Einordnung, nicht zum Vorziehen)
 
-**Der Fahrplan steht in [`roadmap/`](roadmap/), nicht hier.** Dort liegt je
+**Der Fahrplan steht in [`roadmap/`](roadmap), nicht hier.** Dort liegt je
 eine Feature-Datei pro durchdachtem Feature und alles Weitere in `backlog.md`.
 Eine zweite Liste an dieser Stelle würde nur veralten. `roadmap/README.md`
 erklärt den Weg vom Backlog über das Refinement bis in den Code.
@@ -474,10 +474,12 @@ erklärt den Weg vom Backlog über das Refinement bis in den Code.
 Sprint-Dateien gab es bis zum 25.08.2026, sie sind aufgelöst. Wer sie in einem
 alten Stand sieht: ihr Inhalt steckt in den Feature-Dateien.
 
-**Der Dateiname sagt den Zustand:** `feature-request-<thema>.md` ist
-durchdacht, aber noch nicht gebaut; `feature-implemented-<thema>-<JJJJ-MM-TT-hhmm>.md`
-ist gebaut, mit dem Zeitpunkt des Merges im Namen. Umbenannt wird beim Merge,
-und wer umbenennt, zieht die Links in der Roadmap und hier nach.
+**Der Ort sagt den Zustand:** was direkt in `roadmap/` liegt, ist offen; was
+in `roadmap/implemented/` liegt, ist gebaut — mit dem Zeitpunkt des Merges im
+Namen. Verschoben wird beim Merge, und wer verschiebt, zieht die Links in der
+Roadmap und hier nach. (Bis zum 29.08.2026 stand der Zustand stattdessen im
+Dateinamen; alte Pfade `roadmap/feature-implemented-*` meinen dieselben
+Dateien.)
 
 Was wir bewusst **nicht** bauen, steht dagegen oben unter „Out of Scope" —
 nicht in der Roadmap, damit es dort nicht als Vorhaben missverstanden wird.

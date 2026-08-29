@@ -30,7 +30,7 @@ in der Git-Historie.
 ## Lernen und Wiederholen
 
 - **Schwere Karten häufiger dran nehmen.** Stufe 2 der
-  [Kartenauswahl](feature-implemented-auswahl-2026-08-29-1327.md): ein zweiter
+  [Kartenauswahl](implemented/feature-auswahl-2026-08-29-1327.md): ein zweiter
   Summand in der Gewichtsformel, dazu die Zeile `auswahlGewichtet` in
   `modus.js` und der Verhältnis-Deckel, damit eine Übungsrunde nicht nur aus
   Karten besteht, die wehtun.
@@ -43,7 +43,7 @@ in der Git-Historie.
   `braucht:` [Der Lernstand je Vokabel](feature-request-lernstand.md) —
   refined. Danach ist Leitner nur noch ein anderes Modell über denselben
   Zeilen: es ersetzt die Gewichtsformel aus
-  [Welche Karten drankommen](feature-implemented-auswahl-2026-08-29-1327.md), nicht das Ziehen.
+  [Welche Karten drankommen](implemented/feature-auswahl-2026-08-29-1327.md), nicht das Ziehen.
   `offen:` wie viele Fächer, welche Abstände, und was beim ersten Start passiert
 
 Der Punkt „Lernstand pro Karte speichern" ist am 29.08.2026 hier

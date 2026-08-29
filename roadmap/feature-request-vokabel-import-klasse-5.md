@@ -28,7 +28,7 @@ größer. Der nächste Zuwachs an Nutzen liegt im Stoff, nicht in der Mechanik.
 
 `data/lektion-01.json`, `data/lektion-02.json` und so weiter, statt einer
 immer weiter wachsenden `vokabeln.json`. Matilda arbeitet dann in kleinen,
-überschaubaren Dateien, und die [Seitenmenü](feature-implemented-seitenmenue-2026-08-29-1348.md)
+überschaubaren Dateien, und die [Seitenmenü](implemented/feature-seitenmenue-2026-08-29-1348.md)
 kann später einzelne Lektionen anbieten.
 
 Die unregelmäßigen Verben bleiben, wo sie sind — sie sind keine Lektion,
@@ -106,7 +106,7 @@ Zwischenstand und blockiert Matildas Arbeit nicht.
 ## Voraussetzungen
 
 Keine harten. Sinnvoll davor:
-[Die Speicher-Naht am Gerät](feature-implemented-storage-2026-08-29-1327.md), damit
+[Die Speicher-Naht am Gerät](implemented/feature-storage-2026-08-29-1327.md), damit
 die Auswahl das Neuladen übersteht.
 
 ## Wann es fertig ist

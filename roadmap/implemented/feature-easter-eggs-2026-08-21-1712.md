@@ -31,5 +31,5 @@ in `data/README.md` erwähnen — die Anleitung liest Matilda.
 Im Übungsblatt bleibt die Karte nach „keine Ahnung" offen und kostet keinen
 Versuch. In der Arbeit kommt der Zuspruch auch, aber die Karte ist danach
 durch — `hilferufOhneFolgen` in der Regeltabelle. Für die
-[Lernpotential-Runde](feature-implemented-lernpotential-2026-08-24-2211.md)
+[Lernpotential-Runde](feature-lernpotential-2026-08-24-2211.md)
 zählen beide Eingaben nicht: da wurde es nicht versucht.

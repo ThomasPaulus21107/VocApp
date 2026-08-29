@@ -21,10 +21,10 @@ Drei Dinge hängen inzwischen an dieser einen Zahl:
 
 - **Die Note.** Eine im zweiten Versuch richtige Karte bringt einen halben
   Punkt statt einem ganzen — siehe
-  [Das Ergebnis als Schulnote](feature-implemented-schulnoten-2026-08-22-1115.md).
+  [Das Ergebnis als Schulnote](feature-schulnoten-2026-08-22-1115.md).
 - **Der Modus.** In der Arbeit gibt es die Chance nicht. Das steht als
   `zweiterVersuch` in der Regeltabelle in `domain/modus.js`, siehe
-  [Übungsblatt oder Arbeit](feature-implemented-arbeit-oder-uebungsblatt-2026-08-24-2022.md).
+  [Übungsblatt oder Arbeit](feature-arbeit-oder-uebungsblatt-2026-08-24-2022.md).
 - **Das Lernpotential.** Eine Karte, die erst im zweiten Versuch saß, kommt am
   Ende noch einmal — siehe
-  [Die Lernpotential-Runde](feature-implemented-lernpotential-2026-08-24-2211.md).
+  [Die Lernpotential-Runde](feature-lernpotential-2026-08-24-2211.md).

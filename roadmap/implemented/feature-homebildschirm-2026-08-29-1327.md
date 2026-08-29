@@ -18,7 +18,7 @@ geräumt.
 Die Uhr wird bei jeder Benutzung zurückgesetzt. Wer regelmäßig übt, merkt nie
 etwas. Gefährlich sind genau die Lücken: Krankheit, zwei Wochen Ferien, das
 Ende des Schuljahrs — **also ausgerechnet die Momente, nach denen eine über
-Monate gewachsene [Statistik](feature-request-lernstand.md) am meisten wert
+Monate gewachsene [Statistik](../feature-request-lernstand.md) am meisten wert
 wäre.**
 
 **Web-Apps auf dem Homebildschirm sind von der Löschung ausgenommen.** Das ist
@@ -61,7 +61,7 @@ obwohl nichts verloren ist.
 
 Also: das Icon aufs Telefon legen, **bevor** die Statistik anfängt zu wachsen.
 Diese Datei gehört deshalb vor
-[Der Lernstand je Vokabel](feature-request-lernstand.md) und nicht danach.
+[Der Lernstand je Vokabel](../feature-request-lernstand.md) und nicht danach.
 
 ## Voraussetzungen
 
@@ -74,10 +74,10 @@ Keine. Kann sofort passieren und dauert einen Abend.
   Telefon als Hauptgerät will man beides.
 - **`display: standalone` nimmt die Adressleiste weg.** Damit gibt es keinen
   Zurück-Knopf mehr — sobald es
-  [Seitenmenü](feature-implemented-seitenmenue-2026-08-29-1348.md) und
-  [Fortschritt](feature-request-fortschritt.md) als eigene Seiten gibt, muss
+  [Seitenmenü](feature-seitenmenue-2026-08-29-1348.md) und
+  [Fortschritt](../feature-request-fortschritt.md) als eigene Seiten gibt, muss
   jede davon einen sichtbaren Weg zurück haben. In Safari trägt das der
   Browser, hier nicht mehr.
 - Die Farbe der Browserleiste ist schon gesetzt (`theme-color`, aus
-  [Kleinkram](feature-implemented-kleinkram-2026-08-25-2231.md)) und wird
+  [Kleinkram](feature-kleinkram-2026-08-25-2231.md)) und wird
   hier wiederverwendet.

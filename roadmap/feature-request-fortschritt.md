@@ -34,7 +34,7 @@ deshalb steht es hier und nicht im nächsten Commit.
 
 ## Warum eine eigene Seite
 
-Wie bei der [Seitenmenü](feature-implemented-seitenmenue-2026-08-29-1348.md): Vite kann mehrere
+Wie bei der [Seitenmenü](implemented/feature-seitenmenue-2026-08-29-1348.md): Vite kann mehrere
 Einstiegspunkte, `fortschritt.html` kommt als Eintrag in `rollupOptions.input`.
 Kein Router, keine Abhängigkeit. Üben und Nachsehen sind zwei Situationen, und
 die Karte soll leer bleiben.

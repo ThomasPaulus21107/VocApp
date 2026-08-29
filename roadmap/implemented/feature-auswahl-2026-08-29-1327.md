@@ -73,7 +73,7 @@ Drei Dinge werden dadurch einfacher:
 - **Es ist kein veränderlicher Zustand**, sondern eine Beobachtung. Sie kann
   nicht in einen unmöglichen Zustand geraten.
 - **Es ist dasselbe Feld, das die Statistik ohnehin führt** — siehe
-  [Der Lernstand](feature-request-lernstand.md). Zwei Features, ein Datensatz.
+  [Der Lernstand](../feature-request-lernstand.md). Zwei Features, ein Datensatz.
 
 ## Eine Formel für beide Stufen
 
@@ -151,12 +151,12 @@ schwerer, nur vollständiger.
 
 ## Voraussetzungen
 
-- **Stufe 1:** [Die Speicher-Naht am Gerät](feature-implemented-storage-2026-08-29-1327.md). Ein
+- **Stufe 1:** [Die Speicher-Naht am Gerät](feature-storage-2026-08-29-1327.md). Ein
   Gedächtnis, das das Schließen des Browsers überlebt, geht nicht ohne sie —
   und genau darum geht es hier: eine Übungssitzung hat zwei bis drei Runden,
   das Abdeckungsproblem baut sich über Tage auf. Der Beutel ist damit der
   zweite Kunde der Naht, neben dem Töne-Schalter.
-- **Stufe 2:** [Der Lernstand](feature-request-lernstand.md), Stufe 1 (lokal).
+- **Stufe 2:** [Der Lernstand](../feature-request-lernstand.md), Stufe 1 (lokal).
   Ohne Statistik gibt es keine Schwierigkeit, und `SCHWERE` bleibt auf null.
 
 ## Was davon noch offen ist
@@ -167,7 +167,7 @@ dran, nach acht jede seiner abgefragten Formen.
 **Stufe 2 fehlt** — die Gewichtung nach Schwierigkeit, und damit auch die
 Zeile `auswahlGewichtet` in `modus.js` und der Verhältnis-Deckel. Die
 Voraussetzung dafür steht inzwischen: der
-[Lernstand](feature-request-lernstand.md) zählt, was danebengeht. Es fehlt
+[Lernstand](../feature-request-lernstand.md) zählt, was danebengeht. Es fehlt
 nur noch der zweite Summand in der Formel.
 
 ## Zu beachten
@@ -175,7 +175,7 @@ nur noch der zweite Summand in der Formel.
 - **`zuletzt` ist wegwerfbar.** Geht es verloren, sehen alle Karten gleich alt
   aus, es wird zufällig gezogen, und nach vier Runden ist der Zustand von
   selbst wiederhergestellt. Es darf deshalb ohne Bedenken in `storage.js`.
-- **Nicht mit der [Lernpotential-Runde](feature-implemented-lernpotential-2026-08-24-2211.md)
+- **Nicht mit der [Lernpotential-Runde](feature-lernpotential-2026-08-24-2211.md)
   verwechseln.** Die holt zurück, was in *dieser* Runde danebenging, sofort.
   Hier geht es darum, was *nächste* Runde drankommt.
 - **Auch nicht mit Leitner.** Leitner terminiert Karten auf ein Datum („erst in
