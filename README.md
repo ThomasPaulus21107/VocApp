@@ -18,6 +18,25 @@ npm test        # prüft, ob die Logik noch stimmt
 npm run build   # baut die fertige Version nach dist/
 ```
 
+## Aufs Handy legen
+
+Die App läuft im Browser, kann aber wie eine richtige App auf dem
+Homebildschirm liegen — mit Icon und ohne Adressleiste.
+
+**Auf dem iPhone:** die Seite in Safari öffnen, unten auf das Teilen-Symbol
+tippen, „Zum Home-Bildschirm".
+**Auf Android:** in Chrome das Menü mit den drei Punkten, „App installieren".
+
+Das ist keine Installation aus einem Store, sondern ein Lesezeichen mit Bild.
+Es lohnt sich trotzdem: **iOS löscht sonst nach sieben Tagen ohne Benutzung
+alles, was die App gespeichert hat.** Apps auf dem Homebildschirm sind davon
+ausgenommen.
+
+Ein Hinweis dazu, den man nur einmal falsch macht: eine App auf dem
+Homebildschirm hat einen **eigenen Speicher**, getrennt von Safari. Wer sie
+erst nach Wochen dorthin legt, fängt beim gespeicherten Stand von vorn an.
+Also besser gleich.
+
 ## Vokabeln ändern
 
 Alle Vokabeln stehen in `data/vokabeln.json`.
@@ -33,6 +52,7 @@ durchdacht und wartet, alles Übrige liegt im Backlog.
 
 ```
 data/        die Vokabeln (Daten, kein Code)
+public/      wird unverändert mitgeliefert: Icons und manifest.json
 src/domain/  die Regeln: was ist richtig, wie wird gemischt
 src/ui/      alles, was mit Anzeige zu tun hat
 src/app.js   steckt die Teile zusammen
