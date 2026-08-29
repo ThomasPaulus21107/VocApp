@@ -61,3 +61,23 @@ describe('punkteFuerKarte', () => {
     expect(punkteFuerKarte({ versuch: 1, tipp: true })).toBeGreaterThanOrEqual(0);
   });
 });
+
+describe('punkteFuerKarte mit Tippfehler', () => {
+  it('zieht zwei Zehntel ab, wenn ein Tippfehler durchging', () => {
+    // "writte" statt "write" zaehlt im Uebungsblatt als richtig -- die
+    // Vokabel sass, die Schreibweise nicht.
+    expect(punkteFuerKarte({ versuch: 0, tipp: false, tippfehler: true })).toBeCloseTo(0.8);
+  });
+
+  it('zieht Tipp und Tippfehler zusammen ab', () => {
+    expect(punkteFuerKarte({ versuch: 0, tipp: true, tippfehler: true })).toBeCloseTo(0.7);
+  });
+
+  it('rechnet auch im zweiten Versuch weiter vom halben Punkt', () => {
+    expect(punkteFuerKarte({ versuch: 1, tipp: false, tippfehler: true })).toBeCloseTo(0.3);
+  });
+
+  it('bleibt ohne Angabe bei der alten Rechnung', () => {
+    expect(punkteFuerKarte({ versuch: 0, tipp: false })).toBe(1);
+  });
+});

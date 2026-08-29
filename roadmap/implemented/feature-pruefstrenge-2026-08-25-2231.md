@@ -59,9 +59,21 @@ vertauscht, einer zu viel, einer zu wenig.
 
 ### Punkte
 
-Ein Tippfehler kostet nichts: volle Punktzahl. Er ist kein Wissensfehler, und
-in der Arbeit — wo die Note wirklich zählt — gibt es die Nachsicht ohnehin
-nicht.
+Ursprünglich kostete ein Tippfehler nichts: volle Punktzahl. Die Begründung
+war, dass er kein Wissensfehler ist und es in der Arbeit die Nachsicht ohnehin
+nicht gibt.
+
+**Seit dem 29.08.2026 kostet er 0,2 Punkte** — doppelt so viel wie ein Tipp.
+Die Vokabel saß, die Schreibweise nicht, und beides gehört zum Wort. Der
+Abzug ist klein genug, dass eine Runde mit einem Verschreiber immer noch sehr
+gut ausgeht, und groß genug, dass „writte" nicht dasselbe wert ist wie
+„write". `ABZUG_TIPPFEHLER` steht neben `ABZUG_TIPP` in `domain/note.js`.
+
+Weil er jetzt Punkte kostet, kommt die Karte **auch in die
+[Lernpotential-Runde](feature-lernpotential-2026-08-24-2211.md)**. Dort galt
+schon immer: was Punkte gekostet hat, saß noch nicht sicher. Der zweite
+Versuch und der Tipp standen von Anfang an in dieser Liste, der Tippfehler
+gehört seitdem dazu.
 
 ## Warum das unter dem Verb-Fokus vorne steht
 

@@ -111,7 +111,7 @@ später installiert, steht vor einer scheinbar leeren Statistik.
 Eine Zeile je Antwort, dauerhaft:
 
 ```
-user_id, karten_id, form, richtig, versuch, tipp_stufen, modus, wiederholung, gespielt_am
+user_id, karten_id, form, richtig, versuch, tipp_stufen, tippfehler, modus, wiederholung, gespielt_am
 ```
 
 Der Ringpuffer aus Stufe 1 ist genau das, was hochgeladen wird; das Aggregat

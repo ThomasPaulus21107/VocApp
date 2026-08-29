@@ -38,17 +38,26 @@ export const PUNKTE_ZWEITER_VERSUCH = 0.5;
 // ohne dass die Note davon umkippt.
 export const ABZUG_TIPP = 0.1;
 
+// Ein durchgelassener Tippfehler kostet zwei Zehntel -- doppelt so viel wie
+// ein Tipp. Die Vokabel saß, die Schreibweise nicht, und beides gehört zum
+// Wort. Der Abzug gibt es nur im Übungsblatt: in der Arbeit ist ein
+// Tippfehler gar nicht erst richtig.
+export const ABZUG_TIPPFEHLER = 0.2;
+
 /**
  * Was eine RICHTIG beantwortete Karte einbringt.
  * `versuch` ist 0 beim ersten Anlauf und 1 nach der Korrekturchance.
  * Eine falsche oder übersprungene Karte bringt nichts -- für die wird diese
  * Funktion gar nicht erst gefragt.
+ *
+ * Die Abzüge summieren sich: wer einen Tipp holt und dann auch noch
+ * verschreibt, bekommt beide abgezogen.
  */
-export function punkteFuerKarte({ versuch, tipp }) {
+export function punkteFuerKarte({ versuch, tipp, tippfehler = false }) {
   const grundwert = versuch === 0 ? PUNKTE_ERSTER_VERSUCH : PUNKTE_ZWEITER_VERSUCH;
-  const abzug = tipp ? ABZUG_TIPP : 0;
+  const abzug = (tipp ? ABZUG_TIPP : 0) + (tippfehler ? ABZUG_TIPPFEHLER : 0);
 
-  // Unter null geht es nicht: ein Tipp macht eine Karte höchstens wertlos.
+  // Unter null geht es nicht: die Abzüge machen eine Karte höchstens wertlos.
   return Math.max(0, grundwert - abzug);
 }
 

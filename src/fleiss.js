@@ -2,7 +2,7 @@
 // Eigener Einstiegspunkt wie fortschritt.html. Sie liest nur.
 
 import './ui/styles.css';
-import { fleiss, serie, sitzungen, LEER } from './domain/lernstand.js';
+import { fleiss, serie, runden, LEER } from './domain/lernstand.js';
 import * as storage from './infra/storage.js';
 import { verbindeMenue } from './ui/menue.js';
 
@@ -30,7 +30,7 @@ function span(klasse, text) {
   return knoten;
 }
 
-/** "29.08. um 16:40" -- wann eine Sitzung angefangen hat. */
+/** "29.08. um 16:40" -- wann eine Runde angefangen hat. */
 function wannGenau(zeit) {
   const wann = new Date(zeit);
   const tag = wann.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
@@ -108,48 +108,46 @@ if (geuebt.length === 0) {
 }
 
 /**
- * Jede Sitzung als Zeile: wann sie war, wie viel beantwortet wurde, und ein
- * liegender Balken dazu. Der Balken ist derselbe wie oben im Diagramm, nur
- * quer: die Länge sind alle Antworten, der grüne Teil davor die Treffer.
- * Beide am selben Maßstab, damit eine kurze gute Sitzung nicht aussieht wie
- * eine lange.
+ * Jede Runde als eigene Zeile: wann sie war, in welchem Modus, wie viel
+ * beantwortet wurde, und ein liegender Balken dazu.
+ *
+ * Der Balken zeigt NUR die Quote -- volle Breite sind 100 %. Er misst
+ * bewusst nicht auch noch die Menge: als der Balken das versuchte, hatte
+ * eine Runde mit 45 Antworten und 91 % einen kürzeren grünen Balken als
+ * eine mit 75 Antworten und 59 %, weil die Länge am längsten Tag hing. Zwei
+ * Größen in einem Balken liest niemand richtig. Wie viel beantwortet wurde,
+ * steht als Zahl daneben.
  */
-const alleSitzungen = sitzungen(stand);
+const alleRunden = runden(stand);
 
-if (alleSitzungen.length > 0) {
-  el('sitzungen-karte').hidden = false;
+if (alleRunden.length > 0) {
+  el('runden-karte').hidden = false;
 
-  const laengste = alleSitzungen.reduce(
-    (a, b) => (b.antworten > a.antworten ? b : a)
-  ).antworten;
-
-  for (const sitzung of alleSitzungen) {
+  for (const runde of alleRunden) {
     const zeile = document.createElement('li');
-    zeile.className = 'sitzung';
+    zeile.className = 'runde';
 
     const kopf = document.createElement('p');
-    kopf.className = 'sitzung__kopf';
-    kopf.append(span('sitzung__wann', wannGenau(sitzung.beginn)));
-    kopf.append(span('sitzung__zahlen',
-      `${sitzung.antworten} Antworten · ${sitzung.quote} %`));
+    kopf.className = 'runde__kopf';
+    kopf.append(span('runde__wann', wannGenau(runde.beginn)));
+    // Der Modus gehört dazu: eine Arbeit ohne Hilfen ist etwas anderes als
+    // ein Übungsblatt mit Tipps und zweiter Chance.
+    kopf.append(span('runde__zahlen',
+      `${runde.modus === 'arbeit' ? 'Arbeit' : 'Übungsblatt'} · ${runde.antworten} · ${runde.quote} %`));
 
     const leiste = document.createElement('div');
-    leiste.className = 'sitzung__leiste';
-
-    const gesamt = document.createElement('div');
-    gesamt.className = 'sitzung__gesamt';
-    gesamt.style.width = `${(sitzung.antworten / laengste) * 100}%`;
+    leiste.className = 'runde__leiste';
 
     const richtig = document.createElement('div');
-    richtig.className = 'sitzung__richtig';
-    richtig.style.width = `${(sitzung.richtig / laengste) * 100}%`;
+    richtig.className = 'runde__richtig';
+    richtig.style.width = `${runde.quote}%`;
 
-    leiste.append(gesamt, richtig);
+    leiste.append(richtig);
     zeile.append(kopf, leiste);
-    el('sitzungen').append(zeile);
+    el('runden-liste').append(zeile);
   }
 
   // Ehrlich sagen, wo die Liste aufhört: der Verlauf reicht nur so weit.
-  el('sitzungen-ende').textContent =
+  el('runden-ende').textContent =
     `Weiter zurück reicht der Verlauf nicht — er merkt sich die letzten 750 Antworten.`;
 }

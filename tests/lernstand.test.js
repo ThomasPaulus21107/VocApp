@@ -3,7 +3,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   merkeGezogen, verrechne, zuletztVon, schluessel,
-  score, verteile, uebersicht, stufe, verlaufZu, sitzungen, SITZUNG_PAUSE_MS, fleiss, serie,
+  score, verteile, uebersicht, stufe, verlaufZu, punkteVon, runden, PAUSE_MS, fleiss, serie,
   SICHER_AB_PROZENT, TAGE_MAX,
   AUSGAENGE, LEER, VERLAUF_MAX,
 } from '../src/domain/lernstand.js';
@@ -102,8 +102,8 @@ describe('verrechne', () => {
     const stand = verrechne(LEER, antwort({ modus: 'arbeit' }), 1234);
     expect(stand.verlauf).toEqual([{
       id: 'uv-001', form: 'simple-past', ausgang: 'richtig',
-      versuch: 0, tipp: false, modus: 'arbeit', wiederholung: false,
-      punkte: 1, zeit: 1234,
+      versuch: 0, tipp: false, tippfehler: false, modus: 'arbeit',
+      wiederholung: false, punkte: 1, zeit: 1234,
     }]);
   });
 
@@ -322,6 +322,27 @@ describe('stufe', () => {
   });
 });
 
+describe('punkteVon', () => {
+  it('nimmt die gespeicherte Zahl, wenn es eine gibt', () => {
+    expect(punkteVon({ punkte: 0.5, ausgang: AUSGAENGE.RICHTIG })).toBe(0.5);
+    expect(punkteVon({ punkte: 0, ausgang: AUSGAENGE.FALSCH })).toBe(0);
+  });
+
+  it('rechnet sie fuer alte Zeilen nach, die das Feld nicht haben', () => {
+    // Vor dem Score gab es `punkte` im Verlauf nicht. Ohne Nachrechnen
+    // staende bei einer richtigen Antwort 0 -- und genau das war auf der
+    // Fortschrittsseite zu sehen.
+    expect(punkteVon({ ausgang: AUSGAENGE.RICHTIG, versuch: 0, tipp: false })).toBe(1);
+    expect(punkteVon({ ausgang: AUSGAENGE.RICHTIG, versuch: 1, tipp: false })).toBe(0.5);
+    expect(punkteVon({ ausgang: AUSGAENGE.RICHTIG, versuch: 0, tipp: true })).toBeCloseTo(0.9);
+  });
+
+  it('gibt fuer alles, was nicht richtig war, null', () => {
+    expect(punkteVon({ ausgang: AUSGAENGE.FALSCH, versuch: 0, tipp: false })).toBe(0);
+    expect(punkteVon({ ausgang: AUSGAENGE.AUFGEGEBEN, versuch: 0, tipp: false })).toBe(0);
+  });
+});
+
 describe('verlaufZu', () => {
   it('gibt nur die Antworten dieser einen Einheit, neueste zuerst', () => {
     let stand = verrechne(LEER, antwort({ punkte: 0, ausgang: AUSGAENGE.FALSCH }), 1);
@@ -337,39 +358,71 @@ describe('verlaufZu', () => {
   });
 });
 
-describe('sitzungen', () => {
+describe('runden', () => {
   const MINUTE = 60 * 1000;
 
-  it('fasst zusammen, was ohne lange Pause hintereinander kam', () => {
-    let stand = verrechne(LEER, antwort(), 0);
-    stand = verrechne(stand, antwort({ punkte: 0, ausgang: AUSGAENGE.FALSCH }), 5 * MINUTE);
+  /** `anzahl` Antworten im Minutentakt, ab `ab`. */
+  function spiele(stand, anzahl, ab, extra = {}) {
+    for (let i = 0; i < anzahl; i++) {
+      stand = verrechne(stand, antwort(extra), ab + i * MINUTE);
+    }
+    return stand;
+  }
 
-    expect(sitzungen(stand)).toEqual([
-      { beginn: 0, ende: 5 * MINUTE, antworten: 2, richtig: 1, punkte: 1, quote: 50 },
-    ]);
-  });
+  it('trennt nach der Rundengroesse', () => {
+    // Zwei volle Runden am Stueck, ohne Pause dazwischen.
+    const stand = spiele(LEER, 30, 0);
 
-  it('trennt bei einer langen Pause, neueste Sitzung zuerst', () => {
-    let stand = verrechne(LEER, antwort(), 0);
-    // Eine Minute ueber der Grenze -- das ist ein zweites Mal Ueben.
-    stand = verrechne(stand, antwort(), SITZUNG_PAUSE_MS + MINUTE);
-
-    const alle = sitzungen(stand);
+    const alle = runden(stand);
     expect(alle).toHaveLength(2);
-    expect(alle[0].beginn).toBe(SITZUNG_PAUSE_MS + MINUTE);
+    expect(alle.map((r) => r.antworten)).toEqual([15, 15]);
   });
 
-  it('laesst zwei Runden am Stueck eine Sitzung sein', () => {
-    // 30 Antworten im Minutentakt: zwei Runden, aber einmal geuebt.
-    let stand = LEER;
-    for (let i = 0; i < 30; i++) stand = verrechne(stand, antwort(), i * MINUTE);
+  it('zaehlt die Wiederholung zur selben Runde', () => {
+    // 15 Karten, dann drei Antworten aus dem Lernpotential.
+    let stand = spiele(LEER, 15, 0);
+    stand = spiele(stand, 3, 15 * MINUTE, { wiederholung: true });
 
-    expect(sitzungen(stand)).toHaveLength(1);
-    expect(sitzungen(stand)[0].antworten).toBe(30);
+    const alle = runden(stand);
+    expect(alle).toHaveLength(1);
+    expect(alle[0].antworten).toBe(18);
+  });
+
+  it('faengt nach der Wiederholung eine neue Runde an', () => {
+    let stand = spiele(LEER, 15, 0);
+    stand = spiele(stand, 2, 15 * MINUTE, { wiederholung: true });
+    // Direkt weiter, ohne dass 15 neue Karten voll waeren.
+    stand = spiele(stand, 4, 17 * MINUTE);
+
+    expect(runden(stand).map((r) => r.antworten)).toEqual([4, 17]);
+  });
+
+  it('trennt beim Wechsel des Modus', () => {
+    let stand = spiele(LEER, 5, 0);
+    stand = spiele(stand, 5, 5 * MINUTE, { modus: 'arbeit' });
+
+    const alle = runden(stand);
+    expect(alle).toHaveLength(2);
+    expect(alle.map((r) => r.modus)).toEqual(['arbeit', 'uebungsblatt']);
+  });
+
+  it('trennt nach einer langen Pause, auch wenn die Runde nicht voll war', () => {
+    // Abgebrochen nach sieben Karten, Stunden spaeter neu angefangen.
+    let stand = spiele(LEER, 7, 0);
+    stand = spiele(stand, 7, PAUSE_MS + 10 * MINUTE);
+
+    expect(runden(stand)).toHaveLength(2);
+  });
+
+  it('rechnet die Quote je Runde', () => {
+    let stand = spiele(LEER, 3, 0);
+    stand = verrechne(stand, antwort({ punkte: 0, ausgang: AUSGAENGE.FALSCH }), 4 * MINUTE);
+
+    expect(runden(stand)[0]).toMatchObject({ antworten: 4, richtig: 3, quote: 75 });
   });
 
   it('hat ohne Verlauf nichts zu zeigen', () => {
-    expect(sitzungen(LEER)).toEqual([]);
+    expect(runden(LEER)).toEqual([]);
   });
 });
 

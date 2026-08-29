@@ -10,6 +10,8 @@
 // NICHT zu verwechseln mit lernpotential.js. Das holt zurueck, was in DIESER
 // Runde danebenging, sofort. Hier geht es um die Geschichte ueber Wochen.
 
+import { punkteFuerKarte } from './note.js';
+
 /** Wie eine Karte ausgegangen ist. Mehr Faelle gibt es nicht. */
 export const AUSGAENGE = {
   RICHTIG: 'richtig',
@@ -116,7 +118,7 @@ export function merkeGezogen(stand, gezogen) {
  */
 export function verrechne(stand, ergebnis, jetzt) {
   const { id, form, ausgang, versuch, tipp, modus, punkte = 0, tag,
-    wiederholung = false } = ergebnis;
+    wiederholung = false, tippfehler = false } = ergebnis;
   const name = schluessel(id, form);
   const alt = vollstaendig(stand.einheiten[name]);
 
@@ -136,7 +138,7 @@ export function verrechne(stand, ergebnis, jetzt) {
 
   // Was hinten hereinkommt, faellt vorne heraus.
   const verlauf = [...stand.verlauf,
-    { id, form, ausgang, versuch, tipp, modus, wiederholung, punkte, zeit: jetzt }];
+    { id, form, ausgang, versuch, tipp, tippfehler, modus, wiederholung, punkte, zeit: jetzt }];
 
   return {
     ...stand,
@@ -190,7 +192,8 @@ export function zuletztVon(einheiten) {
  *
  * Es ist dieselbe Bewertung, aus der auch die Note entsteht -- auf Anhieb
  * richtig ist ein ganzer Punkt, im zweiten Versuch ein halber, ein Tipp
- * kostet ein Zehntel, falsch und uebersprungen bringen nichts. Wer eine
+ * kostet ein Zehntel, ein durchgelassener Tippfehler zwei, falsch und
+ * uebersprungen bringen nichts. Wer eine
  * Vokabel fuenfmal geuebt und dabei 4,6 Punkte geholt hat, steht bei 92 %.
  *
  * `null`, wenn noch nie beantwortet. Ueber Unbekanntes laesst sich nichts
@@ -276,6 +279,22 @@ export function stufe({ sicher, gesamt }) {
 }
 
 /**
+ * Was eine einzelne Antwort im Verlauf wert war.
+ *
+ * Alte Zeilen kennen das Feld `punkte` nicht -- es kam erst mit dem Score
+ * dazu. Ohne diese Rechnung stuende bei ihnen 0, auch wenn sie richtig
+ * waren. Nachgerechnet wird mit derselben Formel, aus der die Zahl damals
+ * entstanden waere.
+ */
+export function punkteVon(eintrag) {
+  if (typeof eintrag.punkte === 'number') return eintrag.punkte;
+  if (eintrag.ausgang !== AUSGAENGE.RICHTIG) return 0;
+  return punkteFuerKarte({
+    versuch: eintrag.versuch, tipp: eintrag.tipp, tippfehler: eintrag.tippfehler,
+  });
+}
+
+/**
  * Was der Verlauf ueber EINE Einheit weiss, neueste Antwort zuerst.
  *
  * Der Ringpuffer reicht 750 Antworten zurueck -- was aelter ist, steht nicht
@@ -288,46 +307,71 @@ export function verlaufZu(stand, name) {
     .reverse();
 }
 
-// Ab dieser Pause faengt eine neue Sitzung an. Eine halbe Stunde ist lang
-// genug fuer eine Unterbrechung am Abendbrottisch und kurz genug, dass der
-// naechste Tag nicht mehr dazugehoert.
-export const SITZUNG_PAUSE_MS = 30 * 60 * 1000;
+// Nach dieser Pause hat jemand aufgehoert und spaeter neu angefangen -- eine
+// abgebrochene Runde wird dadurch nicht mit der naechsten verklebt.
+export const PAUSE_MS = 30 * 60 * 1000;
 
 /**
- * Der Verlauf, in Sitzungen zerlegt: neueste zuerst.
+ * Der Verlauf, in Runden zerlegt: neueste zuerst.
  *
- * Eine Sitzung ist, was ohne laengere Pause hintereinander beantwortet wurde
- * -- nicht eine Runde. Wer zwei Runden hintereinander spielt, hat einmal
- * geuebt, und genau das soll die Liste zeigen.
+ * Der Verlauf schreibt keine Rundennummer mit, also wird sie hier
+ * zurueckgerechnet. Eine neue Runde faengt an, wenn eines davon zutrifft:
  *
- * Bewusst aus dem Verlauf gerechnet und nicht mitgeschrieben: dann gilt es
- * auch fuer alles, was schon gespeichert ist.
+ *   1. es ist die erste Antwort ueberhaupt
+ *   2. der Modus wechselt -- Uebungsblatt und Arbeit sind nie dieselbe Runde
+ *   3. eben lief die Wiederholung, jetzt nicht mehr: die Wiederholung ist
+ *      das Ende einer Runde, was danach kommt, ist die naechste
+ *   4. die laufende Runde hat ihre `groesse` Karten voll (die Wiederholung
+ *      zaehlt dabei NICHT mit, sie zieht keine neuen Karten)
+ *   5. es lag eine lange Pause dazwischen -- jemand hat abgebrochen
+ *
+ * Warum nicht einfach ein Feld mitschreiben? Weil das nur fuer alles gaelte,
+ * was ab heute dazukommt. So gilt es auch fuer den Bestand: alte Antworten
+ * kennen die Wiederholung noch gar nicht, bei ihnen greift Regel 4 allein --
+ * und das ist genau richtig, denn frueher stand die Wiederholung nicht im
+ * Verlauf.
+ *
+ * Sollte die Rundengroesse einmal schwanken (Leitner), traegt diese Rechnung
+ * nicht mehr, und dann ist eine mitgeschriebene Nummer faellig.
  */
-export function sitzungen(stand, pause = SITZUNG_PAUSE_MS) {
+export function runden(stand, groesse = 15, pause = PAUSE_MS) {
   const alle = [];
+  let vorige = null;
 
   for (const eintrag of stand.verlauf) {
-    const letzte = alle.at(-1);
+    const laufend = alle.at(-1);
 
-    if (!letzte || eintrag.zeit - letzte.ende > pause) {
+    const neueRunde = !laufend
+      || eintrag.modus !== vorige.modus
+      || (vorige.wiederholung && !eintrag.wiederholung)
+      // Nur eine neue KARTE kann die Runde vollmachen. Eine Wiederholung
+      // zieht keine, sie gehoert immer noch zur laufenden Runde.
+      || (!eintrag.wiederholung && laufend.karten >= groesse)
+      || eintrag.zeit - laufend.ende > pause;
+
+    if (neueRunde) {
       alle.push({
-        beginn: eintrag.zeit, ende: eintrag.zeit,
-        antworten: 0, richtig: 0, punkte: 0,
+        beginn: eintrag.zeit, ende: eintrag.zeit, modus: eintrag.modus,
+        antworten: 0, karten: 0, richtig: 0, punkte: 0,
       });
     }
 
-    const sitzung = alle.at(-1);
-    sitzung.ende = eintrag.zeit;
-    sitzung.antworten += 1;
-    sitzung.punkte += eintrag.punkte ?? 0;
-    if (eintrag.ausgang === AUSGAENGE.RICHTIG) sitzung.richtig += 1;
+    const runde = alle.at(-1);
+    runde.ende = eintrag.zeit;
+    runde.antworten += 1;
+    // `karten` zaehlt nur den ersten Durchgang -- daran haengt Regel 4.
+    if (!eintrag.wiederholung) runde.karten += 1;
+    runde.punkte += eintrag.punkte ?? 0;
+    if (eintrag.ausgang === AUSGAENGE.RICHTIG) runde.richtig += 1;
+
+    vorige = eintrag;
   }
 
   // Die Quote ist dieselbe Rechnung wie bei den Tagen: Treffer durch
-  // Antworten. Ohne Antworten gibt es keine Sitzung, also teilt hier
-  // niemand durch null.
-  for (const sitzung of alle) {
-    sitzung.quote = Math.round((sitzung.richtig / sitzung.antworten) * 100);
+  // Antworten. Ohne Antworten gibt es keine Runde, also teilt hier niemand
+  // durch null.
+  for (const runde of alle) {
+    runde.quote = Math.round((runde.richtig / runde.antworten) * 100);
   }
 
   return alle.reverse();
