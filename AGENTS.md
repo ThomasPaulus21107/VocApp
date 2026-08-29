@@ -84,6 +84,10 @@ Wenn eine Aufgabe eines dieser Themen berührt: **nicht einbauen, sondern
 nachfragen.** Alle sind bewusst zurückgestellt oder stehen unter „Out of
 Scope". Das Projekt soll klein bleiben und früh laufen.
 
+Eine Serie über mehrere Tage wird auf der Fleiß-Seite inzwischen **gezählt**,
+aber nicht belohnt — beschreiben ist erlaubt, aus einer Zahl eine Währung zu
+machen nicht.
+
 Für Punkte, Accounts und Supabase gilt das seit dem 29.08.2026 mit einer
 Änderung: sie sind **gewollt**, aber noch nicht freigegeben. Die Liste bleibt
 also stehen — wer sie anfasst, fragt weiterhin nach, und die Antwort ist jetzt
