@@ -8,9 +8,11 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:oberflaeche": "playwright test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "vite": "^8.2.2",
     "vitest": "^4.1.11"
   }

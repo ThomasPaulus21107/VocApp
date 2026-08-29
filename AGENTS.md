@@ -119,6 +119,8 @@ src/infra/     das Einzige, was Persistenz kennt. Heute: localStorage.
 src/ui/        Alles, was der Nutzer sieht und hört: DOM und Töne.
 src/app.js     Steckt die Schichten zusammen.
 tests/         Tests auf domain/, auf infra/ und auf die Daten.
+tests/oberflaeche/
+               Die Oberfläche, in einem echten Browser bedient (Playwright).
 ```
 
 **Die Regel:** `domain/` kennt kein DOM, keinen `localStorage`, kein
@@ -341,12 +343,18 @@ Wirkung sehen. Das ist ihr erster Kontakt mit Code.
 ```bash
 npm install     # Abhängigkeiten
 npm run dev     # Dev-Server auf localhost:5173
-npm test        # Vitest, einmalig
+npm test        # Vitest, einmalig -- Domäne, infra, Daten
 npm run build   # Produktionsstand nach dist/
+
+npm run test:oberflaeche   # Playwright, die Oberfläche im echten Browser
+npx playwright install webkit   # einmalig, holt den Browser dazu
 ```
 
 - **Vite** als Build-Tool, Vanilla JS, kein Framework.
-- **Vitest** für Tests.
+- **Vitest** für die Tests auf Domäne, `infra` und Daten.
+- **Playwright** für die Oberfläche. Am 29.08.2026 bewusst dazugenommen und
+  damit die bisher einzige Ausnahme von der Regel darunter — warum, steht
+  unter „Tests".
 - Keine weiteren Abhängigkeiten hinzufügen ohne Rückfrage. Jede neue
   Abhängigkeit ist etwas, das Matilda nicht mehr überblickt.
 - `vite.config.js` enthält `base: '/VocApp/'` — nötig für GitHub Pages.
@@ -357,9 +365,14 @@ npm run build   # Produktionsstand nach dist/
   **GitHub Actions**, nicht auf „Deploy from a branch".
 - `dist/` gehört deshalb **nie** ins Repo — es entsteht bei jedem Lauf neu und
   steht in der `.gitignore`.
-- `.github/workflows/tests.yml` lässt bei jedem Pull Request `npm test`
-  laufen. Der Job heißt `testen` und ist im Ruleset von `main` als required
-  check eingetragen: **ist er rot, lässt sich der Pull Request nicht mergen.**
+- `.github/workflows/tests.yml` lässt bei jedem Pull Request **zwei** Jobs
+  laufen. `testen` ist `npm test` und dauert Sekunden; `oberflaeche` lädt
+  WebKit herunter und spielt die App durch. Getrennt, damit die schnellen
+  Tests nicht auf den Browser warten.
+  `testen` ist im Ruleset von `main` als required check eingetragen: **ist er
+  rot, lässt sich der Pull Request nicht mergen.** **`oberflaeche` gehört dort
+  ebenfalls hinein** und muss noch eingetragen werden — solange das fehlt,
+  läuft der Job zwar, blockiert aber nichts.
   Vor dem Pull Request trotzdem einmal selbst `npm test` — das spart die
   Wartezeit auf den Lauf.
 
@@ -367,7 +380,8 @@ npm run build   # Produktionsstand nach dist/
 
 ## Tests
 
-Zwei Sorten, beide relevant:
+Drei Sorten, alle relevant. Die ersten beiden laufen ohne Browser in
+Millisekunden, die dritte startet einen:
 
 - `tests/pruefung.test.js` — die Domänenlogik.
 - `tests/daten.test.js` — die Vokabeldateien selbst, **alle** aus `data/`:
@@ -384,13 +398,40 @@ Zwei Sorten, beide relevant:
 ab, bevor sie in der App auffallen. Bei Änderungen am Format muss er
 mitwachsen.
 
+- `tests/oberflaeche/*.test.js` — die Oberfläche, mit **Playwright** in einem
+  echten Browser bedient. Sie laufen nicht mit `npm test` mit, sondern mit
+  `npm run test:oberflaeche`; `vite.config.js` nimmt sie für Vitest deshalb
+  ausdrücklich aus.
+
 Neue Tests bitte im gleichen Stil: deutsche Beschreibungen, ein Verhalten pro
 Test, keine Mocks (die Domänenschicht braucht keine).
 
-Faustregel zum Umfang: Tests auf die Domänenlogik, Tests auf die Daten. Keine
-Tests auf `ui.js` — ob und womit die Oberfläche getestet wird, ist eine offene
-Entscheidung, siehe `roadmap/feature-request-ui-tests.md`. Bei einem
-gefundenen Fehler einen Test schreiben, der ihn festhält.
+Faustregel zum Umfang: Tests auf die Domänenlogik, Tests auf die Daten, Tests
+auf das, was man sieht und anfassen kann. Bei einem gefundenen Fehler einen
+Test schreiben, der ihn festhält.
+
+### Warum die Oberfläche einen echten Browser bekommt
+
+Die Frage war bis zum 29.08.2026 offen und ist jetzt entschieden. Der Anlass
+war ein Fehler, den kein Funktionstest finden konnte
+([PR #8](https://github.com/ThomasPaulus21107/VocApp/pull/8)): `display: flex`
+hat das `hidden`-Attribut überstimmt, die Formenzeile blieb sichtbar stehen —
+mitsamt der Lösung, nach der gerade gefragt war. Im Markup stand alles
+richtig. **Ein nachgebautes DOM (jsdom) hätte genau diesen Fehler nicht
+gefunden**, weil es kein Layout kennt. Deshalb die große Abhängigkeit statt
+der kleinen.
+
+Zwei Dinge folgen daraus für jeden, der dort etwas dazuschreibt:
+
+- **Getestet wird auf dem iPhone**, in WebKit auf 390 px — der Maschine hinter
+  Safari und dem Gerät, auf dem tatsächlich geübt wird. Ein grüner Lauf in
+  Chrome hätte über genau den Browser nichts gesagt.
+- **Es wird gemessen, nicht abgefragt.** `toBeHidden()` statt „steht das
+  Attribut da": ob ein Element wirklich weg ist, kann nur der Browser sagen.
+  `tests/oberflaeche/sichtbarkeit.test.js` prüft das für jede Seite auf einmal.
+
+Die Abwägung samt der verworfenen Möglichkeiten steht in
+`roadmap/implemented/feature-ui-tests-2026-08-29-1943.md`.
 
 ---
 

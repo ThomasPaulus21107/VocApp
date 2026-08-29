@@ -19,4 +19,11 @@ export default defineConfig({
       },
     },
   },
+
+  // Vitest sammelt sonst jede *.test.js ein -- auch die in
+  // tests/oberflaeche/. Die brauchen aber einen echten Browser und laufen
+  // mit Playwright: "npm run test:oberflaeche".
+  test: {
+    exclude: ['**/node_modules/**', '**/dist/**', 'tests/oberflaeche/**'],
+  },
 });
