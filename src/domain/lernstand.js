@@ -118,7 +118,7 @@ export function merkeGezogen(stand, gezogen) {
  */
 export function verrechne(stand, ergebnis, jetzt) {
   const { id, form, ausgang, versuch, tipp, modus, punkte = 0, tag,
-    wiederholung = false } = ergebnis;
+    wiederholung = false, tippfehler = false } = ergebnis;
   const name = schluessel(id, form);
   const alt = vollstaendig(stand.einheiten[name]);
 
@@ -138,7 +138,7 @@ export function verrechne(stand, ergebnis, jetzt) {
 
   // Was hinten hereinkommt, faellt vorne heraus.
   const verlauf = [...stand.verlauf,
-    { id, form, ausgang, versuch, tipp, modus, wiederholung, punkte, zeit: jetzt }];
+    { id, form, ausgang, versuch, tipp, tippfehler, modus, wiederholung, punkte, zeit: jetzt }];
 
   return {
     ...stand,
@@ -192,7 +192,8 @@ export function zuletztVon(einheiten) {
  *
  * Es ist dieselbe Bewertung, aus der auch die Note entsteht -- auf Anhieb
  * richtig ist ein ganzer Punkt, im zweiten Versuch ein halber, ein Tipp
- * kostet ein Zehntel, falsch und uebersprungen bringen nichts. Wer eine
+ * kostet ein Zehntel, ein durchgelassener Tippfehler zwei, falsch und
+ * uebersprungen bringen nichts. Wer eine
  * Vokabel fuenfmal geuebt und dabei 4,6 Punkte geholt hat, steht bei 92 %.
  *
  * `null`, wenn noch nie beantwortet. Ueber Unbekanntes laesst sich nichts
@@ -288,7 +289,9 @@ export function stufe({ sicher, gesamt }) {
 export function punkteVon(eintrag) {
   if (typeof eintrag.punkte === 'number') return eintrag.punkte;
   if (eintrag.ausgang !== AUSGAENGE.RICHTIG) return 0;
-  return punkteFuerKarte({ versuch: eintrag.versuch, tipp: eintrag.tipp });
+  return punkteFuerKarte({
+    versuch: eintrag.versuch, tipp: eintrag.tipp, tippfehler: eintrag.tippfehler,
+  });
 }
 
 /**

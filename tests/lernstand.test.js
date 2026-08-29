@@ -102,8 +102,8 @@ describe('verrechne', () => {
     const stand = verrechne(LEER, antwort({ modus: 'arbeit' }), 1234);
     expect(stand.verlauf).toEqual([{
       id: 'uv-001', form: 'simple-past', ausgang: 'richtig',
-      versuch: 0, tipp: false, modus: 'arbeit', wiederholung: false,
-      punkte: 1, zeit: 1234,
+      versuch: 0, tipp: false, tippfehler: false, modus: 'arbeit',
+      wiederholung: false, punkte: 1, zeit: 1234,
     }]);
   });
 

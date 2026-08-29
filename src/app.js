@@ -140,7 +140,7 @@ function merkeFuerSpaeter() {
  * Antwort auf eine echte Frage, und eine Übungseinheit hat deshalb mehr
  * Antworten als der Stapel Karten hatte.
  */
-function merkeErgebnis({ ausgang, getippt, kartenpunkte }) {
+function merkeErgebnis({ ausgang, getippt, kartenpunkte, tippfehler = false }) {
   if (!imLernpotential) {
     ergebnisse.push({
       frage: frage.frage,
@@ -165,6 +165,9 @@ function merkeErgebnis({ ausgang, getippt, kartenpunkte }) {
       ausgang,
       versuch,
       tipp: tippBenutzt,
+      // Ein durchgelassener Tippfehler steht mit im Verlauf, wie der Tipp:
+      // beide sagen etwas darüber, wie sicher die Antwort war.
+      tippfehler,
       modus: gespielterModus,
       // Eine Wiederholung wiegt anders: die Lösung stand eben noch da.
       // Gezählt wird sie trotzdem, nur eben als das, was sie ist.
@@ -222,7 +225,7 @@ function aufAbsenden(eingabe) {
   }
 
   if (ergebnis.richtig) {
-    zaehleRichtig();
+    zaehleRichtig(ergebnis.tippfehler);
 
     // In der Arbeit erfährt man zwischendurch nichts, auch kein Lob.
     if (!regel.zeigtErgebnis) {
@@ -265,24 +268,24 @@ function aufAbsenden(eingabe) {
  * eine Zeile in der Ergebnisliste. In der Lernpotential-Runde wird nur noch
  * mitgezählt: die Note stand da längst fest.
  */
-function zaehleRichtig() {
+function zaehleRichtig(tippfehler = false) {
   if (imLernpotential) lernpotentialGeschafft += 1;
 
   // Richtig, aber nicht auf Anhieb: die Karte kommt trotzdem noch einmal.
-  // Der zweite Versuch und der Tipp sind genau die beiden Stellen, an denen
-  // eine Karte Punkte kostet -- also ist sie noch nicht sicher.
-  // (In der Wiederholung selbst hält merkeFuerSpaeter sich zurück.)
-  if (versuch > 0 || tippBenutzt) merkeFuerSpaeter();
+  // Der zweite Versuch, der Tipp und der durchgelassene Tippfehler sind genau
+  // die Stellen, an denen eine Karte Punkte kostet -- also ist sie noch nicht
+  // sicher. (In der Wiederholung selbst hält merkeFuerSpaeter sich zurück.)
+  if (versuch > 0 || tippBenutzt || tippfehler) merkeFuerSpaeter();
 
   // Punkte gibt es nur hier: für eine falsche oder übersprungene Karte wird
   // gar nicht erst gezählt.
-  const kartenpunkte = punkteFuerKarte({ versuch, tipp: tippBenutzt });
+  const kartenpunkte = punkteFuerKarte({ versuch, tipp: tippBenutzt, tippfehler });
 
   // Für die NOTE zählt nur die erste Runde -- die Note stand vor der
   // Zwischenseite fest. Im Lernstand zählt die Wiederholung mit.
   if (!imLernpotential) punkte += kartenpunkte;
 
-  merkeErgebnis({ ausgang: AUSGAENGE.RICHTIG, getippt: null, kartenpunkte });
+  merkeErgebnis({ ausgang: AUSGAENGE.RICHTIG, getippt: null, kartenpunkte, tippfehler });
 }
 
 function weiter() {
