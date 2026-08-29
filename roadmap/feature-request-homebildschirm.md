@@ -46,7 +46,8 @@ die PWA bleibt unangetastet.
 - `manifest.json` mit Name, Startadresse, `display: standalone` und Icon
 - `<link rel="manifest">` in `index.html`, dazu das Apple-Meta-Tag
 - ein Icon — **Matildas Teil**, die Rakete bietet sich an
-- der Eintrag in `vite.config.js`, damit die Datei im Build landet
+- alles davon in einem neuen Ordner `public/`. Vite kopiert dessen Inhalt
+  unverändert in den Build; `vite.config.js` bleibt unangetastet.
 
 Dazu ein Satz in der `README.md`, wie man es aufs Telefon legt. Das ist ein
 Menüpunkt in Safari und keine Installation.

@@ -19,6 +19,22 @@
       href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📇</text></svg>"
     />
 
+    <!-- Damit die App aufs Handy gelegt werden kann und dort ohne
+         Adressleiste startet. Der eigentliche Grund steht in
+         roadmap/feature-request-homebildschirm.md: iOS loescht den
+         Speicher nach sieben Tagen ohne Benutzung -- Apps auf dem
+         Homebildschirm sind davon ausgenommen. -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Vokabeln" />
+
+    <!-- Das Bild fuer den Homebildschirm. Anders als das Favicon oben muss
+         das eine echte Datei sein -- iOS kann hier kein Emoji.
+         MATILDA: Wenn du ein anderes Bild willst, tausch die drei PNGs in
+         public/ aus. Quadratisch, und die Groesse im Dateinamen einhalten. -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
     <title>Vokabelkarten</title>
   </head>
   <body>
