@@ -37,17 +37,16 @@ zu, solange es niemand öffnet.
 | Eintrag | Art | Wann |
 |---|---|---|
 | **Töne an/aus** | ein Schalter, direkt im Menü | mit dem Menü |
-| **Lernstatistik** | ein Weg dorthin, kein Inhalt im Menü | erst, wenn es etwas zu zeigen gibt |
+| **Lernstatistik** | ein Weg dorthin, kein Inhalt im Menü | steht |
 
-**Der Eintrag zur Statistik kommt später, und zwar mit Absicht.** Heute schreibt
-die App nur mit, welche Karte wann dran war — nicht, wie es ausging. Ein Menü-
-eintrag, der auf eine leere Seite führt, ist schlechter als keiner. Erst
-[der Lernstand](feature-request-lernstand.md) Stufe 1, dann
-[die Seite](feature-request-fortschritt.md), dann die Zeile hier.
+Der Unterschied zwischen den beiden ist Absicht: ein Schalter ist eine Zeile
+und gehört ins Menü, die Statistik ist Inhalt zum Scrollen und gehört auf eine
+eigene Seite.
 
-Das hat eine Reihenfolge zur Folge, die man leicht falsch herum baut:
-**mit dem Mitschreiben anfangen, bevor die Seite steht.** Sonst ist die Seite
-am Tag ihrer Fertigstellung leer und wird es für Wochen bleiben.
+Gebaut wurde in dieser Reihenfolge, und sie ist leicht falsch herum zu bauen:
+erst [das Mitschreiben](feature-request-lernstand.md), dann
+[die Seite](feature-request-fortschritt.md), dann die Zeile hier. Wer mit der
+Seite anfängt, hat sie am Tag ihrer Fertigstellung leer — und für Wochen.
 
 Der Unterschied ist Absicht. Ein Schalter ist eine Zeile und gehört ins Menü.
 Die [Statistik](feature-request-fortschritt.md) sind 106 Einheiten, nach

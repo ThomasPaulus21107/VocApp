@@ -3,6 +3,7 @@
 
 import * as klang from './klang.js';
 import * as effekte from './effekte.js';
+import { FORM_NAME } from './formnamen.js';
 
 const el = {
   frage: document.querySelector('#frage'),
@@ -74,12 +75,6 @@ const NOTEN_TEXTE = {
 };
 
 // So heißt die gesuchte Form auf der Karte.
-const FORM_NAME = {
-  'infinitive': 'infinitive',
-  'simple-past': 'simple past',
-  'past-participle': 'past participle',
-};
-
 /**
  * Verbindet die Bedienelemente mit der App.
  * Ereignisse fließen nach oben: die UI meldet nur, WAS passiert ist.

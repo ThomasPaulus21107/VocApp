@@ -120,3 +120,64 @@ export function zuletztVon(einheiten) {
   }
   return nur;
 }
+
+/**
+ * Wie schwer eine Einheit faellt: 0 heisst sitzt, 1 heisst geht immer daneben.
+ * Ein zweiter Versuch zaehlt halb -- gewusst hat sie es, aber nicht sofort.
+ *
+ * `null`, wenn noch nie beantwortet. Ueber Unbekanntes laesst sich nichts
+ * sagen, und eine 0 waere hier eine Luege.
+ */
+export function schwierigkeit(eintrag) {
+  if (!eintrag || eintrag.dran === 0) return null;
+
+  const gekonnt = eintrag.ersterVersuch + eintrag.zweiterVersuch / 2;
+  return Math.max(0, Math.min(1, 1 - gekonnt / eintrag.dran));
+}
+
+// Ab wann eine Einheit als "sitzt" gilt: mindestens zweimal beantwortet und
+// hoechstens ein Viertel danebengegangen. Einmal richtig kann Glueck sein.
+export const SICHER_AB = 2;
+export const SICHER_BIS = 0.25;
+
+export function sitzt(eintrag) {
+  const schwer = schwierigkeit(eintrag);
+  return schwer !== null && eintrag.dran >= SICHER_AB && schwer <= SICHER_BIS;
+}
+
+/**
+ * Die Zahlen fuer den Ueberblick. `gesamt` ist die Zahl aller Einheiten, die
+ * es ueberhaupt gibt -- die kennt der Lernstand nicht, die kommt von den
+ * Karten.
+ */
+export function uebersicht(stand, gesamt) {
+  const alle = Object.values(stand.einheiten);
+  const beantwortet = alle.filter((eintrag) => eintrag.dran > 0);
+
+  return {
+    gesamt,
+    gezogen: alle.length,
+    geuebt: beantwortet.length,
+    sicher: beantwortet.filter(sitzt).length,
+    runden: stand.rundeNr,
+    antworten: beantwortet.reduce((summe, eintrag) => summe + eintrag.dran, 0),
+    zuletztGeuebt: stand.verlauf.at(-1)?.zeit ?? null,
+  };
+}
+
+/**
+ * Was am haeufigsten danebengeht, das Schwerste zuerst. Bei gleicher
+ * Schwierigkeit steht vorn, was oefter dran war -- das ist der sicherere
+ * Befund.
+ *
+ * Solange die Karten kein Feld `muster` haben, ist das eine Wortliste. Mit
+ * Mustern wuerde daraus eine Diagnose: nicht "sang geht daneben", sondern
+ * "i - a - u sitzt nicht". Siehe roadmap/feature-request-tipps.md.
+ */
+export function schwaechste(stand, anzahl) {
+  return Object.entries(stand.einheiten)
+    .filter(([, eintrag]) => eintrag.dran > 0 && !sitzt(eintrag))
+    .map(([name, eintrag]) => ({ name, eintrag, schwierigkeit: schwierigkeit(eintrag) }))
+    .sort((a, b) => b.schwierigkeit - a.schwierigkeit || b.eintrag.dran - a.eintrag.dran)
+    .slice(0, anzahl);
+}

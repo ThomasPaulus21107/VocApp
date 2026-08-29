@@ -630,6 +630,17 @@ body {
   cursor: pointer;
 }
 
+/* Dieselbe Zeile, nur fuehrt sie woandershin statt etwas umzuschalten. */
+.menue__zeile--link {
+  justify-content: space-between;
+  color: var(--schrift);
+  text-decoration: none;
+}
+
+.menue__pfeil {
+  color: var(--leise);
+}
+
 .menue__zeile input {
   width: 22px;
   height: 22px;
@@ -662,4 +673,101 @@ body {
   .menue-schatten {
     transition: none;
   }
+}
+
+/* =========================================================
+   Die Fortschrittsseite
+   ========================================================= */
+
+/* Der Kartenbildschirm ist genau eine Karte hoch und steht deshalb mittig.
+   Eine Seite zum Scrollen darf das nicht: sonst waere oben etwas abgeschnitten,
+   sobald sie laenger wird als der Bildschirm. */
+.seite {
+  align-items: flex-start;
+}
+
+.buehne--seite {
+  padding-top: 64px;
+  padding-bottom: 32px;
+}
+
+.zurueck {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 3;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 12px;
+
+  color: var(--karte);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.zurueck:focus-visible {
+  outline: 3px solid var(--karte);
+  border-radius: calc(var(--rundung) / 2);
+}
+
+.fortschritt__gross {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.fortschritt__dazu {
+  margin: 4px 0 20px;
+  color: var(--leise);
+}
+
+/* Zwei Balken nebeneinander in einer Leiste: was sicher sitzt, und was schon
+   einmal dran war. Was uebrig bleibt, ist noch nicht geuebt. */
+.balken {
+  display: flex;
+  overflow: hidden;
+
+  height: 14px;
+  margin-bottom: 20px;
+  border-radius: 7px;
+  background: var(--eingabefeld);
+}
+
+.balken__teil--sicher {
+  background: var(--richtig);
+}
+
+.balken__teil--geuebt {
+  background: var(--akzent);
+}
+
+.zahlen {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 0;
+}
+
+.zahlen dt {
+  font-size: 0.8125rem;
+  color: var(--leise);
+}
+
+.zahlen dd {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* Ueberschrift eines Abschnitts. Nicht .frage benutzen -- die ist so gross
+   wie eine Vokabel auf der Karte und wuerde hier alles erschlagen. */
+.abschnitt {
+  margin: 0 0 12px;
+  font-size: 1.25rem;
+  font-weight: 700;
 }

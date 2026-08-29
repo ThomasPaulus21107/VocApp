@@ -37,6 +37,9 @@ unter einer öffentlichen URL.
 am 29.08.2026 wieder aufgenommen worden, gebaut ist davon aber noch nichts —
 siehe `roadmap/feature-request-vokabel-import-klasse-5.md`.
 
+Dazu gibt es eine zweite Seite, `fortschritt.html`: was schon sitzt und was
+noch nicht. Erreichbar über das Seitenmenü.
+
 **Geübt wird primär auf Matildas iPhone.** Seit dem 29.08.2026 ist das eine
 Randbedingung und keine Nebensache: Layouts werden für ein Telefon mit offener
 Tastatur entworfen, nicht für einen Bildschirm, der danach auch mal klein wird.

@@ -3,6 +3,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   merkeGezogen, verrechne, zuletztVon, schluessel,
+  schwierigkeit, sitzt, uebersicht, schwaechste,
   AUSGAENGE, LEER, VERLAUF_MAX,
 } from '../src/domain/lernstand.js';
 
@@ -130,5 +131,82 @@ describe('zuletztVon', () => {
       'uv-001|simple-past': 0,
       'uv-002|simple-past': 0,
     });
+  });
+});
+
+describe('schwierigkeit', () => {
+  it('ist null, solange noch nichts beantwortet wurde', () => {
+    // Ueber Unbekanntes laesst sich nichts sagen, und eine 0 waere eine Luege.
+    expect(schwierigkeit(undefined)).toBe(null);
+    expect(schwierigkeit(merkeGezogen(LEER, gezogen('uv-001'))
+      .einheiten['uv-001|simple-past'])).toBe(null);
+  });
+
+  it('ist 0, wenn immer auf Anhieb richtig', () => {
+    let stand = LEER;
+    for (let i = 0; i < 3; i++) stand = verrechne(stand, antwort(), i);
+    expect(schwierigkeit(stand.einheiten['uv-001|simple-past'])).toBe(0);
+  });
+
+  it('ist 1, wenn immer daneben', () => {
+    const stand = verrechne(LEER, antwort({ ausgang: AUSGAENGE.FALSCH }), 1);
+    expect(schwierigkeit(stand.einheiten['uv-001|simple-past'])).toBe(1);
+  });
+
+  it('zaehlt den zweiten Versuch halb', () => {
+    // Gewusst hat sie es, aber nicht sofort.
+    const stand = verrechne(LEER, antwort({ versuch: 1 }), 1);
+    expect(schwierigkeit(stand.einheiten['uv-001|simple-past'])).toBe(0.5);
+  });
+});
+
+describe('sitzt', () => {
+  it('gilt nicht nach einer einzigen richtigen Antwort', () => {
+    // Einmal richtig kann Glueck sein.
+    const stand = verrechne(LEER, antwort(), 1);
+    expect(sitzt(stand.einheiten['uv-001|simple-past'])).toBe(false);
+  });
+
+  it('gilt nach zwei Treffern auf Anhieb', () => {
+    let stand = verrechne(LEER, antwort(), 1);
+    stand = verrechne(stand, antwort(), 2);
+    expect(sitzt(stand.einheiten['uv-001|simple-past'])).toBe(true);
+  });
+});
+
+describe('uebersicht', () => {
+  it('zaehlt gezogen, geuebt und sicher auseinander', () => {
+    // uv-001 zweimal richtig, uv-002 nur gezogen, uv-003 einmal falsch.
+    let stand = merkeGezogen(LEER, gezogen('uv-001', 'uv-002', 'uv-003'));
+    stand = verrechne(stand, antwort(), 1);
+    stand = verrechne(stand, antwort(), 2);
+    stand = verrechne(stand, antwort({ id: 'uv-003', ausgang: AUSGAENGE.FALSCH }), 3);
+
+    expect(uebersicht(stand, 106)).toMatchObject({
+      gesamt: 106, gezogen: 3, geuebt: 2, sicher: 1, runden: 1, antworten: 3,
+      zuletztGeuebt: 3,
+    });
+  });
+});
+
+describe('schwaechste', () => {
+  it('nennt das Schwerste zuerst und laesst weg, was sitzt', () => {
+    let stand = verrechne(LEER, antwort({ id: 'uv-sitzt' }), 1);
+    stand = verrechne(stand, antwort({ id: 'uv-sitzt' }), 2);
+    stand = verrechne(stand, antwort({ id: 'uv-halb', versuch: 1 }), 3);
+    stand = verrechne(stand, antwort({ id: 'uv-schwer', ausgang: AUSGAENGE.FALSCH }), 4);
+
+    expect(schwaechste(stand, 10).map((e) => e.name)).toEqual([
+      'uv-schwer|simple-past',
+      'uv-halb|simple-past',
+    ]);
+  });
+
+  it('gibt hoechstens so viele zurueck wie gewuenscht', () => {
+    let stand = LEER;
+    for (let i = 0; i < 5; i++) {
+      stand = verrechne(stand, antwort({ id: `uv-${i}`, ausgang: AUSGAENGE.FALSCH }), i);
+    }
+    expect(schwaechste(stand, 3)).toHaveLength(3);
   });
 });
