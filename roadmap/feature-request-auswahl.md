@@ -50,6 +50,17 @@ Der Beutel ist damit kein Ding mehr, sondern eine Sortierung: **nimm die 15,
 die am längsten nicht dran waren, bei Gleichstand würfle.** Was noch nie dran
 war, zählt als unendlich alt und steht ganz vorne.
 
+**Die Sortierung hat zwei Stufen** — das ist beim Bauen am 29.08.2026
+herausgekommen und stand vorher nicht hier. Erst zählt, wie lange die
+**Karte** nicht dran war, dann die **Form**. Sortiert man nur nach der Form,
+sieht die noch ungefragte zweite Form einer eben gezogenen Karte genauso alt
+aus wie ein Verb, das noch nie dran war — beide stehen ja nicht im Merkzettel.
+Dann rutschen wieder ganze Verben durch, und genau das sollte aufhören.
+
+Mit beiden Stufen gilt: **nach vier Runden war jedes Verb einmal dran, nach
+acht jede seiner abgefragten Formen.** Ohne die erste Stufe waren es nach drei
+Runden nur 36 von 53 Verben statt 45.
+
 Drei Dinge werden dadurch einfacher:
 
 - **Die hässliche Kante verschwindet.** 53 geht nicht durch 15 auf. Ein echter

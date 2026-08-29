@@ -53,7 +53,8 @@ durchdacht und wartet, alles Übrige liegt im Backlog.
 ```
 data/        die Vokabeln (Daten, kein Code)
 public/      wird unverändert mitgeliefert: Icons und manifest.json
-src/domain/  die Regeln: was ist richtig, wie wird gemischt
+src/domain/  die Regeln: was ist richtig, welche Karte kommt dran
+src/infra/   das Einzige, was etwas speichert
 src/ui/      alles, was mit Anzeige zu tun hat
 src/app.js   steckt die Teile zusammen
 tests/       automatische Tests für die Regeln

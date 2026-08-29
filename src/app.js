@@ -4,15 +4,15 @@
 import './ui/styles.css';
 import verben from '../data/unregelmaessige-verben.json';
 import {
-  stelleFormFrage,
   stelleFrageZuForm,
   pruefeAntwort,
-  zieheRunde,
   RICHTUNGEN,
 } from './domain/pruefung.js';
+import { zieheRunde, merke } from './domain/auswahl.js';
 import { note, punkteFuerKarte } from './domain/note.js';
 import { regeln } from './domain/modus.js';
 import { lernpotential } from './domain/lernpotential.js';
+import * as storage from './infra/storage.js';
 import * as ui from './ui/ui.js';
 
 // Vorerst nur unregelmäßige Verben, und nur in eine Richtung: das deutsche
@@ -27,6 +27,19 @@ const RICHTUNG = RICHTUNGEN.NACH_EN;
 // 0 = erster Versuch, 1 = Korrekturchance, 2 = erledigt
 const ERLEDIGT = 2;
 
+// Der Stand der Kartenauswahl: welche Karte-Form-Einheit war in welcher
+// Runde dran. Er ueberlebt das Schliessen des Browsers -- ohne das finge die
+// Abdeckung bei jedem Start von vorn an, und eine Uebungssitzung hat nur zwei
+// bis drei Runden.
+//
+// Geht er verloren, ist nichts kaputt: dann sehen alle Karten gleich alt aus,
+// es wird zufaellig gezogen, und nach vier Runden ist der Zustand von selbst
+// wieder da.
+const AUSWAHL = 'auswahl';
+let auswahlstand = storage.lesen(AUSWAHL, { rundeNr: 0, zuletzt: {} });
+
+// Der Stapel ist eine Liste aus { karte, form }: WAS gefragt wird, steht
+// schon beim Ziehen fest und nicht erst beim Anzeigen.
 let stapel = [];
 let frage = null;
 let index = 0;
@@ -60,7 +73,8 @@ let regel = regeln(null);
 
 function start(modus) {
   regel = regeln(modus);
-  stapel = zieheRunde(verben.karten, RUNDENGROESSE);
+  stapel = zieheRunde(verben.karten, RUNDENGROESSE, auswahlstand.zuletzt, auswahlstand.rundeNr);
+  merkeAuswahl();
   hoechstpunktzahl = stapel.length;
   index = 0;
   punkte = 0;
@@ -71,18 +85,28 @@ function start(modus) {
   zeigeAktuelle();
 }
 
+/**
+ * Schreibt die gezogene Runde in den Auswahlstand fort und legt ihn ab.
+ * Auch in der Arbeit -- eine Karte, die drankam, kam dran, egal in welchem
+ * Modus. Die Lernpotential-Runde zaehlt dagegen nicht mit: sie zieht nichts
+ * Neues, sie wiederholt.
+ */
+function merkeAuswahl() {
+  auswahlstand = {
+    rundeNr: auswahlstand.rundeNr + 1,
+    zuletzt: merke(auswahlstand.zuletzt, auswahlstand.rundeNr, stapel),
+  };
+  storage.speichern(AUSWAHL, auswahlstand);
+}
+
 function zeigeAktuelle() {
   versuch = 0;
   tippBenutzt = false;
 
-  const karte = stapel[index];
-  if (imLernpotential) {
-    // Wiederholung heißt: genau dieselbe Frage wie beim ersten Mal.
-    const gemerkt = zuWiederholen.find((eintrag) => eintrag.id === karte.id);
-    frage = stelleFrageZuForm(karte, RICHTUNG, gemerkt.form);
-  } else {
-    frage = stelleFormFrage(karte, RICHTUNG);
-  }
+  // Welche Form gefragt ist, steht schon im Stapel: in der ersten Runde hat
+  // die Auswahl sie bestimmt, in der Wiederholung der Merkzettel.
+  const { karte, form } = stapel[index];
+  frage = stelleFrageZuForm(karte, RICHTUNG, form);
 
   ui.zeigeKarte(frage, index + 1, stapel.length, regel.tippsErlaubt, imLernpotential);
 }
@@ -249,7 +273,16 @@ function beendeStapel() {
  */
 function starteLernpotential() {
   imLernpotential = true;
-  stapel = lernpotential(stapel, zuWiederholen.map((eintrag) => eintrag.id));
+
+  // Dieselben Karten wie eben, und zu jeder die Form, die danebenging.
+  const karten = lernpotential(
+    stapel.map((eintrag) => eintrag.karte),
+    zuWiederholen.map((eintrag) => eintrag.id)
+  );
+  stapel = karten.map((karte) => ({
+    karte,
+    form: zuWiederholen.find((eintrag) => eintrag.id === karte.id).form,
+  }));
   index = 0;
   zeigeAktuelle();
 }
