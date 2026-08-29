@@ -452,6 +452,34 @@ body {
   text-align: center;
 }
 
+/* Die beiden Wege aus dem Ergebnis heraus, unter der Ergebnisliste. Leiser
+   als die Modus-Knoepfe darunter -- aber 44 px hoch, damit ein Daumen sie
+   auf dem Telefon trifft. */
+.weiter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.25rem;
+  margin-top: 1rem;
+}
+
+.weiter__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+
+  color: var(--akzent);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.weiter__link:focus-visible {
+  outline: 3px solid var(--schrift);
+  outline-offset: 2px;
+  border-radius: calc(var(--rundung) / 2);
+}
+
 /* Die Modus-Wahl: zwei Knöpfe untereinander, auf der Startseite und noch
    einmal am Ende einer Runde. Untereinander und nicht nebeneinander, damit
    die Beschriftung auch auf einem schmalen Handy in eine Zeile passt. */
@@ -726,24 +754,47 @@ body {
   color: var(--leise);
 }
 
-/* Zwei Balken nebeneinander in einer Leiste: was sicher sitzt, und was schon
-   einmal dran war. Was uebrig bleibt, ist noch nicht geuebt. */
+/* Der Satz unter dem Balken. Sagt dasselbe wie die Farbe, nur in Worten. */
+.fortschritt__lage {
+  margin: 0 0 20px;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+/* Zwei Balken nebeneinander in einer Leiste: was sicher sitzt, und was erst
+   in Arbeit ist. Was uebrig bleibt, ist noch nicht geuebt. */
 .balken {
   display: flex;
   overflow: hidden;
 
   height: 14px;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   border-radius: 7px;
   background: var(--eingabefeld);
 }
 
+/* Auch bei null sicheren Formen bleibt ein Stueck stehen. Der Balken soll
+   zeigen, WO man steht -- und das ist dann eben ganz links und rot. */
 .balken__teil--sicher {
-  background: var(--richtig);
+  min-width: 10px;
+  background: var(--falsch);
 }
 
+/* In Arbeit ist noch kein Erfolg, also blass. Sonst saehe eine Leiste, in
+   der nichts sitzt, halb geschafft aus. */
 .balken__teil--geuebt {
   background: var(--akzent);
+  opacity: 0.3;
+}
+
+/* Die Farbe des sicheren Teils sagt, wie weit es insgesamt ist. Die Marken
+   dafuer stehen in lernstand.js, nicht hier. */
+.balken--unterwegs .balken__teil--sicher {
+  background: var(--akzent);
+}
+
+.balken--gut .balken__teil--sicher {
+  background: var(--richtig);
 }
 
 .zahlen {

@@ -40,14 +40,20 @@
       <section id="ueberblick" class="karte" hidden>
         <p class="fortschritt__gross"><span id="sicher">0</span> von <span id="gesamt">0</span></p>
         <p class="fortschritt__dazu">
-          Formen sitzen sicher — mehr als <span id="schwelle">75</span> % der
-          Punkte geholt
+          Formen sitzen sicher — dafür braucht es mehr als
+          <span id="schwelle">75</span> % der Punkte
         </p>
 
-        <div class="balken">
+        <!-- Der Balken misst dasselbe wie die grosse Zahl: was sicher sitzt.
+             Was erst in Arbeit ist, steht blass daneben und faerbt sich nicht
+             mit -- sonst saehe ein Stand ohne eine einzige sichere Form nach
+             Fortschritt aus. Die Farbe kommt aus stufe() in lernstand.js. -->
+        <div id="balken" class="balken">
           <div id="balken-sicher" class="balken__teil balken__teil--sicher"></div>
           <div id="balken-geuebt" class="balken__teil balken__teil--geuebt"></div>
         </div>
+
+        <p id="lage" class="fortschritt__lage"></p>
 
         <dl class="zahlen">
           <div><dt>Geübt</dt><dd id="geuebt">0</dd></div>
