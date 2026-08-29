@@ -11,9 +11,9 @@
    rechts der Name des Effekts. Tauschen, speichern, Runde
    spielen.
 
-   Die drei Namen gibt es: 'rakete', 'konfetti', 'sterne'.
-   Eine Note, die hier nicht steht, bekommt keinen Effekt --
-   sonst wäre es keine Belohnung mehr.
+   Diese Namen gibt es: 'rakete', 'konfetti', 'sterne' und
+   'einhorn'. Eine Note, die hier nicht steht, bekommt keinen
+   Effekt -- sonst wäre es keine Belohnung mehr.
 
    ACHTUNG bei "1−": das ist ein echtes Minuszeichen und
    kein Bindestrich. Es kommt aus der Notentabelle in
@@ -26,6 +26,15 @@ const EFFEKTE = {
   '1−': 'sterne',
 };
 
+/* In einer ARBEIT zählt dieselbe Note mehr: keine Tipps, keine zweite
+   Chance. Was hier steht, gilt dort STATT der Tabelle oben. Eine Note, die
+   hier fehlt, bekommt einfach den normalen Effekt.
+
+   'einhorn' gibt es nur hier. */
+const EFFEKTE_ARBEIT = {
+  '1': 'einhorn',
+};
+
 // Wie viele Teilchen ein Effekt bekommt. Mehr sieht voller aus und kostet
 // mehr Rechenzeit -- auf einem alten Handy merkt man das.
 //
@@ -35,6 +44,8 @@ const TEILCHEN = {
   rakete: 14,
   konfetti: 30,
   sterne: 12,
+  // Beim Einhorn sind es zwei: das Tier und der Satz darunter.
+  einhorn: 2,
 };
 
 // Wie lange ein Teilchen fliegt: eine feste Grundzeit und ein Zufallszuschlag
@@ -48,6 +59,9 @@ const DAUER = {
   funke:    { grund: 2.2, zufall: 0.4 },
   konfetti: { grund: 2.4, zufall: 0.8 },
   sterne:   { grund: 2.4, zufall: 0.8 },
+  // Das Einhorn steht fünf Sekunden da, der Satz genauso lang.
+  einhorn:  { grund: 5, zufall: 0 },
+  aura:     { grund: 5, zufall: 0 },
 };
 
 // Wann die Funken der Raketenspur loslegen: erst wenn die Rakete abgehoben
@@ -71,13 +85,17 @@ function bewegungErwuenscht() {
  * Zeigt den Effekt zu einer Note und gibt seinen Namen zurück, damit die
  * UI den passenden Ton dazu spielen kann. Gibt es zur Note keinen Effekt,
  * kommt null zurück und es passiert nichts.
+ *
+ * `warArbeit` sagt, ob die Runde eine Arbeit war -- dort gilt zuerst die
+ * zweite Tabelle. Welcher Modus das ist, weiß diese Datei nicht; sie bekommt
+ * nur ein Ja oder Nein gesagt.
  */
-export function zeige(note) {
+export function zeige(note, warArbeit = false) {
   // Reste einer vorherigen Runde weg, bevor neue dazukommen. Das steht vor
   // allem anderen, damit auch eine Runde ohne Effekt sauber aufräumt.
   el.buehne.textContent = '';
 
-  const effekt = EFFEKTE[note] ?? null;
+  const effekt = (warArbeit ? EFFEKTE_ARBEIT[note] : null) ?? EFFEKTE[note] ?? null;
   if (effekt === null) return null;
   if (!bewegungErwuenscht()) return effekt;
 
@@ -101,7 +119,12 @@ function baueTeilchen(effekt, nummer) {
 
   // Bei der Rakete sieht das erste Teilchen anders aus als alle weiteren:
   // eins ist die Rakete, der Rest ist ihre Spur.
-  const art = effekt === 'rakete' && nummer > 0 ? 'funke' : effekt;
+  // Bei zwei Effekten sieht das erste Teilchen anders aus als die weiteren:
+  // eins ist die Rakete, der Rest ihre Spur -- eins ist das Einhorn, das
+  // zweite der Satz darunter.
+  let art = effekt;
+  if (effekt === 'rakete' && nummer > 0) art = 'funke';
+  if (effekt === 'einhorn' && nummer > 0) art = 'aura';
   teilchen.classList.add(`teilchen--${art}`);
 
   // Ohne Zufall sähen alle dreißig Schnipsel gleich aus und fielen im
@@ -121,6 +144,9 @@ function baueTeilchen(effekt, nummer) {
   if (art === 'rakete') teilchen.textContent = '🚀';
   if (art === 'sterne') teilchen.textContent = '✨';
   if (art === 'funke') teilchen.textContent = '✦';
+  if (art === 'einhorn') teilchen.textContent = '🦄';
+  /* DIESER SATZ GEHÖRT DIR AUCH, MATILDA -- er steht unter dem Einhorn. */
+  if (art === 'aura') teilchen.textContent = 'Aura für Dich';
 
   // Aufräumen, sobald das Teilchen ausgeflogen ist. Sonst sammeln sich über
   // mehrere Runden hunderte unsichtbare Elemente an.

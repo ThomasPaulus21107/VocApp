@@ -68,6 +68,14 @@ bekommt einen Namen gesagt (`zeige('rakete')`) und entscheidet nichts selbst.
   Bewegung fällt weg.
 - Je eine kurze Fanfare dazu in `MELODIEN`.
 
+**Seit dem 29.08.2026 gibt es eine zweite Tabelle für die Arbeit.** Dieselbe
+Note zählt dort mehr — keine Tipps, keine zweite Chance —, also darf sie mehr
+bekommen: `EFFEKTE_ARBEIT` gilt in einer Arbeit *statt* der normalen Tabelle,
+und was dort fehlt, bekommt den gewohnten Effekt. Drin stehen bisher zwei
+Fälle: eine **1** bringt das Einhorn mit „Aura für Dich" für fünf Sekunden,
+eine **1+** die Tetris-Melodie statt des kurzen Raketentons. Beide gibt es im
+Übungsblatt nicht, sonst wären sie nach drei Runden nichts Besonderes mehr.
+
 ### Was daran Matilda gehört
 
 Die Zuordnung Note → Effekt steht als Tabelle in `effekte.js`, direkt neben

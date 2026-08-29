@@ -16,7 +16,7 @@
 
   /* Die drei Faecher auf der Fortschrittsseite -- im Balken oben und
      in den Listen darunter dieselbe Farbe. */
-  --nie: #fea0a0;           /* noch nie geübt */
+  --nie: var(--falsch);           /* noch nie geübt */
   --in-arbeit: #fe9d43;     /* schon geübt, sitzt aber noch nicht */
   --sitzt: var(--richtig);  /* ab 75 % der Punkte: dasselbe Grün wie bei einer
                                richtigen Antwort */
@@ -386,6 +386,46 @@ body {
   animation-timing-function: ease-in;
 }
 
+/* Das Einhorn zu einer 1 in der Arbeit. Es kommt von unten herein, bleibt
+   stehen und verschwindet nach oben -- fuenf Sekunden insgesamt. */
+.teilchen--einhorn {
+  left: 50%;
+  top: 30%;
+  font-size: 6rem;
+  animation-name: einhorn;
+}
+
+/* Der Satz darunter. Er kommt einen Moment spaeter als das Tier, sonst
+   erscheinen beide wie ein Block. */
+.teilchen--aura {
+  left: 50%;
+  top: 58%;
+  animation-name: aura;
+
+  font-size: 1.75rem;
+  font-weight: 800;
+  white-space: nowrap;
+  color: var(--karte);
+  text-shadow: 0 2px 8px rgb(0 0 0 / 35%);
+}
+
+@keyframes einhorn {
+  0%   { transform: translate(-50%, 60px) scale(0.4) rotate(-12deg); opacity: 0; }
+  10%  { transform: translate(-50%, 0) scale(1.15) rotate(4deg); opacity: 1; }
+  16%  { transform: translate(-50%, 0) scale(1) rotate(0deg); opacity: 1; }
+  50%  { transform: translate(-50%, -10px) scale(1) rotate(-3deg); opacity: 1; }
+  84%  { transform: translate(-50%, 0) scale(1) rotate(0deg); opacity: 1; }
+  100% { transform: translate(-50%, -40px) scale(0.9); opacity: 0; }
+}
+
+@keyframes aura {
+  0%   { transform: translate(-50%, 20px); opacity: 0; }
+  14%  { transform: translate(-50%, 20px); opacity: 0; }
+  24%  { transform: translate(-50%, 0); opacity: 1; }
+  84%  { transform: translate(-50%, 0); opacity: 1; }
+  100% { transform: translate(-50%, -20px); opacity: 0; }
+}
+
 @keyframes rakete {
   0%   { transform: translate(-50%, 0) rotate(-45deg) scale(1); }
   6%   { transform: translate(-56%, 0) rotate(-50deg) scale(1.05); }
@@ -460,32 +500,44 @@ body {
   text-align: center;
 }
 
-/* Die beiden Wege aus dem Ergebnis heraus, unter der Ergebnisliste. Leiser
-   als die Modus-Knoepfe darunter -- aber 44 px hoch, damit ein Daumen sie
-   auf dem Telefon trifft. */
+/* Die beiden Wege aus dem Ergebnis heraus, unter der Ergebnisliste. Sie
+   sehen aus wie Knoepfe, sind aber Links -- sie fuehren woandershin, statt
+   etwas zu tun. Nebeneinander und kleiner als die Modus-Knoepfe darunter:
+   die naechste Runde bleibt das Wichtigste auf dem Bildschirm. */
 .weiter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 1.25rem;
-  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
 }
 
-.weiter__link {
-  display: inline-flex;
+.weiter__knopf {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  min-height: 44px;
+  justify-content: center;
+  gap: 2px;
+
+  min-height: 3.5rem;
+  padding: 0.5rem;
+  border: 2px solid var(--akzent);
+  border-radius: calc(var(--rundung) / 2);
 
   color: var(--akzent);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
   text-decoration: none;
 }
 
-.weiter__link:focus-visible {
+.weiter__zeichen {
+  font-size: 1.25rem;
+}
+
+.weiter__knopf:focus-visible {
   outline: 3px solid var(--schrift);
   outline-offset: 2px;
-  border-radius: calc(var(--rundung) / 2);
 }
 
 /* Die Modus-Wahl: zwei Knöpfe untereinander, auf der Startseite und noch

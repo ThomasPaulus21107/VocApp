@@ -326,7 +326,7 @@ export function zeigeEnde(note, punkte, hoechstpunktzahl, ergebnisse, lernpotent
 
   // Ganz zum Schluss die Belohnung: welche Note welchen Effekt bekommt,
   // steht in effekte.js. Ohne Effekt bleibt es auch still.
-  const effekt = effekte.zeige(note);
+  const effekt = effekte.zeige(note, warArbeit);
   if (!effekt) return;
 
   // Eine 1+ in einer ARBEIT ist das Größte, was es hier zu holen gibt: ohne

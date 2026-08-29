@@ -23,6 +23,18 @@ als es klingt: die Note rechnet gegen `hoechstpunktzahl = stapel.length`, und
 eine „2+" aus sechs Karten ist nicht dieselbe wie eine aus fünfzehn. Die
 Rundengröße ist in diesem Projekt keine Zahl, sondern eine Maßeinheit.
 
+## Seit dem 29.08.2026 ist die Frage kleiner geworden
+
+Die [Quote](implemented/feature-auswahl-2026-08-29-1327.md) entscheidet
+inzwischen die **Mischung** einer Runde: 5 noch nie geübte, 7 in Arbeit, 3
+stabil gelernte. Damit ist das Mengenproblem unten schon halb gelöst — die 15
+sind gesetzt, und Leitner müsste nur noch bestimmen, **welche** sieben aus
+„in Arbeit" und welche drei aus „stabil gelernt" kommen.
+
+Der Rest dieser Datei ist vor der Quote geschrieben. Was darin über die
+Sortierung steht, gilt unverändert; es gilt nur je Fach statt für die ganze
+Runde. Das Auffüllen zwischen den Fächern macht die Quote schon.
+
 ## Der Vorschlag: Leitner sortiert, es filtert nicht
 
 **Die Fälligkeit ersetzt das Alter im Sortierschlüssel — und sonst nichts.**

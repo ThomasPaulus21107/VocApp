@@ -78,6 +78,20 @@ const MELODIEN = {
     { hertz: 880, ab: 0.12, dauer: 0.12 },
     { hertz: 1319, ab: 0.24, dauer: 0.36 },
   ],
+  // Zum Einhorn: eine kleine Zauberleiter, die oben stehen bleibt und dann
+  // noch zweimal funkelt. Laenger als die anderen -- das Einhorn steht ja
+  // fuenf Sekunden da.
+  einhorn: [
+    { hertz: 523, ab: 0, dauer: 0.1 },
+    { hertz: 659, ab: 0.1, dauer: 0.1 },
+    { hertz: 784, ab: 0.2, dauer: 0.1 },
+    { hertz: 1047, ab: 0.3, dauer: 0.1 },
+    { hertz: 1319, ab: 0.4, dauer: 0.3 },
+    { hertz: 1568, ab: 0.9, dauer: 0.12, laut: 0.14 },
+    { hertz: 2093, ab: 1.1, dauer: 0.12, laut: 0.12 },
+    { hertz: 1568, ab: 1.7, dauer: 0.12, laut: 0.12 },
+    { hertz: 2093, ab: 1.9, dauer: 0.35, laut: 0.1 },
+  ],
   // Zum Sternenregen: drei kurze Funken, leiser als die anderen beiden.
   sterne: [
     { hertz: 1047, ab: 0, dauer: 0.09, laut: 0.14 },

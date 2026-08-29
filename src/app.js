@@ -8,8 +8,10 @@ import {
   pruefeAntwort,
   RICHTUNGEN,
 } from './domain/pruefung.js';
-import { zieheRunde } from './domain/auswahl.js';
-import { merkeGezogen, verrechne, zuletztVon, AUSGAENGE, LEER } from './domain/lernstand.js';
+import { zieheRunde, einheiten } from './domain/auswahl.js';
+import {
+  merkeGezogen, verrechne, zuletztVon, faecherVon, schluessel, AUSGAENGE, LEER,
+} from './domain/lernstand.js';
 import { note, punkteFuerKarte } from './domain/note.js';
 import { regeln, MODI } from './domain/modus.js';
 import { lernpotential } from './domain/lernpotential.js';
@@ -23,6 +25,14 @@ import * as ui from './ui/ui.js';
 // Oberstufe bei 15 endet. Wer die Rundengröße ändert, muss die Notentabelle
 // in domain/note.js mitändern -- die beiden hängen zusammen.
 const RUNDENGROESSE = 15;
+
+// Alle Einheiten, die es ueberhaupt gibt -- einmal ausgerechnet, denn die
+// Kartenliste aendert sich waehrend einer Sitzung nicht. Die Auswahl braucht
+// sie, um zu wissen, was noch nie dran war: der Lernstand kennt ja nur, was
+// schon einmal lief.
+const NAMEN = einheiten(verben.karten).map(
+  ({ karte, form }) => schluessel(karte.id, form)
+);
 const RICHTUNG = RICHTUNGEN.NACH_EN;
 
 // 0 = erster Versuch, 1 = Korrekturchance, 2 = erledigt
@@ -84,7 +94,13 @@ let gespielterModus = null;
 function start(modus) {
   gespielterModus = modus;
   regel = regeln(modus);
-  stapel = zieheRunde(verben.karten, RUNDENGROESSE, zuletztVon(lernstand.einheiten), lernstand.rundeNr);
+  stapel = zieheRunde(
+    verben.karten, RUNDENGROESSE,
+    zuletztVon(lernstand.einheiten), lernstand.rundeNr, Math.random,
+    // Die Quote braucht zu jeder Einheit ihr Fach. Wie die Faecher heissen
+    // und wie viele aus jedem kommen, steht in auswahl.js.
+    faecherVon(lernstand, NAMEN)
+  );
   merkeAuswahl();
   hoechstpunktzahl = stapel.length;
   index = 0;
