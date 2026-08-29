@@ -1,4 +1,4 @@
-# Feature: Test und Produktion, und was ein Release ist
+# Feature: Test und Produktion — das Schema kommt ohne Abtippen an
 
 **Status:** bereit — durchdacht, noch nicht gebaut
 **Wo im Code:** `.github/workflows/deploy.yml`, `supabase/migrations/` — neu,
@@ -22,8 +22,8 @@ Migration mitbringen, und die ist kein Neuladen entfernt.
 
 | | `VocApp TEST` | `VocApp` |
 |---|---|---|
-| Entspricht | `main` | dem letzten Release-Tag |
-| Bekommt Migrationen | bei jedem Merge nach `main` | beim Release |
+| Entspricht | dem, was lokal ausprobiert wird | `main` |
+| Bekommt Migrationen | von Hand, mit `npx supabase` | im Workflow, bei jedem Merge |
 | Wer übt darin | niemand — hier wird ausprobiert | Matilda und die Kinder |
 | Kaputt heißt | Testdaten weg, egal | jemand verliert seinen Stand |
 
@@ -84,52 +84,88 @@ Die **Supabase-CLI**, aber nur im Workflow (`supabase/setup-cli`) und nicht in
 Matilda liest. `AGENTS.md` verlangt trotzdem die Rückfrage; sie ist am
 29.08.2026 gestellt und mit ja beantwortet worden.
 
-## Der Knopf
+## Der Knopf kommt später — Entscheidung vom 29.08.2026
 
-**Releases → Draft a new release → Tag eintippen → Publish.** Ein echter Knopf
-im Browser, der auch vom Telefon geht, und man bekommt eine Notiz dazu, in der
-steht, was drin ist.
+Hier stand einmal: ein GitHub Release als Knopf, und ein Merge nach `main`
+veröffentlicht dann nichts mehr. **Das ist vertagt**, und die Begründung
+gehört aufgeschrieben, weil sie sonst in einem halben Jahr neu diskutiert
+wird.
 
-Der Tag löst den Workflow aus. Er tut dann, in dieser Reihenfolge:
+Der Zweck eines Release-Knopfs ist, *„Code ist fertig"* von *„die Kinder
+bekommen es"* zu trennen. Diese Trennung zahlt sich aus, sobald es Kinder
+gibt, die nicht am Projekt mitarbeiten. **Heute gibt es eine Nutzerin, und sie
+ist die Co-Autorin** — für Matilda sind Merge und Release dasselbe Ereignis.
 
-1. Tests laufen lassen — ein rotes Release wird gar nicht erst gebaut.
-2. Migrationen nach **VocApp** einspielen.
-3. Mit den VocApp-Schlüsseln bauen und auf Pages veröffentlichen.
+Dazu drei Dinge:
 
-**Annahme, die du bestätigen oder umwerfen musst:** damit veröffentlicht ein
-Merge nach `main` **nichts mehr**. Pages zeigt ab dann den letzten Release-Tag,
-nicht mehr den letzten Merge. Anders wäre „auf Knopfdruck releasable" ohne
-Wirkung — der Knopf hätte nichts zu tun, was der Merge nicht schon getan hat.
-Praktisch heißt es: nach dem Umbau einmal `v1.0.0` veröffentlichen, sonst steht
-die Seite auf dem Stand von vorher.
+- **Ein Knopf prüft nichts**, er wählt einen Moment. Was an einer Migration
+  wirklich schützt, ist die Regel oben und das fehlende `update`/`delete` in
+  den Policies: **eine Ereignistabelle, in die nur eingefügt wird, kann ein
+  schlechter Deploy nicht kaputtmachen.** Das ist eine Eigenschaft des
+  Schemas, nicht des Ablaufs.
+- **Er kostet etwas Konkretes.** Heute merged Matilda ihren Pull Request und
+  drei Minuten später ist ihre Änderung in der App. `AGENTS.md` nennt das
+  Projekt „zu gleichen Teilen eine funktionierende App **und** eine gemeinsame
+  Lernerfahrung" — eine Änderung, für die sie danach jemanden fragen muss, ist
+  weniger ihre.
+- **Der richtige Moment ist eingeplant.** Bei Vercel ist „`main` → Vorschau,
+  Tag → Produktion" eine Zeile Konfiguration; auf Pages wäre es eine Bastelei
+  aus zwei Builds in einem Artefakt. Siehe
+  [GitHub Pages ablösen](feature-request-hosting.md).
+
+**Was den Knopf sofort fällig macht:** das erste fremde Kind. Ab dann ist er
+kein Zeremoniell mehr, sondern die Stelle, an der jemand hinschaut, bevor
+etwas bei jemandem ankommt, der nicht mitgebaut hat.
+
+Die Form steht dann schon fest: **Releases → Draft a new release → Tag
+eintippen → Publish.** Ein Knopf im Browser, der auch vom Telefon geht, mit
+einer Notiz, in der steht, was drin ist.
 
 ## Die Secrets
 
 | Name | Wofür |
 |---|---|
-| `SUPABASE_URL_PROD`, `SUPABASE_KEY_PROD` | der Build beim Release |
-| `SUPABASE_ACCESS_TOKEN` | die CLI, für beide Projekte |
-| `SUPABASE_DB_PASSWORD_TEST`, `SUPABASE_DB_PASSWORD_PROD` | `db push` |
+| `SUPABASE_URL_PROD`, `SUPABASE_KEY_PROD` | der Build |
+| `SUPABASE_ACCESS_TOKEN` | die CLI |
+| `SUPABASE_DB_PASSWORD_PROD` | `db push` |
 
-Die TEST-Schlüssel für den Build braucht niemand als Secret, solange der
-Test-Stand nicht gehostet wird — sie stehen in der lokalen `.env`.
+Die TEST-Werte braucht kein Secret: gegen TEST wird lokal gearbeitet, und die
+Zugangsdaten stehen in der lokalen `.env` beziehungsweise werden beim
+Einspielen von Hand abgefragt.
 
-**Die beiden `_PROD`-Werte sind die einzigen im Repo, bei denen ein Fehler
-echte Daten trifft.** Sie gehören in eine geschützte GitHub-Environment, damit
-sie nur der Release-Job sieht und kein Workflow aus einem fremden Pull Request.
+**Die Projektkennungen sind kein Geheimnis** — `qykacefynfjgpebuazuv` und
+`uwxhfhhxnynxcuzdrcri` stehen in jeder URL und dürfen offen im Workflow
+stehen.
+
+**Die `_PROD`-Werte sind die einzigen im Repo, bei denen ein Fehler echte
+Daten trifft.** Sobald es ein zweites Kind gibt, gehören sie in eine
+geschützte GitHub-Environment, damit kein Workflow aus einem fremden Pull
+Request sie sieht.
 
 ## Die Abnahme
 
-1. Eine Migration nach `main` mergen → sie ist in **VocApp TEST**, nicht in
-   VocApp.
-2. Ein Release veröffentlichen → sie ist auch in VocApp, und zwar **bevor** die
-   neue Seite live geht.
-3. Ein Release mit rotem Test → **nichts passiert**, weder Migration noch
-   Deploy.
+1. **Der Workflow läuft durch, obwohl es noch keine Migration gibt.**
+   `db push` sagt dann, dass es nichts zu tun gibt — und genau das beweist
+   den riskanten Teil: Token, Passwort und Verbindung stimmen.
+2. Eine Migration nach `main` mergen → sie ist in **VocApp**, und zwar
+   **bevor** die neue Seite live geht.
+3. **Ein fehlendes Secret bricht den Lauf mit einem lesbaren Satz ab**, nicht
+   mit einem Netzfehler. Einmal ausprobieren, indem man den Namen im Workflow
+   verdreht.
 4. In den Entwicklertools der veröffentlichten Seite nachsehen, dass die
-   VocApp-URL drinsteht und nicht die von TEST. Einmal, aber gründlich — es ist
-   der Fehler, den man sonst erst merkt, wenn Übungsdaten in der Produktion
-   liegen.
+   **VocApp**-URL drinsteht und nicht die von TEST. Einmal, aber gründlich —
+   es ist der Fehler, den man sonst erst merkt, wenn Übungsdaten im falschen
+   Projekt liegen.
+
+## Zwei Dinge, die beim Bauen Zeit gekostet haben
+
+Beide stehen ausführlich in [`supabase/README.md`](../supabase/README.md):
+
+- **`link` ist nicht optional.** Ohne ihn versucht `db push` eine direkte
+  Verbindung über **IPv6**, und GitHub-Runner können kein IPv6. Der Fehler
+  sieht aus wie ein Netzproblem und ist eine fehlende Zeile.
+- **Eine `config.toml` braucht es nicht.** `supabase init` legt 413 Zeilen an,
+  fast alles für eine lokale Entwicklungsumgebung, die hier niemand startet.
 
 ## Voraussetzung
 
