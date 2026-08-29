@@ -3,7 +3,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   merkeGezogen, verrechne, zuletztVon, schluessel,
-  score, verteile, uebersicht, stufe, verlaufZu, runden, PAUSE_MS, fleiss, serie,
+  score, verteile, uebersicht, stufe, verlaufZu, punkteVon, runden, PAUSE_MS, fleiss, serie,
   SICHER_AB_PROZENT, TAGE_MAX,
   AUSGAENGE, LEER, VERLAUF_MAX,
 } from '../src/domain/lernstand.js';
@@ -319,6 +319,27 @@ describe('stufe', () => {
 
   it('kommt mit einer leeren Sammlung klar', () => {
     expect(stufe({ sicher: 0, gesamt: 0 })).toBe('anfang');
+  });
+});
+
+describe('punkteVon', () => {
+  it('nimmt die gespeicherte Zahl, wenn es eine gibt', () => {
+    expect(punkteVon({ punkte: 0.5, ausgang: AUSGAENGE.RICHTIG })).toBe(0.5);
+    expect(punkteVon({ punkte: 0, ausgang: AUSGAENGE.FALSCH })).toBe(0);
+  });
+
+  it('rechnet sie fuer alte Zeilen nach, die das Feld nicht haben', () => {
+    // Vor dem Score gab es `punkte` im Verlauf nicht. Ohne Nachrechnen
+    // staende bei einer richtigen Antwort 0 -- und genau das war auf der
+    // Fortschrittsseite zu sehen.
+    expect(punkteVon({ ausgang: AUSGAENGE.RICHTIG, versuch: 0, tipp: false })).toBe(1);
+    expect(punkteVon({ ausgang: AUSGAENGE.RICHTIG, versuch: 1, tipp: false })).toBe(0.5);
+    expect(punkteVon({ ausgang: AUSGAENGE.RICHTIG, versuch: 0, tipp: true })).toBeCloseTo(0.9);
+  });
+
+  it('gibt fuer alles, was nicht richtig war, null', () => {
+    expect(punkteVon({ ausgang: AUSGAENGE.FALSCH, versuch: 0, tipp: false })).toBe(0);
+    expect(punkteVon({ ausgang: AUSGAENGE.AUFGEGEBEN, versuch: 0, tipp: false })).toBe(0);
   });
 });
 

@@ -4,7 +4,10 @@
 import './ui/styles.css';
 import verben from '../data/unregelmaessige-verben.json';
 import { einheiten } from './domain/auswahl.js';
-import { uebersicht, verteile, stufe, verlaufZu, schluessel, LEER, SICHER_AB_PROZENT } from './domain/lernstand.js';
+import {
+  uebersicht, verteile, stufe, verlaufZu, punkteVon, schluessel,
+  LEER, SICHER_AB_PROZENT,
+} from './domain/lernstand.js';
 import { FORM_NAME } from './ui/formnamen.js';
 import * as storage from './infra/storage.js';
 import { verbindeMenue } from './ui/menue.js';
@@ -61,11 +64,11 @@ function lagesatz(zahlen, wieWeit) {
   const nie = zahlen.gesamt - zahlen.geuebt;
 
   const anfang = zahlen.sicher === 0
-    ? 'Noch sitzt keine einzige Form sicher.'
+    ? 'Noch ist keine einzige Form stabil gelernt.'
     : {
       anfang: 'Der Anfang ist gemacht.',
       unterwegs: 'Ein gutes Stück ist geschafft.',
-      gut: 'Das meiste sitzt.',
+      gut: 'Das meiste ist stabil.',
     }[wieWeit];
 
   // Was null ist, wird nicht erwähnt. "0 sind in Arbeit" ist keine Nachricht.
@@ -120,7 +123,7 @@ function historie(name) {
     if (eintrag.wiederholung) knoten.append(span('fach__vermerk', 'Wiederholung'));
     else if (eintrag.modus === 'arbeit') knoten.append(span('fach__vermerk', 'Arbeit'));
 
-    knoten.append(span('fach__punkte', `${Math.round((eintrag.punkte ?? 0) * 100)} %`));
+    knoten.append(span('fach__punkte', `${Math.round(punkteVon(eintrag) * 100)} %`));
     liste.append(knoten);
   }
   return liste;

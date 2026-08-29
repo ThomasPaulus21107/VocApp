@@ -10,6 +10,8 @@
 // NICHT zu verwechseln mit lernpotential.js. Das holt zurueck, was in DIESER
 // Runde danebenging, sofort. Hier geht es um die Geschichte ueber Wochen.
 
+import { punkteFuerKarte } from './note.js';
+
 /** Wie eine Karte ausgegangen ist. Mehr Faelle gibt es nicht. */
 export const AUSGAENGE = {
   RICHTIG: 'richtig',
@@ -273,6 +275,20 @@ export function stufe({ sicher, gesamt }) {
   if (anteil >= SICHER_AB_PROZENT) return 'gut';
   if (anteil >= UNTERWEGS_AB_PROZENT) return 'unterwegs';
   return 'anfang';
+}
+
+/**
+ * Was eine einzelne Antwort im Verlauf wert war.
+ *
+ * Alte Zeilen kennen das Feld `punkte` nicht -- es kam erst mit dem Score
+ * dazu. Ohne diese Rechnung stuende bei ihnen 0, auch wenn sie richtig
+ * waren. Nachgerechnet wird mit derselben Formel, aus der die Zahl damals
+ * entstanden waere.
+ */
+export function punkteVon(eintrag) {
+  if (typeof eintrag.punkte === 'number') return eintrag.punkte;
+  if (eintrag.ausgang !== AUSGAENGE.RICHTIG) return 0;
+  return punkteFuerKarte({ versuch: eintrag.versuch, tipp: eintrag.tipp });
 }
 
 /**
