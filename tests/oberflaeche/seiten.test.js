@@ -49,9 +49,16 @@ test.describe('Das Seitenmenue', () => {
 
   test('der Schatten schliesst die Lade auch', async ({ page: seite }) => {
     await seite.goto('index.html');
-    await oeffneMenue(seite);
+    const lade = await oeffneMenue(seite);
 
-    await seite.locator('#menue-schatten').click();
+    // Nicht in die Mitte tippen. Der Schatten liegt ueber der ganzen Seite,
+    // aber die offene Lade deckt auf 390 px alles rechts von x = 70 ab -- die
+    // Mitte gehoert also der Lade und nicht dem Schatten. Getippt wird da, wo
+    // ein Finger auch hinginge: auf den Streifen daneben.
+    const kasten = await lade.boundingBox();
+    expect(kasten.x).toBeGreaterThan(40);
+
+    await seite.locator('#menue-schatten').click({ position: { x: 20, y: 300 } });
     await expect(seite.locator('#menue')).toBeHidden();
   });
 
