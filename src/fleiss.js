@@ -25,6 +25,13 @@ function kurz(tag) {
   return `${datum}.${monat}.`;
 }
 
+/** Was über einen Tag zu sagen ist. Steht unter dem Diagramm und wird auch
+ *  vorgelesen, wenn jemand die Balken mit der Tastatur durchgeht. */
+function satzZu(tag) {
+  if (tag.antworten === 0) return `${kurz(tag.tag)} nichts geübt`;
+  return `${kurz(tag.tag)} ${tag.antworten} Antworten, ${tag.quote} % davon richtig`;
+}
+
 if (geuebt.length === 0) {
   el('leer').hidden = false;
 } else {
@@ -44,25 +51,38 @@ if (geuebt.length === 0) {
   // einer Runde am Tag ein Diagramm aus lauter Stummeln.
   const hoechster = bester.antworten;
 
+  // Ein Knopf je Tag statt eines title-Tooltips. Der brauchte Hover, und auf
+  // dem Telefon gibt es keinen -- ausgerechnet dort war der Tag also nicht
+  // zu lesen. Angetippt schreibt er sich in die Zeile unter dem Diagramm.
+  let gewaehlt = null;
+
   for (const tag of tage) {
-    const saeule = document.createElement('div');
+    const saeule = document.createElement('button');
+    saeule.type = 'button';
     saeule.className = 'diagramm__tag';
-    saeule.title = tag.antworten === 0
-      ? `${kurz(tag.tag)} nichts geübt`
-      : `${kurz(tag.tag)} ${tag.antworten} Antworten, ${tag.quote} % Treffer`;
+    saeule.setAttribute('aria-label', satzZu(tag));
+
+    saeule.addEventListener('click', () => {
+      gewaehlt?.classList.remove('diagramm__tag--gewaehlt');
+      saeule.classList.add('diagramm__tag--gewaehlt');
+      gewaehlt = saeule;
+      el('gewaehlt').textContent = satzZu(tag);
+    });
 
     if (tag.antworten > 0) {
-      const balken = document.createElement('div');
-      balken.className = 'diagramm__balken';
-      balken.style.height = `${(tag.antworten / hoechster) * 100}%`;
+      // Zwei Balken uebereinander, beide vom Boden aus gemessen: hinten alle
+      // Antworten, davor die Treffer. Beide am selben Massstab, damit der
+      // gruene Balken direkt ablesbar ist und nicht erst im Verhaeltnis zum
+      // Balken dahinter.
+      const gesamt = document.createElement('div');
+      gesamt.className = 'diagramm__gesamt';
+      gesamt.style.height = `${(tag.antworten / hoechster) * 100}%`;
 
-      // Der grüne Teil sind die Treffer. Was darüber steht, ging daneben.
       const richtig = document.createElement('div');
       richtig.className = 'diagramm__richtig';
-      richtig.style.height = `${(tag.richtig / tag.antworten) * 100}%`;
+      richtig.style.height = `${(tag.richtig / hoechster) * 100}%`;
 
-      balken.append(richtig);
-      saeule.append(balken);
+      saeule.append(gesamt, richtig);
     }
     el('diagramm').append(saeule);
   }

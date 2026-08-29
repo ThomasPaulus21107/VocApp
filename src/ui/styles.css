@@ -898,38 +898,73 @@ body {
   margin: 20px 0 6px;
 }
 
+/* Jeder Tag ist ein Knopf, sieht aber aus wie ein Balken. Die Trefferflaeche
+   ist die ganze Saeule und nicht nur der gefaerbte Teil: bei 30 Tagen
+   nebeneinander ist eine Spalte schmal, in der Hoehe holt sie zurueck, was
+   ihr in der Breite fehlt. */
 .diagramm__tag {
   flex: 1;
   height: 100%;
-  display: flex;
-  align-items: flex-end;
+
+  /* Ein Raster mit genau einem Feld: beide Balken liegen darin
+     uebereinander, unten ausgerichtet. Der spaetere im HTML liegt vorn. */
+  display: grid;
+  align-items: end;
+
+  padding: 0;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
 
   /* Auch ein leerer Tag bekommt eine Spur, sonst sieht man die Luecke nicht. */
   background: linear-gradient(var(--eingabefeld), var(--eingabefeld)) bottom / 100% 2px no-repeat;
   border-radius: 2px;
 }
 
-.diagramm__balken {
-  width: 100%;
-  display: flex;
-  align-items: flex-end;
+/* Welcher Tag gerade unter dem Diagramm steht. */
+.diagramm__tag--gewaehlt {
+  outline: 2px solid var(--schrift);
+  outline-offset: 1px;
+}
 
-  background: var(--akzent);
+.diagramm__tag:focus-visible {
+  outline: 3px solid var(--schrift);
+  outline-offset: 2px;
+}
+
+/* Beide Balken in dasselbe Rasterfeld, beide unten. */
+.diagramm__gesamt,
+.diagramm__richtig {
+  grid-area: 1 / 1;
+  width: 100%;
   border-radius: 2px;
 }
 
-/* Der gruene Teil steht unten: das ist der Anteil, der gesessen hat. */
+/* Hinten und blass: alle Antworten des Tages. */
+.diagramm__gesamt {
+  background: var(--akzent);
+  opacity: 0.3;
+}
+
+/* Davor und kraeftig: was davon gesessen hat. */
 .diagramm__richtig {
-  width: 100%;
   background: var(--richtig);
-  border-radius: 2px;
 }
 
 .diagramm__achse {
   display: flex;
   justify-content: space-between;
 
-  margin: 0 0 20px;
+  margin: 0 0 8px;
   color: var(--leise);
   font-size: 0.8125rem;
+}
+
+/* Der angetippte Tag. Zwei Zeilen hoch reserviert, damit unter ihr nichts
+   springt, wenn ein laengerer Satz kommt. */
+.diagramm__tagestext {
+  min-height: 2.8em;
+  margin: 0 0 20px;
+  font-size: 0.9375rem;
+  line-height: 1.4;
 }
