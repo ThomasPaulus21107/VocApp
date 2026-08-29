@@ -28,3 +28,39 @@ jobs:
       # npm ci installiert exakt nach package-lock.json und aendert sie nicht.
       - run: npm ci
       - run: npm test
+
+  # Die Oberflaeche in einem echten Browser. Eigener Job, weil er laenger
+  # dauert und einen Browser herunterladen muss -- die schnellen Tests oben
+  # sollen deswegen nicht warten.
+  #
+  # Auch dieser Job gehoert in das Ruleset von main als required check.
+  # Sonst laeuft er zwar, blockiert aber nichts, und dann waere er genau das,
+  # was er ersetzen soll: ein Blick, den man auch weglassen kann.
+  oberflaeche:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Nur WebKit -- das ist die Maschine hinter Safari, und geuebt wird auf
+      # dem iPhone. Ein Test in Chrome wuerde ueber genau den Browser nichts
+      # sagen, der benutzt wird. --with-deps holt die Systembibliotheken dazu,
+      # die auf einem nackten Ubuntu fehlen.
+      - run: npx playwright install --with-deps webkit
+
+      - run: npm run test:oberflaeche
+
+      # Bei einem roten Lauf liegt hier der Mitschnitt: jeder Klick, jeder
+      # Zwischenstand. Ohne ihn steht in der CI nur, DASS es rot war.
+      - uses: actions/upload-artifact@v5
+        if: failure()
+        with:
+          name: playwright-bericht
+          path: playwright-report/
+          retention-days: 7

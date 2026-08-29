@@ -4,7 +4,8 @@
 **Wo im Code:** `index.html`, `src/ui/ui.js`, `src/app.js`
 
 Kein Feature für die App, sondern eine Entscheidung — wie
-[Wie die Oberfläche getestet wird](feature-request-ui-tests.md). Sie steht hier,
+[Wie die Oberfläche getestet wird](implemented/feature-ui-tests-2026-08-29-1943.md), die am 29.08.2026
+entschieden wurde. Sie steht hier,
 weil sie sonst als halb fertiger Code im Repo weiterlebt, ohne dass jemand
 sagt, ob er je angeschaltet werden soll.
 

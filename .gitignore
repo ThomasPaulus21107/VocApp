@@ -7,6 +7,12 @@ node_modules/
 # Der gebaute Stand aus "npm run build". Entsteht jedes Mal neu.
 dist/
 
+# Was Playwright bei jedem Lauf anlegt: Mitschnitte fehlgeschlagener Tests
+# und der HTML-Bericht dazu. Entsteht neu, gehoert nicht ins Repo.
+test-results/
+playwright-report/
+blob-report/
+
 # macOS legt das in jedem Ordner an, den man im Finder oeffnet.
 .DS_Store
 

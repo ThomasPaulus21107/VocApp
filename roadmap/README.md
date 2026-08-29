@@ -83,6 +83,7 @@ Von unten nach oben, neueste zuerst.
 
 | Feature | Wann |
 |---|---|
+| [Wie die Oberfläche getestet wird](implemented/feature-ui-tests-2026-08-29-1943.md) | 29.08. 19:43 |
 | [Dein Fleiß](implemented/feature-fleiss-2026-08-29-1551.md) | 29.08. 15:51 |
 | [Den Lernfortschritt sehen](implemented/feature-fortschritt-2026-08-29-1531.md) | 29.08. 15:31 |
 | [Der Lernstand je Vokabel](implemented/feature-lernstand-2026-08-29-1531.md) (Stufe 1) | 29.08. 15:31 |
@@ -118,7 +119,6 @@ Von unten nach oben, neueste zuerst.
 | [Technisches Monitoring](feature-request-monitoring.md) | Thomas |
 | [Ob die App mehrere Nutzer kennt](feature-request-mehrere-nutzer.md) | Entscheidung |
 | [Ob die Abfragerichtung umschaltbar wird](feature-request-richtung.md) | Entscheidung |
-| [Wie die Oberfläche getestet wird](feature-request-ui-tests.md) | Entscheidung |
 | [Leitner-Fächer mit Wiedervorlage](feature-request-leitner.md) | Thomas, Entscheidung gegen die Gewichtung |
 
 Nicht jedes Feature ist Code. Die Vokabeln, die Verb-Tipps, die Töne und die
@@ -144,12 +144,18 @@ der Grund, warum
 **„Was ist ein Punkt?" im Backlog steht** — an dieser einen unbeantworteten
 Frage hängt alles, was mehrere Nutzer betrifft.
 
-Drei Dateien sind bewusst **keine** Bauanleitung, sondern eine Entscheidung:
-[Ob die App mehrere Nutzer kennt](feature-request-mehrere-nutzer.md),
-[Wie die Oberfläche getestet wird](feature-request-ui-tests.md) und
+Zwei Dateien sind bewusst **keine** Bauanleitung, sondern eine Entscheidung:
+[Ob die App mehrere Nutzer kennt](feature-request-mehrere-nutzer.md) und
 [Ob die Abfragerichtung umschaltbar wird](feature-request-richtung.md). Sie
 stehen hier, weil sie sonst als halb fertiger Code oder als Bauchgefühl
 weiterleben.
+
+Eine dritte war
+[Wie die Oberfläche getestet wird](implemented/feature-ui-tests-2026-08-29-1943.md).
+Sie zeigt, wie so eine Datei endet: **die Entscheidung steht jetzt darin**,
+mitsamt dem, was verworfen wurde und warum. Eine Entscheidungsdatei zieht also
+genauso nach `implemented/` um wie eine Bauanleitung — was gebaut wurde, ist
+dann die Entscheidung selbst.
 
 ## Wiederkehrendes
 

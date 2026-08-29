@@ -4,7 +4,7 @@
 **Wo im Code:** `src/infra/backend.js` — neu, dazu `AGENTS.md`
 
 Kein Feature für die App, sondern eine Richtungsentscheidung — wie
-[Richtung](feature-request-richtung.md) und [UI-Tests](feature-request-ui-tests.md).
+[Richtung](feature-request-richtung.md) und [UI-Tests](implemented/feature-ui-tests-2026-08-29-1943.md).
 Sie steht hier, weil sie alles darunter bestimmt und weil sie nicht
 nebenbei getroffen werden sollte.
 
