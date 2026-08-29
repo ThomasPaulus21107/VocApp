@@ -109,9 +109,14 @@ export function merkeGezogen(stand, gezogen) {
  * Uebungsblatt (mit Tipp und zweitem Versuch) ist nicht dieselbe Evidenz wie
  * eine in der Arbeit. Ohne dieses Feld waere die Auswertung spaeter nicht
  * mehr zu retten.
+ *
+ * `wiederholung` sagt dasselbe fuer die Lernpotential-Runde: dort wird eine
+ * Vokabel gefragt, die eben erst danebenging und deren Loesung gerade auf
+ * dem Bildschirm stand. Sie zaehlt, aber sie wiegt anders.
  */
 export function verrechne(stand, ergebnis, jetzt) {
-  const { id, form, ausgang, versuch, tipp, modus, punkte = 0, tag } = ergebnis;
+  const { id, form, ausgang, versuch, tipp, modus, punkte = 0, tag,
+    wiederholung = false } = ergebnis;
   const name = schluessel(id, form);
   const alt = vollstaendig(stand.einheiten[name]);
 
@@ -131,7 +136,7 @@ export function verrechne(stand, ergebnis, jetzt) {
 
   // Was hinten hereinkommt, faellt vorne heraus.
   const verlauf = [...stand.verlauf,
-    { id, form, ausgang, versuch, tipp, modus, punkte, zeit: jetzt }];
+    { id, form, ausgang, versuch, tipp, modus, wiederholung, punkte, zeit: jetzt }];
 
   return {
     ...stand,

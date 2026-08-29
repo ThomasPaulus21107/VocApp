@@ -102,8 +102,20 @@ describe('verrechne', () => {
     const stand = verrechne(LEER, antwort({ modus: 'arbeit' }), 1234);
     expect(stand.verlauf).toEqual([{
       id: 'uv-001', form: 'simple-past', ausgang: 'richtig',
-      versuch: 0, tipp: false, modus: 'arbeit', punkte: 1, zeit: 1234,
+      versuch: 0, tipp: false, modus: 'arbeit', wiederholung: false,
+      punkte: 1, zeit: 1234,
     }]);
+  });
+
+  it('merkt sich, ob die Antwort aus der Wiederholung kam', () => {
+    // Die Lernpotential-Runde zaehlt mit, aber sie wiegt anders: dort war die
+    // Loesung eben noch zu sehen. Ohne das Feld waere das spaeter nicht mehr
+    // auseinanderzuhalten.
+    const stand = verrechne(LEER, antwort({ wiederholung: true }), 1234);
+
+    expect(stand.verlauf[0].wiederholung).toBe(true);
+    // Gezaehlt wird sie wie jede andere Antwort.
+    expect(stand.einheiten['uv-001|simple-past']).toMatchObject({ dran: 1, summe: 1 });
   });
 
   it('summiert die Punkte auf', () => {
