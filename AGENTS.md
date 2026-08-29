@@ -468,9 +468,13 @@ Ob am Küchentisch der Ton an ist, gehört dem Laptop. Ob `caught` sitzt, gehör
 Matilda und muss ihr auf jedes Gerät folgen.
 
 **In `storage.js` darf nur liegen, was man jederzeit wegwerfen würde.**
-`localStorage` in fremden Browsern ist weder migrierbar noch
-wiederherstellbar; ein Lernstand gehört deshalb nach Postgres und nicht in den
-Browser. Gespeichert werden dort **Ereignisse** (eine Zeile je Antwort), nicht
+`localStorage` in fremden Browsern ist weder zu prüfen noch zu sichern noch
+wiederherzustellen; ein Lernstand gehört deshalb nach Postgres, sobald es mehr
+als einen Nutzer gibt.
+
+Davon gibt es **eine benannte Ausnahme**: die lokale Statistik je Vokabel
+(`feature-request-lernstand.md`, Stufe 1). Sie liegt in `storage.js`, solange
+die App einen Nutzer hat, und nur mit einem Knopf, der sie als Datei sichert. Gespeichert werden dort **Ereignisse** (eine Zeile je Antwort), nicht
 errechnete Zustände — das ist das einzige Format, das sich später nicht
 festlegt. Siehe `roadmap/feature-request-lernstand.md`.
 

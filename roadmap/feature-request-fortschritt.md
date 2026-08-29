@@ -41,8 +41,10 @@ offene Entscheidung und muss vorher fallen.
 
 ## Voraussetzungen
 
-- [Der Lernstand als Ereignisse](feature-request-lernstand.md) — ohne
-  gespeicherte Runden gibt es nichts zu zeigen
+- [Der Lernstand je Vokabel](feature-request-lernstand.md) in **Stufe 1** —
+  die lokale Fassung reicht vollständig. Weder Supabase noch eine Antwort auf
+  die Punktefrage werden dafür gebraucht; die Elternsicht auf einem gemeinsamen
+  Rechner funktioniert damit schon.
 - [Tipps](feature-request-tipps.md) für das Feld `muster`, sonst fällt Punkt 2
   auf eine Wortliste zurück
 

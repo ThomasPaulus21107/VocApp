@@ -1,16 +1,20 @@
-# Feature: Der Lernstand als Ereignisse
+# Feature: Der Lernstand je Vokabel
 
 **Status:** bereit — durchdacht, noch nicht gebaut
-**Wo im Code:** `src/domain/lernstand.js` — neu, `src/infra/backend.js`, `src/app.js`
+**Wo im Code:** `src/domain/lernstand.js` — neu, `src/app.js`, später `src/infra/backend.js`
 
-Welche Vokabel sitzt bei wem wie gut, und was geht immer wieder schief. Das
-ist der Unterbau für [die Auswahl](feature-request-auswahl.md), für
-[den Fortschritt](feature-request-fortschritt.md) und für alles, was später
-Punkte heißt.
+Wie oft kam ein Wort dran, wie gingen die Versuche aus, und was geht immer
+wieder schief. Das ist der Unterbau für
+[die Gewichtung](feature-request-auswahl.md), für
+[die Fortschrittsseite](feature-request-fortschritt.md) und für alles, was
+später Punkte heißt.
+
+**In zwei Stufen**, seit dem 29.08.2026: die erste läuft lokal und braucht
+weder Supabase noch eine Antwort auf die Punktefrage.
 
 ## Die Daten entstehen längst — sie werden weggeworfen
 
-Das ist die eigentliche Nachricht. `app.js` schreibt während jeder Runde mit:
+`app.js` schreibt während jeder Runde mit:
 
 ```js
 ergebnisse.push({ frage, gesuchteForm, erwartet, richtig, getippt, punkte })
@@ -23,51 +27,96 @@ Eine Lücke gibt es: `merkeErgebnis` speichert `frage` (das deutsche Wort),
 nicht die `id` der Karte. Für die Anzeige reicht das, für Auswertung nicht.
 `merkeFuerSpaeter` daneben hat sie. **Eine Zeile.**
 
-## Ereignisse, nicht Zustände
+## Stufe 1: lokal, ein Nutzer
 
-Die wichtigste Entscheidung, und sie ist der Grund, warum das hier überhaupt
-gebaut werden kann.
+Zwei Dinge nebeneinander in [`storage.js`](feature-request-storage.md):
 
-| | Zustand je Karte | **Ereignis je Antwort** |
-|---|---|---|
-| Was liegt da | `{ user, karte, form, koennen: 0.7 }` | eine Zeile je Antwort, mit Zeitstempel |
-| Modell ändern | alte Werte sind verloren | **neu berechnen aus dem Bestand** |
-| „Wiederkehrend" beantwortbar | nein, keine Geschichte | ja, das ist der Normalfall |
+**Das Aggregat** — je Karte und Form ein paar Zähler. Beantwortet „wie oft
+dran, wie ging es aus" für immer und wächst nie:
 
-Der Backlog hat den Lernstand bisher mit „sobald es auf der Platte liegt, ist
-jede Änderung eine Migration" aufgehalten. Genau diese Angst löst sich hier
-auf: **Ereignisse sind das einzige Format, das dich nicht festlegt.** Ein
-neues Können-Modell ist eine neue Abfrage über dieselben Zeilen.
+```js
+"uv-003|simple-past": {
+  dran: 14, ersterVersuch: 9, zweiterVersuch: 3, falsch: 2,
+  tipps: 4, uebersprungen: 0, zuletzt: 26
+}
+```
 
-Der schnelle Lesezugriff wird eine abgeleitete Tabelle, die man jederzeit neu
-befüllen kann. Sie ist Cache, nicht Wahrheit.
+`zuletzt` ist **dasselbe Feld, das die [Auswahl](feature-request-auswahl.md)
+für die Abdeckung braucht.** Zwei Features, ein Datensatz.
 
-## Die Zeile
+**Der Ringpuffer** — die letzten 50 Runden als einzelne Antworten mit
+Zeitstempel. Er ist das Gegengift gegen das Festlegen: damit lässt sich ein
+Können-Modell neu rechnen, statt es nur fortzuschreiben.
+
+| | Größe |
+|---|---|
+| Aggregat, 159 Einheiten × acht Zahlen | ~13 KB, wächst nie |
+| Ringpuffer, 750 Antworten | ~50 KB, wächst nie |
+| Verfügbar in `localStorage` | ~5 MB |
+
+Rund ein Prozent des Platzes. Selbst ein ungekürztes Protokoll über ein Jahr
+läge bei etwa 1 MB — es gibt hier kein Platzproblem, nur ein Formatproblem.
+
+### Was Stufe 1 freischaltet
+
+**Die Punktefrage blockiert das nicht.** „Wie oft kam `caught` dran und wie oft
+saß es" braucht kein Punktemodell — das braucht nur die Rangliste. Sofort
+baubar werden damit:
+
+- [Den Lernfortschritt sehen](feature-request-fortschritt.md), als lokale Seite
+- [Gewichtung Stufe 2](feature-request-auswahl.md) — „schwer" steht jetzt im Aggregat
+- Wiederkehrende Potentiale, sobald das Feld `muster` da ist
+
+Gesperrt bleibt nur, was wirklich mehrere Menschen braucht: Vergleiche,
+Missionen, gemeinsamer Punktestand.
+
+### Der Preis, ehrlich
+
+- **Handy und Laptop führen getrennte Statistiken.** Bei Einstellungen ist das
+  richtig, hier ist es schädlich: eine Statistik, die die Hälfte des Übens
+  nicht kennt, ist nicht unvollständig, sondern **irreführend**. Wird auf zwei
+  Geräten geübt, lieber nur auf einem zählen als auf beiden halb.
+- **Ein geleerter Cache löscht Monate.** Beim `zuletzt` der Auswahl war das
+  egal, hier nicht.
+- **Format ändern geht**, solange es der eigene Browser ist: der Code läuft ja
+  beim nächsten Öffnen und kann hochziehen. Was bei fremden Kindern nicht geht,
+  ist etwas anderes — prüfen, ob es geklappt hat, sichern, wiederherstellen.
+
+Deshalb gehört **ein „Statistik sichern"-Knopf** dazu, der die JSON als Datei
+herunterlädt. Zehn Zeilen, und aus einem unwiederbringlichen Verlust wird ein
+ärgerlicher.
+
+## Stufe 2: Postgres, mehrere Nutzer
+
+Eine Zeile je Antwort, dauerhaft:
 
 ```
 user_id, karten_id, form, richtig, versuch, tipp_stufen, modus, gespielt_am
 ```
 
-**Die Einheit ist Karte plus Form**, nicht die Karte. `to write` kann im
-simple past sitzen und im Partizip nicht — 53 Verben × 3 Formen sind **159
-verfolgbare Einheiten**, nicht 53. Wer auf Kartenebene zusammenfasst, mittelt
-genau die Information weg, um die es geht. Die App unterscheidet das ohnehin
-schon: `zuWiederholen` merkt sich `{ id, form }`.
+Der Ringpuffer aus Stufe 1 ist genau das, was hochgeladen wird; das Aggregat
+wird danach aus den Zeilen abgeleitet und ist Cache, nicht Wahrheit.
+
+### Ereignisse, nicht Zustände
+
+| | Zustand je Karte | **Ereignis je Antwort** |
+|---|---|---|
+| Modell ändern | alte Werte sind verloren | **neu berechnen aus dem Bestand** |
+| „Wiederkehrend" beantwortbar | nein, keine Geschichte | ja, das ist der Normalfall |
+
+Der Backlog hat den Lernstand lange mit „sobald es auf der Platte liegt, ist
+jede Änderung eine Migration" aufgehalten. Genau diese Angst löst sich hier
+auf: **Ereignisse sind das einzige Format, das dich nicht festlegt.**
 
 Größenordnung: 15 Antworten × 3 Runden am Tag × 12 Kinder × 200 Tage ≈
 **100.000 Zeilen im Jahr.** Für Postgres ist das nichts.
 
-## Warum nicht in den Browser
+## Die Einheit ist Karte plus Form
 
-Siehe [`storage.js`](feature-request-storage.md): `localStorage` in fremden
-Browsern ist **nicht migrierbar und nicht wiederherstellbar**. Ein
-Formatfehler bliebe für immer drin, ein geleerter Cache löscht alles, und Handy
-und Laptop wüssten nichts voneinander. Bei Postgres ist eine Formatänderung
-eine SQL-Datei, die einmal läuft.
-
-Die Grenze: **lokal ist nur in Ordnung, solange die einzigen Daten welche
-sind, die man wegwerfen will.** Bis zum ersten fremden Kind gilt das, danach
-nicht mehr.
+`to write` kann im simple past sitzen und im Partizip nicht — 53 Verben ×
+3 Formen sind **159 verfolgbare Einheiten**, nicht 53. Wer auf Kartenebene
+zusammenfasst, mittelt genau die Information weg, um die es geht. Die App
+unterscheidet das ohnehin schon: `zuWiederholen` merkt sich `{ id, form }`.
 
 ## Wiederkehrende Potentiale hängen am Muster
 
@@ -75,23 +124,22 @@ nicht mehr.
 `i – a – u`**" ist eine Diagnose — und führt zu einer Übung, die auch bei
 `swim` und `drink` hilft.
 
-Dafür braucht es einen Gruppierungsschlüssel, und genau den führt
-[Tipps, die zur Frage passen](feature-request-tipps.md) als Feld `muster` auf
-der Karte ein. Es tut damit zwei Dinge: es liefert den Tipptext **und** die
-Achse, über die ausgewertet wird. Ohne dieses Feld bleibt „wiederkehrende
-Potentiale" eine Absichtserklärung.
+Den Gruppierungsschlüssel dafür führt
+[Tipps, die zur Frage passen](feature-request-tipps.md) als Feld `muster` ein.
+Es tut damit zwei Dinge: es liefert den Tipptext **und** die Achse, über die
+ausgewertet wird.
 
 ## Die Domäne
 
 `domain/lernstand.js`, reine Funktionen wie alles dort:
 
 ```js
-bewerte(ereignisse, heute)      // -> { karte, form, koennen, zuletzt }
-schwaechen(ereignisse, karten)  // -> gruppiert nach muster
+verrechne(aggregat, ergebnis)     // -> neues Aggregat, unveraendert rein
+schwierigkeit(eintrag)            // -> 0 … 1, fuer die Gewichtung
+schwaechen(aggregat, karten)      // -> gruppiert nach muster
 ```
 
-**Das Datum kommt von außen herein**, nie `new Date()` in der Domäne — dieselbe
-Regel, die der Backlog schon für die Streak-Berechnung aufgeschrieben hat.
+**Das Datum kommt von außen herein**, nie `new Date()` in der Domäne.
 
 ## Nicht verwechseln mit `lernpotential.js`
 
@@ -100,21 +148,25 @@ Sie holt zurück, was in *dieser* Runde danebenging. Hier geht es um die
 Geschichte über Wochen. Zwei Fragen, zwei Dateien — die bestehende bleibt
 unangetastet.
 
-Leitner aus dem Backlog ist danach nur noch ein anderes Modell über denselben
-Ereignissen: es ersetzt die Gewichtsformel, nicht das Ziehen.
+Leitner aus dem Backlog ist danach nur ein anderes Modell über denselben
+Daten: es ersetzt die Gewichtsformel, nicht das Ziehen.
 
 ## Voraussetzungen
 
-- [Mehrere Nutzer](feature-request-mehrere-nutzer.md) — ohne Konten gibt es
-  kein `user_id`
+- **Stufe 1:** [Die Speicher-Naht am Gerät](feature-request-storage.md). Sonst
+  nichts.
+- **Stufe 2:** [Mehrere Nutzer](feature-request-mehrere-nutzer.md) — ohne
+  Konten gibt es kein `user_id`.
 - [Tipps](feature-request-tipps.md) für das Feld `muster`, sobald es um
-  wiederkehrende Potentiale geht. Für den reinen Lernstand nicht nötig.
+  wiederkehrende Potentiale geht. Für die Statistik selbst nicht nötig.
 
 ## Zu beachten
 
-- **Melden darf nie blockieren.** Fällt das Netz aus, wird weitergeübt und die
-  Zeilen gehen verloren. Eine Runde, die hängt, weil der Server langsam ist,
-  ist schlimmer als ein fehlender Datenpunkt.
-- **Der Modus gehört in die Zeile.** Eine Antwort im Übungsblatt (mit Tipp und
-  zweitem Versuch) ist nicht dieselbe Evidenz wie eine in der Arbeit. Ohne
+- **Melden darf nie blockieren.** In Stufe 1 heißt das `try/catch` um jeden
+  Speicherzugriff, in Stufe 2 einen Aufruf, der im Hintergrund läuft. Eine
+  Runde, die hängt, ist schlimmer als ein fehlender Datenpunkt.
+- **Der Modus gehört in den Datensatz.** Eine Antwort im Übungsblatt (mit Tipp
+  und zweitem Versuch) ist nicht dieselbe Evidenz wie eine in der Arbeit. Ohne
   dieses Feld ist die Auswertung später nicht zu retten.
+- **Die Lernpotential-Runde zählt nicht mit.** `app.js` schreibt dort schon
+  heute nichts in `ergebnisse` — dieselbe Karte stünde sonst zweimal drin.

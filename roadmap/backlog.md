@@ -30,7 +30,7 @@ in der Git-Historie.
 ## Lernen und Wiederholen
 
 - **Leitner-Fächer mit Wiedervorlage.** „Diese Karte erst in drei Tagen wieder."
-  `braucht:` [Der Lernstand als Ereignisse](feature-request-lernstand.md) —
+  `braucht:` [Der Lernstand je Vokabel](feature-request-lernstand.md) —
   refined. Danach ist Leitner nur noch ein anderes Modell über denselben
   Zeilen: es ersetzt die Gewichtsformel aus
   [Welche Karten drankommen](feature-request-auswahl.md), nicht das Ziehen.
@@ -38,7 +38,7 @@ in der Git-Historie.
 
 Der Punkt „Lernstand pro Karte speichern" ist am 29.08.2026 hier
 ausgezogen — er steht jetzt als
-[Der Lernstand als Ereignisse](feature-request-lernstand.md). Sein `offen:`
+[Der Lernstand je Vokabel](feature-request-lernstand.md). Sein `offen:`
 war das Format, und das ist beantwortet: Ereignisse statt Zustände, weil man
 sich damit gerade **nicht** festlegt.
 

@@ -29,7 +29,7 @@ Matilda und muss ihr auf jedes Gerät folgen. Beides in eine Naht zu zwingen
 hieße, eines von beiden falsch zu machen.
 
 Diese Datei beschreibt nur die erste. Die zweite steht in
-[Der Lernstand als Ereignisse](feature-request-lernstand.md).
+[Der Lernstand je Vokabel](feature-request-lernstand.md).
 
 ## Was drinsteht
 
@@ -53,8 +53,27 @@ nichts voneinander wissen.
 
 Die Faustregel: **hier darf nur liegen, was man jederzeit wegwerfen würde.**
 
-Der Kartenbeutel aus [Welche Karten drankommen](feature-request-auswahl.md)
-erfüllt das und darf hier rein: geht er verloren, wird neu gemischt.
+Das `zuletzt` aus [Welche Karten drankommen](feature-request-auswahl.md)
+erfüllt das und darf hier rein: geht es verloren, sehen alle Karten gleich alt
+aus, und nach vier Runden ist der Zustand von selbst wiederhergestellt.
+
+### Eine benannte Ausnahme, befristet
+
+Der [Lernstand je Vokabel](feature-request-lernstand.md) in seiner Stufe 1
+erfüllt die Faustregel **nicht** — eine über Monate gewachsene Statistik will
+niemand wegwerfen. Er liegt trotzdem hier, und zwar bewusst und unter drei
+Bedingungen:
+
+1. Solange die App **einen** Nutzer hat. Ab dem ersten fremden Kind gilt die
+   Regel wieder ohne Ausnahme.
+2. Mit einem **„Statistik sichern"-Knopf**, der die JSON als Datei
+   herunterlädt. Zehn Zeilen, und aus einem unwiederbringlichen Verlust wird
+   ein ärgerlicher.
+3. Mit Postgres als **geplantem** Ziel, nicht als vagem Später — der
+   Ringpuffer aus Stufe 1 ist genau das, was später hochgeladen wird.
+
+Das ist der Unterschied zwischen einer Ausnahme und einer aufgeweichten Regel:
+sie hat einen Namen, einen Grund und ein Ablaufdatum.
 
 ## Der erste Kunde: Töne an/aus
 
