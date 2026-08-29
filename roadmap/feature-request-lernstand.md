@@ -5,7 +5,7 @@
 
 Wie oft kam ein Wort dran, wie gingen die Versuche aus, und was geht immer
 wieder schief. Das ist der Unterbau für
-[die Gewichtung](feature-request-auswahl.md), für
+[die Gewichtung](feature-implemented-auswahl-2026-08-29-1327.md), für
 [die Fortschrittsseite](feature-request-fortschritt.md) und für alles, was
 später Punkte heißt.
 
@@ -29,7 +29,7 @@ nicht die `id` der Karte. Für die Anzeige reicht das, für Auswertung nicht.
 
 ## Stufe 1: lokal, ein Nutzer
 
-Zwei Dinge nebeneinander in [`storage.js`](feature-request-storage.md):
+Zwei Dinge nebeneinander in [`storage.js`](feature-implemented-storage-2026-08-29-1327.md):
 
 **Das Aggregat** — je Karte und Form ein paar Zähler. Beantwortet „wie oft
 dran, wie ging es aus" für immer und wächst nie:
@@ -41,7 +41,7 @@ dran, wie ging es aus" für immer und wächst nie:
 }
 ```
 
-`zuletzt` ist **dasselbe Feld, das die [Auswahl](feature-request-auswahl.md)
+`zuletzt` ist **dasselbe Feld, das die [Auswahl](feature-implemented-auswahl-2026-08-29-1327.md)
 für die Abdeckung braucht.** Zwei Features, ein Datensatz.
 
 **Der Ringpuffer** — die letzten 50 Runden als einzelne Antworten mit
@@ -71,7 +71,7 @@ saß es" braucht kein Punktemodell — das braucht nur die Rangliste. Sofort
 baubar werden damit:
 
 - [Den Lernfortschritt sehen](feature-request-fortschritt.md), als lokale Seite
-- [Gewichtung Stufe 2](feature-request-auswahl.md) — „schwer" steht jetzt im Aggregat
+- [Gewichtung Stufe 2](feature-implemented-auswahl-2026-08-29-1327.md) — „schwer" steht jetzt im Aggregat
 - Wiederkehrende Potentiale, sobald das Feld `muster` da ist
 
 Gesperrt bleibt nur, was wirklich mehrere Menschen braucht: Vergleiche,
@@ -87,7 +87,7 @@ Missionen, gemeinsamer Punktestand.
   benutzt wurde. Die Uhr setzt sich bei jedem Öffnen zurück — wer regelmäßig
   übt, merkt nie etwas. Es trifft die Lücken: Krankheit, Ferien, Schuljahresende.
   **Genau die Momente, nach denen die Statistik am meisten wert wäre.**
-  Dagegen hilft [Auf dem Homebildschirm](feature-request-homebildschirm.md) —
+  Dagegen hilft [Auf dem Homebildschirm](feature-implemented-homebildschirm-2026-08-29-1327.md) —
   dort gilt die Regel nicht.
 - **Ein geleerter Cache löscht Monate.** Beim `zuletzt` der Auswahl war das
   egal, hier nicht.
@@ -172,7 +172,7 @@ Daten: es ersetzt die Gewichtsformel, nicht das Ziehen.
 
 ## Voraussetzungen
 
-- **Stufe 1:** [Die Speicher-Naht am Gerät](feature-request-storage.md). Sonst
+- **Stufe 1:** [Die Speicher-Naht am Gerät](feature-implemented-storage-2026-08-29-1327.md). Sonst
   nichts.
 - **Stufe 2:** [Mehrere Nutzer](feature-request-mehrere-nutzer.md) — ohne
   Konten gibt es kein `user_id`.

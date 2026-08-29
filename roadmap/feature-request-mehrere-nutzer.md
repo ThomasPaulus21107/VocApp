@@ -61,7 +61,7 @@ sich als schädlich, ist sie dann ein Schalter und kein Rückbau.
 
 ## Die zweite Naht
 
-`infra/backend.js`, neben [`storage.js`](feature-request-storage.md) und
+`infra/backend.js`, neben [`storage.js`](feature-implemented-storage-2026-08-29-1327.md) und
 scharf von ihr getrennt: Gerät gegen Person, synchron gegen asynchron.
 
 Damit die Asynchronität nicht durch die ganze App färbt, gilt ein Muster:

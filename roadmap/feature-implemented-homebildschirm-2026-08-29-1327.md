@@ -1,6 +1,6 @@
 # Feature: Auf dem Homebildschirm
 
-**Status:** bereit — durchdacht, noch nicht gebaut
+**Status:** umgesetzt am 29.08.2026 um 13:27, [PR #19](https://github.com/ThomasPaulus21107/VocApp/pull/19) und [PR #21](https://github.com/ThomasPaulus21107/VocApp/pull/21)
 **Wo im Code:** `manifest.json` — neu, `index.html`, `vite.config.js`
 
 Ein Icon auf Matildas iPhone, das die App öffnet. Kein Umweg über Safari, kein
@@ -74,7 +74,7 @@ Keine. Kann sofort passieren und dauert einen Abend.
   Telefon als Hauptgerät will man beides.
 - **`display: standalone` nimmt die Adressleiste weg.** Damit gibt es keinen
   Zurück-Knopf mehr — sobald es
-  [Seitenmenü](feature-request-seitenmenue.md) und
+  [Seitenmenü](feature-implemented-seitenmenue-2026-08-29-1348.md) und
   [Fortschritt](feature-request-fortschritt.md) als eigene Seiten gibt, muss
   jede davon einen sichtbaren Weg zurück haben. In Safari trägt das der
   Browser, hier nicht mehr.

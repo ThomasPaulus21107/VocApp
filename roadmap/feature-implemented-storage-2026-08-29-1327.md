@@ -1,13 +1,13 @@
 # Feature: Die Speicher-Naht am Gerät
 
-**Status:** bereit — durchdacht, noch nicht gebaut
+**Status:** umgesetzt am 29.08.2026 um 13:27, [PR #20](https://github.com/ThomasPaulus21107/VocApp/pull/20)
 **Wo im Code:** `src/infra/storage.js` — neu
 
 Was man einstellt, soll beim nächsten Öffnen noch da sein. Das ist der
 sichtbare Teil. Der wichtigere ist unsichtbar: **dies ist die einzige Stelle
 im Projekt, die `localStorage` kennt.**
 
-Hieß bis zum 29.08.2026 `feature-request-storage.md`. Der
+Hieß bis zum 29.08.2026 `feature-implemented-storage-2026-08-29-1327.md`. Der
 Name beschrieb den ersten Kunden, nicht die Sache — die Roadmap hat die Datei
 in ihren Links ohnehin schon `storage.js` genannt.
 
@@ -53,7 +53,7 @@ nichts voneinander wissen.
 
 Die Faustregel: **hier darf nur liegen, was man jederzeit wegwerfen würde.**
 
-Das `zuletzt` aus [Welche Karten drankommen](feature-request-auswahl.md)
+Das `zuletzt` aus [Welche Karten drankommen](feature-implemented-auswahl-2026-08-29-1327.md)
 erfüllt das und darf hier rein: geht es verloren, sehen alle Karten gleich alt
 aus, und nach vier Runden ist der Zustand von selbst wiederhergestellt.
 
@@ -69,13 +69,24 @@ Bedingungen:
 2. Mit einem **„Statistik sichern"-Knopf**, der die JSON als Datei
    herunterlädt — auf dem iPhone die einzige Kopie, die eine Ferienlücke
    übersteht, und deshalb keine Kür. Dazu
-   [Auf dem Homebildschirm](feature-request-homebildschirm.md), weil iOS
+   [Auf dem Homebildschirm](feature-implemented-homebildschirm-2026-08-29-1327.md), weil iOS
    `localStorage` sonst nach sieben Tagen ohne Benutzung löscht.
 3. Mit Postgres als **geplantem** Ziel, nicht als vagem Später — der
    Ringpuffer aus Stufe 1 ist genau das, was später hochgeladen wird.
 
 Das ist der Unterschied zwischen einer Ausnahme und einer aufgeweichten Regel:
 sie hat einen Namen, einen Grund und ein Ablaufdatum.
+
+## Der erste Kunde wurde ein anderer
+
+Hier stand, der Töne-Schalter komme mit der Naht zusammen, „damit sie nicht
+als Datei ohne Benutzer entsteht". Gebaut wurde sie dann mit dem
+[Kartenbeutel](feature-implemented-auswahl-2026-08-29-1327.md) als erstem
+Kunden — der erfüllt denselben Zweck besser, weil an ihm etwas hängt.
+
+Der Schalter kam am 29.08.2026 um 13:48 mit dem
+[Seitenmenü](feature-implemented-seitenmenue-2026-08-29-1348.md) nach. Der
+Abschnitt darunter beschreibt, was gedacht war.
 
 ## Der erste Kunde: Töne an/aus
 
@@ -85,7 +96,7 @@ funktionieren, bevor Wichtigeres durchgeht.
 
 Er sitzt vorerst klein auf der **Startseite**, unter der Wahl zwischen
 Übungsblatt und Arbeit, und zieht auf die
-[Seitenmenü](feature-request-seitenmenue.md) um, sobald es die gibt.
+[Seitenmenü](feature-implemented-seitenmenue-2026-08-29-1348.md) um, sobald es die gibt.
 
 ## Was es freischaltet
 

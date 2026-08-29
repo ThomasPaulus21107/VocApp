@@ -1,6 +1,7 @@
 # Feature: Welche Karten drankommen
 
-**Status:** bereit — durchdacht, noch nicht gebaut
+**Status:** Stufe 1 umgesetzt am 29.08.2026 um 13:27, [PR #20](https://github.com/ThomasPaulus21107/VocApp/pull/20)
+**Offen:** Stufe 2 — die Gewichtung nach Schwierigkeit
 **Wo im Code:** `src/domain/auswahl.js` — neu, dazu `src/domain/modus.js`, `src/app.js`
 
 Heute zieht `zieheRunde` reinen Zufall: mischen, die ersten 15 nehmen. Die
@@ -150,13 +151,24 @@ schwerer, nur vollständiger.
 
 ## Voraussetzungen
 
-- **Stufe 1:** [Die Speicher-Naht am Gerät](feature-request-storage.md). Ein
+- **Stufe 1:** [Die Speicher-Naht am Gerät](feature-implemented-storage-2026-08-29-1327.md). Ein
   Gedächtnis, das das Schließen des Browsers überlebt, geht nicht ohne sie —
   und genau darum geht es hier: eine Übungssitzung hat zwei bis drei Runden,
   das Abdeckungsproblem baut sich über Tage auf. Der Beutel ist damit der
   zweite Kunde der Naht, neben dem Töne-Schalter.
 - **Stufe 2:** [Der Lernstand](feature-request-lernstand.md), Stufe 1 (lokal).
   Ohne Statistik gibt es keine Schwierigkeit, und `SCHWERE` bleibt auf null.
+
+## Was davon noch offen ist
+
+Gebaut ist **Stufe 1**: die Abdeckung. Nach vier Runden war jedes Verb einmal
+dran, nach acht jede seiner abgefragten Formen.
+
+**Stufe 2 fehlt** — die Gewichtung nach Schwierigkeit, und damit auch die
+Zeile `auswahlGewichtet` in `modus.js` und der Verhältnis-Deckel. Die
+Voraussetzung dafür steht inzwischen: der
+[Lernstand](feature-request-lernstand.md) zählt, was danebengeht. Es fehlt
+nur noch der zweite Summand in der Formel.
 
 ## Zu beachten
 

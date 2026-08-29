@@ -42,7 +42,7 @@ export function einheiten(karten) {
  * Karte genau einen Eintrag.
  *
  * Spaeter kommt in den Sortierschluessel die Schwierigkeit dazu (Stufe 2 in
- * roadmap/feature-request-auswahl.md). Das ist ein Summand mehr, kein Umbau.
+ * roadmap/feature-implemented-auswahl-2026-08-29-1327.md). Das ist ein Summand mehr, kein Umbau.
  */
 export function zieheRunde(karten, anzahl, zuletzt = {}, rundeNr = 0, zufall = Math.random) {
   const alle = einheiten(karten);

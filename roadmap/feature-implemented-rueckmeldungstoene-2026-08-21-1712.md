@@ -22,5 +22,5 @@ deshalb Matilda, wie der Farbblock im CSS: Zahlen ändern, hören, fertig.
 
 Ein **Ton-Schalter**. Es gibt keine Möglichkeit, die Melodien abzustellen —
 das braucht einen Ort für Einstellungen und etwas, das sie speichert. Beides
-kommt mit [Die Speicher-Naht am Gerät](feature-request-storage.md),
+kommt mit [Die Speicher-Naht am Gerät](feature-implemented-storage-2026-08-29-1327.md),
 wo der Töne-Schalter der erste Kunde der Speicher-Naht ist.

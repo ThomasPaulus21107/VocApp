@@ -1,6 +1,6 @@
 # Feature: Das Seitenmenü
 
-**Status:** bereit — durchdacht, noch nicht gebaut
+**Status:** umgesetzt am 29.08.2026 um 13:48, [PR #22](https://github.com/ThomasPaulus21107/VocApp/pull/22)
 **Wo im Code:** `index.html`, `src/ui/ui.js`, `src/ui/styles.css`, `src/ui/klang.js`
 
 Ein Knopf oben rechts, der eine Lade von der Seite hereinfahren lässt. Darin
@@ -19,7 +19,7 @@ Einstellen sind zwei Situationen, und die Karte soll leer bleiben.
 Zwei Dinge haben sich seitdem geändert:
 
 **Im Standalone-Modus gibt es keinen Zurück-Knopf.** Seit
-[Auf dem Homebildschirm](feature-request-homebildschirm.md) startet die App
+[Auf dem Homebildschirm](feature-implemented-homebildschirm-2026-08-29-1327.md) startet die App
 ohne Adressleiste. Jede eigene Seite muss ihren Weg zurück selbst mitbringen,
 und wer ihn übersieht, sitzt fest. Ein Overlay hat das Problem nicht: es liegt
 über der Karte, und das X schließt es.
@@ -62,7 +62,7 @@ Später kommen weitere Zeilen dazu: die Aufgabenart aus
 
 ## Der Töne-Schalter
 
-Er stand in [`storage.js`](feature-request-storage.md) als erster Kunde der
+Er stand in [`storage.js`](feature-implemented-storage-2026-08-29-1327.md) als erster Kunde der
 Speicher-Naht und ist dort beim Bauen liegengeblieben, weil der Auswahlstand
 diesen Zweck besser erfüllt hat. Hier kommt er nach.
 

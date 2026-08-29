@@ -61,7 +61,7 @@ nur beim Öffnen der App. Dazu kommt „Ergebnisse ansehen" — siehe
 
 ## Nicht die Optionsseite
 
-Die [Seitenmenü](feature-request-seitenmenue.md) ist etwas anderes: eine echte
+Die [Seitenmenü](feature-implemented-seitenmenue-2026-08-29-1348.md) ist etwas anderes: eine echte
 zweite Datei für Einstellungen, die **bleiben** (Töne, Richtung, was geübt
 wird). Der Modus wird bewusst **nicht** gespeichert — er wird jede Runde neu
 gewählt, das ist der Sinn der beiden Knöpfe. Die Startseite ist später der
