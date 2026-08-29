@@ -87,10 +87,13 @@ in dem man wissen will, wie es insgesamt steht, war er am weitesten.
 
 ## Was noch offen ist
 
-**Kein Test öffnet diese Seite.** `src/fleiss.js` ist ungetestet; geprüft ist
-nur die Domäne darunter (`fleiss()` und `serie()` in `lernstand.js`). Das ist
-derselbe blinde Fleck wie bei der Fortschrittsseite und steht in
-[Wie die Oberfläche getestet wird](../feature-request-ui-tests.md).
+**Bis zum 29.08.2026 öffnete kein Test diese Seite.** Geprüft war nur die
+Domäne darunter (`fleiss()` und `serie()` in `lernstand.js`), `src/fleiss.js`
+selbst gar nicht — derselbe blinde Fleck wie bei der Fortschrittsseite. Seit
+[Wie die Oberfläche getestet wird](feature-ui-tests-2026-08-29-1943.md) spielt
+`tests/oberflaeche/seiten.test.js` eine Runde und sieht danach hier nach: die
+dreißig Balken, die Zahlen, die Rundenliste und was ein angetippter Balken
+erzählt.
 
 ## Später
 

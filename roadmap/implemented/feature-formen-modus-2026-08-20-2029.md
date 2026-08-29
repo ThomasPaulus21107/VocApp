@@ -31,5 +31,6 @@ Wortart, die nur einmal vorkommt.
 
 `display: flex` hat das `hidden`-Attribut überstimmt, die Formenzeile blieb
 sichtbar stehen. Kein Test konnte das finden — Funktionstests kennen kein
-Layout. Das ist bis heute der Anlass für
-[Wie die Oberfläche getestet wird](../feature-request-ui-tests.md).
+Layout. Das war der Anlass für
+[Wie die Oberfläche getestet wird](feature-ui-tests-2026-08-29-1943.md) — seit dem 29.08.2026
+hält ein Test genau diesen Fehler fest.

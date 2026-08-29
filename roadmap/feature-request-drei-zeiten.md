@@ -108,7 +108,9 @@ Startseite anfangen, neben Übungsblatt und Arbeit.
   gleichzeitig — dieselbe Aufgabe, anderer Bildschirm. Untereinander in jedem
   Fall, nie nebeneinander. Die Formenzeile ist schon einmal am Layout gescheitert
   ([PR #8](https://github.com/ThomasPaulus21107/VocApp/pull/8)), und genau so
-  ein Fehler ist der Anlass für [Wie die Oberfläche getestet wird](feature-request-ui-tests.md).
+  ein Fehler war der Anlass für [Wie die Oberfläche getestet wird](implemented/feature-ui-tests-2026-08-29-1943.md).
+  Seit dem 29.08.2026 gibt es die Tests — diese Änderung kommt also nicht mehr
+  ungeprüft durch, und wer sie baut, schreibt dort die Zeilen dazu.
 - **`enterkeyhint` und Tab-Reihenfolge.** Enter im ersten Feld darf nicht die
   halb leere Karte abschicken, sondern springt ins nächste. Erst im letzten
   Feld wird geprüft.

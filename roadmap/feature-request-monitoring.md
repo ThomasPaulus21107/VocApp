@@ -36,7 +36,9 @@ mehr, keine neue Abhängigkeit und kein zweiter Anbieter.
 
 Ein fertiger Dienst (Sentry) ist die Alternative und bringt Stacktraces und
 Benachrichtigung mit. Das ist eine Abwägung wie bei
-[UI-Tests](feature-request-ui-tests.md) und keine Selbstverständlichkeit.
+[UI-Tests](implemented/feature-ui-tests-2026-08-29-1943.md) und keine Selbstverständlichkeit.
+Dort ist sie zugunsten der großen Abhängigkeit ausgegangen — das ist ein
+Präzedenzfall und keine Regel.
 
 ## Zu entscheiden
 

@@ -61,5 +61,8 @@ Absicherung, nicht mehr nur eine Gewohnheit.
 ## Nicht dasselbe wie UI-Tests
 
 Hier geht es nur darum, die **vorhandenen** Tests verbindlich zu machen. Ob
-zusätzlich im Browser getestet wird, ist eine eigene Entscheidung mit einer
-neuen Abhängigkeit — siehe [feature-request-ui-tests.md](../feature-request-ui-tests.md).
+zusätzlich im Browser getestet wird, war eine eigene Entscheidung mit einer
+neuen Abhängigkeit — sie ist am 29.08.2026 zugunsten von Playwright gefallen,
+siehe [Wie die Oberfläche getestet wird](feature-ui-tests-2026-08-29-1943.md). Der Lauf dort ist ein
+**zweiter Job** (`oberflaeche`) und muss im Ruleset genauso eingetragen werden
+wie `testen`.
