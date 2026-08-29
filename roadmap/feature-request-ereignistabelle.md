@@ -110,6 +110,27 @@ statisch, der Publishable Key steht im ausgelieferten Bundle — RLS ist damit
 das Einzige zwischen den Daten und dem offenen Netz. Ohne sie liest und
 schreibt jeder mit den Entwicklertools jede Zeile.
 
+### `to authenticated` heißt NICHT „nur echte Konten"
+
+Der Satz, an dem man sich sonst einmal schneidet — Supabase warnt beim
+Einschalten der anonymen Anmeldung selbst davor:
+
+> *Anonymous users will use the **authenticated** role when signing in.*
+
+**Eine anonyme Sitzung ist `authenticated`.** Und eine anonyme Sitzung bekommt
+jeder, der die Seite lädt, in einer Sekunde. `to authenticated` sperrt also
+niemanden aus; es sperrt nur den Fall aus, dass jemand ganz ohne Token
+anfragt — und den gibt es hier nicht.
+
+**Was hier schützt, ist allein das `using (nutzer = auth.uid())`.** Wer diese
+Bedingung durch `using (true)` ersetzt, weil „es sind ja nur Angemeldete",
+öffnet die Tabelle für das offene Netz. Die Zeile sähe harmlos aus und wäre
+das Gegenteil.
+
+Dieselbe Falle steht in `public`: eine Policy für die Rolle `public` gilt für
+**alle**, auch ohne Anmeldung. Deshalb steht hier überall ausdrücklich
+`to authenticated` und nirgends gar nichts.
+
 **Kein `update`, kein `delete`.** Was passiert ist, ist passiert; eine
 Ereignistabelle, in der man nachträglich ändern kann, ist keine. Gelöscht wird
 über den Nutzer — das `on delete cascade` oben räumt hinterher, siehe
@@ -121,7 +142,8 @@ Am 29.08.2026 ist entschieden worden, dass **alle den Fortschritt aller sehen
 dürfen, unter Pseudonymen**. Das ändert an dieser Tabelle nichts, und der Grund
 dafür gehört genau hierher, weil er sonst beim nächsten Anfassen verlorengeht:
 
-1. **`signInAnonymously()` steht jedem offen, der die Seite lädt.** Eine Policy
+1. **`signInAnonymously()` steht jedem offen, der die Seite lädt** — und liefert
+   die Rolle `authenticated`, siehe oben. Eine Policy
    `for select to authenticated using (true)` hieße wörtlich: wer die URL
    kennt, macht sich in einer Sekunde eine Sitzung und liest alles. „Angemeldet"
    ist hier keine Hürde.
