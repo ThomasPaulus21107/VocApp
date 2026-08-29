@@ -91,6 +91,31 @@ Die Regel dazu: Eltern sehen den Fortschritt ihres Kindes, nicht den der
 anderen. Sie steht in [Mehrere Nutzer](../feature-request-mehrere-nutzer.md) als
 offene Entscheidung und muss vorher fallen.
 
+## Was am 29.08.2026 dazugekommen ist
+
+**Der Balken zeigt die drei Fächer.** Links grün, was stabil gelernt ist,
+daneben orange, was in Arbeit ist, der hellrote Rest war noch nie dran. Das
+dritte Stück braucht kein eigenes Element — was die beiden anderen übrig
+lassen, *ist* das dritte Fach, also ist es der Hintergrund der Leiste. Die
+Farben heißen `--nie`, `--in-arbeit` und `--sitzt` und stehen in Matildas
+Bereich.
+
+Vorher maß der Balken die *geübten* Einheiten, während die große Zahl darüber
+die *sicheren* zählte. Bei „0 von 106" stand er damit fast halb gefüllt da.
+
+**Jede Vokabel klappt auf.** Darunter steht, wann sie dran war und was sie
+dabei geholt hat — 100 % auf Anhieb, 50 % im zweiten Anlauf, dieselbe Zahl,
+aus der der Score gemittelt wird. Antworten aus einer Arbeit oder aus der
+Wiederholung bekommen ihren Vermerk. `<details>` macht das Auf und Zu, die
+Liste entsteht erst beim Aufklappen, und wo der Ringpuffer nichts mehr hat,
+steht das da statt einer leeren Liste.
+
+**„… und 21 weitere" ist ein Knopf** und zeigt auf Klick den Rest des Fachs.
+
+Unter der großen Zahl steht ein Satz, der den Stand einordnet und bei null
+stabilen Formen das Lob weglässt. Welche der drei Stufen gilt, entscheidet
+`stufe()` an derselben 75-%-Marke.
+
 ## Voraussetzungen
 
 - [Der Lernstand je Vokabel](feature-lernstand-2026-08-29-1531.md) in **Stufe 1** —
