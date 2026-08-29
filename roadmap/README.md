@@ -15,9 +15,9 @@ backlog.md                                ein Satz, was es ist. Dazu:
    ▼
 feature-request-<thema>.md                durchdacht: was, wo im Code,
    │                                      welche Voraussetzungen
-   │  Gebaut, getestet, gemergt — die Datei wird umbenannt
+   │  Gebaut, getestet, gemergt — die Datei zieht um
    ▼
-feature-implemented-<thema>-<JJJJ-MM-TT-hhmm>.md
+implemented/feature-<thema>-<JJJJ-MM-TT-hhmm>.md
 ```
 
 Rückwärts geht es auch: was refined war und wieder ruht, wird zu einem
@@ -28,20 +28,27 @@ Gefühltes — entweder es gibt die Request-Datei, oder das Feature ist noch
 nicht so weit. Eine separate Liste „bereit für den nächsten Sprint" gibt es
 deshalb nicht: **die Request-Dateien sind diese Liste.**
 
-## Der Dateiname sagt, was schon steht
+## Der Ort sagt, was schon steht
 
-Ein `ls roadmap/` soll reichen. Deshalb steht der Zustand **vorne im
-Dateinamen**, und die Dateien sortieren sich von allein in zwei Blöcke:
+Ein `ls roadmap/` soll reichen: **was dort direkt liegt, ist offen — was
+gebaut ist, liegt in `implemented/`.**
 
-| Name | Was das heißt |
+| Wo | Was das heißt |
 |---|---|
 | `feature-request-<thema>.md` | durchdacht, aber noch nicht gebaut. Kann drankommen. |
-| `feature-implemented-<thema>-<JJJJ-MM-TT-hhmm>.md` | gebaut. Datum und Uhrzeit sind der Zeitpunkt, an dem es in `main` lag. |
+| `implemented/feature-<thema>-<JJJJ-MM-TT-hhmm>.md` | gebaut. Datum und Uhrzeit sind der Zeitpunkt, an dem es in `main` lag. |
 
-**Umbenannt wird beim Merge**, nicht vorher — ein halb gebautes Feature heißt
-weiter `request`. Weil die `id` einer Datei ihr Name ist, ändern sich dabei
-auch die Links: wer umbenennt, sucht einmal nach dem alten Namen und zieht
-Roadmap, `AGENTS.md` und die anderen Feature-Dateien nach.
+Bis zum 29.08.2026 stand der Zustand im Dateinamen (`feature-implemented-…`).
+Das hat funktioniert, solange es eine Handvoll Dateien waren; bei
+einundzwanzig gebauten gegen zehn offene war der Ordner nur noch Archiv mit
+ein paar aktuellen Dateien dazwischen. **Der Unterordner trennt schärfer als
+ein Präfix**, und im Namen steht das Wort jetzt nicht mehr zweimal.
+
+**Umgezogen wird beim Merge**, nicht vorher — ein halb gebautes Feature bleibt
+liegen, wo es liegt. Weil die `id` einer Datei ihr Pfad ist, ändern sich dabei
+die Links: wer verschiebt, sucht einmal nach dem alten Pfad und zieht Roadmap,
+`AGENTS.md` und die anderen Feature-Dateien nach. Aus `implemented/` heraus
+zeigen Links mit `../` auf die offenen Dateien.
 
 In der Datei selbst steht eine Statuszeile:
 
@@ -68,7 +75,7 @@ der Auswahl dessen, was als Nächstes refined wird.
 |---|---|
 | [backlog.md](backlog.md) | Ideen, noch nicht durchdacht |
 | `feature-request-*.md` | je ein durchdachtes Feature, noch nicht gebaut |
-| `feature-implemented-*.md` | je ein gebautes Feature, mit Datum im Namen |
+| [`implemented/`](implemented) | je ein gebautes Feature, mit Datum im Namen |
 
 ### Was gebaut ist
 
@@ -76,27 +83,27 @@ Von unten nach oben, neueste zuerst.
 
 | Feature | Wann |
 |---|---|
-| [Das Seitenmenü](feature-implemented-seitenmenue-2026-08-29-1348.md) | 29.08. 13:48 |
-| [Auf dem Homebildschirm](feature-implemented-homebildschirm-2026-08-29-1327.md) | 29.08. 13:27 |
-| [Welche Karten drankommen](feature-implemented-auswahl-2026-08-29-1327.md) (Stufe 1) | 29.08. 13:27 |
-| [Die Speicher-Naht am Gerät](feature-implemented-storage-2026-08-29-1327.md) | 29.08. 13:27 |
-| [Rote Tests blockieren den Merge](feature-implemented-tests-in-ci-2026-08-25-2243.md) | 25.08. 22:43 |
-| [Wie streng die App prüft](feature-implemented-pruefstrenge-2026-08-25-2231.md) | 25.08. 22:31 |
-| [Kleinkram in der Oberfläche](feature-implemented-kleinkram-2026-08-25-2231.md) | 25.08. 22:31 |
-| [Die App passt auf ein schmales Handy](feature-implemented-mobile-390-2026-08-25-2231.md) | 25.08. 22:31 |
-| [Der Moment nach der Runde](feature-implemented-nach-der-runde-2026-08-25-2212.md) | 25.08. 22:12 |
-| [Die Lernpotential-Runde](feature-implemented-lernpotential-2026-08-24-2211.md) | 24.08. 22:11 |
-| [Übungsblatt oder Arbeit](feature-implemented-arbeit-oder-uebungsblatt-2026-08-24-2022.md) | 24.08. 20:22 |
-| [Die Ergebnisse nachlesen](feature-implemented-ergebnisliste-2026-08-24-2022.md) | 24.08. 20:22 |
-| [Das Ergebnis als Schulnote](feature-implemented-schulnoten-2026-08-22-1115.md) | 22.08. 11:15 |
-| [Die Roadmap](feature-implemented-roadmap-2026-08-21-1839.md) | 21.08. 18:39 |
-| [Fokus auf das aktuelle Lernziel](feature-implemented-fokus-auf-verben-2026-08-21-1712.md) | 21.08. 17:12 |
-| [Eine zweite Chance bei Fehlern](feature-implemented-zweite-chance-2026-08-21-1712.md) | 21.08. 17:12 |
-| [Zwei Easter Eggs im Eingabefeld](feature-implemented-easter-eggs-2026-08-21-1712.md) | 21.08. 17:12 |
-| [Töne für die Rückmeldung](feature-implemented-rueckmeldungstoene-2026-08-21-1712.md) | 21.08. 17:12 |
-| [Unregelmäßige Verben mit drei Formen](feature-implemented-formen-modus-2026-08-20-2029.md) | 20.08. 20:29 |
-| [Die App liegt unter einer öffentlichen URL](feature-implemented-deploy-auf-pages-2026-08-20-1558.md) | 20.08. 15:58 |
-| [Die Kartenabfrage](feature-implemented-kartenabfrage-2026-08-20-1454.md) | 20.08. 14:54 |
+| [Das Seitenmenü](implemented/feature-seitenmenue-2026-08-29-1348.md) | 29.08. 13:48 |
+| [Auf dem Homebildschirm](implemented/feature-homebildschirm-2026-08-29-1327.md) | 29.08. 13:27 |
+| [Welche Karten drankommen](implemented/feature-auswahl-2026-08-29-1327.md) (Stufe 1) | 29.08. 13:27 |
+| [Die Speicher-Naht am Gerät](implemented/feature-storage-2026-08-29-1327.md) | 29.08. 13:27 |
+| [Rote Tests blockieren den Merge](implemented/feature-tests-in-ci-2026-08-25-2243.md) | 25.08. 22:43 |
+| [Wie streng die App prüft](implemented/feature-pruefstrenge-2026-08-25-2231.md) | 25.08. 22:31 |
+| [Kleinkram in der Oberfläche](implemented/feature-kleinkram-2026-08-25-2231.md) | 25.08. 22:31 |
+| [Die App passt auf ein schmales Handy](implemented/feature-mobile-390-2026-08-25-2231.md) | 25.08. 22:31 |
+| [Der Moment nach der Runde](implemented/feature-nach-der-runde-2026-08-25-2212.md) | 25.08. 22:12 |
+| [Die Lernpotential-Runde](implemented/feature-lernpotential-2026-08-24-2211.md) | 24.08. 22:11 |
+| [Übungsblatt oder Arbeit](implemented/feature-arbeit-oder-uebungsblatt-2026-08-24-2022.md) | 24.08. 20:22 |
+| [Die Ergebnisse nachlesen](implemented/feature-ergebnisliste-2026-08-24-2022.md) | 24.08. 20:22 |
+| [Das Ergebnis als Schulnote](implemented/feature-schulnoten-2026-08-22-1115.md) | 22.08. 11:15 |
+| [Die Roadmap](implemented/feature-roadmap-2026-08-21-1839.md) | 21.08. 18:39 |
+| [Fokus auf das aktuelle Lernziel](implemented/feature-fokus-auf-verben-2026-08-21-1712.md) | 21.08. 17:12 |
+| [Eine zweite Chance bei Fehlern](implemented/feature-zweite-chance-2026-08-21-1712.md) | 21.08. 17:12 |
+| [Zwei Easter Eggs im Eingabefeld](implemented/feature-easter-eggs-2026-08-21-1712.md) | 21.08. 17:12 |
+| [Töne für die Rückmeldung](implemented/feature-rueckmeldungstoene-2026-08-21-1712.md) | 21.08. 17:12 |
+| [Unregelmäßige Verben mit drei Formen](implemented/feature-formen-modus-2026-08-20-2029.md) | 20.08. 20:29 |
+| [Die App liegt unter einer öffentlichen URL](implemented/feature-deploy-auf-pages-2026-08-20-1558.md) | 20.08. 15:58 |
+| [Die Kartenabfrage](implemented/feature-kartenabfrage-2026-08-20-1454.md) | 20.08. 14:54 |
 
 ### Was durchdacht ist und wartet
 
@@ -154,7 +161,7 @@ Sprint-Dateien hierher:
   Branch, Pull Request, Merge. Der Git-Ablauf ist Teil des Lernziels und wird
   bewusst von Hand gemacht.
 - **Vor dem Pull Request einmal `npm test`.** Seit dem 25.08.2026 prüft das
-  auch [GitHub bei jedem Pull Request](feature-implemented-tests-in-ci-2026-08-25-2243.md)
+  auch [GitHub bei jedem Pull Request](implemented/feature-tests-in-ci-2026-08-25-2243.md)
   und blockiert den Merge, wenn es rot ist. Vorher selbst zu testen spart
   trotzdem die Wartezeit.
 

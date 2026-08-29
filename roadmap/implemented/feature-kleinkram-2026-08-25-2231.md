@@ -6,7 +6,7 @@
 Drei Kleinigkeiten, die einzeln zu klein für eine Datei sind. Diese Datei hieß
 vorher `feature-request-feinschliff.md`; der Trenner zwischen Übung und
 Wiederholung ist daraus zu
-[Der Moment nach der Runde](feature-implemented-nach-der-runde-2026-08-25-2212.md)
+[Der Moment nach der Runde](feature-nach-der-runde-2026-08-25-2212.md)
 umgezogen, weil er zu einer echten Zwischenseite gewachsen ist.
 
 ## 1. Der Abstand der Formenzeile

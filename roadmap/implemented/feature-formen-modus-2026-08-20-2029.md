@@ -32,4 +32,4 @@ Wortart, die nur einmal vorkommt.
 `display: flex` hat das `hidden`-Attribut überstimmt, die Formenzeile blieb
 sichtbar stehen. Kein Test konnte das finden — Funktionstests kennen kein
 Layout. Das ist bis heute der Anlass für
-[Wie die Oberfläche getestet wird](feature-request-ui-tests.md).
+[Wie die Oberfläche getestet wird](../feature-request-ui-tests.md).

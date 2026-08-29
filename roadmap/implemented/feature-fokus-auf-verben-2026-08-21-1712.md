@@ -30,6 +30,6 @@ Vokabel-Strang wieder aufgenommen wird — der steht dafür in `backlog.md`.
 ## Die Rundengröße
 
 Stand hier zunächst auf 20, ohne dass die Zahl je entschieden wurde. Sie ist
-mit [dem Ergebnis als Schulnote](feature-implemented-schulnoten-2026-08-22-1115.md)
+mit [dem Ergebnis als Schulnote](feature-schulnoten-2026-08-22-1115.md)
 auf **15** festgelegt worden: eine Karte, ein Punkt, und die Punkteskala der
 Oberstufe endet bei 15.

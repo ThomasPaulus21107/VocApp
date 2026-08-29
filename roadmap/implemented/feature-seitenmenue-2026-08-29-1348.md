@@ -19,7 +19,7 @@ Einstellen sind zwei Situationen, und die Karte soll leer bleiben.
 Zwei Dinge haben sich seitdem geändert:
 
 **Im Standalone-Modus gibt es keinen Zurück-Knopf.** Seit
-[Auf dem Homebildschirm](feature-implemented-homebildschirm-2026-08-29-1327.md) startet die App
+[Auf dem Homebildschirm](feature-homebildschirm-2026-08-29-1327.md) startet die App
 ohne Adressleiste. Jede eigene Seite muss ihren Weg zurück selbst mitbringen,
 und wer ihn übersieht, sitzt fest. Ein Overlay hat das Problem nicht: es liegt
 über der Karte, und das X schließt es.
@@ -44,25 +44,25 @@ und gehört ins Menü, die Statistik ist Inhalt zum Scrollen und gehört auf ein
 eigene Seite.
 
 Gebaut wurde in dieser Reihenfolge, und sie ist leicht falsch herum zu bauen:
-erst [das Mitschreiben](feature-request-lernstand.md), dann
-[die Seite](feature-request-fortschritt.md), dann die Zeile hier. Wer mit der
+erst [das Mitschreiben](../feature-request-lernstand.md), dann
+[die Seite](../feature-request-fortschritt.md), dann die Zeile hier. Wer mit der
 Seite anfängt, hat sie am Tag ihrer Fertigstellung leer — und für Wochen.
 
 Der Unterschied ist Absicht. Ein Schalter ist eine Zeile und gehört ins Menü.
-Die [Statistik](feature-request-fortschritt.md) sind 106 Einheiten, nach
+Die [Statistik](../feature-request-fortschritt.md) sind 106 Einheiten, nach
 Mustern gruppiert, plus die letzten Runden — das ist Inhalt zum Scrollen und
 gehört auf eine eigene Seite, auch auf einem Telefon. Sie bekommt dann einen
 sichtbaren Weg zurück, siehe oben.
 
 Später kommen weitere Zeilen dazu: die Aufgabenart aus
-[Alle drei Zeiten](feature-request-drei-zeiten.md), was geübt wird aus dem
-[Vokabel-Import](feature-request-vokabel-import-klasse-5.md), die
-[Richtung](feature-request-richtung.md). Jede ist eine Zeile mehr, kein Umbau
+[Alle drei Zeiten](../feature-request-drei-zeiten.md), was geübt wird aus dem
+[Vokabel-Import](../feature-request-vokabel-import-klasse-5.md), die
+[Richtung](../feature-request-richtung.md). Jede ist eine Zeile mehr, kein Umbau
 — das war schon der Anspruch an die Optionsseite und gilt hier weiter.
 
 ## Der Töne-Schalter
 
-Er stand in [`storage.js`](feature-implemented-storage-2026-08-29-1327.md) als erster Kunde der
+Er stand in [`storage.js`](feature-storage-2026-08-29-1327.md) als erster Kunde der
 Speicher-Naht und ist dort beim Bauen liegengeblieben, weil der Auswahlstand
 diesen Zweck besser erfüllt hat. Hier kommt er nach.
 

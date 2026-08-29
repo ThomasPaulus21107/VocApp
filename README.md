@@ -44,9 +44,10 @@ Wie das Format geht, steht in `data/README.md`.
 
 ## Was als Nächstes kommt
 
-Der Fahrplan steht in [`roadmap/`](roadmap/). Der Dateiname sagt dort, was
-schon steht: `feature-implemented-*` ist gebaut, `feature-request-*` ist
-durchdacht und wartet, alles Übrige liegt im Backlog.
+Der Fahrplan steht in [`roadmap/`](roadmap). Der Ort sagt dort, was schon
+steht: was in [`roadmap/implemented/`](roadmap/implemented) liegt, ist gebaut;
+was direkt daneben als `feature-request-*` liegt, ist durchdacht und wartet.
+Alles Übrige steht im Backlog.
 
 ## Aufbau
 

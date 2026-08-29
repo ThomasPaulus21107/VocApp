@@ -7,7 +7,7 @@ Was man einstellt, soll beim nächsten Öffnen noch da sein. Das ist der
 sichtbare Teil. Der wichtigere ist unsichtbar: **dies ist die einzige Stelle
 im Projekt, die `localStorage` kennt.**
 
-Hieß bis zum 29.08.2026 `feature-implemented-storage-2026-08-29-1327.md`. Der
+Hieß bis zum 29.08.2026 `feature-request-einstellungen-speichern.md`. Der
 Name beschrieb den ersten Kunden, nicht die Sache — die Roadmap hat die Datei
 in ihren Links ohnehin schon `storage.js` genannt.
 
@@ -29,7 +29,7 @@ Matilda und muss ihr auf jedes Gerät folgen. Beides in eine Naht zu zwingen
 hieße, eines von beiden falsch zu machen.
 
 Diese Datei beschreibt nur die erste. Die zweite steht in
-[Der Lernstand je Vokabel](feature-request-lernstand.md).
+[Der Lernstand je Vokabel](../feature-request-lernstand.md).
 
 ## Was drinsteht
 
@@ -53,13 +53,13 @@ nichts voneinander wissen.
 
 Die Faustregel: **hier darf nur liegen, was man jederzeit wegwerfen würde.**
 
-Das `zuletzt` aus [Welche Karten drankommen](feature-implemented-auswahl-2026-08-29-1327.md)
+Das `zuletzt` aus [Welche Karten drankommen](feature-auswahl-2026-08-29-1327.md)
 erfüllt das und darf hier rein: geht es verloren, sehen alle Karten gleich alt
 aus, und nach vier Runden ist der Zustand von selbst wiederhergestellt.
 
 ### Eine benannte Ausnahme, befristet
 
-Der [Lernstand je Vokabel](feature-request-lernstand.md) in seiner Stufe 1
+Der [Lernstand je Vokabel](../feature-request-lernstand.md) in seiner Stufe 1
 erfüllt die Faustregel **nicht** — eine über Monate gewachsene Statistik will
 niemand wegwerfen. Er liegt trotzdem hier, und zwar bewusst und unter drei
 Bedingungen:
@@ -69,7 +69,7 @@ Bedingungen:
 2. Mit einem **„Statistik sichern"-Knopf**, der die JSON als Datei
    herunterlädt — auf dem iPhone die einzige Kopie, die eine Ferienlücke
    übersteht, und deshalb keine Kür. Dazu
-   [Auf dem Homebildschirm](feature-implemented-homebildschirm-2026-08-29-1327.md), weil iOS
+   [Auf dem Homebildschirm](feature-homebildschirm-2026-08-29-1327.md), weil iOS
    `localStorage` sonst nach sieben Tagen ohne Benutzung löscht.
 3. Mit Postgres als **geplantem** Ziel, nicht als vagem Später — der
    Ringpuffer aus Stufe 1 ist genau das, was später hochgeladen wird.
@@ -81,11 +81,11 @@ sie hat einen Namen, einen Grund und ein Ablaufdatum.
 
 Hier stand, der Töne-Schalter komme mit der Naht zusammen, „damit sie nicht
 als Datei ohne Benutzer entsteht". Gebaut wurde sie dann mit dem
-[Kartenbeutel](feature-implemented-auswahl-2026-08-29-1327.md) als erstem
+[Kartenbeutel](feature-auswahl-2026-08-29-1327.md) als erstem
 Kunden — der erfüllt denselben Zweck besser, weil an ihm etwas hängt.
 
 Der Schalter kam am 29.08.2026 um 13:48 mit dem
-[Seitenmenü](feature-implemented-seitenmenue-2026-08-29-1348.md) nach. Der
+[Seitenmenü](feature-seitenmenue-2026-08-29-1348.md) nach. Der
 Abschnitt darunter beschreibt, was gedacht war.
 
 ## Der erste Kunde: Töne an/aus
@@ -96,12 +96,12 @@ funktionieren, bevor Wichtigeres durchgeht.
 
 Er sitzt vorerst klein auf der **Startseite**, unter der Wahl zwischen
 Übungsblatt und Arbeit, und zieht auf die
-[Seitenmenü](feature-implemented-seitenmenue-2026-08-29-1348.md) um, sobald es die gibt.
+[Seitenmenü](feature-seitenmenue-2026-08-29-1348.md) um, sobald es die gibt.
 
 ## Was es freischaltet
 
 Das Seitenmenü und die Wahl der Aufgabenart aus
-[Alle drei Zeiten](feature-request-drei-zeiten.md). Es blockiert nichts,
+[Alle drei Zeiten](../feature-request-drei-zeiten.md). Es blockiert nichts,
 kostet einen Abend und ist danach nie wieder Thema.
 
 ## Zu beachten
@@ -112,5 +112,5 @@ kostet einen Abend und ist danach nie wieder Thema.
 - Der Speicher hängt am Browser, nicht an der Person. Wer sich einen Rechner
   teilt, teilt sich die Einstellungen. Das ist hier **richtig so** und kein
   Mangel — die Person kommt über
-  [Mehrere Nutzer](feature-request-mehrere-nutzer.md) und echte Konten, nicht
+  [Mehrere Nutzer](../feature-request-mehrere-nutzer.md) und echte Konten, nicht
   über einen Namen im Speicherschlüssel.

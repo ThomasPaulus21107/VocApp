@@ -49,7 +49,7 @@ die Sorte Änderung, bei der der Sprint-1-Fehler wieder passiert:
 - **Drei Eingabefelder** statt einem in [Alle drei Zeiten](feature-request-drei-zeiten.md),
   auf 390 px, mit Tab-Reihenfolge — dieselbe Formenzeile, die schon einmal am
   Layout gescheitert ist
-- **Zwei weitere Seiten** ([Seitenmenü](feature-implemented-seitenmenue-2026-08-29-1348.md),
+- **Zwei weitere Seiten** ([Seitenmenü](implemented/feature-seitenmenue-2026-08-29-1348.md),
   [Fortschritt](feature-request-fortschritt.md)), die kein Test je öffnet
 - **Fremde Nutzer.** Heute sagt Matilda beim Abendessen, dass etwas kaputt ist.
   Ein Dutzend Kinder sagt gar nichts, sie hören auf.
@@ -63,6 +63,6 @@ Keine. Kann jederzeit passieren.
 
 ## Nicht verwechseln mit
 
-[Rote Tests blockieren den Merge](feature-implemented-tests-in-ci-2026-08-25-2243.md) — dort geht es
+[Rote Tests blockieren den Merge](implemented/feature-tests-in-ci-2026-08-25-2243.md) — dort geht es
 darum, die vorhandenen Tests verbindlich zu machen. Das ist unabhängig davon
 und braucht keine neue Abhängigkeit.

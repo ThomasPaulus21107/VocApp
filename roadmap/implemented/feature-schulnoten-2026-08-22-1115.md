@@ -40,7 +40,7 @@ hat, steht mit in der Punktzahl:
 | „keine Ahnung" | kostet nichts — es ist kein Fehlversuch |
 
 Zweiter Versuch und Tipp gibt es nur im Übungsblatt. In der
-[Arbeit](feature-implemented-arbeit-oder-uebungsblatt-2026-08-24-2022.md) ist jede Karte 1 oder 0 — die
+[Arbeit](feature-arbeit-oder-uebungsblatt-2026-08-24-2022.md) ist jede Karte 1 oder 0 — die
 Tabelle darüber gilt trotzdem unverändert, sie kommt dort nur seltener zum
 Zug.
 
@@ -85,7 +85,7 @@ nachvollziehbar, wo die Note herkommt.
 ## Noch offen
 
 Zieht man später weniger als 15 Karten — die Übungsauswahl im
-[Backlog](backlog.md) kann das —, ist die Höchstpunktzahl kleiner und selbst
+[Backlog](../backlog.md) kann das —, ist die Höchstpunktzahl kleiner und selbst
 eine fehlerfreie Runde ergäbe eine schlechte Note. Der Endbildschirm sagt
 deshalb ehrlich „von 9 Punkten", aber die Umrechnung passt dann nicht mehr.
 Gehört zur Übungsauswahl, nicht hierher.
@@ -94,5 +94,5 @@ Gehört zur Übungsauswahl, nicht hierher.
 
 - Matildas Aufgabe, **zu jeder Note einen Text zu schreiben** — die Note sagt
   das Ergebnis, der Text sagt, wie es weitergeht.
-- Der **Lernpotential-Runde** ([backlog.md](backlog.md), bereit): sie nutzt
+- Der **Lernpotential-Runde** ([backlog.md](../backlog.md), bereit): sie nutzt
   dieselben falschen Karten, die für die Note ohnehin gezählt werden.

@@ -11,7 +11,7 @@ Oberfläche und Ton, keine Regel — die Note ändert sich durch nichts davon.
 ## 1. Die Zwischenseite
 
 Heute läuft nach der letzten Karte die
-[Lernpotential-Runde](feature-implemented-lernpotential-2026-08-24-2211.md)
+[Lernpotential-Runde](feature-lernpotential-2026-08-24-2211.md)
 direkt an. Sichtbar ist das nur am Zähler oben und an einem Satz in der
 Rückmeldungszeile — wer gerade tippt, übersieht beides.
 

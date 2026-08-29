@@ -28,4 +28,4 @@ einen alten Stand hochladen, ohne dass es auffällt.
 
 **Nur Build und Deploy sind damit erledigt.** Tests als Merge-Bedingung sind
 ein eigenes Vorhaben, siehe
-[Rote Tests blockieren den Merge](feature-implemented-tests-in-ci-2026-08-25-2243.md).
+[Rote Tests blockieren den Merge](feature-tests-in-ci-2026-08-25-2243.md).

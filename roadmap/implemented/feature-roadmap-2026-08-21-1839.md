@@ -20,5 +20,9 @@ Der Code sagt, was die App *ist*; dieser Ordner sagt, wohin sie soll.
   Feature-Dateien und im Backlog, ihre Rituale in `README.md`. Zwei Ordnungen
   nebeneinander — Sprints *und* Feature-Zustände — hätten sich nur
   gegenseitig veraltet.
+- **29.08.2026:** Nicht mehr der Name sagt den Zustand, sondern der **Ort**:
+  Gebautes liegt in `implemented/`. Bei einundzwanzig gebauten gegen zehn
+  offene Dateien war der Ordner nur noch Archiv mit ein paar aktuellen
+  Dateien dazwischen. Diese Datei ist selbst mit umgezogen.
 
-Beides steht in `README.md` ausführlich.
+Alles drei steht in `README.md` ausführlich.

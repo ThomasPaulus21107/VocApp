@@ -29,7 +29,7 @@ Ergebnis kommt am Ende, auf einmal, als Note.
 
 Preis dafür: die falschen Wörter sieht man während der Runde nicht mehr.
 Zurück bekommt man sie nach der Runde in der
-[Ergebnisliste](feature-implemented-ergebnisliste-2026-08-24-2022.md) — die ist deshalb kein Beiwerk,
+[Ergebnisliste](feature-ergebnisliste-2026-08-24-2022.md) — die ist deshalb kein Beiwerk,
 sondern gehört zu diesem Modus dazu.
 
 Zwei Dinge bleiben in beiden Modi gleich: eine **leere Eingabe** verbraucht
@@ -57,11 +57,11 @@ Startseite  ->  Runde  ->  Note  ->  Startseite? Nein:
 Am Ende einer Runde ersetzen „Übungsblatt" und „Arbeit" den alten Knopf
 „Noch eine Runde". Ein Klick startet sofort. Die Startseite sieht man deshalb
 nur beim Öffnen der App. Dazu kommt „Ergebnisse ansehen" — siehe
-[Die Ergebnisse nachlesen](feature-implemented-ergebnisliste-2026-08-24-2022.md).
+[Die Ergebnisse nachlesen](feature-ergebnisliste-2026-08-24-2022.md).
 
 ## Nicht die Optionsseite
 
-Die [Seitenmenü](feature-implemented-seitenmenue-2026-08-29-1348.md) ist etwas anderes: eine echte
+Die [Seitenmenü](feature-seitenmenue-2026-08-29-1348.md) ist etwas anderes: eine echte
 zweite Datei für Einstellungen, die **bleiben** (Töne, Richtung, was geübt
 wird). Der Modus wird bewusst **nicht** gespeichert — er wird jede Runde neu
 gewählt, das ist der Sinn der beiden Knöpfe. Die Startseite ist später der
