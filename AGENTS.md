@@ -418,9 +418,12 @@ git push -u origin thema-des-branches
 - Nach dem Löschen eines Branches auf GitHub räumt `git fetch --prune` die
   veralteten Einträge unter `git branch -r` weg.
 
-**Für KI-Assistenten:** keine Commits oder Pushes ohne ausdrückliche
-Aufforderung. Der Git-Ablauf ist hier Teil des Lernziels und wird bewusst von
-Hand gemacht.
+**Für KI-Assistenten:** Commits, Pushes und Pull Requests sind seit dem
+29.08.2026 freigegeben — auf einem Branch, mit nachgezogener Doku und grünen
+Tests. **Gemergt wird von Hand.** Der Merge ist die Stelle, an der jemand
+hinschaut, und die bleibt beim Menschen. Bis dahin galt hier „keine Commits
+ohne ausdrückliche Aufforderung", weil der Git-Ablauf Teil des Lernziels war;
+inzwischen sitzt er, und die Nachfrage kostete nur einen Zug.
 
 ---
 

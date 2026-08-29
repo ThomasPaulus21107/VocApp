@@ -276,6 +276,64 @@ export function stufe({ sicher, gesamt }) {
 }
 
 /**
+ * Was der Verlauf ueber EINE Einheit weiss, neueste Antwort zuerst.
+ *
+ * Der Ringpuffer reicht 750 Antworten zurueck -- was aelter ist, steht nicht
+ * mehr drin. Eine leere Liste heisst also nicht "nie geuebt", sondern nur
+ * "nicht mehr im Verlauf". Die Zaehler in `einheiten` wissen es weiter.
+ */
+export function verlaufZu(stand, name) {
+  return stand.verlauf
+    .filter((eintrag) => schluessel(eintrag.id, eintrag.form) === name)
+    .reverse();
+}
+
+// Ab dieser Pause faengt eine neue Sitzung an. Eine halbe Stunde ist lang
+// genug fuer eine Unterbrechung am Abendbrottisch und kurz genug, dass der
+// naechste Tag nicht mehr dazugehoert.
+export const SITZUNG_PAUSE_MS = 30 * 60 * 1000;
+
+/**
+ * Der Verlauf, in Sitzungen zerlegt: neueste zuerst.
+ *
+ * Eine Sitzung ist, was ohne laengere Pause hintereinander beantwortet wurde
+ * -- nicht eine Runde. Wer zwei Runden hintereinander spielt, hat einmal
+ * geuebt, und genau das soll die Liste zeigen.
+ *
+ * Bewusst aus dem Verlauf gerechnet und nicht mitgeschrieben: dann gilt es
+ * auch fuer alles, was schon gespeichert ist.
+ */
+export function sitzungen(stand, pause = SITZUNG_PAUSE_MS) {
+  const alle = [];
+
+  for (const eintrag of stand.verlauf) {
+    const letzte = alle.at(-1);
+
+    if (!letzte || eintrag.zeit - letzte.ende > pause) {
+      alle.push({
+        beginn: eintrag.zeit, ende: eintrag.zeit,
+        antworten: 0, richtig: 0, punkte: 0,
+      });
+    }
+
+    const sitzung = alle.at(-1);
+    sitzung.ende = eintrag.zeit;
+    sitzung.antworten += 1;
+    sitzung.punkte += eintrag.punkte ?? 0;
+    if (eintrag.ausgang === AUSGAENGE.RICHTIG) sitzung.richtig += 1;
+  }
+
+  // Die Quote ist dieselbe Rechnung wie bei den Tagen: Treffer durch
+  // Antworten. Ohne Antworten gibt es keine Sitzung, also teilt hier
+  // niemand durch null.
+  for (const sitzung of alle) {
+    sitzung.quote = Math.round((sitzung.richtig / sitzung.antworten) * 100);
+  }
+
+  return alle.reverse();
+}
+
+/**
  * Die letzten `anzahl` Tage, aeltester zuerst -- auch die, an denen nichts
  * passiert ist. Ein Balkendiagramm mit Luecken zeigt Fleiss ehrlicher als
  * eines, das nur die guten Tage kennt.

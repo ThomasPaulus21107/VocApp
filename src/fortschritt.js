@@ -4,7 +4,7 @@
 import './ui/styles.css';
 import verben from '../data/unregelmaessige-verben.json';
 import { einheiten } from './domain/auswahl.js';
-import { uebersicht, verteile, stufe, schluessel, LEER, SICHER_AB_PROZENT } from './domain/lernstand.js';
+import { uebersicht, verteile, stufe, verlaufZu, schluessel, LEER, SICHER_AB_PROZENT } from './domain/lernstand.js';
 import { FORM_NAME } from './ui/formnamen.js';
 import * as storage from './infra/storage.js';
 import { verbindeMenue } from './ui/menue.js';
@@ -84,12 +84,73 @@ function span(klasse, text) {
   return knoten;
 }
 
-/** Eine Zeile der Liste: das Wort und, wo einer gemessen wurde, sein Score. */
+/** "29.08. um 16:40" -- wann eine einzelne Antwort gefallen ist. */
+function wannGenau(zeit) {
+  const wann = new Date(zeit);
+  const tag = wann.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+  const uhr = wann.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+  return `${tag} um ${uhr}`;
+}
+
+/**
+ * Was der Verlauf über diese eine Form weiß: wann sie dran war und was sie
+ * dabei geholt hat. Der Prozentwert ist derselbe wie der Score, nur für eine
+ * einzelne Antwort -- ganz richtig ist 100 %, im zweiten Anlauf 50 %.
+ */
+function historie(name) {
+  const eintraege = verlaufZu(stand, name);
+
+  if (eintraege.length === 0) {
+    const hinweis = document.createElement('p');
+    hinweis.className = 'fach__ohne';
+    hinweis.textContent =
+      'Dazu ist nichts mehr gespeichert — der Verlauf reicht 750 Antworten zurück.';
+    return hinweis;
+  }
+
+  const liste = document.createElement('ol');
+  liste.className = 'fach__historie';
+
+  for (const eintrag of eintraege) {
+    const knoten = document.createElement('li');
+    knoten.className = 'fach__antwort';
+    knoten.append(span('fach__wann', wannGenau(eintrag.zeit)));
+
+    // Eine Wiederholung wiegt weniger -- das soll man auch hier sehen.
+    if (eintrag.wiederholung) knoten.append(span('fach__vermerk', 'Wiederholung'));
+    else if (eintrag.modus === 'arbeit') knoten.append(span('fach__vermerk', 'Arbeit'));
+
+    knoten.append(span('fach__punkte', `${Math.round((eintrag.punkte ?? 0) * 100)} %`));
+    liste.append(knoten);
+  }
+  return liste;
+}
+
+/**
+ * Eine Zeile der Liste: das Wort und, wo einer gemessen wurde, sein Score.
+ * Sie klappt auf und zeigt dann, wann die Form dran war.
+ *
+ * <details> macht das Auf und Zu von allein -- mit der Tastatur, mit dem
+ * Finger und für den Screenreader, ohne eine Zeile dafür.
+ */
 function zeile({ name, score }) {
   const knoten = document.createElement('li');
-  knoten.className = 'fach__zeile';
-  knoten.append(span('fach__wort', beschriftung(name)));
-  if (score !== null) knoten.append(span('fach__score', `${score} %`));
+  const lade = document.createElement('details');
+
+  const kopf = document.createElement('summary');
+  kopf.className = 'fach__zeile';
+  kopf.append(span('fach__pfeil', '▸'));
+  kopf.append(span('fach__wort', beschriftung(name)));
+  if (score !== null) kopf.append(span('fach__score', `${score} %`));
+  lade.append(kopf);
+
+  // Erst beim Aufklappen bauen. Für hundert Formen im Voraus Listen zu füllen
+  // wäre Arbeit für etwas, das niemand ansieht.
+  lade.addEventListener('toggle', () => {
+    if (lade.open && lade.children.length === 1) lade.append(historie(name));
+  });
+
+  knoten.append(lade);
   return knoten;
 }
 

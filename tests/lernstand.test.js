@@ -3,7 +3,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   merkeGezogen, verrechne, zuletztVon, schluessel,
-  score, verteile, uebersicht, stufe, fleiss, serie,
+  score, verteile, uebersicht, stufe, verlaufZu, sitzungen, SITZUNG_PAUSE_MS, fleiss, serie,
   SICHER_AB_PROZENT, TAGE_MAX,
   AUSGAENGE, LEER, VERLAUF_MAX,
 } from '../src/domain/lernstand.js';
@@ -319,6 +319,57 @@ describe('stufe', () => {
 
   it('kommt mit einer leeren Sammlung klar', () => {
     expect(stufe({ sicher: 0, gesamt: 0 })).toBe('anfang');
+  });
+});
+
+describe('verlaufZu', () => {
+  it('gibt nur die Antworten dieser einen Einheit, neueste zuerst', () => {
+    let stand = verrechne(LEER, antwort({ punkte: 0, ausgang: AUSGAENGE.FALSCH }), 1);
+    stand = verrechne(stand, antwort({ id: 'uv-002' }), 2);
+    stand = verrechne(stand, antwort(), 3);
+
+    const meine = verlaufZu(stand, 'uv-001|simple-past');
+    expect(meine.map((e) => e.zeit)).toEqual([3, 1]);
+  });
+
+  it('ist leer, wenn der Ringpuffer die Antwort nicht mehr hat', () => {
+    expect(verlaufZu(LEER, 'uv-001|simple-past')).toEqual([]);
+  });
+});
+
+describe('sitzungen', () => {
+  const MINUTE = 60 * 1000;
+
+  it('fasst zusammen, was ohne lange Pause hintereinander kam', () => {
+    let stand = verrechne(LEER, antwort(), 0);
+    stand = verrechne(stand, antwort({ punkte: 0, ausgang: AUSGAENGE.FALSCH }), 5 * MINUTE);
+
+    expect(sitzungen(stand)).toEqual([
+      { beginn: 0, ende: 5 * MINUTE, antworten: 2, richtig: 1, punkte: 1, quote: 50 },
+    ]);
+  });
+
+  it('trennt bei einer langen Pause, neueste Sitzung zuerst', () => {
+    let stand = verrechne(LEER, antwort(), 0);
+    // Eine Minute ueber der Grenze -- das ist ein zweites Mal Ueben.
+    stand = verrechne(stand, antwort(), SITZUNG_PAUSE_MS + MINUTE);
+
+    const alle = sitzungen(stand);
+    expect(alle).toHaveLength(2);
+    expect(alle[0].beginn).toBe(SITZUNG_PAUSE_MS + MINUTE);
+  });
+
+  it('laesst zwei Runden am Stueck eine Sitzung sein', () => {
+    // 30 Antworten im Minutentakt: zwei Runden, aber einmal geuebt.
+    let stand = LEER;
+    for (let i = 0; i < 30; i++) stand = verrechne(stand, antwort(), i * MINUTE);
+
+    expect(sitzungen(stand)).toHaveLength(1);
+    expect(sitzungen(stand)[0].antworten).toBe(30);
+  });
+
+  it('hat ohne Verlauf nichts zu zeigen', () => {
+    expect(sitzungen(LEER)).toEqual([]);
   });
 });
 

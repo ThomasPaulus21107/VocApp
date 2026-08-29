@@ -303,7 +303,7 @@ function schliesseKarteAb() {
  * Die Note wird hier nicht ausgerechnet -- sie kommt fertig herein.
  * `lernpotential` ist null, wenn es keine zweite Runde gab.
  */
-export function zeigeEnde(note, punkte, hoechstpunktzahl, ergebnisse, lernpotential = null) {
+export function zeigeEnde(note, punkte, hoechstpunktzahl, ergebnisse, lernpotential = null, warArbeit = false) {
   el.start.hidden = true;
   el.karte.hidden = true;
   el.zwischen.hidden = true;
@@ -327,7 +327,13 @@ export function zeigeEnde(note, punkte, hoechstpunktzahl, ergebnisse, lernpotent
   // Ganz zum Schluss die Belohnung: welche Note welchen Effekt bekommt,
   // steht in effekte.js. Ohne Effekt bleibt es auch still.
   const effekt = effekte.zeige(note);
-  if (effekt) klang.spiele(effekt);
+  if (!effekt) return;
+
+  // Eine 1+ in einer ARBEIT ist das Größte, was es hier zu holen gibt: ohne
+  // Tipp, ohne zweite Chance, ohne einen einzigen Fehler. Dafür gibt es die
+  // lange Melodie statt des kurzen Raketentons -- im Übungsblatt nicht, sonst
+  // wäre sie nach drei Runden nichts Besonderes mehr.
+  klang.spiele(warArbeit && note === '1+' ? 'tetris' : effekt);
 }
 
 /**

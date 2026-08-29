@@ -16,8 +16,8 @@
 
   /* Die drei Faecher auf der Fortschrittsseite -- im Balken oben und
      in den Listen darunter dieselbe Farbe. */
-  --nie: #ff8787;           /* noch nie geübt */
-  --in-arbeit: #ffb066;     /* schon geübt, sitzt aber noch nicht */
+  --nie: #fea0a0;           /* noch nie geübt */
+  --in-arbeit: #fe9d43;     /* schon geübt, sitzt aber noch nicht */
   --sitzt: var(--richtig);  /* ab 75 % der Punkte: dasselbe Grün wie bei einer
                                richtigen Antwort */
 
@@ -380,7 +380,8 @@ body {
 .teilchen--rakete {
   left: 50%;
   bottom: 2rem;
-  font-size: 4rem;
+  /* Die groesste Belohnung, die es gibt -- also darf sie auch gross sein. */
+  font-size: 7rem;
   animation-name: rakete;
   animation-timing-function: ease-in;
 }
@@ -860,6 +861,9 @@ body {
   list-style: none;
 }
 
+/* Die Zeile ist der Griff einer Lade: ein Klick klappt die Antworten auf.
+   Den eigenen Dreieck-Marker von <summary> blenden wir aus -- er wuerde das
+   Flex-Layout sprengen. Der Pfeil links ist unserer und dreht sich. */
 .fach__zeile {
   display: flex;
   justify-content: space-between;
@@ -868,6 +872,72 @@ body {
 
   padding: 8px 0;
   border-top: 1px solid rgb(0 0 0 / 10%);
+  cursor: pointer;
+  list-style: none;
+}
+
+.fach__zeile::-webkit-details-marker {
+  display: none;
+}
+
+.fach__zeile:focus-visible {
+  outline: 3px solid var(--schrift);
+  outline-offset: -2px;
+}
+
+.fach__pfeil {
+  color: var(--leise);
+  font-size: 0.75rem;
+  transition: transform 0.15s;
+}
+
+details[open] .fach__pfeil {
+  transform: rotate(90deg);
+}
+
+/* Der Name steht links und darf den ganzen uebrigen Platz haben. */
+.fach__zeile .fach__wort {
+  flex: 1;
+}
+
+/* Was aufgeklappt darunter steht: eine Zeile je Antwort. */
+.fach__historie {
+  margin: 0 0 8px;
+  padding: 0 0 0 18px;
+  list-style: none;
+}
+
+.fach__antwort {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+
+  padding: 3px 0;
+  font-size: 0.8125rem;
+  color: var(--leise);
+}
+
+.fach__wann {
+  flex: 1;
+}
+
+/* "Arbeit" oder "Wiederholung" -- nur da, wo es etwas zu sagen gibt. */
+.fach__vermerk {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 8%);
+  font-size: 0.6875rem;
+}
+
+.fach__punkte {
+  font-variant-numeric: tabular-nums;
+}
+
+.fach__ohne {
+  margin: 0 0 8px;
+  padding-left: 18px;
+  font-size: 0.8125rem;
+  color: var(--leise);
 }
 
 .fach__wort {
@@ -904,6 +974,66 @@ body {
   outline: 3px solid var(--schrift);
   outline-offset: 2px;
   border-radius: calc(var(--rundung) / 4);
+}
+
+/* Die Liste der Sitzungen unter dem Diagramm. Eine Zeile je Mal Ueben. */
+.sitzungen {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sitzung {
+  padding: 10px 0;
+  border-top: 1px solid rgb(0 0 0 / 10%);
+}
+
+.sitzung__kopf {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0 0 6px;
+  font-size: 0.875rem;
+}
+
+.sitzung__zahlen {
+  color: var(--leise);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Derselbe Balken wie im Diagramm oben, nur liegend: hinten und blass alle
+   Antworten, davor und kraeftig die Treffer. Beide am selben Massstab --
+   die laengste Sitzung ist die volle Breite. */
+.sitzung__leiste {
+  display: grid;
+  align-items: center;
+
+  height: 8px;
+  border-radius: 4px;
+  background: var(--eingabefeld);
+}
+
+.sitzung__gesamt,
+.sitzung__richtig {
+  grid-area: 1 / 1;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.sitzung__gesamt {
+  background: var(--akzent);
+  opacity: 0.3;
+}
+
+.sitzung__richtig {
+  background: var(--richtig);
+}
+
+.sitzungen__ende {
+  margin: 12px 0 0;
+  font-size: 0.8125rem;
+  color: var(--leise);
 }
 
 /* =========================================================
