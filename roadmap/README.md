@@ -148,9 +148,12 @@ Vorgeschichte steht in
 | 5 | [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md) | Thomas, Entscheidung: wer legt Konten an |
 | 6 | [Der Server wird die Wahrheit](feature-request-server-ist-die-wahrheit.md) | Thomas |
 | 7 | [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md) | Thomas |
+| 8 | [Gemeinsame Lernmissionen](feature-request-missionen.md) | Thomas, Ziele Matilda |
 
-**Rangliste, Missionen und Punktestand sind nicht dabei.** Sie hängen an
-„Was ist ein Punkt?" im [Backlog](backlog.md), und diese Frage ist offen.
+Was darauf aufbaut, steht daneben: [Gemeinsame Lernmissionen](feature-request-missionen.md)
+— möglich geworden, seit *„Was ist ein Punkt?"* am 29.08.2026 beantwortet ist.
+**Eine Rangliste ist weiter nicht dabei**; entschieden ist nur, dass ein
+Vergleich, wenn er kommt, würdigend und nicht rangordnend sein soll.
 
 Nicht jedes Feature ist Code. Die Vokabeln, die Verb-Tipps, die Töne und die
 Farben sind Matildas Arbeit und stehen gleichberechtigt daneben — ohne sie ist

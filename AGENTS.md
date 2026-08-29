@@ -86,9 +86,14 @@ verschiedenen Dingen hängt:
   Lernstand speichert **Ereignisse und keine Punktekonten**, und `localStorage`
   in einem fremden Browser ist weder zu prüfen noch zu sichern noch
   wiederherzustellen.
-- **Rangliste, Missionen und Punktestand warten weiter** auf die eine
-  unbeantwortete Frage — *was ist ein Punkt?* Solange sie offen ist, wird
-  daran nichts gebaut.
+- **Was ein Punkt ist, steht seit dem 29.08.2026 fest:** eine Karte, die saß —
+  1 auf Anhieb, 0,5 im zweiten Versuch, Tipp −0,1. Also genau
+  `punkteFuerKarte()` aus `domain/note.js`, gezählt über die laufende Woche.
+  Damit sind **gemeinsame Missionen** frei, siehe
+  `roadmap/feature-request-missionen.md`.
+- **Eine Rangliste ist weiter nicht freigegeben.** Entschieden ist nur die
+  Richtung: wenn ein Vergleich kommt, dann **würdigend statt rangordnend**.
+- **Die Serie wird weiter nur gezählt**, nicht belohnt.
 
 Die Abwägung samt der Pflichten, die mit fremden Kinderdaten dazukommen
 (Anmeldung, Row Level Security, Minderjährige), steht in
@@ -108,7 +113,8 @@ Scope". Das Projekt soll klein bleiben und früh laufen.
 
 Eine Serie über mehrere Tage wird auf der Fleiß-Seite inzwischen **gezählt**,
 aber nicht belohnt — beschreiben ist erlaubt, aus einer Zahl eine Währung zu
-machen nicht.
+machen nicht. Das ist am 29.08.2026 bestätigt worden und keine Übergangslösung:
+eine belohnte Serie bestraft den Tag, an dem jemand krank ist.
 
 Für Punkte, Accounts und Supabase gilt das seit dem 29.08.2026 nicht mehr
 gleich:
@@ -118,8 +124,15 @@ gleich:
   `roadmap/feature-request-backend-naht.md`. Wer daran baut, hält sich an die
   Reihenfolge dort und fragt nicht mehr jedes Mal nach — aber baut auch
   nichts, was in keiner der sieben Dateien steht.
-- **Punkte, Streaks und Rangliste bleiben stehen.** Antwort weiterhin: „erst,
-  wenn die Punktefrage beantwortet ist" statt „nein".
+- **Punkte sind definiert, aber nicht überall erlaubt.** Was ein Punkt ist,
+  steht seit dem 29.08.2026 fest (oben nachzulesen), und **gemeinsame
+  Missionen** sind damit freigegeben:
+  `roadmap/feature-request-missionen.md`. Eine Zahl an anderer Stelle in eine
+  Währung zu verwandeln, bleibt eine Rückfrage wert.
+- **Rangliste und Streaks bleiben stehen.** Bei der Rangliste ist die Antwort
+  nicht mehr „erst, wenn die Punktefrage beantwortet ist", sondern: erst, wenn
+  eine Form gefunden ist, die **würdigt statt Ränge zu vergeben** — und die
+  entsteht nicht am Schreibtisch. Die Serie wird gezählt und nicht belohnt.
 
 **GitHub Actions stand hier ursprünglich mit auf der Liste und wurde bewusst
 vorgezogen.** Der Deploy von Hand über einen `gh-pages`-Branch wären fünf

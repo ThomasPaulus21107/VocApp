@@ -7,6 +7,13 @@ Eine Tabelle und vier Zeilen Sicherheit. Die Datei liegt versioniert im Repo
 und wird im SQL-Editor eingefügt — die Supabase-CLI wäre eine weitere
 Abhängigkeit und lohnt für eine Tabelle nicht.
 
+**Sie läuft zweimal**, einmal je Projekt: es gibt eine Spielwiese für lokal und
+ein echtes für GitHub Pages, siehe
+[Die zweite Naht zum Server](feature-request-backend-naht.md). Genau dafür ist
+sie eine Datei im Repo und kein einmal getippter Text — sonst driften die
+beiden nach der zweiten Änderung auseinander, und das merkt man erst, wenn ein
+Insert nur in einem von beiden funktioniert.
+
 ## Ereignisse, keine Zustände
 
 `AGENTS.md` legt das Format seit dem Lernstand fest: *„Gespeichert werden dort
@@ -112,6 +119,10 @@ ist, gilt das Feature als nicht gebaut.**
 1. Zweites Browserprofil öffnen (das bekommt eine eigene anonyme Sitzung).
 2. In der Konsole `supabase.from('ereignisse').select('*')`.
 3. **Es müssen null Zeilen zurückkommen.**
+
+**In beiden Projekten**, nicht nur in der Spielwiese. Die Policies im echten
+Projekt sind die, auf die es ankommt, und sie sind auch die, die man beim
+zweiten Einspielen vergisst.
 
 Kommt auch nur eine fremde Zeile, ist die Tabelle offen und alles Weitere
 wartet.

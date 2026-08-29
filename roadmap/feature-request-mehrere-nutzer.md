@@ -24,11 +24,10 @@ einzeln baubar und einzeln mergebar:
 | 6 | [Der Server wird die Wahrheit](feature-request-server-ist-die-wahrheit.md) | `lade()`, Zustand aus Ereignissen |
 | 7 | [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md) | Löschen, Pseudonyme, der eine Satz |
 
-**Was hier bleibt, ist die Frage, an der es wirklich hängt: was ist ein
-Punkt?** Und alles, was daran hängt — Rangliste, Missionen, der
-userübergreifende Punktestand. Der Lernstand darf nach Postgres, weil er
-Ereignisse speichert und keine Punktekonten. Eine Rangliste darf es nicht,
-solange niemand sagen kann, was in ihr steht.
+**Und am selben Tag ist auch die Frage beantwortet worden, an der der Rest
+hing: was ist ein Punkt?** Siehe unten. Damit ist der Weg zu gemeinsamen
+Missionen frei; offen bleibt nur noch, wie der Vergleich zwischen Kindern
+aussieht.
 
 ## Worum es geht
 
@@ -101,23 +100,72 @@ backend.melde(ereignis)   // schreibt im Hintergrund, blockiert nie
 `domain/` erfährt davon nichts — dort kommen Ereignisse als Argumente herein
 und Bewertungen heraus.
 
-## Was vorher entschieden sein muss
+## Was ist ein Punkt? Beantwortet am 29.08.2026
 
-- [ ] **Was ist ein Punkt?** Ohne diese Antwort ist keine Tabelle zu bauen.
-      `note.js` liefert heute eine Note **je Runde**, 0–15. Das ist kein
-      Kontostand: wer viele Runden spielt, sammelt mehr, und eine „2+" ist
-      nicht addierbar. Zu klären: was zählt, über welchen Zeitraum, und wie
-      unterschiedlich schwere Runden vergleichbar werden.
-- [ ] **Was steht in der Rangliste** — Pseudonym und Zahl, mehr nicht?
+Die Frage, an der alles Userübergreifende hing. Sie war offen, weil `note.js`
+eine Note **je Runde** liefert, 0–15 — und das ist kein Kontostand: wer viele
+Runden spielt, sammelt mehr, und eine „2+" ist nicht addierbar.
+
+**Ein Punkt ist eine Karte, die saß.** Genau die Zahl, die `punkteFuerKarte()`
+in `domain/note.js` heute schon ausrechnet:
+
+| | |
+|---|---|
+| auf Anhieb richtig | **1** |
+| erst im zweiten Versuch | **0,5** |
+| mit Tipp | −0,1 |
+| durchgelassener Tippfehler | −0,2 |
+| falsch, übersprungen, aufgegeben | **0** |
+
+Sie steht bereits in jeder Verlaufszeile als `punkte` und je Tag als
+`tage[].summe`. **Es ist nichts zu erfinden und nichts nachzurechnen** — die
+Antwort war die ganze Zeit da, sie war nur nicht als Währung benannt.
+
+Warum diese und nicht die naheliegendere „eine Antwort ist ein Punkt": weil
+reiner Fleiß blind für Qualität ist. Fünfzehnmal danebenhauen zählte dann wie
+fünfzehnmal richtig, und schnell falsch klicken wäre die beste Strategie. Mit
+den Kartenpunkten lohnt sich nur, was auch geübt hat.
+
+### Zwei Zahlen, die nie addiert werden
+
+- **Die Woche** — montags auf null. Das ist die Zahl zum Vergleichen und
+  Mitmachen. Sie löst das Problem, das eine ewige Summe hat: wer im November
+  dazukommt, ist am Montag gleichauf mit allen anderen, und es gibt ein Ende
+  statt endlosem Grinden.
+- **Insgesamt** — seit dem ersten Tag, als Blick zurück auf der eigenen
+  Fleiß-Seite. Sie wird nicht verglichen.
+
+Beide zusammenzuzählen ergibt keinen Sinn und darf die Oberfläche deshalb
+niemals anbieten.
+
+### Das Können bleibt davon getrennt
+
+Der Score je Vokabel und die 75-%-Marke in `domain/lernstand.js` sind **keine**
+Punkte und werden keine. Punkte sind ein Fluss (was diese Woche passiert ist),
+das Können ein Bestand (was sitzt). Wer beides in eine Zahl presst, verliert
+beide.
+
+### Was daraus folgt
+
+Gemeinsame Missionen sind damit refinebar und stehen in
+[Gemeinsame Lernmissionen](feature-request-missionen.md).
+
+## Was noch entschieden werden muss
+
+- [ ] **Wie der Vergleich zwischen Kindern aussieht.** Entschieden ist die
+      Richtung: Missionen zuerst, ein Vergleich später — und wenn, dann
+      **würdigend statt rangordnend**. „Fleißigste dieser Woche" ist etwas
+      anderes als Platz 1 bis 12. Die Form dafür ist noch nicht gefunden und
+      soll auch nicht am Schreibtisch entstehen.
 - [ ] **Wer darf wessen Fortschritt sehen?** Eltern den ihres Kindes, nicht
       den der anderen. Das ist eine RLS-Regel und keine Frage der Oberfläche.
-- [x] **Wer legt Konten an** — steht als offene Entscheidung in
-      [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md),
-      wo sie hingehört. Vorschlag dort: von Hand, keine Selbstregistrierung.
+- [x] **Was ist ein Punkt** — oben beantwortet.
+- [x] **Wer legt Konten an** — entschieden in
+      [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md):
+      Thomas, von Hand, mit einem Link je Kind und ohne Mailanbindung.
 
-Solange Punkt 1 offen ist, wird an der **Rangliste, den Missionen und dem
-Punktestand** nichts gebaut. Der Datenbank-Strang oben hängt nicht daran und
-läuft weiter — ebenso alles andere in der Roadmap.
+Der Datenbank-Strang oben hängt an keinem der offenen Punkte und läuft
+weiter — ebenso alles andere in der Roadmap.
 
 ## Zu beachten
 

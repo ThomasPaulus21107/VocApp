@@ -54,25 +54,24 @@ sich damit gerade **nicht** festlegt.
 
 ## Punkte
 
-- **Was ist ein Punkt?** Die eine Frage, an der alles Userübergreifende hängt.
-  `note.js` liefert heute eine Note **je Runde**, 0–15. Das ist kein
-  Kontostand: wer viele Runden spielt, sammelt mehr, und eine „2+" ist nicht
-  addierbar.
-  `offen:` was zählt, über welchen Zeitraum, und wie unterschiedlich schwere
-  Runden vergleichbar werden. **Gehört Thomas und Matilda gemeinsam** — es ist
-  eine Frage danach, was belohnt werden soll, keine technische.
-  Solange sie offen ist, bleiben Rangliste, Missionen und Punktestand in
-  [Mehrere Nutzer](feature-request-mehrere-nutzer.md) liegen. **Der Weg zu
-  Supabase hängt seit dem 29.08.2026 nicht mehr daran** — der Lernstand
-  speichert Ereignisse und keine Punktekonten, siehe die sieben Dateien ab
-  [Die zweite Naht zum Server](feature-request-backend-naht.md).
+- **Was ist ein Punkt?** ~~Die eine Frage, an der alles Userübergreifende
+  hängt.~~ **Am 29.08.2026 beantwortet** und damit hier erledigt: ein Punkt ist
+  eine Karte, die saß — 1 auf Anhieb, 0,5 im zweiten Versuch, Tipp −0,1.
+  Gezählt wird die laufende Woche, daneben steht die Gesamtzahl als Blick
+  zurück; addiert werden die beiden nie. Die Begründung steht in
+  [Mehrere Nutzer](feature-request-mehrere-nutzer.md), das erste Feature
+  darauf in [Gemeinsame Lernmissionen](feature-request-missionen.md).
+  `offen bleibt:` wie ein Vergleich zwischen Kindern aussieht. Entschieden ist
+  nur die Richtung — **würdigend statt rangordnend**, „fleißigste dieser
+  Woche" statt Platz 1 bis 12. Die Form soll nicht am Schreibtisch entstehen.
 
 - **Aus der Serie soll etwas folgen.** *Gezählt* wird sie seit dem 29.08.2026
   auf der [Fleiß-Seite](implemented/feature-fleiss-2026-08-29-1551.md) — „vier Tage
   hintereinander geübt" steht dort. Offen ist nur noch, ob sie auch etwas
   **wert** ist: Punkte, ein Abzeichen, ein Satz zur Begrüßung.
-  `braucht:` die Antwort oben. Solange nicht feststeht, was ein Punkt ist,
-  wäre eine belohnte Serie eine zweite Währung neben der ersten.
+  **Am 29.08.2026 entschieden: sie wird weiter nur gezählt.** Eine belohnte
+  Serie wäre eine zweite Währung neben den Punkten — und sie bestraft genau den
+  Tag, an dem jemand krank ist. Beschreiben wirkt hier schon.
   `offen:` was passiert, wenn sie reißt. Bei null anfangen ist ehrlich und
   hart; die längste Serie daneben stehenzulassen ist freundlicher.
 

@@ -49,8 +49,10 @@ Nutzer an — mit einer echten `auth.uid()`, nur ohne Mailadresse. Damit gilt:
   später", was hier auch nichts wert wäre: der Key steht im ausgelieferten
   Bundle, RLS ist das Einzige zwischen den Daten und dem offenen Netz.
 - **Für Matilda ändert sich nichts.** Keine Maske, kein Knopf, keine Frage.
-- **Später kostet der Umstieg nichts.** `updateUser({ email })` macht aus der
-  anonymen Sitzung ein Konto: dieselbe uid, alle Zeilen bleiben liegen. Siehe
+- **Später kostet der Umstieg nichts.** Eine anonyme Sitzung ist ein echter
+  Nutzer; er bekommt nachträglich eine Mailadresse und behält dieselbe uid mit
+  allen Zeilen. Weil es ohne Mailanbindung keine Bestätigungsmail gibt, macht
+  Thomas diesen einen Handgriff im Dashboard — siehe
   [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md).
 
 Die Alternative wäre ein selbst erfundener Geräteschlüssel in `localStorage`
@@ -84,17 +86,34 @@ in `tests/oberflaeche/` laufen dadurch ohne Server und ohne Netz.
 **Nie werfen.** Dieselbe Haltung wie in `storage.js`: ein fehlgeschlagenes
 Speichern darf die App nie anhalten.
 
+## Zwei Projekte: Spielwiese und Ernst
+
+**Lokal zeigt auf ein eigenes Supabase-Projekt, GitHub Pages auf das echte.**
+Nichts, was beim Ausprobieren passiert, berührt Matildas Stand — und
+ausprobiert wird hier viel: eine Tabelle, die dreimal neu angelegt wird, ein
+Ausgangskorb, der absichtlich kaputtgeht, Testläufe, die Unsinn schreiben.
+
+Was das kostet, gehört dazugesagt:
+
+- **`supabase/schema.sql` muss zweimal laufen** — bei jeder Änderung in beiden
+  Projekten. Die Datei ist genau deshalb versioniert im Repo und nicht nur im
+  SQL-Editor getippt.
+- **Zwei Wertepaare, die man verwechseln kann.** Deshalb heißen die Projekte
+  im Dashboard erkennbar verschieden, und die Abnahme unten schaut nach, in
+  welchem die Zeile gelandet ist.
+
 ## Die Schlüssel
 
-`.env` lokal (gehört in `.gitignore`), `.env.example` im Repo ohne Werte:
+`.env` lokal (gehört in `.gitignore`) — die Spielwiese. `.env.example` im Repo
+ohne Werte:
 
 ```
 VITE_SUPABASE_URL=
 VITE_SUPABASE_PUBLISHABLE_KEY=
 ```
 
-Im Deploy-Workflow zwei Secrets, die beim `npm run build`-Schritt als `env:`
-hereinkommen.
+Im Deploy-Workflow zwei Secrets mit den Werten des **echten** Projekts, die
+beim `npm run build`-Schritt als `env:` hereinkommen.
 
 **Beide Werte sind öffentlich gedacht** — sie landen im Bundle, das GitHub
 Pages ausliefert, und das ist bei Supabase der vorgesehene Weg. Der Grund für
@@ -125,6 +144,15 @@ nicht geht.
   `storage.test.js` heute einen falschen `localStorage` einsetzt. Ohne diese
   Naht wäre die Datei nur mit Netz zu testen, und das wäre keiner.
 - Eine gescheiterte Anmeldung hält die App nicht an.
+
+## Die Abnahme
+
+- `npm run dev`, dann in der Konsole nachsehen, dass eine Sitzung existiert und
+  `angemeldet()` eine uid liefert.
+- **Die Zeile landet in der Spielwiese, nicht im Ernst.** Beide Dashboards
+  offen, in einem muss es leer bleiben.
+- `.env` umbenennen und neu starten: die App läuft vollständig, nur eben
+  lokal. Das ist derselbe Zustand, in dem die Oberflächen-Tests laufen.
 
 ## Voraussetzung
 
