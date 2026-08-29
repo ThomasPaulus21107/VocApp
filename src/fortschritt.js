@@ -4,7 +4,7 @@
 import './ui/styles.css';
 import verben from '../data/unregelmaessige-verben.json';
 import { einheiten } from './domain/auswahl.js';
-import { uebersicht, verteile, schluessel, LEER, SICHER_AB_PROZENT } from './domain/lernstand.js';
+import { uebersicht, verteile, stufe, schluessel, LEER, SICHER_AB_PROZENT } from './domain/lernstand.js';
 import { FORM_NAME } from './ui/formnamen.js';
 import * as storage from './infra/storage.js';
 
@@ -44,6 +44,33 @@ function wann(zeit) {
   if (tage === 1) return 'gestern';
   if (tage < 7) return `vor ${tage} Tagen`;
   return new Date(zeit).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+}
+
+/**
+ * Ein Satz, der die drei Zahlen einordnet -- freundlich, aber ehrlich. Der
+ * erste Teil sagt, wie es steht, der zweite, was noch offen ist. Bei null
+ * sicheren Formen faellt das Lob weg: dann ist noch nichts geschafft, und
+ * die Seite tut auch nicht so.
+ */
+function lagesatz(zahlen, wieWeit) {
+  const arbeit = zahlen.geuebt - zahlen.sicher;
+  const nie = zahlen.gesamt - zahlen.geuebt;
+
+  const anfang = zahlen.sicher === 0
+    ? 'Noch sitzt keine einzige Form sicher.'
+    : {
+      anfang: 'Der Anfang ist gemacht.',
+      unterwegs: 'Ein gutes Stück ist geschafft.',
+      gut: 'Das meiste sitzt.',
+    }[wieWeit];
+
+  // Was null ist, wird nicht erwähnt. "0 sind in Arbeit" ist keine Nachricht.
+  const offen = [];
+  if (arbeit > 0) offen.push(`${arbeit} ${arbeit === 1 ? 'ist' : 'sind'} in Arbeit`);
+  if (nie > 0) offen.push(`${nie} ${nie === 1 ? 'war' : 'waren'} noch nie dran`);
+  if (offen.length === 0) return `${anfang} Mehr geht nicht.`;
+
+  return `${anfang} ${offen.join(', ')}.`;
 }
 
 function span(klasse, text) {
@@ -92,11 +119,17 @@ if (zahlen.geuebt === 0) {
   el('zuletzt').textContent = wann(zahlen.zuletztGeuebt);
   el('schwelle').textContent = SICHER_AB_PROZENT;
 
-  // Zwei Balken übereinandergelegt: was sicher sitzt, und was schon einmal
-  // dran war. Der Rest der Leiste ist, was noch kommt.
+  // Zwei Balken nebeneinander: was sicher sitzt, und was erst in Arbeit ist.
+  // Der Rest der Leiste ist, was noch kommt.
   const breite = (zahl) => `${(zahl / zahlen.gesamt) * 100}%`;
   el('balken-sicher').style.width = breite(zahlen.sicher);
   el('balken-geuebt').style.width = breite(zahlen.geuebt - zahlen.sicher);
+
+  // Die Stufe faerbt den Balken -- rot am Anfang, grün wenn das meiste sitzt --
+  // und waehlt den Satz darunter. Beide sagen dasselbe, nur anders.
+  const wieWeit = stufe(zahlen);
+  el('balken').classList.add(`balken--${wieWeit}`);
+  el('lage').textContent = lagesatz(zahlen, wieWeit);
 
   fuelle('nie', faecher.nie);
   fuelle('arbeit', faecher.arbeit);

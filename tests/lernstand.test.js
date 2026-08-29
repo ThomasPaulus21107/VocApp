@@ -3,7 +3,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   merkeGezogen, verrechne, zuletztVon, schluessel,
-  score, verteile, uebersicht, fleiss, serie,
+  score, verteile, uebersicht, stufe, fleiss, serie,
   SICHER_AB_PROZENT, TAGE_MAX,
   AUSGAENGE, LEER, VERLAUF_MAX,
 } from '../src/domain/lernstand.js';
@@ -249,6 +249,64 @@ describe('uebersicht', () => {
     expect(uebersicht(stand, namen)).toMatchObject({
       gesamt: 3, geuebt: 2, sicher: 1, runden: 1, antworten: 3, zuletztGeuebt: 3,
     });
+  });
+});
+
+describe('alte Staende', () => {
+  // Bis Commit 4a7514e gab es kein `summe`. Wer damals schon geuebt hat, hat
+  // solche Eintraege im localStorage -- und sah danach "NaN %".
+  const alt = {
+    ...LEER,
+    einheiten: {
+      'uv-001|simple-past': {
+        zuletzt: 3, dran: 4, ersterVersuch: 3, zweiterVersuch: 0,
+        falsch: 1, uebersprungen: 0, aufgegeben: 0, tipps: 0,
+      },
+    },
+  };
+
+  it('rechnet einen Eintrag ohne "summe" nicht kaputt', () => {
+    const stand = verrechne(alt, antwort(), 9);
+    const eintrag = stand.einheiten['uv-001|simple-past'];
+
+    // Gezaehlt wird neu: eine Antwort, ein Punkt.
+    expect(eintrag.summe).toBe(1);
+    expect(eintrag.dran).toBe(1);
+    expect(score(eintrag)).toBe(100);
+  });
+
+  it('behandelt eine als null zurueckgelesene Summe genauso', () => {
+    // JSON kennt kein NaN -- ein einmal verdorbener Wert kommt als null wieder.
+    const kaputt = {
+      ...LEER,
+      einheiten: { 'uv-001|simple-past': { ...alt.einheiten['uv-001|simple-past'], summe: null } },
+    };
+
+    const stand = verrechne(kaputt, antwort({ punkte: 0, ausgang: AUSGAENGE.FALSCH }), 9);
+    expect(score(stand.einheiten['uv-001|simple-past'])).toBe(0);
+  });
+
+  it('behaelt beim Ziehen, wann die Karte zuletzt dran war', () => {
+    const stand = merkeGezogen(alt, gezogen('uv-001'));
+    expect(stand.einheiten['uv-001|simple-past']).toMatchObject({ zuletzt: 0, summe: 0, dran: 0 });
+  });
+});
+
+describe('stufe', () => {
+  it('nennt einen Stand ohne eine einzige sichere Form "anfang"', () => {
+    // 45 von 106 schon geuebt, aber nichts davon sicher: das ist der Anfang.
+    expect(stufe({ sicher: 0, gesamt: 106 })).toBe('anfang');
+  });
+
+  it('misst an derselben Marke wie eine einzelne Vokabel', () => {
+    expect(stufe({ sicher: 24, gesamt: 100 })).toBe('anfang');
+    expect(stufe({ sicher: 25, gesamt: 100 })).toBe('unterwegs');
+    expect(stufe({ sicher: 74, gesamt: 100 })).toBe('unterwegs');
+    expect(stufe({ sicher: 75, gesamt: 100 })).toBe('gut');
+  });
+
+  it('kommt mit einer leeren Sammlung klar', () => {
+    expect(stufe({ sicher: 0, gesamt: 0 })).toBe('anfang');
   });
 });
 

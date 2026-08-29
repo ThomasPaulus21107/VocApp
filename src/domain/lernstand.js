@@ -59,6 +59,26 @@ function frisch() {
 }
 
 /**
+ * Ein Eintrag mit allen Feldern, die es HEUTE gibt.
+ *
+ * Ein Stand aus der Zeit vor dem Score kennt `summe` nicht -- ohne das hier
+ * rechnet die App mit undefined weiter, und aus dem Score wird "NaN %".
+ */
+function vollstaendig(eintrag) {
+  if (!eintrag) return frisch();
+
+  // Geprueft wird der Eintrag SO WIE ER KAM. Nach dem Zusammenlegen unten
+  // waere eine fehlende Summe nicht mehr von einer echten 0 zu unterscheiden.
+  //
+  // Fehlt sie, oder ist sie beim Speichern zu null geworden (JSON kennt kein
+  // NaN), sind die Punkte dieser Vokabel nicht mehr zu retten: gezaehlt wird
+  // neu, nur wann sie zuletzt dran war, bleibt stehen.
+  if (typeof eintrag.summe !== 'number') return { ...frisch(), zuletzt: eintrag.zuletzt ?? -1 };
+
+  return { ...frisch(), ...eintrag };
+}
+
+/**
  * Die gezogene Runde vermerken: jede Einheit bekommt die aktuelle
  * Rundennummer, dann zaehlt die Runde weiter.
  *
@@ -71,7 +91,7 @@ export function merkeGezogen(stand, gezogen) {
 
   for (const { karte, form } of gezogen) {
     const name = schluessel(karte.id, form);
-    einheiten[name] = { ...(einheiten[name] ?? frisch()), zuletzt: stand.rundeNr };
+    einheiten[name] = { ...vollstaendig(einheiten[name]), zuletzt: stand.rundeNr };
   }
 
   return { ...stand, rundeNr: stand.rundeNr + 1, einheiten };
@@ -93,7 +113,7 @@ export function merkeGezogen(stand, gezogen) {
 export function verrechne(stand, ergebnis, jetzt) {
   const { id, form, ausgang, versuch, tipp, modus, punkte = 0, tag } = ergebnis;
   const name = schluessel(id, form);
-  const alt = stand.einheiten[name] ?? frisch();
+  const alt = vollstaendig(stand.einheiten[name]);
 
   const neu = { ...alt, dran: alt.dran + 1, summe: alt.summe + punkte };
   if (tipp) neu.tipps += 1;
@@ -180,6 +200,10 @@ export function score(eintrag) {
 // keine Wahrheit -- wer sie strenger will, aendert sie hier.
 export const SICHER_AB_PROZENT = 75;
 
+// Ab hier ist die Sammlung als Ganzes nicht mehr am Anfang, sondern
+// unterwegs. Auch das ist eine Entscheidung und keine Wahrheit.
+export const UNTERWEGS_AB_PROZENT = 25;
+
 /**
  * Teilt alle Einheiten in drei Faecher: noch nie geuebt, in Arbeit, sicher.
  *
@@ -226,6 +250,24 @@ export function uebersicht(stand, namen) {
     antworten: beantwortet.reduce((summe, e) => summe + e.dran, 0),
     zuletztGeuebt: stand.verlauf.at(-1)?.zeit ?? null,
   };
+}
+
+/**
+ * Wie die Sammlung als Ganzes dasteht: 'anfang', 'unterwegs' oder 'gut'.
+ *
+ * Gemessen wird der Anteil der Formen, die SICHER sitzen -- an derselben
+ * 75-%-Marke, die auch ueber eine einzelne Vokabel entscheidet. Wer 45 von
+ * 106 Formen schon einmal geuebt hat, davon aber keine sicher, steht bei
+ * 0 % und damit am Anfang. Genau das soll die Seite dann auch sagen, in
+ * Worten und in der Farbe des Balkens.
+ */
+export function stufe({ sicher, gesamt }) {
+  if (gesamt === 0) return 'anfang';
+
+  const anteil = (sicher / gesamt) * 100;
+  if (anteil >= SICHER_AB_PROZENT) return 'gut';
+  if (anteil >= UNTERWEGS_AB_PROZENT) return 'unterwegs';
+  return 'anfang';
 }
 
 /**
