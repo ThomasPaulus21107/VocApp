@@ -25,6 +25,52 @@
       <span aria-hidden="true">←</span> Zurück zum Üben
     </a>
 
+    <!-- Dasselbe Menü wie beim Üben. Es steht in jeder Seite im Markup --
+         auf und zu macht es src/ui/menue.js, für alle Seiten dieselbe Datei.
+         Der Ton-Schalter fehlt hier mit Absicht: gehört wird beim Üben. -->
+    <button
+      id="menue-knopf"
+      class="menue-knopf"
+      type="button"
+      aria-expanded="false"
+      aria-controls="menue"
+    >
+      <span class="sr-only">Menü öffnen</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
+    </button>
+
+    <div id="menue-schatten" class="menue-schatten"></div>
+
+    <aside id="menue" class="menue" aria-label="Menü">
+      <button id="menue-zu" class="menue-knopf menue__zu" type="button">
+        <span class="sr-only">Menü schließen</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+
+      <h2 class="menue__titel">Ansehen</h2>
+
+      <a class="menue__zeile menue__zeile--link" href="index.html">
+        Zum Üben
+        <span aria-hidden="true" class="menue__pfeil">→</span>
+      </a>
+
+      <a class="menue__zeile menue__zeile--link" href="fortschritt.html" aria-current="page">
+        Dein Fortschritt
+        <span aria-hidden="true" class="menue__pfeil">→</span>
+      </a>
+
+      <a class="menue__zeile menue__zeile--link" href="fleiss.html">
+        Dein Fleiß
+        <span aria-hidden="true" class="menue__pfeil">→</span>
+      </a>
+    </aside>
+
     <main class="buehne buehne--seite buehne--breit">
       <h1 class="titel">Dein Fortschritt</h1>
 
@@ -44,10 +90,9 @@
           <span id="schwelle">75</span> % der Punkte
         </p>
 
-        <!-- Der Balken misst dasselbe wie die grosse Zahl: was sicher sitzt.
-             Was erst in Arbeit ist, steht blass daneben und faerbt sich nicht
-             mit -- sonst saehe ein Stand ohne eine einzige sichere Form nach
-             Fortschritt aus. Die Farbe kommt aus stufe() in lernstand.js. -->
+        <!-- Die ganze Leiste sind alle Formen. Links gruen, was sitzt,
+             daneben orange, was in Arbeit ist -- der hellrote Rest war noch
+             nie dran. Dieselben drei Farben wie in den Faechern unten. -->
         <div id="balken" class="balken">
           <div id="balken-sicher" class="balken__teil balken__teil--sicher"></div>
           <div id="balken-geuebt" class="balken__teil balken__teil--geuebt"></div>
@@ -71,21 +116,21 @@
           <p class="abschnitt">Noch nie geübt</p>
           <p class="fach__menge"><span id="menge-nie">0</span> Formen</p>
           <ol id="liste-nie" class="fach__liste"></ol>
-          <p id="mehr-nie" class="fach__mehr" hidden></p>
+          <button id="mehr-nie" class="fach__mehr" type="button" hidden></button>
         </section>
 
         <section class="karte fach">
           <p class="abschnitt">In Arbeit</p>
           <p class="fach__menge"><span id="menge-arbeit">0</span> Formen</p>
           <ol id="liste-arbeit" class="fach__liste"></ol>
-          <p id="mehr-arbeit" class="fach__mehr" hidden></p>
+          <button id="mehr-arbeit" class="fach__mehr" type="button" hidden></button>
         </section>
 
         <section class="karte fach">
           <p class="abschnitt">Sitzt</p>
           <p class="fach__menge"><span id="menge-sicher">0</span> Formen</p>
           <ol id="liste-sicher" class="fach__liste"></ol>
-          <p id="mehr-sicher" class="fach__mehr" hidden></p>
+          <button id="mehr-sicher" class="fach__mehr" type="button" hidden></button>
         </section>
       </div>
     </main>

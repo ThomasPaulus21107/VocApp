@@ -4,11 +4,15 @@
 import './ui/styles.css';
 import { fleiss, serie, LEER } from './domain/lernstand.js';
 import * as storage from './infra/storage.js';
+import { verbindeMenue } from './ui/menue.js';
 
 // Ein Monat zurück. Mehr Balken würden auf einem Telefon zu Strichen.
 const TAGE = 30;
 
 const el = (id) => document.getElementById(id);
+
+// Auch wenn hier nichts steht: der Weg zu den anderen Seiten geht immer.
+verbindeMenue();
 
 const stand = storage.lesen('lernstand', LEER);
 // Welcher Tag heute ist, weiß nur, wer die Uhr kennt -- also diese Datei.
