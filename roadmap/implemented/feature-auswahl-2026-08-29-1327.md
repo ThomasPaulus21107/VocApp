@@ -1,7 +1,7 @@
 # Feature: Welche Karten drankommen
 
 **Status:** Stufe 1 umgesetzt am 29.08.2026 um 13:27, [PR #20](https://github.com/ThomasPaulus21107/VocApp/pull/20)
-**Offen:** Stufe 2 — die Gewichtung nach Schwierigkeit
+**Stufe 2 ist am 29.08.2026 gebaut worden — als Quote, nicht als Gewichtung**
 **Wo im Code:** `src/domain/auswahl.js` — neu, dazu `src/domain/modus.js`, `src/app.js`
 
 Heute zieht `zieheRunde` reinen Zufall: mischen, die ersten 15 nehmen. Die
@@ -159,12 +159,59 @@ schwerer, nur vollständiger.
 - **Stufe 2:** [Der Lernstand](feature-lernstand-2026-08-29-1531.md), Stufe 1 (lokal).
   Ohne Statistik gibt es keine Schwierigkeit, und `SCHWERE` bleibt auf null.
 
-## Was davon noch offen ist
+## Stufe 2 ist anders gebaut worden als geplant
 
-Gebaut ist **Stufe 1**: die Abdeckung. Nach vier Runden war jedes Verb einmal
-dran, nach acht jede seiner abgefragten Formen.
+Geplant war ein zweiter Summand in der Gewichtsformel. Gebaut wurde am
+29.08.2026 stattdessen eine **Quote**: eine Runde besteht aus **5 noch nie
+geübten, 7 in Arbeit und 3 stabil gelernten** Einheiten. Die Zahlen stehen in
+`QUOTE` in `auswahl.js`, in Matildas Bereich am Kopf der Datei.
 
-**Stufe 2 fehlt** — die Gewichtung nach Schwierigkeit, und damit auch die
+**Der Grund war eine Messung.** Die Sortierung aus Stufe 1 behandelt „noch nie
+dran" als unendlich alt — solche Einheiten stehen also immer ganz vorn. Eine
+Simulation über den echten Verbbestand zeigte, was das heißt:
+
+| Runde | neue Wörter | Wiederholung |
+|---|---|---|
+| 1–7 | 15 | 0 |
+| 8 | 1 | 14 |
+| ab 9 | 0 | 15 |
+
+Sieben Runden lang war *jede* Karte neu — 105 Wörter am Stück, ohne eines
+davon je wiederzusehen. Danach kam nie wieder etwas Neues. Ein Kippschalter,
+kein Lernen. Eine Gewichtsformel hätte das nicht behoben: sie ändert die
+Reihenfolge innerhalb der Wartenden, nicht die Mischung der Runde.
+
+Mit der Quote kommen konstant fünf neue Wörter und zehn Wiederholungen. Bis
+alle 106 Einheiten einmal dran waren, dauert es dadurch rund 22 statt 8
+Runden — das ist kein Nachteil, sondern der Zweck.
+
+**Wenn ein Fach nicht genug hergibt, rücken die freien Plätze nach**, in der
+Reihenfolge `nie` → `arbeit` → `sicher`. Am Anfang ist „stabil gelernt" leer,
+seine drei Plätze gehen dann an die neuen Wörter; am Ende, wenn nichts mehr
+unberührt ist, geht es umgekehrt. Es gibt nie eine halbe Runde.
+
+**Innerhalb eines Fachs gilt weiter die Sortierung aus Stufe 1**: die
+längst nicht gesehene Karte zuerst, dann die Form, die am längsten wartet,
+bei Gleichstand der Würfel. Bei „noch nie dran" sind alle gleich alt — dort
+entscheidet also der Würfel allein, und das ist die einzig ehrliche Wahl.
+
+Dazu gehört eine zweite Änderung: **„stabil gelernt" verlangt jetzt mindestens
+drei Antworten** (`SICHER_AB_ANTWORTEN`). Ohne diese Hürde stünde eine Vokabel,
+die genau einmal richtig war, sofort bei 100 Prozent und würde den 3er-Topf
+blockieren, ohne etwas bewiesen zu haben. Das ändert auch die
+[Fortschrittsseite](feature-fortschritt-2026-08-29-1531.md), und zwar richtig.
+
+Die Gewichtsformel ist damit **nicht** gebaut und steht weiter im Backlog. Sie
+und [Leitner](../feature-request-leitner.md) sind jetzt beides Fragen der
+Reihenfolge *innerhalb* eines Fachs — die Mischung der Runde entscheidet die
+Quote darüber.
+
+## Was aus Stufe 1 gebaut ist
+
+Die Abdeckung. Nach vier Runden war jedes Verb einmal dran, nach acht jede
+seiner abgefragten Formen — das galt, bevor die Quote die Mischung übernahm.
+
+**Die Gewichtung fehlt weiter** — und damit auch die
 Zeile `auswahlGewichtet` in `modus.js` und der Verhältnis-Deckel. Die
 Voraussetzung dafür steht inzwischen: der
 [Lernstand](feature-lernstand-2026-08-29-1531.md) zählt, was danebengeht. Es fehlt

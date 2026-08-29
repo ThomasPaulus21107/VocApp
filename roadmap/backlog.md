@@ -37,10 +37,13 @@ in der Git-Historie.
   `braucht:` [den Lernstand](implemented/feature-lernstand-2026-08-29-1531.md) — **steht**,
   und mit `score()` gibt es die Zahl schon fertig: der zweite Summand ist
   `1 - score / 100`.
-  `offen:` nichts Grundsätzliches. Es ist die ausführlichste Beschreibung im
-  Ordner und wartet nur darauf, gebaut zu werden.
-  **Alternative, keine Ergänzung:** [Leitner](feature-request-leitner.md) ersetzt
-  denselben Sortierschlüssel. Gebaut wird eines von beiden zuerst.
+  `offen:` seit dem 29.08.2026 kleiner geworden. Die
+  [Quote](implemented/feature-auswahl-2026-08-29-1327.md) entscheidet jetzt die
+  **Mischung** einer Runde — 5 neue, 7 in Arbeit, 3 stabil. Die Gewichtung
+  wäre nur noch die Reihenfolge *innerhalb* eines Fachs, und damit deutlich
+  weniger wert als vorher: „in Arbeit" bekommt seine sieben Plätze ohnehin.
+  **Alternative, keine Ergänzung:** [Leitner](feature-request-leitner.md) würde
+  denselben Platz besetzen. Gebaut wird eines von beiden zuerst.
 
 
 Der Punkt „Lernstand pro Karte speichern" ist am 29.08.2026 hier

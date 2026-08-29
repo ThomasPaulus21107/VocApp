@@ -212,6 +212,12 @@ export const SICHER_AB_PROZENT = 75;
 // unterwegs. Auch das ist eine Entscheidung und keine Wahrheit.
 export const UNTERWEGS_AB_PROZENT = 25;
 
+// So oft muss eine Einheit mindestens beantwortet worden sein, bevor sie als
+// stabil gelernt gilt. Ohne diese Huerde stuende eine Vokabel, die genau
+// einmal richtig war, sofort bei 100 Prozent -- ein einziger Treffer ist
+// aber kein Beweis, sondern ein Zufall.
+export const SICHER_AB_ANTWORTEN = 3;
+
 /**
  * Teilt alle Einheiten in drei Faecher: noch nie geuebt, in Arbeit, sicher.
  *
@@ -232,8 +238,11 @@ export function verteile(stand, namen) {
     const wert = score(eintrag);
 
     if (wert === null) faecher.nie.push({ name, score: null, dran: 0 });
-    else if (wert > SICHER_AB_PROZENT) faecher.sicher.push({ name, score: wert, dran: eintrag.dran });
-    else faecher.arbeit.push({ name, score: wert, dran: eintrag.dran });
+    // Stabil ist nur, was gut UND oft genug war. Wer die Huerde reisst,
+    // bleibt in Arbeit -- auch mit 100 Prozent aus einer einzigen Antwort.
+    else if (wert > SICHER_AB_PROZENT && eintrag.dran >= SICHER_AB_ANTWORTEN) {
+      faecher.sicher.push({ name, score: wert, dran: eintrag.dran });
+    } else faecher.arbeit.push({ name, score: wert, dran: eintrag.dran });
   }
 
   // Bei gleichem Score steht vorn, was oefter dran war -- das ist der
@@ -241,6 +250,22 @@ export function verteile(stand, namen) {
   faecher.arbeit.sort((a, b) => a.score - b.score || b.dran - a.dran);
   faecher.sicher.sort((a, b) => b.score - a.score || b.dran - a.dran);
   return faecher;
+}
+
+/**
+ * Zu jeder Einheit ihr Fach: 'nie', 'arbeit' oder 'sicher'.
+ *
+ * Dieselbe Einteilung wie verteile(), nur andersherum aufgeschrieben -- die
+ * Auswahl fragt nach dem Fach EINER Einheit und nicht nach ganzen Listen.
+ */
+export function faecherVon(stand, namen) {
+  const zu = {};
+  const faecher = verteile(stand, namen);
+
+  for (const fach of Object.keys(faecher)) {
+    for (const { name } of faecher[fach]) zu[name] = fach;
+  }
+  return zu;
 }
 
 /**

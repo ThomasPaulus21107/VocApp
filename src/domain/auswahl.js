@@ -24,6 +24,29 @@ export function einheiten(karten) {
   );
 }
 
+/* =========================================================
+   WIE SICH EINE RUNDE ZUSAMMENSETZT, MATILDA
+   Links das Fach, rechts wie viele davon in eine Runde
+   kommen. Zusammen sind es fuenfzehn.
+
+   'nie'    -- die Vokabel war noch nie dran
+   'arbeit' -- schon geuebt, sitzt aber noch nicht
+   'sicher' -- stabil gelernt
+
+   Wenn ein Fach nicht genug hergibt, gehen die freien
+   Plaetze weiter -- in der Reihenfolge darunter.
+   ========================================================= */
+export const QUOTE = {
+  nie: 5,
+  arbeit: 7,
+  sicher: 3,
+};
+
+// In dieser Reihenfolge werden die Faecher bedient, und in derselben ruecken
+// sie nach, wenn eines nicht liefert: zuerst die noch nie geuebten, dann die
+// in Arbeit, zuletzt die stabilen.
+const REIHENFOLGE = ['nie', 'arbeit', 'sicher'];
+
 /**
  * Zieht eine Runde: die Einheiten, die am laengsten nicht dran waren, bei
  * Gleichstand gewuerfelt.
@@ -44,7 +67,7 @@ export function einheiten(karten) {
  * Spaeter kommt in den Sortierschluessel die Schwierigkeit dazu (Stufe 2 in
  * roadmap/implemented/feature-auswahl-2026-08-29-1327.md). Das ist ein Summand mehr, kein Umbau.
  */
-export function zieheRunde(karten, anzahl, zuletzt = {}, rundeNr = 0, zufall = Math.random) {
+export function zieheRunde(karten, anzahl, zuletzt = {}, rundeNr = 0, zufall = Math.random, faecher = {}) {
   const alle = einheiten(karten);
 
   // Wie lange ist eine KARTE nicht mehr drangewesen -- egal in welcher Form?
@@ -81,14 +104,47 @@ export function zieheRunde(karten, anzahl, zuletzt = {}, rundeNr = 0, zufall = M
     b.kartenAlter - a.kartenAlter || b.alter - a.alter || a.wuerfel - b.wuerfel
   );
 
+  // Drei Koerbe in der Reihenfolge von oben. Was `faecher` nicht kennt, war
+  // noch nie dran -- der Lernstand weiss ja nur von dem, was schon lief.
+  const koerbe = { nie: [], arbeit: [], sicher: [] };
+  for (const eintrag of bewertet) {
+    const name = schluessel(eintrag.karte.id, eintrag.form);
+    koerbe[faecher[name] ?? 'nie'].push(eintrag);
+  }
+
   const gezogen = [];
   const schonDabei = new Set();
-  for (const eintrag of bewertet) {
-    if (gezogen.length === anzahl) break;
-    if (schonDabei.has(eintrag.karte.id)) continue;
 
-    schonDabei.add(eintrag.karte.id);
-    gezogen.push({ karte: eintrag.karte, form: eintrag.form });
+  /**
+   * Nimmt bis zu `platz` Einheiten aus einem Fach und sagt, wie viele es
+   * wirklich wurden. Eine Karte, die schon dabei ist, wird uebersprungen und
+   * ist damit auch fuer die spaeteren Faecher verbraucht.
+   */
+  function nimm(fach, platz) {
+    let genommen = 0;
+
+    while (genommen < platz && koerbe[fach].length > 0) {
+      const eintrag = koerbe[fach].shift();
+      if (schonDabei.has(eintrag.karte.id)) continue;
+
+      schonDabei.add(eintrag.karte.id);
+      gezogen.push({ karte: eintrag.karte, form: eintrag.form });
+      genommen += 1;
+    }
+    return genommen;
   }
+
+  // Erst bekommt jedes Fach sein Kontingent.
+  let frei = anzahl;
+  for (const fach of REIHENFOLGE) frei -= nimm(fach, Math.min(QUOTE[fach], frei));
+
+  // Dann gehen die uebrigen Plaetze noch einmal durch dieselbe Reihenfolge.
+  // So laeuft die Runde auch dann voll, wenn ein Fach leer ist -- am Anfang
+  // ist das 'sicher', am Ende sind es 'nie' und 'arbeit'.
+  for (const fach of REIHENFOLGE) {
+    if (frei <= 0) break;
+    frei -= nimm(fach, frei);
+  }
+
   return gezogen;
 }

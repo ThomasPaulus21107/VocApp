@@ -3,7 +3,8 @@
 import { describe, it, expect } from 'vitest';
 import {
   merkeGezogen, verrechne, zuletztVon, schluessel,
-  score, verteile, uebersicht, stufe, verlaufZu, punkteVon, runden, PAUSE_MS, fleiss, serie,
+  score, verteile, faecherVon, uebersicht, stufe, verlaufZu, punkteVon, runden, PAUSE_MS, fleiss, serie,
+  SICHER_AB_ANTWORTEN,
   SICHER_AB_PROZENT, TAGE_MAX,
   AUSGAENGE, LEER, VERLAUF_MAX,
 } from '../src/domain/lernstand.js';
@@ -248,18 +249,60 @@ describe('verteile', () => {
   });
 });
 
+describe('die Huerde fuer "stabil gelernt"', () => {
+  const namen = ['uv-001|simple-past'];
+
+  it('laesst eine einzelne richtige Antwort nicht als stabil durchgehen', () => {
+    expect(SICHER_AB_ANTWORTEN).toBe(3);
+
+    // Einmal richtig heisst 100 Prozent -- und beweist trotzdem nichts.
+    const stand = verrechne(LEER, antwort(), 1);
+    expect(score(stand.einheiten['uv-001|simple-past'])).toBe(100);
+
+    const faecher = verteile(stand, namen);
+    expect(faecher.sicher).toHaveLength(0);
+    expect(faecher.arbeit.map((e) => e.name)).toEqual(namen);
+  });
+
+  it('laesst sie ab der dritten Antwort durch', () => {
+    let stand = LEER;
+    for (let i = 0; i < 3; i++) stand = verrechne(stand, antwort(), i);
+
+    expect(verteile(stand, namen).sicher.map((e) => e.name)).toEqual(namen);
+  });
+});
+
+describe('faecherVon', () => {
+  it('sagt zu jeder Einheit ihr Fach', () => {
+    const namen = ['uv-001|simple-past', 'uv-002|simple-past', 'uv-003|simple-past'];
+
+    let stand = LEER;
+    // uv-001 dreimal richtig -> stabil. uv-002 einmal falsch -> in Arbeit.
+    for (let i = 0; i < 3; i++) stand = verrechne(stand, antwort(), i);
+    stand = verrechne(stand, antwort({ id: 'uv-002', punkte: 0, ausgang: AUSGAENGE.FALSCH }), 9);
+
+    expect(faecherVon(stand, namen)).toEqual({
+      'uv-001|simple-past': 'sicher',
+      'uv-002|simple-past': 'arbeit',
+      'uv-003|simple-past': 'nie',
+    });
+  });
+});
+
 describe('uebersicht', () => {
   it('zaehlt geuebt und sicher auseinander', () => {
     const namen = ['uv-001|simple-past', 'uv-002|simple-past', 'uv-003|simple-past'];
 
-    // uv-001 zweimal auf Anhieb richtig, uv-003 einmal falsch, uv-002 nie.
+    // uv-001 dreimal auf Anhieb richtig, uv-003 einmal falsch, uv-002 nie.
+    // Drei Antworten, weil erst dann "stabil gelernt" gilt.
     let stand = merkeGezogen(LEER, gezogen('uv-001', 'uv-002', 'uv-003'));
     stand = verrechne(stand, antwort(), 1);
     stand = verrechne(stand, antwort(), 2);
-    stand = verrechne(stand, antwort({ id: 'uv-003', punkte: 0, ausgang: AUSGAENGE.FALSCH }), 3);
+    stand = verrechne(stand, antwort(), 3);
+    stand = verrechne(stand, antwort({ id: 'uv-003', punkte: 0, ausgang: AUSGAENGE.FALSCH }), 4);
 
     expect(uebersicht(stand, namen)).toMatchObject({
-      gesamt: 3, geuebt: 2, sicher: 1, runden: 1, antworten: 3, zuletztGeuebt: 3,
+      gesamt: 3, geuebt: 2, sicher: 1, runden: 1, antworten: 4, zuletztGeuebt: 4,
     });
   });
 });

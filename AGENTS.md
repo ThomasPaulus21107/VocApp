@@ -39,7 +39,10 @@ siehe `roadmap/feature-request-vokabel-import-klasse-5.md`.
 
 **Welche Karte drankommt, ist nicht mehr zufällig.** Die App merkt sich je
 Karte und Form, wann sie zuletzt dran war, und zieht die, die am längsten
-warten — nach vier Runden war jedes Verb einmal dran. Seit dem 29.08.2026
+warten. Seit dem 29.08.2026 entscheidet zusätzlich eine **Quote** die
+Mischung: 5 noch nie geübte, 7 in Arbeit, 3 stabil gelernte je Runde
+(`QUOTE` in `auswahl.js`). Vorher waren sieben Runden lang alle Karten neu
+und danach nie wieder eine. Seit dem 29.08.2026
 merkt sie sich auch, wie es ausging: je Einheit ein paar Zähler und die Summe
 der erreichten Kartenpunkte, dazu ein Verlauf der letzten 750 Antworten —
 alles in `localStorage`. Aus Summe geteilt durch Anzahl wird der **Score** je
