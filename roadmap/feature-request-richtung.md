@@ -37,15 +37,26 @@ die ohnehin schon leichter ist.
 ## Wofür es dagegen spricht
 
 Für normale Vokabeln (nicht für die Formen) ist beide Richtungen zu üben genau
-richtig, und dort trägt jede Karte beide Sprachen vollständig. Sobald der
-Vokabel-Strang wieder aufgenommen wird, ändert sich die Rechnung.
+richtig, und dort trägt jede Karte beide Sprachen vollständig.
+
+**Diese Bedingung ist am 29.08.2026 eingetreten.** Der Vokabel-Strang ist mit
+[Die Vokabeln der 5. Klasse hereinholen](feature-request-vokabel-import-klasse-5.md)
+wieder aufgenommen. Damit ist die Rechnung eine andere: das tote Markup wird
+gebraucht, sobald echte Vokabeln in der App sind. Die Entscheidung unten ist
+also nicht mehr „ob je", sondern „ob nur für Vokabeln und nicht für Formen".
 
 ## Zu entscheiden
 
 - [ ] Bleibt die Richtung fest auf Deutsch → Englisch, solange nur Verben
       geübt werden?
-- [ ] Falls ja: bleibt das tote Markup liegen, oder fliegt es raus und kommt
-      mit dem Vokabel-Strang zurück?
+- [ ] Wird sie für **normale Vokabeln** freigeschaltet und für Formfragen
+      gesperrt? Das ist nach heutigem Stand die wahrscheinlichste Antwort —
+      und sie heißt: die Richtung ist keine globale Einstellung, sondern hängt
+      an der Kartensorte.
+- [ ] Falls sie kommt: gehört der Schalter auf die
+      [Optionsseite](feature-request-optionsseite.md), und der Lernstand muss
+      Richtung und Form unterscheiden — „`brach` gewusst" ist nicht dasselbe
+      wie „`broke` gewusst".
 
 Solange nichts entschieden ist, gilt der Zustand von heute: fest auf
 `NACH_EN`, Markup bleibt liegen.
