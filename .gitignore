@@ -13,6 +13,13 @@ test-results/
 playwright-report/
 blob-report/
 
+# Die Zugangsdaten zu Supabase. Nicht, weil sie geheim waeren -- sie landen
+# im ausgelieferten Bundle und sind oeffentlich gedacht -- sondern damit jeder
+# seine eigenen eintragen kann und ein getauschter Schluessel keine
+# Code-Aenderung ist. Was hineingehoert, steht in .env.example.
+.env
+.env.local
+
 # macOS legt das in jedem Ordner an, den man im Finder oeffnet.
 .DS_Store
 

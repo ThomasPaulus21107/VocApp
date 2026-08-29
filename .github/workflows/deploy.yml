@@ -33,7 +33,19 @@ jobs:
 
       # npm ci installiert exakt nach package-lock.json und aendert sie nicht.
       - run: npm ci
+
+      # Die Supabase-Zugangsdaten gehen als Umgebungsvariablen in den Build --
+      # Vite backt alles ein, was mit VITE_ anfaengt. Beide Werte sind
+      # oeffentlich gedacht; was schuetzt, ist Row Level Security. Sie stehen
+      # trotzdem als Secrets da, damit ein getauschter Schluessel keine
+      # Code-Aenderung ist.
+      #
+      # Fehlt eines von beiden, laeuft die App ohne Server weiter, statt weiss
+      # zu bleiben -- siehe src/infra/backend.js.
       - run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL_PROD }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_KEY_PROD }}
 
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
