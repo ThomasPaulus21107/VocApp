@@ -508,10 +508,25 @@ git push -u origin thema-des-branches
 
 **Für KI-Assistenten:** Commits, Pushes und Pull Requests sind seit dem
 29.08.2026 freigegeben — auf einem Branch, mit nachgezogener Doku und grünen
-Tests. **Gemergt wird von Hand.** Der Merge ist die Stelle, an der jemand
-hinschaut, und die bleibt beim Menschen. Bis dahin galt hier „keine Commits
-ohne ausdrückliche Aufforderung", weil der Git-Ablauf Teil des Lernziels war;
-inzwischen sitzt er, und die Nachfrage kostete nur einen Zug.
+Tests. Bis dahin galt hier „keine Commits ohne ausdrückliche Aufforderung",
+weil der Git-Ablauf Teil des Lernziels war; inzwischen sitzt er, und die
+Nachfrage kostete nur einen Zug.
+
+**Der Merge ist seit dem 29.08.2026 geteilt**, und zwar entlang der Frage, ob
+eine Änderung bei Matilda ankommen kann:
+
+| Was im Diff steht | Wer merged |
+|---|---|
+| nur `roadmap/`, `AGENTS.md`, `README.md`, `data/README.md` | die KI, sobald **beide** Checks grün sind |
+| irgendetwas aus `src/`, `data/*.json`, `public/`, `package.json`, `.github/` | **ein Mensch** |
+
+Der Grund für den Schnitt: ein Merge auf `main` löst den Pages-Deploy aus.
+Bei Text ändert das eine Seite, die niemand beim Üben aufhat; bei Code ändert
+es die App auf dem Telefon. **Der Merge ist die Stelle, an der jemand
+hinschaut** — und hinschauen muss man dort, wo etwas kaputtgehen kann.
+
+Wer mergen will, prüft vorher `gh pr diff --name-only` und verlässt sich nicht
+darauf, was er zu ändern glaubte.
 
 ---
 
