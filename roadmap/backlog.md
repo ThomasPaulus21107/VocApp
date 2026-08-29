@@ -61,8 +61,11 @@ sich damit gerade **nicht** festlegt.
   `offen:` was zählt, über welchen Zeitraum, und wie unterschiedlich schwere
   Runden vergleichbar werden. **Gehört Thomas und Matilda gemeinsam** — es ist
   eine Frage danach, was belohnt werden soll, keine technische.
-  Solange sie offen ist, wird an [Mehrere Nutzer](feature-request-mehrere-nutzer.md)
-  nichts gebaut.
+  Solange sie offen ist, bleiben Rangliste, Missionen und Punktestand in
+  [Mehrere Nutzer](feature-request-mehrere-nutzer.md) liegen. **Der Weg zu
+  Supabase hängt seit dem 29.08.2026 nicht mehr daran** — der Lernstand
+  speichert Ereignisse und keine Punktekonten, siehe die sieben Dateien ab
+  [Die zweite Naht zum Server](feature-request-backend-naht.md).
 
 - **Aus der Serie soll etwas folgen.** *Gezählt* wird sie seit dem 29.08.2026
   auf der [Fleiß-Seite](implemented/feature-fleiss-2026-08-29-1551.md) — „vier Tage

@@ -1,0 +1,136 @@
+# Feature: Die zweite Naht zum Server
+
+**Status:** bereit — durchdacht, noch nicht gebaut
+**Wo im Code:** `src/infra/backend.js` — neu, dazu `package.json`,
+`.env.example`, `.gitignore`, `.github/workflows/deploy.yml`
+
+Die erste von vier Dateien, die den Lernstand nach Postgres bringen. Diese hier
+baut **nur die Leitung**: den Client, die Konfiguration und eine Sitzung. Es
+fließt noch nichts durch sie.
+
+Das ist Absicht und derselbe Fall wie
+[Die Speicher-Naht am Gerät](implemented/feature-storage-2026-08-29-1327.md):
+sie macht allein nichts sichtbar, blockiert nichts und macht drei anderen
+Features den Weg frei. `roadmap/README.md` nennt das Punkt 1 der
+Aufnahmekriterien.
+
+## Warum es diese Naht überhaupt gibt
+
+`storage.js` sagt es im eigenen Kopf: *„Was einer Person gehört (Lernstand,
+Punkte), gehört später nach Postgres und nicht hierher."* `AGENTS.md`
+beschreibt die Trennung seit Wochen als Tabelle:
+
+| | `infra/storage.js` | `infra/backend.js` |
+|---|---|---|
+| Gehört zu | dem **Gerät** | der **Person** |
+| Inhalt | Töne an/aus, Aufgabenart, Kartenbeutel | Lernstand, Punkte, Missionen |
+| Technik | `localStorage`, synchron | Supabase, asynchron |
+
+Der Druck dahinter steht in `README.md`: **iOS löscht `localStorage` nach
+sieben Tagen ohne Benutzung.** Ein Lernstand im fremden Browser ist weder zu
+prüfen noch zu sichern noch wiederherzustellen.
+
+## Einmalig im Dashboard
+
+1. **Auth → Providers → Anonymous sign-ins: an.** Ohne das scheitert
+   `signInAnonymously()` mit einem 422.
+2. **Settings → API:** die Projekt-URL und den Publishable Key
+   (`sb_publishable_…`) notieren.
+
+## Anonyme Anmeldung — die Entscheidung, die alles Weitere trägt
+
+Die Reihenfolge ist „erst die Datenbank, dann die Anmeldung". Dabei entsteht
+eine Lücke: **wem gehört eine Zeile, solange es keinen Login gibt?**
+
+Die Antwort ist `supabase.auth.signInAnonymously()`. Es legt einen echten
+Nutzer an — mit einer echten `auth.uid()`, nur ohne Mailadresse. Damit gilt:
+
+- **Row Level Security greift ab der ersten Zeile.** Kein „das härten wir
+  später", was hier auch nichts wert wäre: der Key steht im ausgelieferten
+  Bundle, RLS ist das Einzige zwischen den Daten und dem offenen Netz.
+- **Für Matilda ändert sich nichts.** Keine Maske, kein Knopf, keine Frage.
+- **Später kostet der Umstieg nichts.** `updateUser({ email })` macht aus der
+  anonymen Sitzung ein Konto: dieselbe uid, alle Zeilen bleiben liegen. Siehe
+  [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md).
+
+Die Alternative wäre ein selbst erfundener Geräteschlüssel in `localStorage`
+gewesen. Der hat den Fehler, dass RLS nichts prüfen kann: die Tabelle wäre für
+jeden im Netz les- und schreibbar, und der Umstieg auf Konten wäre ein Umzug
+aller Zeilen. Verworfen.
+
+## Die API
+
+Das Muster steht in [Ob die App mehrere Nutzer kennt](feature-request-mehrere-nutzer.md)
+und lautet: **einmal beim Start laden, danach aus dem Speicher im RAM lesen.**
+Damit färbt die Asynchronität nicht durch die ganze App.
+
+```js
+export async function starte()   // Sitzung holen oder anonym anmelden
+export function melde(ereignis)  // schreibt im Hintergrund   -> Datei 3
+export async function lade()     // einmal alles holen        -> Datei 6
+export function angemeldet()     // uid oder null
+```
+
+Gebaut wird hier `starte()` und `angemeldet()`. Die anderen beiden stehen schon
+im Kopf der Datei, damit später niemand die Form neu erfindet.
+
+## Zwei Eigenschaften, die nicht verhandelbar sind
+
+**Fehlt die Konfiguration, schaltet sich `backend.js` still ab.** Kein Fehler,
+keine Meldung, die App läuft wie bisher rein lokal weiter. Ein vergessenes
+Secret im Workflow darf keine weiße Seite ergeben — und die Oberflächen-Tests
+in `tests/oberflaeche/` laufen dadurch ohne Server und ohne Netz.
+
+**Nie werfen.** Dieselbe Haltung wie in `storage.js`: ein fehlgeschlagenes
+Speichern darf die App nie anhalten.
+
+## Die Schlüssel
+
+`.env` lokal (gehört in `.gitignore`), `.env.example` im Repo ohne Werte:
+
+```
+VITE_SUPABASE_URL=
+VITE_SUPABASE_PUBLISHABLE_KEY=
+```
+
+Im Deploy-Workflow zwei Secrets, die beim `npm run build`-Schritt als `env:`
+hereinkommen.
+
+**Beide Werte sind öffentlich gedacht** — sie landen im Bundle, das GitHub
+Pages ausliefert, und das ist bei Supabase der vorgesehene Weg. Der Grund für
+die Variablen ist nicht Geheimhaltung, sondern Rotation: ein getauschter Key
+soll keine Code-Änderung sein. **Was schützt, ist RLS**, siehe
+[Die Ereignistabelle mit Row Level Security](feature-request-ereignistabelle.md).
+
+## Die neue Abhängigkeit
+
+`@supabase/supabase-js` ist die **erste echte Laufzeit-Abhängigkeit** des
+Projekts — bisher sind alle vier `devDependencies`. `AGENTS.md` verlangt dafür
+eine Rückfrage; sie ist am 29.08.2026 gestellt und mit ja beantwortet worden.
+
+Die Alternative war `fetch` von Hand: PostgREST und GoTrue sind normale
+REST-Endpunkte, ein Insert ist ein POST. Das trägt genau bis zur Anmeldung.
+Danach kommen Sitzungsspeicherung und Token-Erneuerung dazu — die Teile, die
+von Hand still kaputtgehen, und zwar erst nach einer Stunde und nur bei dem,
+der die App wirklich benutzt.
+
+## Tests
+
+`tests/backend.test.js`, neu, nach dem Muster von `tests/storage.test.js`: der
+interessante Teil ist nicht der Erfolgsfall, sondern was passiert, wenn es
+nicht geht.
+
+- Ohne Konfiguration wirft nichts, und `angemeldet()` ist `null`.
+- `verbinde(client)` nimmt einen falschen Client entgegen — so wie
+  `storage.test.js` heute einen falschen `localStorage` einsetzt. Ohne diese
+  Naht wäre die Datei nur mit Netz zu testen, und das wäre keiner.
+- Eine gescheiterte Anmeldung hält die App nicht an.
+
+## Voraussetzung
+
+Keine. Diese Datei kommt zuerst.
+
+## Was danach kommt
+
+[Die Ereignistabelle](feature-request-ereignistabelle.md) (parallel möglich),
+dann [Jede Antwort geht zum Server](feature-request-ereignisse-melden.md).

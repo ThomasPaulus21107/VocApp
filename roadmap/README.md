@@ -121,6 +121,37 @@ Von unten nach oben, neueste zuerst.
 | [Ob die Abfragerichtung umschaltbar wird](feature-request-richtung.md) | Entscheidung |
 | [Leitner-Fächer mit Wiedervorlage](feature-request-leitner.md) | Thomas, Entscheidung gegen die Gewichtung |
 
+#### Der Weg zu Supabase, in der Reihenfolge
+
+Sieben Dateien, die zusammengehören: erst die Datenbank, dann die Anmeldung.
+Jede ist einzeln baubar und einzeln mergebar — deshalb sind es sieben und
+nicht eine. Refined am 29.08.2026, nachdem Supabase eingerichtet war; die
+Vorgeschichte steht in
+[Ob die App mehrere Nutzer kennt](feature-request-mehrere-nutzer.md).
+
+```
+      1 backend-naht ─────┐
+                          ├──▶ 3 ereignisse-melden ──▶ 4 umzug-des-bestands
+      2 ereignistabelle ──┘                    (die Datenbank steht)
+                                    │
+                                    ▼
+                              5 konten ──┬──▶ 6 server-ist-die-wahrheit
+                                         └──▶ 7 kinderdaten
+```
+
+| # | Feature | Wer |
+|---|---|---|
+| 1 | [Die zweite Naht zum Server](feature-request-backend-naht.md) | Thomas |
+| 2 | [Die Ereignistabelle mit Row Level Security](feature-request-ereignistabelle.md) | Thomas |
+| 3 | [Jede Antwort geht zum Server](feature-request-ereignisse-melden.md) | Thomas |
+| 4 | [Der Bestand zieht um](feature-request-umzug-des-bestands.md) | Thomas |
+| 5 | [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md) | Thomas, Entscheidung: wer legt Konten an |
+| 6 | [Der Server wird die Wahrheit](feature-request-server-ist-die-wahrheit.md) | Thomas |
+| 7 | [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md) | Thomas |
+
+**Rangliste, Missionen und Punktestand sind nicht dabei.** Sie hängen an
+„Was ist ein Punkt?" im [Backlog](backlog.md), und diese Frage ist offen.
+
 Nicht jedes Feature ist Code. Die Vokabeln, die Verb-Tipps, die Töne und die
 Farben sind Matildas Arbeit und stehen gleichberechtigt daneben — ohne sie ist
 die App eine Vorführung und kein Werkzeug.
