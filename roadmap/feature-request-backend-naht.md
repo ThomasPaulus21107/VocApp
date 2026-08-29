@@ -86,34 +86,33 @@ in `tests/oberflaeche/` laufen dadurch ohne Server und ohne Netz.
 **Nie werfen.** Dieselbe Haltung wie in `storage.js`: ein fehlgeschlagenes
 Speichern darf die App nie anhalten.
 
-## Zwei Projekte: Spielwiese und Ernst
+## Zwei Projekte: VocApp TEST und VocApp
 
-**Lokal zeigt auf ein eigenes Supabase-Projekt, GitHub Pages auf das echte.**
-Nichts, was beim Ausprobieren passiert, berührt Matildas Stand — und
-ausprobiert wird hier viel: eine Tabelle, die dreimal neu angelegt wird, ein
-Ausgangskorb, der absichtlich kaputtgeht, Testläufe, die Unsinn schreiben.
+**Lokal zeigt auf VocApp TEST, veröffentlicht wird gegen VocApp.** Nichts, was
+beim Ausprobieren passiert, berührt Matildas Stand — und ausprobiert wird hier
+viel: eine Tabelle, die dreimal neu angelegt wird, ein Ausgangskorb, der
+absichtlich kaputtgeht, Testläufe, die Unsinn schreiben.
 
-Was das kostet, gehört dazugesagt:
+Zwei Wertepaare heißen zwei Wertepaare, die man verwechseln kann. Deshalb
+heißen die Projekte im Dashboard erkennbar verschieden, und die Abnahme unten
+schaut nach, in welchem die Zeile gelandet ist.
 
-- **`supabase/schema.sql` muss zweimal laufen** — bei jeder Änderung in beiden
-  Projekten. Die Datei ist genau deshalb versioniert im Repo und nicht nur im
-  SQL-Editor getippt.
-- **Zwei Wertepaare, die man verwechseln kann.** Deshalb heißen die Projekte
-  im Dashboard erkennbar verschieden, und die Abnahme unten schaut nach, in
-  welchem die Zeile gelandet ist.
+**Wie das Schema in beide kommt und was ein Release ist**, steht in
+[Test und Produktion](feature-request-releases.md) — kurz: nicht von Hand.
 
 ## Die Schlüssel
 
-`.env` lokal (gehört in `.gitignore`) — die Spielwiese. `.env.example` im Repo
-ohne Werte:
+`.env` lokal (gehört in `.gitignore`) — die Werte von **VocApp TEST**.
+`.env.example` im Repo ohne Werte:
 
 ```
 VITE_SUPABASE_URL=
 VITE_SUPABASE_PUBLISHABLE_KEY=
 ```
 
-Im Deploy-Workflow zwei Secrets mit den Werten des **echten** Projekts, die
-beim `npm run build`-Schritt als `env:` hereinkommen.
+Im Deploy-Workflow zwei Secrets mit den Werten von **VocApp**, die beim
+`npm run build`-Schritt als `env:` hereinkommen. Sie gehören in eine
+geschützte Environment, siehe [Test und Produktion](feature-request-releases.md).
 
 **Beide Werte sind öffentlich gedacht** — sie landen im Bundle, das GitHub
 Pages ausliefert, und das ist bei Supabase der vorgesehene Weg. Der Grund für
@@ -149,8 +148,8 @@ nicht geht.
 
 - `npm run dev`, dann in der Konsole nachsehen, dass eine Sitzung existiert und
   `angemeldet()` eine uid liefert.
-- **Die Zeile landet in der Spielwiese, nicht im Ernst.** Beide Dashboards
-  offen, in einem muss es leer bleiben.
+- **Die Zeile landet in VocApp TEST, nicht in VocApp.** Beide Dashboards offen,
+  in einem muss es leer bleiben.
 - `.env` umbenennen und neu starten: die App läuft vollständig, nur eben
   lokal. Das ist derselbe Zustand, in dem die Oberflächen-Tests laufen.
 

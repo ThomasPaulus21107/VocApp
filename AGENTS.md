@@ -406,6 +406,12 @@ npx playwright install webkit   # einmalig, holt den Browser dazu
   anderen sind `devDependencies` und landen nie im Bundle. Am 29.08.2026
   nachgefragt und freigegeben; die Begründung steht in
   `roadmap/feature-request-backend-naht.md`.
+- **Die Supabase-CLI** kommt dazu, aber **nur im Workflow** — nicht in
+  `package.json`, nicht in `npm install`. Sie spielt Migrationen ein, siehe
+  `roadmap/feature-request-releases.md`.
+- **Es gibt zwei Supabase-Projekte:** `VocApp TEST` entspricht `main` und ist
+  das, worauf `npm run dev` zeigt; `VocApp` entspricht dem letzten Release-Tag.
+  Wer eine Migration schreibt, ändert nie eines von Hand — sonst driften sie.
 - Keine weiteren Abhängigkeiten hinzufügen ohne Rückfrage. Jede neue
   Abhängigkeit ist etwas, das Matilda nicht mehr überblickt.
 - `vite.config.js` enthält `base: '/VocApp/'` — nötig für GitHub Pages.
