@@ -118,9 +118,11 @@ Browser **zwei verschiedene Ursprünge**, mit zwei getrennten
 geleitet wird, steht vor einem leeren Speicher und einer verlorenen Sitzung.
 
 Deshalb **eine von beiden festlegen, bevor sie irgendwer benutzt**, und die
-andere darauf umleiten. Vorschlag: **`https://vocappulary.online` ohne `www`**
-— kürzer zu tippen, und getippt wird sie genau einmal, beim Anlegen auf dem
-Homebildschirm.
+andere darauf umleiten. **Entschieden am 30.08.2026: `https://vocappulary.online`
+ohne `www`**, die nackte Form, und `www` leitet dorthin um. Kürzer zu tippen,
+und getippt wird sie genau einmal, beim Anlegen auf dem Homebildschirm; ein
+Grund für `www` gäbe es nur bei einem zweiten Angebot unter derselben Domäne,
+und das gibt es nicht.
 
 Ab dann gilt: **nur diese eine Adresse wird weitergegeben.** Auch in den
 Magic Links aus [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md).
@@ -142,6 +144,71 @@ Magic Links aus [Aus der anonymen Sitzung wird ein Konto](feature-request-konten
 - **Der Release-Knopf**, der in
   [Test und Produktion](implemented/feature-releases-2026-08-30-0803.md) vertagt wurde.
 
+## Das Zielbild der Umgebungen
+
+Entschieden am 30.08.2026 abends. Die Tabelle ist die kurze Fassung, darunter
+steht, was daran nicht selbsterklärend ist.
+
+| | Adresse | Supabase | Variablen aus | Migrationen |
+|---|---|---|---|---|
+| **Production** | `vocappulary.online` | `VocApp` | Vercel-Env *Production* | GitHub Actions bei Merge auf `main` |
+| **Vorschau je PR** | `vocapp-git-<branch>-….vercel.app` | `VocApp TEST` | Vercel-Env *Preview* | keine — läuft gegen das Schema von `main` |
+| **Lokal** | `localhost` | `VocApp TEST` | `.env` | von Hand |
+
+### Eine Domäne kann keine Umgebung tragen
+
+Die naheliegende Idee — „die vercel.app-Adresse zeigt auf TEST, die eigene
+Domäne auf Produktion" — **geht nicht**, und zwar aus einem Grund, der sich
+nicht umgehen lässt: bei Vercel gehören die Variablen zum **Deployment**, nicht
+zur Domain. `voc-app-zeta.vercel.app` ist nur ein zweiter Name für dasselbe
+Production-Deployment: gleicher Build, gleiche `VITE_`-Werte, gleiche
+Datenbank.
+
+Getrennt wird nach **Umgebung**, und die entsteht aus dem Branch: `main` wird
+Production, alles andere Preview. Das ist der ganze Mechanismus; im Repo steht
+dazu nichts.
+
+Die vercel.app-Adresse bleibt damit schlicht das Zweitalias der Produktion. Man
+gibt sie nicht weiter, mehr ist dazu nicht zu tun.
+
+### Kein fester Test-Stand mit eigener Adresse
+
+Erwogen und **verworfen**: ein Branch `test` mit einer Domäne
+`test.vocappulary.online` daran. Er will gepflegt und nachgezogen werden, und
+was er liefern würde — eine Adresse mit Testdatenbank zum Ausprobieren — gibt
+Vercel für jeden offenen Pull Request ohnehin.
+
+Gebaut wird er, wenn jemand eine dauerhafte Adresse braucht, **ohne** dass ein
+PR offen ist. Vorher ist er Pflegeaufwand für einen Fall, den es nicht gibt.
+
+## Wie die Reihenfolge Schema-vor-App gesichert wird
+
+`supabase/README.md` verlangt: erst das Schema, dann die App. Heute ist das
+umsonst zu haben — beides liegt in einem Workflow, nacheinander.
+
+**Nach dem Umzug ist es das nicht mehr.** Vercel baut sofort beim Push,
+GitHub Actions migriert daneben; für ein paar Minuten kann neuer Code gegen ein
+altes Schema laufen. Schreibt er in eine Spalte, die es noch nicht gibt,
+schlägt der Insert fehl.
+
+**Die Entscheidung: eine Migration kommt in ihrem eigenen Pull Request, vor
+dem Code, der sie benutzt.** Erst das Schema nach `main`, Actions spielt es
+ein; danach der PR mit dem Code. Damit ist das Problem nicht gelöst, sondern
+gar nicht erst vorhanden, und zwar ohne eine einzige Zeile CI.
+
+Es passt zu der Regel, die ohnehin gilt: *eine Migration darf nichts wegnehmen,
+was die laufende App noch braucht.* Alte App gegen neues Schema ist deshalb
+immer verträglich — in beliebiger Reihenfolge und beliebig lange.
+
+Verworfen wurden zwei Alternativen:
+
+- **Auto-Deploy abschalten und aus dem Migrationsjob per Deploy Hook
+  auslösen** (`vercel.json`, `git.deploymentEnabled`). Es funktioniert, aber es
+  verlegt die Auslieferung in eine selbstgebaute Mechanik, die man ab dann
+  pflegt und erklärt.
+- **Den Promote-Knopf die Reihenfolge sichern lassen.** Siehe unten — er kann
+  es, aber er bezahlt es mit einem schlechteren Tausch.
+
 ## Zwei Entscheidungen vom 30.08.2026
 
 - **Ein Pull Request bekommt seine Migration NICHT vorab in TEST.** Sonst
@@ -153,11 +220,26 @@ Magic Links aus [Aus der anonymen Sitzung wird ein Konto](feature-request-konten
   Er sitzt neben der Vorschau, die man gerade bewertet hat, und das ist die
   richtige Stelle: befördert wird genau das, was man angesehen hat.
 
-  **Vorher auszuprobieren, nicht anzunehmen:** `VITE_`-Variablen werden beim
-  Bauen eingebacken. Wird eine Vorschau *befördert* statt neu gebaut, könnte
-  die beförderte Fassung weiter auf `VocApp TEST` zeigen — also auf die
-  falsche Datenbank, ohne dass es jemand sieht. Das ist der erste Test nach
-  dem Umzug, und er entscheidet, ob der Knopf so bleiben kann.
+  **Aber er sichert die Reihenfolge nicht ab**, und er soll es auch nicht.
+  Am Abend des 30.08.2026 durchgespielt: ein Knopf, der den Zeitpunkt des
+  Produktionswechsels in Menschenhand legt, löst zwar das Timing — man klickt
+  erst, wenn die Migration grün ist. Er setzt aber voraus, dass `main` **nicht**
+  automatisch nach Production geht, denn sonst gäbe es nichts zu befördern. Und
+  dann wandert ein Artefakt nach Production, das als *Preview* gebaut wurde.
+
+  `VITE_`-Variablen werden beim Bauen eingebacken. Hängt „Promote" nur die
+  Adresse um, statt neu zu bauen, zeigt die Produktion danach auf
+  `VocApp TEST` — Matilda übt, die Zeilen landen in der Testdatenbank, und
+  niemand sieht es.
+
+  **Deshalb: Production baut automatisch aus `main`.** Dann sind garantiert
+  die Production-Variablen drin, ohne dass jemand es nachhalten muss. Der Knopf
+  bleibt für das, wofür er taugt — eine Vorschau, die Matilda auf dem Telefon
+  abgenommen hat, ohne Umweg live schalten.
+
+  **Vorher auszuprobieren, nicht anzunehmen:** ob eine beförderte Vorschau die
+  Variablen ihrer eigenen Umgebung behält. Das ist der erste Test nach dem
+  Umzug, und er entscheidet, wofür der Knopf überhaupt benutzt werden darf.
 
 ## Was bei Vercel einzustellen ist
 
