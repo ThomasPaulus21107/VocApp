@@ -65,6 +65,46 @@ Die Rollenverteilung aus `AGENTS.md` bleibt unangetastet: `storage.js` gehört
 dem Gerät, `backend.js` der Person. Ein zwischengelagerter Lernstand ist etwas,
 das man jederzeit wegwerfen würde — er steht ja auf dem Server.
 
+## Beim Einlesen muss entdoppelt werden
+
+**Am 30.08.2026 im laufenden Betrieb aufgefallen, nicht am Schreibtisch.**
+
+Zwischen dem Einbau von
+[Jede Antwort geht zum Server](implemented/feature-ereignisse-melden-2026-08-30-1000.md)
+(10:00) und dem
+[Umzug des Bestands](implemented/feature-umzug-des-bestands-2026-08-30-1815.md)
+(18:15) lagen neun Stunden. Alles, was in diesem Fenster beantwortet wurde,
+ging **zweimal** zum Server: einmal sofort als reguläre Zeile, und einmal beim
+Umzug, weil es im lokalen `verlauf` steht.
+
+Dasselbe passiert bei jedem Gerät, das seinen Umzug später nachholt — dort ist
+das Fenster nicht neun Stunden, sondern alles seit dem 30.08.2026.
+
+**Das `unique (nutzer, geraet, nummer)` greift dagegen nicht**, und das ist
+kein Fehler: die beiden Zeilen haben verschiedene Gerätenamen (`umzug-<g>`
+gegen `<g>`) und verschiedene Nummern. Der Schlüssel schützt gegen einen
+doppelten Versand derselben Zeile, nicht gegen zwei Wege derselben Antwort.
+
+Solange lokal die Wahrheit ist, ist das folgenlos — niemand liest die Tabelle.
+**Ab diesem Feature ist es das nicht mehr:** eine doppelt gezählte Antwort
+verdoppelt ihre Punkte und ihren `dran`-Zähler.
+
+`standAusVerlauf()` muss deshalb entdoppeln, und der Schlüssel dafür ist
+**nicht** die Zeilen-`id`, sondern das, was die Antwort ausmacht:
+
+```
+(nutzer, karte, form, zeit)
+```
+
+`zeit` kommt vom Gerät und ist bei beiden Kopien dieselbe Millisekunde — sie
+stammen ja aus einem einzigen Tastendruck. Zwei echte Antworten auf dieselbe
+Karte in derselben Millisekunde gibt es nicht.
+
+Aufräumen lässt sich das nicht: die App kann keine Zeilen löschen, das ist in
+der Migration so gewollt. Die Dubletten bleiben also liegen und werden beim
+Lesen übergangen — was ohnehin die haltbarere Lösung ist, denn dasselbe kann
+bei jedem künftigen Nachzügler wieder passieren.
+
 ## Die Abnahme
 
 **Auf einem zweiten Gerät anmelden: derselbe Stand.** Das ist der ganze Zweck
