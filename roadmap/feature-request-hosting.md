@@ -77,7 +77,14 @@ machen — also mit einem Feature, das man danach wieder wegwirft.
 Wenig, aber an drei Stellen, die zusammenhängen:
 
 - **`base: '/VocApp/'` in `vite.config.js` fällt weg.** Vercel liefert an der
-  Wurzel aus. Das ist die eine Zeile, an der alles andere hängt.
+  Wurzel aus. Das ist die eine Zeile, an der alles andere hängt — und sie kann
+  nicht beides: ohne sie ist GitHub Pages sofort kaputt, mit ihr Vercel.
+
+  Am 30.08.2026 nachgesehen, wie sich das äußert: Vercel liefert das HTML aus,
+  darin steht `src="/VocApp/assets/index-….js"`, und dieser Pfad gibt dort
+  einen 404. Ergebnis ist eine weiße Seite. **Das ist der erwartete Zustand,
+  solange dieses Feature nicht gebaut ist**, und kein Zeichen, dass am
+  Vercel-Projekt etwas falsch eingerichtet wäre.
 - **`playwright.config.js`** kennt dieselbe Adresse als `ADRESSE`. Sie zieht
   mit, sonst laufen die Oberflächen-Tests gegen einen 404.
 - **`deploy.yml` schrumpft.** Vercel baut und liefert selbst aus; der Workflow
@@ -92,10 +99,18 @@ Wenig, aber an drei Stellen, die zusammenhängen:
   Vercel — und bei fremden Kinderdaten ist „wer hat Zugriff worauf" eine Frage,
   die jemand beantworten können muss, siehe
   [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md).
-- **Die Adresse ist entschieden: `https://vocapp.vercel.app`.** Keine eigene
-  Domäne, also **genau ein** Ursprungswechsel und nicht zwei. Der Name muss bei
-  Vercel noch frei sein — ist er es nicht, hängt Vercel etwas an, und dann ist
-  die Adresse eine andere. **Vor dem Umzug nachsehen**, nicht danach.
+- **Die Adresse ist noch nicht entschieden.** Entschieden ist nur: eine
+  `*.vercel.app`-Adresse, **keine eigene Domäne** — also genau ein
+  Ursprungswechsel und nicht zwei.
+
+  `vocapp` war am 30.08.2026 vergeben; Vercel hat beim Anlegen
+  `voc-app-zeta.vercel.app` daraus gemacht. Das ist ein **Platzhalter**, kein
+  Beschluss: unter Settings → Domains lässt sich jede freie
+  `*.vercel.app`-Adresse dazunehmen, ohne am Projekt etwas zu ändern.
+
+  **Der Name muss erst stehen, wenn dieses Feature gebaut wird** — vorher
+  kennt die Adresse niemand und ändern kostet nichts. Danach kostet es jeden
+  eine neue Anmeldung und ein neues Lesezeichen auf dem Homebildschirm.
 - **Jeder muss die App neu auf den Homebildschirm legen.** Das alte Lesezeichen
   zeigt auf die alte Adresse und wird nicht von selbst umziehen. Ein Satz an
   alle, die schon eins haben.
