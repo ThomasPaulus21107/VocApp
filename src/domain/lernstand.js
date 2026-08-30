@@ -263,6 +263,36 @@ function brauchbar(eintrag, vomVerlauf) {
   return vomVerlauf ?? eintrag ?? null;
 }
 
+/* =========================================================
+   WIE ORANGE EINE VOKABEL IN ARBEIT IST
+
+   Das Fach "in Arbeit" ist kein Zustand, sondern eine Spanne:
+   darin steht die Vokabel, die zweimal knapp danebenlag,
+   neben der, die schon fast sitzt. Im Balken auf der
+   Fortschrittsseite sahen bisher beide gleich aus.
+
+   Sieben Stufen, nach dem Score:
+
+     0     rot           -- 0 Punkte oder weniger, sitzt gar nicht
+     1..5  orange        -- die Spanne dazwischen, in Zwanziger-Schritten
+     6     blasses Gruen -- volle 100 %, aber noch nicht oft genug
+                            beantwortet fuer SICHER_AB_ANTWORTEN
+
+   Blasser als das Gruen von "sitzt", und das ist die Aussage:
+   die Vokabel ist nicht durch, sie hat nur noch keinen Fehler
+   gemacht.
+   ========================================================= */
+export const ARBEITSSTUFEN = 7;
+
+export function arbeitsstufe(score) {
+  // Nicht bewertbar oder im Minus -- Tipps kosten Punkte, und wer nur Tipps
+  // genommen hat, steht unter null.
+  if (!Number.isFinite(score) || score <= 0) return 0;
+  if (score >= 100) return ARBEITSSTUFEN - 1;
+  // 1-19 -> 1, 20-39 -> 2, 40-59 -> 3, 60-79 -> 4, 80-99 -> 5.
+  return 1 + Math.floor(score / 20);
+}
+
 export function verteile(stand, namen) {
   const faecher = { nie: [], arbeit: [], sicher: [] };
   const ausVerlauf = zaehlerAusVerlauf(stand.verlauf);

@@ -6,6 +6,7 @@ import verben from '../data/unregelmaessige-verben.json';
 import { einheiten } from './domain/auswahl.js';
 import {
   uebersicht, verteile, stufe, verlaufZu, punkteVon, schluessel,
+  arbeitsstufe, ARBEITSSTUFEN,
   LEER, SICHER_AB_PROZENT, SICHER_AB_ANTWORTEN,
 } from './domain/lernstand.js';
 import { FORM_NAME } from './ui/formnamen.js';
@@ -161,6 +162,38 @@ function zeile({ name, score }) {
  * Füllt ein Fach: die Menge, bis zu zehn Beispiele und, wenn mehr da sind,
  * einen Knopf, der den Rest nachreicht.
  */
+/**
+ * Teilt den orangen Teil des Balkens nach dem Koennen auf: ein Stueck je
+ * Stufe, so breit wie sein Anteil an den Vokabeln in Arbeit.
+ *
+ * Warum ueberhaupt: "in Arbeit" ist eine Spanne. Die Vokabel, die zweimal
+ * knapp danebenlag, stand im Balken neben der, die schon fast sitzt, und
+ * beide sahen gleich aus. Jetzt sieht man, ob das Orange nach rot zieht oder
+ * nach gruen -- und damit, ob eine Woche Ueben etwas gebracht hat.
+ *
+ * Die Stufen kommen aus arbeitsstufe() in domain/lernstand.js, die Farben aus
+ * --arbeit-0 bis --arbeit-6 in styles.css. Hier wird nur gezaehlt und
+ * gerechnet.
+ */
+function stufeInDenBalken(eintraege) {
+  const teil = el('balken-geuebt');
+  teil.replaceChildren();
+  // Kein Fach, kein Balken -- und der bleibt dann einfarbig, wie er im CSS
+  // steht. Ohne diese Zeile teilte man durch null.
+  if (eintraege.length === 0) return;
+
+  const zaehler = new Array(ARBEITSSTUFEN).fill(0);
+  for (const eintrag of eintraege) zaehler[arbeitsstufe(eintrag.score)] += 1;
+
+  for (const [stufeNr, anzahl] of zaehler.entries()) {
+    if (anzahl === 0) continue;
+    const stueck = document.createElement('span');
+    stueck.className = `balken__stufe balken__stufe--${stufeNr}`;
+    stueck.style.width = `${(anzahl / eintraege.length) * 100}%`;
+    teil.append(stueck);
+  }
+}
+
 function fuelle(fach, eintraege) {
   el(`menge-${fach}`).textContent = eintraege.length;
 
@@ -207,6 +240,7 @@ if (zahlen.geuebt === 0) {
   const breite = (zahl) => `${(zahl / zahlen.gesamt) * 100}%`;
   el('balken-sicher').style.width = breite(zahlen.sicher);
   el('balken-geuebt').style.width = breite(zahlen.geuebt - zahlen.sicher);
+  stufeInDenBalken(faecher.arbeit);
 
   // Die Farben im Balken gehören den drei Fächern und sagen nichts über den
   // Gesamtstand -- den sagt der Satz darunter. Dafür ist die Stufe da.

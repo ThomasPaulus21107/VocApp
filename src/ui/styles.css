@@ -21,6 +21,19 @@
   --sitzt: var(--richtig);  /* ab 75 % der Punkte: dasselbe Grün wie bei einer
                                richtigen Antwort */
 
+  /* "In Arbeit" ist eine Spanne, keine einzelne Sache -- im Balken oben
+     bekommt sie deshalb sieben Töne statt einem. Links rot (sitzt gar
+     nicht), in der Mitte das Orange von oben, rechts ein blasses Grün:
+     alles richtig, aber noch nicht oft genug, um sicher zu heißen. Deshalb
+     blass -- das leuchtende Grün gehört dem, was durch ist. */
+  --arbeit-0: var(--falsch);
+  --arbeit-1: #fd3416;
+  --arbeit-2: #fe692d;
+  --arbeit-3: var(--in-arbeit);
+  --arbeit-4: #caae58;
+  --arbeit-5: #96be6e;
+  --arbeit-6: #62cf83;
+
   --rundung: 25px;          /* wie rund die Ecken sind */
 
   /* Schrift. Willst du eine andere? Sag Papa Bescheid,
@@ -906,9 +919,25 @@ body {
   background: var(--sitzt);
 }
 
+/* Der Teil "in Arbeit" ist selbst eine kleine Leiste: ein Stück je Stufe,
+   so breit wie sein Anteil. Ohne Kinder bleibt er einfarbig orange -- so
+   sieht er aus, bevor das Skript ihn gefüllt hat. */
 .balken__teil--geuebt {
+  display: flex;
   background: var(--in-arbeit);
 }
+
+.balken__stufe {
+  height: 100%;
+}
+
+.balken__stufe--0 { background: var(--arbeit-0); }
+.balken__stufe--1 { background: var(--arbeit-1); }
+.balken__stufe--2 { background: var(--arbeit-2); }
+.balken__stufe--3 { background: var(--arbeit-3); }
+.balken__stufe--4 { background: var(--arbeit-4); }
+.balken__stufe--5 { background: var(--arbeit-5); }
+.balken__stufe--6 { background: var(--arbeit-6); }
 
 .zahlen {
   display: grid;

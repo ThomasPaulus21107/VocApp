@@ -4,6 +4,7 @@ import { describe, it, expect } from 'vitest';
 import {
   merkeGezogen, verrechne, zuletztVon, schluessel,
   score, verteile, faecherVon, uebersicht, stufe, verlaufZu, punkteVon, runden, PAUSE_MS, fleiss, serie,
+  arbeitsstufe, ARBEITSSTUFEN,
   SICHER_AB_ANTWORTEN,
   SICHER_AB_PROZENT, TAGE_MAX,
   AUSGAENGE, LEER, VERLAUF_MAX,
@@ -590,5 +591,40 @@ describe('serie', () => {
   it('ist null, wenn heute noch nichts war', () => {
     const stand = verrechne(LEER, antwort({ tag: '2026-08-28' }), 1);
     expect(serie(fleiss(stand, '2026-08-29', 30))).toBe(0);
+  });
+});
+
+
+describe('arbeitsstufe', () => {
+  // Sieben Toene fuer das Fach "in Arbeit". Sie sagen im Balken, ob eine
+  // Vokabel dort gerade angekommen ist oder gleich hinausfaellt.
+
+  it('faengt bei rot an, wenn nichts sitzt', () => {
+    expect(arbeitsstufe(0)).toBe(0);
+  });
+
+  it('nimmt auch Minuspunkte in die unterste Stufe', () => {
+    // Tipps kosten 0,1. Wer nur Tipps genommen und daneben gelegen hat,
+    // steht unter null -- das ist keine eigene Stufe, das ist rot.
+    expect(arbeitsstufe(-20)).toBe(0);
+  });
+
+  it('endet bei blassem Gruen, wenn alles sass', () => {
+    // 100 Prozent und trotzdem noch "in Arbeit": es waren erst ein oder zwei
+    // Antworten, und SICHER_AB_ANTWORTEN ist nicht erreicht.
+    expect(arbeitsstufe(100)).toBe(ARBEITSSTUFEN - 1);
+  });
+
+  it('teilt die Spanne dazwischen in Zwanziger-Schritte', () => {
+    expect([1, 19, 20, 39, 40, 60, 80, 99].map(arbeitsstufe))
+      .toEqual([1, 1, 2, 2, 3, 4, 5, 5]);
+  });
+
+  it('nimmt einen unbrauchbaren Wert als rot, statt zu rechnen', () => {
+    // score() gibt null zurueck, wenn eine Einheit nie dran war. Im Fach
+    // "in Arbeit" sollte das nicht vorkommen -- eine Farbe muss die Funktion
+    // trotzdem liefern, sonst faellt der Balken auseinander.
+    expect(arbeitsstufe(null)).toBe(0);
+    expect(arbeitsstufe(undefined)).toBe(0);
   });
 });
