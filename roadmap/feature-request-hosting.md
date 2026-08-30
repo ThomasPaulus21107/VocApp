@@ -159,10 +159,42 @@ Magic Links aus [Aus der anonymen Sitzung wird ein Konto](feature-request-konten
   falsche Datenbank, ohne dass es jemand sieht. Das ist der erste Test nach
   dem Umzug, und er entscheidet, ob der Knopf so bleiben kann.
 
+## Was bei Vercel einzustellen ist
+
+Am 30.08.2026 ist das Projekt schon angelegt worden, um den Namen zu klaeren.
+Was dabei gelernt wurde, damit es beim Bauen nicht noch einmal gesucht wird:
+
+- **Vite wird von allein erkannt.** Framework-Preset `Vite`, Ausgabe `dist`,
+  nichts einzustellen.
+- **Die Supabase-Integration im Vercel-Marketplace NICHT benutzen.** Sie legt
+  eigene Variablennamen an (`NEXT_PUBLIC_…`, `SUPABASE_…`) und will ein
+  Projekt fuer einen verwalten. Es gibt aber schon zwei Projekte und eigene
+  Namen — das gaebe nur zwei Wahrheiten.
+- **Stattdessen von Hand**, unter Settings → Environment Variables. Vercel
+  erlaubt denselben Namen mit verschiedenen Werten je Umgebung, und genau das
+  ist der Grund fuer diesen ganzen Umzug:
+
+  | Variable | Production | Preview | Development |
+  |---|---|---|---|
+  | `VITE_SUPABASE_URL` | VocApp | TEST | TEST |
+  | `VITE_SUPABASE_PUBLISHABLE_KEY` | VocApp | TEST | TEST |
+
+- **Vercel bekommt nie ein Datenbank-Passwort und nie den Access Token.** Es
+  baut nur. Die Migrationen bleiben bei GitHub Actions, wo die Secrets schon
+  liegen.
+- **Die Domaene** unter Settings → Domains hinzufuegen; Vercel zeigt dann an,
+  welche DNS-Eintraege beim Registrar zu setzen sind. `www` dazunehmen und auf
+  die Form ohne `www` umleiten.
+
 ## Die Abnahme
 
 - Die App läuft unter der neuen Adresse, und die Oberflächen-Tests laufen
   ebenfalls dagegen.
+- **Zeigt die Produktion auf `VocApp` und die Vorschau auf `VocApp TEST`?**
+  Nachzuzählen im ausgelieferten Bundle, das Rezept steht in
+  [`supabase/README.md`](../supabase/README.md). Das ist zugleich der Test
+  für den Vorbehalt beim Knopf: eine *beförderte* Vorschau könnte die
+  Variablen ihrer eigenen Umgebung behalten haben.
 - **Anmelden, Stand ist da.** Das ist der Test, der zeigt, dass die Reihenfolge
   oben eingehalten wurde.
 - Die alte Pages-Adresse sagt, wo es weitergeht, statt eine tote Seite zu
