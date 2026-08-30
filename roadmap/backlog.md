@@ -29,21 +29,29 @@ in der Git-Historie.
 
 ## Lernen und Wiederholen
 
-- **Schwere Karten häufiger dran nehmen.** Stufe 2 der
-  [Kartenauswahl](implemented/feature-auswahl-2026-08-29-1327.md): ein zweiter
-  Summand in der Gewichtsformel, dazu die Zeile `auswahlGewichtet` in
-  `modus.js` und der Verhältnis-Deckel, damit eine Übungsrunde nicht nur aus
-  Karten besteht, die wehtun.
-  `braucht:` [den Lernstand](implemented/feature-lernstand-2026-08-29-1531.md) — **steht**,
-  und mit `score()` gibt es die Zahl schon fertig: der zweite Summand ist
-  `1 - score / 100`.
-  `offen:` seit dem 29.08.2026 kleiner geworden. Die
-  [Quote](implemented/feature-auswahl-2026-08-29-1327.md) entscheidet jetzt die
-  **Mischung** einer Runde — 5 neue, 7 in Arbeit, 3 stabil. Die Gewichtung
-  wäre nur noch die Reihenfolge *innerhalb* eines Fachs, und damit deutlich
-  weniger wert als vorher: „in Arbeit" bekommt seine sieben Plätze ohnehin.
-  **Alternative, keine Ergänzung:** [Leitner](feature-request-leitner.md) würde
-  denselben Platz besetzen. Gebaut wird eines von beiden zuerst.
+- **Schwere Karten häufiger dran nehmen.** ~~Stufe 2 der Kartenauswahl: ein
+  zweiter Summand in der Gewichtsformel.~~ **Am 30.08.2026 auf einem anderen
+  Weg beantwortet** und damit hier erledigt: innerhalb von „in Arbeit"
+  entscheidet die
+  [Punktsumme](implemented/feature-auswahl-nach-punkten-2026-08-30-2145.md),
+  und `last1`/`last2` sind genau die Plätze für das, was wehtut. Die Zeile
+  `auswahlGewichtet` in `modus.js` und der Verhältnis-Deckel werden damit nicht
+  mehr gebraucht.
+
+- **Den Auswahl-Algorithmus vereinfachen.** Aufgenommen am 30.08.2026, direkt
+  nachdem die Auswahl nach Punkten gebaut war — von Thomas: *„den Algo
+  optimieren wir einfach weiter, ggf. auch mit einer Vereinfachung die sich aus
+  Score und bisherigen Versuchen zusammensetzt."*
+  `braucht:` nichts, alle Zahlen liegen im Lernstand.
+  `offen:` **welche Zahl.** Heute ist es die rohe Punktsumme, und die hat einen
+  bekannten Haken: sie wächst monoton, also stehen dieselben Vokabeln immer
+  wieder auf den benannten Plätzen. Eine Zahl aus Score **und** Versuchen, die
+  nicht immer weiter wächst, würde das lösen — zum Beispiel der Score, gedämpft
+  durch die Zahl der Versuche. Erst wenn feststeht, was die Zahl aussagen soll,
+  lohnt das Umbauen; sechs benannte Plätze plus zwei gewürfelte bleiben davon
+  unberührt.
+  **Alternative, keine Ergänzung:** [Leitner](feature-request-leitner.md)
+  besetzt denselben Platz.
 
 
 Der Punkt „Lernstand pro Karte speichern" ist am 29.08.2026 hier

@@ -40,6 +40,24 @@ Benachrichtigung mit. Das ist eine Abwägung wie bei
 Dort ist sie zugunsten der großen Abhängigkeit ausgegangen — das ist ein
 Präzedenzfall und keine Regel.
 
+## Vercel Speed Insights lag am 30.08.2026 kurz im Projekt
+
+`@vercel/speed-insights` stand einen Abend lang in `package.json` und ist wieder
+entfernt worden, **ohne je eingebaut worden zu sein**. Der Grund, damit ihn
+niemand ein zweites Mal sucht:
+
+- **Es hätte dort, wo geübt wird, gar nicht messen können.** Das Paket schickt
+  seine Werte an `/_vercel/insights` — einen Pfad, den nur Vercel bedient. Auf
+  GitHub Pages, wo Matilda übt, wäre jeder Aufruf ein 404 gewesen.
+- **Es ist ein weiterer Empfänger von Besuchsdaten.** Vertretbar, aber eine
+  Entscheidung, die hierher gehört und nicht als Nebeneffekt eines
+  `npm install` passieren sollte. Siehe
+  [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md).
+
+Sinnvoll wird es frühestens, wenn Vercel die Produktion ist — also nach den
+[Konten](feature-request-konten.md), zusammen mit dem Rest dieser Datei. Der
+Einbau wäre dann ein `inject()` beim Start, mehr nicht.
+
 ## Zu entscheiden
 
 - [ ] Selbst gebaut in Supabase, oder ein fertiger Dienst?

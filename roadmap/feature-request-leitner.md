@@ -26,10 +26,15 @@ Rundengröße ist in diesem Projekt keine Zahl, sondern eine Maßeinheit.
 ## Seit dem 29.08.2026 ist die Frage kleiner geworden
 
 Die [Quote](implemented/feature-auswahl-2026-08-29-1327.md) entscheidet
-inzwischen die **Mischung** einer Runde: 5 noch nie geübte, 7 in Arbeit, 3
-stabil gelernte. Damit ist das Mengenproblem unten schon halb gelöst — die 15
-sind gesetzt, und Leitner müsste nur noch bestimmen, **welche** sieben aus
-„in Arbeit" und welche drei aus „stabil gelernt" kommen.
+inzwischen die **Mischung** einer Runde: seit dem 30.08.2026 sind es 6 noch nie
+geübte, 8 in Arbeit, 1 stabil gelernte. Damit ist das Mengenproblem unten schon
+halb gelöst — die 15 sind gesetzt, und Leitner müsste nur noch bestimmen,
+**welche** acht aus „in Arbeit" kommen.
+
+Und auch dort steht seit dem 30.08.2026 schon etwas: die
+[Auswahl nach Punkten](implemented/feature-auswahl-nach-punkten-2026-08-30-2145.md).
+Leitner würde also nicht mehr eine Lücke füllen, sondern eine bestehende Regel
+ersetzen — das ist ein höherer Anspruch als vorher.
 
 Der Rest dieser Datei ist vor der Quote geschrieben. Was darin über die
 Sortierung steht, gilt unverändert; es gilt nur je Fach statt für die ganze
