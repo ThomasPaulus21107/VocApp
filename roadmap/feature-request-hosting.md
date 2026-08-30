@@ -92,13 +92,19 @@ Wenig, aber an drei Stellen, die zusammenhängen:
   Vercel — und bei fremden Kinderdaten ist „wer hat Zugriff worauf" eine Frage,
   die jemand beantworten können muss, siehe
   [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md).
-- **Die Adresse ändert sich noch einmal**, wenn später eine eigene Domäne
-  dazukommt. Dann verliert der lokale Zwischenspeicher wieder seinen Inhalt —
-  folgenlos, sobald der Server die Wahrheit ist, aber ein Grund, die Domäne
-  gleich mitzuentscheiden statt in zwei Schritten umzuziehen.
+- **Die Adresse ist entschieden: `https://vocapp.vercel.app`.** Keine eigene
+  Domäne, also **genau ein** Ursprungswechsel und nicht zwei. Der Name muss bei
+  Vercel noch frei sein — ist er es nicht, hängt Vercel etwas an, und dann ist
+  die Adresse eine andere. **Vor dem Umzug nachsehen**, nicht danach.
 - **Jeder muss die App neu auf den Homebildschirm legen.** Das alte Lesezeichen
   zeigt auf die alte Adresse und wird nicht von selbst umziehen. Ein Satz an
   alle, die schon eins haben.
+- **Jede Vorschau ist ein eigener Ursprung.** Vercel vergibt für Branches
+  Adressen wie `vocapp-git-<branch>-….vercel.app` — anderer Host, andere
+  `localStorage`-Schublade. Eine Vorschau startet deshalb immer leer und zeigt
+  nie den echten Lernstand. Zum Ausprobieren ist das richtig so; man muss es
+  nur wissen, bevor man es für einen Fehler hält. Wer in einer Vorschau echte
+  Daten sehen will, meldet sich dort an — was wieder heißt: Konten zuerst.
 
 ## Was danach möglich wird
 
