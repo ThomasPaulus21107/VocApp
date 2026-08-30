@@ -135,7 +135,7 @@ Vorgeschichte steht in
 
 ```
    1 backend-naht ✓ ──┐
-                      ├──▶ 3 ereignisse-melden ✓ ──▶ 4 umzug-des-bestands
+                      ├──▶ 3 ereignisse-melden ✓ ──▶ 4 umzug-des-bestands ✓
    2 ereignistabelle ✓┘                                      │
            │                              (jede Antwort liegt jetzt doppelt)
            └──▶ 10 releases ✓                                │
@@ -146,9 +146,15 @@ Vorgeschichte steht in
                                                           9 wuerdigung (offen)
 ```
 
+**Phase 1 ist seit dem 30.08.2026 vollständig** — 1 bis 4 stehen, und damit
+liegt der Lernstand nicht nur im Browser, sondern auch auf einem Server, der
+gesichert werden kann. Was jetzt kommt, ist ausdrücklich **kein Bauen**: ein
+paar Tage still mitlaufen lassen und nachsehen, ob die Zeilen ankommen. Erst
+danach beginnt 5.
+
+
 | # | Feature | Wer |
 |---|---|---|
-| 4 | [Der Bestand zieht um](feature-request-umzug-des-bestands.md) | Thomas |
 | 5 | [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md) | Thomas, Entscheidung: wer legt Konten an |
 | 6 | [Der Server wird die Wahrheit](feature-request-server-ist-die-wahrheit.md) | Thomas |
 | 7 | [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md) | Thomas |

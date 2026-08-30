@@ -142,5 +142,5 @@ Dazu von Hand, weil kein Test es prüfen kann:
 
 ## Was danach kommt
 
-[Der Bestand zieht um](../feature-request-umzug-des-bestands.md) — ab hier
+[Der Bestand zieht um](feature-umzug-des-bestands-2026-08-30-1815.md) — ab hier
 sammelt der Server nur, was neu passiert. Das Alte fehlt noch.

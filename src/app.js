@@ -404,6 +404,12 @@ ui.verbinde({
   aufToene: (an) => storage.speichern(TOENE, an),
 });
 
+// Der Bestand zuerst: Matildas bisher geübte Wochen stehen nur hier im
+// Browser, und ohne diese Zeile lernte der Server nur, was ab heute passiert.
+// Sie legt einmalig ab, sie sendet nicht -- das erledigt holeNach() gleich
+// darunter, und deshalb steht sie davor und nicht dahinter.
+backend.umzug(lernstand.verlauf);
+
 // Was beim letzten Mal nicht rausging, geht jetzt raus -- wer im Flugmodus
 // geübt und die App danach geschlossen hat, verlöre seine Antworten sonst bis
 // zur übernächsten Sitzung.

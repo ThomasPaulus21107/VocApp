@@ -625,7 +625,7 @@ sie dürfen nicht vermischt werden.
 | Inhalt | Töne an/aus, Aufgabenart, Kartenbeutel | Lernstand, Punkte, Missionen |
 | Technik | `localStorage`, synchron | Supabase, asynchron |
 | Wird getauscht | nie | ist von Anfang an das Ziel |
-| Zustand | gebaut am 29.08.2026 | beschlossen am 29.08.2026, sieben Dateien in `roadmap/` |
+| Zustand | gebaut am 29.08.2026 | gebaut; Phase 1 (Naht, Tabelle, Melden, Umzug) steht seit dem 30.08.2026 |
 
 Ob am Küchentisch der Ton an ist, gehört dem Laptop. Ob `caught` sitzt, gehört
 Matilda und muss ihr auf jedes Gerät folgen.

@@ -121,7 +121,7 @@ Phase 1 vollständig, also
 [die Naht](implemented/feature-backend-naht-2026-08-29-2225.md),
 [die Tabelle](implemented/feature-ereignistabelle-2026-08-30-0815.md),
 [das Melden](implemented/feature-ereignisse-melden-2026-08-30-1000.md) und
-[der Umzug](feature-request-umzug-des-bestands.md).
+[der Umzug](implemented/feature-umzug-des-bestands-2026-08-30-1815.md).
 
 ## Was danach kommt
 

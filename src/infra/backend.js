@@ -36,6 +36,7 @@ import * as storage from './storage.js';
 const KORB = 'postausgang';
 const GERAET = 'geraet';
 const NUMMER = 'nummer';
+const UMGEZOGEN = 'umgezogen';
 
 // Der Client, oder null wenn abgeschaltet.
 //
@@ -268,6 +269,59 @@ async function versende() {
  */
 export function holeNach() {
   versende();
+}
+
+/**
+ * Der lokale Tag eines Bestandsereignisses, aus seiner Zeit zurueckgerechnet.
+ *
+ * Der Verlauf im Lernstand kennt die Spalte `tag` nicht -- verrechne() legt
+ * sie nur in `tage` ab, nicht in die einzelne Zeile. Sie hier auf null zu
+ * lassen waere aber teuer: an `tag` haengt die Fleiss-Seite, und ein Bestand
+ * ohne Tage waere ein Bestand ohne Serie.
+ *
+ * Zurueckrechnen darf man ihn genau hier, weil der Umzug auf DEMSELBEN Geraet
+ * laeuft, das die Zeile geschrieben hat -- dieselbe Zeitzone, also dasselbe
+ * Ergebnis wie damals in app.js. Aus einer fremden Zeitzone waere es geraten.
+ */
+function tagVon(zeit) {
+  return new Date(zeit).toLocaleDateString('sv');
+}
+
+/**
+ * Der Bestand aus dem lokalen Verlauf geht einmalig in den Korb.
+ *
+ * Ohne diesen Handgriff kennt der Server nur, was seit dem Einbau passiert
+ * ist -- Matildas bisher geuebte Wochen stuenden weiter allein im Browser.
+ * Siehe roadmap/implemented/feature-umzug-des-bestands-2026-08-30-1815.md.
+ *
+ * EIGENER GERAETENAME, `umzug-<geraet>`: die Nummern des Bestands sind
+ * Stellen im Verlauf und faengen bei 0 an, die des laufenden Betriebs zaehlt
+ * naechsteNummer() hoch. Unter einem Namen wuerden sie sich gegenseitig auf
+ * das `unique (nutzer, geraet, nummer)` setzen und einander verdraengen.
+ *
+ * Der Merker wird gesetzt, sobald die Zeilen IM KORB liegen, nicht erst nach
+ * dem Versand. Er spart Arbeit, er ist nicht die Sicherung -- die ist das
+ * unique aus der Migration, an dem ein zweiter Anlauf folgenlos abprallt.
+ *
+ * Versendet wird hier NICHT: der Aufruf steht in app.js unmittelbar vor
+ * holeNach(), und der leert den Korb ohnehin gleich mit.
+ */
+export function umzug(verlauf) {
+  if (storage.lesen(UMGEZOGEN, false)) return;
+
+  try {
+    const geraet = `umzug-${geraetName()}`;
+    const zeilen = verlauf.map((eintrag, stelle) => zuEreignis(
+      { art: 'antwort', ...eintrag, tag: tagVon(eintrag.zeit) }, geraet, stelle
+    ));
+
+    storage.speichern(KORB, [...storage.lesen(KORB, []), ...zeilen]);
+    storage.speichern(UMGEZOGEN, true);
+  } catch {
+    // Kein Merker, kein Schaden: beim naechsten Start noch einmal. Dieselbe
+    // Haltung wie in melde() -- ein misslungener Umzug kostet die Sicherung,
+    // nicht die Runde.
+  }
 }
 
 /** Wie viele Zeilen noch auf ihren Versand warten. Fuer die Tests. */
