@@ -2,10 +2,16 @@ import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
 
 export default defineConfig({
-  // WICHTIG: hier muss der Name eures GitHub-Repos stehen, mit Schrägstrichen.
-  // Beispiel: Repo "vokabelkiste"  ->  base: '/vokabelkiste/'
-  // Ohne das findet GitHub Pages die Dateien nicht.
-  base: '/VocApp/',
+  // Zwei Ziele, ein Bundle: Vercel liefert an der Wurzel aus, GitHub Pages
+  // unter dem Repo-Namen. Die Zeile kann nicht beides -- aber sie muss auch
+  // nicht, solange der Unterschied im Build sichtbar ist, und das ist er:
+  // Vercel setzt VERCEL=1. Das Haekchen dafuer ("System Environment
+  // Variables") ist im Vercel-Projekt gesetzt.
+  //
+  // Ohne VERCEL kommt weiterhin '/VocApp/' heraus -- das gilt fuer den
+  // Dev-Server, fuer die Oberflaechen-Tests und fuer den Pages-Workflow.
+  // Wer hier etwas aendert, macht damit eine der beiden Adressen kaputt.
+  base: process.env.VERCEL ? '/' : '/VocApp/',
 
   build: {
     rollupOptions: {

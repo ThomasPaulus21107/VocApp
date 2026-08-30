@@ -147,6 +147,31 @@ Schublade.
 - **Der Release-Knopf**, der in
   [Test und Produktion](implemented/feature-releases-2026-08-30-0803.md) vertagt wurde.
 
+## Die Domäne geht vorab live, der Umzug nicht
+
+Am 30.08.2026 entschieden und noch am selben Abend gebaut: **`base` hängt von
+der Bauumgebung ab.**
+
+```js
+base: process.env.VERCEL ? '/' : '/VocApp/',
+```
+
+Damit zeigt `vocappulary.online` schon jetzt den aktuellen Stand — gegen
+`VocApp`, die echte Datenbank — und GitHub Pages läuft unverändert weiter. Der
+Satz weiter oben, eine weiße Seite unter der Vercel-Adresse sei der erwartete
+Zustand, gilt ab hier nicht mehr.
+
+**Das ist kein Umzug.** Unter der neuen Adresse ist der Speicher leer und
+bleibt es: eigener Ursprung, eigene `localStorage`-Schublade, keine Sitzung.
+Wer dort übt, legt einen **neuen anonymen Nutzer** in `VocApp` an, dessen Stand
+später niemandem gehört — genau der Schaden, den die Reihenfolge ganz oben
+verhindern soll.
+
+**Deshalb: die Adresse wird noch nicht weitergegeben.** Matilda übt auf der
+Pages-Adresse, bis sie ein Konto hat. Was hier live geht, ist ein Schaufenster
+zum Nachsehen, ob Auslieferung, Domäne und Variablen zusammenpassen — nicht der
+Ort, an dem jemand lernt.
+
 ## Das Zielbild der Umgebungen
 
 Entschieden am 30.08.2026 abends. Die Tabelle ist die kurze Fassung, darunter
