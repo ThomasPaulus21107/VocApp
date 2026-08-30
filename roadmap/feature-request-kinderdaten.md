@@ -34,7 +34,7 @@ Kommt es je im Unterricht zum Einsatz, gelten zusätzlich die Regeln der Schule.
 
 Er löscht den **Nutzer**, nicht die Zeilen. Das
 `on delete cascade` an `ereignisse.nutzer` räumt hinterher — deshalb steht es
-schon in [der Ereignistabelle](feature-request-ereignistabelle.md), obwohl es
+schon in [der Ereignistabelle](implemented/feature-ereignistabelle-2026-08-30-0815.md), obwohl es
 dort noch nichts tut.
 
 Zwei Dinge gehören dazu:

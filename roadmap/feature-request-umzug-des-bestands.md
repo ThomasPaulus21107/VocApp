@@ -21,7 +21,7 @@ gelegt:
 
 Danach ein Merker in `localStorage`, damit es nicht bei jedem Start wieder
 passiert. Und selbst wenn: der `unique (nutzer, geraet, nummer)` aus
-[der Ereignistabelle](feature-request-ereignistabelle.md) sorgt dafür, dass ein
+[der Ereignistabelle](implemented/feature-ereignistabelle-2026-08-30-0815.md) sorgt dafür, dass ein
 zweiter Anlauf nichts doppelt anlegt. **Der Merker spart Arbeit, er ist nicht
 die Sicherung.**
 
@@ -50,7 +50,7 @@ starten ändert sie nicht.
 
 ## Voraussetzung
 
-[Jede Antwort geht zum Server](feature-request-ereignisse-melden.md).
+[Jede Antwort geht zum Server](implemented/feature-ereignisse-melden-2026-08-30-1000.md).
 
 ## Was danach kommt
 

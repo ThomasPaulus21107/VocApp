@@ -9,7 +9,7 @@
 -- src/domain/lernstand.js heute schon in `verlauf` schreibt. Nichts ist neu
 -- erfunden, nichts vorberechnet.
 --
--- Siehe roadmap/feature-request-ereignistabelle.md.
+-- Siehe roadmap/implemented/feature-ereignistabelle-2026-08-30-0815.md.
 
 create table ereignisse (
   id       bigint generated always as identity primary key,

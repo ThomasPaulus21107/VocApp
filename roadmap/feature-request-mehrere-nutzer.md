@@ -17,8 +17,8 @@ einzeln baubar und einzeln mergebar:
 | # | Datei | Was sie baut |
 |---|---|---|
 | 1 | [Die zweite Naht zum Server](implemented/feature-backend-naht-2026-08-29-2225.md) | `infra/backend.js`, Client, Konfiguration, anonyme Sitzung |
-| 2 | [Die Ereignistabelle mit RLS](feature-request-ereignistabelle.md) | `supabase/schema.sql` |
-| 3 | [Jede Antwort geht zum Server](feature-request-ereignisse-melden.md) | `melde()`, Ausgangskorb, Anschlüsse in `app.js` |
+| 2 | [Die Ereignistabelle mit RLS](implemented/feature-ereignistabelle-2026-08-30-0815.md) | `supabase/schema.sql` |
+| 3 | [Jede Antwort geht zum Server](implemented/feature-ereignisse-melden-2026-08-30-1000.md) | `melde()`, Ausgangskorb, Anschlüsse in `app.js` |
 | 4 | [Der Bestand zieht um](feature-request-umzug-des-bestands.md) | den vorhandenen `verlauf` einmalig hochschieben |
 | 5 | [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md) | Anmeldung |
 | 6 | [Der Server wird die Wahrheit](feature-request-server-ist-die-wahrheit.md) | `lade()`, Zustand aus Ereignissen |

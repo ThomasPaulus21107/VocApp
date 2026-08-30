@@ -1,13 +1,13 @@
 # Feature: Die Ereignistabelle mit Row Level Security
 
-**Status:** bereit — durchdacht, noch nicht gebaut
+**Status:** umgesetzt am 30.08.2026 um 08:15, PR #49
 **Wo im Code:** `supabase/migrations/20260830060642_ereignisse.sql` — neu.
 Kein JavaScript.
 
 Eine Tabelle und vier Zeilen Sicherheit — und die **erste Migration**
 überhaupt. Wie sie in die beiden Projekte kommt, steht in
-[Test und Produktion](feature-request-releases.md) und in
-[`supabase/README.md`](../supabase/README.md): nach `VocApp` spielt der
+[Test und Produktion](feature-releases-2026-08-30-0803.md) und in
+[`supabase/README.md`](../../supabase/README.md): nach `VocApp` spielt der
 Workflow sie beim Merge ein, nach `VocApp TEST` von Hand.
 
 **Sie muss in beide Projekte**, sonst driften sie nach der zweiten Änderung
@@ -131,7 +131,7 @@ Dieselbe Falle steht in `public`: eine Policy für die Rolle `public` gilt für
 **Kein `update`, kein `delete`.** Was passiert ist, ist passiert; eine
 Ereignistabelle, in der man nachträglich ändern kann, ist keine. Gelöscht wird
 über den Nutzer — das `on delete cascade` oben räumt hinterher, siehe
-[Wenn fremde Kinder mitüben](feature-request-kinderdaten.md).
+[Wenn fremde Kinder mitüben](../feature-request-kinderdaten.md).
 
 ### Warum hier trotzdem niemand fremde Zeilen sieht
 
@@ -151,7 +151,7 @@ dafür gehört genau hierher, weil er sonst beim nächsten Anfassen verlorengeht
 
 **Geteilt wird deshalb nicht die Tabelle, sondern eine Zusammenfassung** —
 Pseudonym und Zahlen, nicht Zeilen. Sie steht in
-[Gemeinsame Lernmissionen](feature-request-missionen.md) und kommt erst mit den
+[Gemeinsame Lernmissionen](../feature-request-missionen.md) und kommt erst mit den
 Konten. Bis dahin bleibt es bei den zwei Policies oben.
 
 **Wer später eine Lesepolicy auf dieser Tabelle aufmacht, hebt Punkt 1 auf.**
@@ -193,6 +193,6 @@ alles Weitere wartet.
 ## Voraussetzung
 
 Keine — die Tabelle lässt sich vor, nach oder neben
-[Die zweite Naht zum Server](implemented/feature-backend-naht-2026-08-29-2225.md) anlegen. Beide
+[Die zweite Naht zum Server](feature-backend-naht-2026-08-29-2225.md) anlegen. Beide
 zusammen sind die Voraussetzung für
-[Jede Antwort geht zum Server](feature-request-ereignisse-melden.md).
+[Jede Antwort geht zum Server](feature-ereignisse-melden-2026-08-30-1000.md).

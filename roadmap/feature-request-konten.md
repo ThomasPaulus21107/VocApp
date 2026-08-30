@@ -119,8 +119,8 @@ vorbereitet". Die `profile`-Tabelle bekommt deshalb genau zwei Spalten.
 
 Phase 1 vollständig, also
 [die Naht](implemented/feature-backend-naht-2026-08-29-2225.md),
-[die Tabelle](feature-request-ereignistabelle.md),
-[das Melden](feature-request-ereignisse-melden.md) und
+[die Tabelle](implemented/feature-ereignistabelle-2026-08-30-0815.md),
+[das Melden](implemented/feature-ereignisse-melden-2026-08-30-1000.md) und
 [der Umzug](feature-request-umzug-des-bestands.md).
 
 ## Was danach kommt

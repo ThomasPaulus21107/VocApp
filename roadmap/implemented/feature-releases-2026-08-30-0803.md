@@ -1,6 +1,6 @@
 # Feature: Test und Produktion — das Schema kommt ohne Abtippen an
 
-**Status:** bereit — durchdacht, noch nicht gebaut
+**Status:** umgesetzt am 30.08.2026 um 08:03, PR #48
 **Wo im Code:** `.github/workflows/deploy.yml`, `supabase/migrations/` — neu,
 dazu `.env.example` und `AGENTS.md`
 
@@ -39,14 +39,14 @@ ein Test-Stand zum Anschauen ginge nur als Unterordner `/VocApp/test/` oder
 
 Entschieden am 29.08.2026: **der Test-Stand bleibt lokal, bis GitHub Pages
 ohnehin abgelöst wird.** Dann wird daraus eine Zeile Konfiguration statt einer
-Bastelei — siehe [GitHub Pages ablösen](feature-request-hosting.md).
+Bastelei — siehe [GitHub Pages ablösen](../feature-request-hosting.md).
 
 Getrennt sind vorerst also die **Datenbanken**, nicht die Adressen — und das
 ist die Trennung, auf die es ankommt: Code lässt sich neu bauen, Daten nicht.
 
 ## Migrationen statt einer schema.sql
 
-[Die Ereignistabelle](feature-request-ereignistabelle.md) sagt heute „im
+[Die Ereignistabelle](feature-ereignistabelle-2026-08-30-0815.md) sagt heute „im
 SQL-Editor einfügen, zweimal". Mit zwei Projekten und einem Release-Ablauf ist
 genau das die Fehlerquelle: Drift fällt erst auf, wenn ein Insert nur in einem
 von beiden funktioniert.
@@ -111,7 +111,7 @@ Dazu drei Dinge:
 - **Der richtige Moment ist eingeplant.** Bei Vercel ist „`main` → Vorschau,
   Tag → Produktion" eine Zeile Konfiguration; auf Pages wäre es eine Bastelei
   aus zwei Builds in einem Artefakt. Siehe
-  [GitHub Pages ablösen](feature-request-hosting.md).
+  [GitHub Pages ablösen](../feature-request-hosting.md).
 
 **Was den Knopf sofort fällig macht:** das erste fremde Kind. Ab dann ist er
 kein Zeremoniell mehr, sondern die Stelle, an der jemand hinschaut, bevor
@@ -159,7 +159,7 @@ Request sie sieht.
 
 ## Zwei Dinge, die beim Bauen Zeit gekostet haben
 
-Beide stehen ausführlich in [`supabase/README.md`](../supabase/README.md):
+Beide stehen ausführlich in [`supabase/README.md`](../../supabase/README.md):
 
 - **`link` ist nicht optional.** Ohne ihn versucht `db push` eine direkte
   Verbindung über **IPv6**, und GitHub-Runner können kein IPv6. Der Fehler
@@ -169,8 +169,8 @@ Beide stehen ausführlich in [`supabase/README.md`](../supabase/README.md):
 
 ## Voraussetzung
 
-[Die zweite Naht zum Server](implemented/feature-backend-naht-2026-08-29-2225.md) und
-[Die Ereignistabelle](feature-request-ereignistabelle.md). Diese Datei ersetzt
+[Die zweite Naht zum Server](feature-backend-naht-2026-08-29-2225.md) und
+[Die Ereignistabelle](feature-ereignistabelle-2026-08-30-0815.md). Diese Datei ersetzt
 deren Abschnitte zu „Spielwiese und Ernst" und zum Einspielen von Hand.
 
 Sie kann direkt danach kommen — und sollte es auch: **je später sie kommt,

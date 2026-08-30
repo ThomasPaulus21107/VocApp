@@ -16,7 +16,7 @@ Datenbanken gibt:
 
 - **Eine Seite pro Repo.** Ein Test-Stand zum Anschauen ginge nur als
   Unterordner `/VocApp/test/` oder über ein zweites Repo. Deshalb bleibt der
-  Test-Stand in [Test und Produktion](feature-request-releases.md) vorerst
+  Test-Stand in [Test und Produktion](implemented/feature-releases-2026-08-30-0803.md) vorerst
   lokal.
 - **Keine Vorschau je Pull Request.** Ein Oberflächen-Feature lässt sich vor
   dem Merge nur bewerten, indem man es selbst startet. Für eine Zwölfjährige,
@@ -127,7 +127,7 @@ Wenig, aber an drei Stellen, die zusammenhängen:
   Änderung auf dem Telefon, bevor sie gemergt wird. Das ist der eigentliche
   Gewinn — nicht Technik, sondern dass sie mitentscheiden kann.
 - **Der Release-Knopf**, der in
-  [Test und Produktion](feature-request-releases.md) vertagt wurde.
+  [Test und Produktion](implemented/feature-releases-2026-08-30-0803.md) vertagt wurde.
 
 ## Zwei Entscheidungen vom 30.08.2026
 
@@ -158,8 +158,8 @@ Wenig, aber an drei Stellen, die zusammenhängen:
 ## Voraussetzung
 
 **Phase 1 vollständig** — [Naht](implemented/feature-backend-naht-2026-08-29-2225.md),
-[Tabelle](feature-request-ereignistabelle.md),
-[Melden](feature-request-ereignisse-melden.md),
+[Tabelle](implemented/feature-ereignistabelle-2026-08-30-0815.md),
+[Melden](implemented/feature-ereignisse-melden-2026-08-30-1000.md),
 [Umzug](feature-request-umzug-des-bestands.md) — **und
 [Konten](feature-request-konten.md)**, ohne Ausnahme.
 
