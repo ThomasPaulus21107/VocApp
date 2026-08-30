@@ -305,6 +305,31 @@ export function faecherVon(stand, namen) {
 }
 
 /**
+ * Die Punktsumme je Einheit -- alle bisherigen Einzelergebnisse zu EINER Zahl
+ * zusammengerechnet. Fuer die Auswahl innerhalb des Fachs "in Arbeit", siehe
+ * QUOTE in domain/auswahl.js.
+ *
+ * Warum die Summe und nicht der Score: der Score sagt, wie GUT es lief, die
+ * Zahl der Antworten, wie OFT. Die Summe traegt beides in sich, weil jede
+ * Antwort sie um ihren eigenen Wert weiterschiebt -- 1 auf Anhieb, 0,5 im
+ * zweiten Versuch, minus 0,1 fuer einen Tipp. Zwanzig knappe Runden stehen
+ * damit ueber zwei glatten.
+ *
+ * Was nie dran war, hat 0. Das ist kein Sonderfall: es hat auch nichts
+ * gesammelt.
+ */
+export function summenVon(stand, namen) {
+  const zu = {};
+  const ausVerlauf = zaehlerAusVerlauf(stand.verlauf);
+
+  for (const name of namen) {
+    const eintrag = brauchbar(stand.einheiten[name], ausVerlauf[name]);
+    zu[name] = eintrag?.summe ?? 0;
+  }
+  return zu;
+}
+
+/**
  * Die Zahlen fuer den Ueberblick. `namen` wie bei verteile().
  */
 export function uebersicht(stand, namen) {

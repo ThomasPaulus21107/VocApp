@@ -10,7 +10,8 @@ import {
 } from './domain/pruefung.js';
 import { zieheRunde, einheiten } from './domain/auswahl.js';
 import {
-  merkeGezogen, verrechne, zuletztVon, faecherVon, schluessel, AUSGAENGE, LEER,
+  merkeGezogen, verrechne, zuletztVon, faecherVon, summenVon, schluessel,
+  AUSGAENGE, LEER,
 } from './domain/lernstand.js';
 import { note, punkteFuerKarte } from './domain/note.js';
 import { regeln, MODI } from './domain/modus.js';
@@ -100,7 +101,9 @@ function start(modus) {
     zuletztVon(lernstand.einheiten), lernstand.rundeNr, Math.random,
     // Die Quote braucht zu jeder Einheit ihr Fach. Wie die Faecher heissen
     // und wie viele aus jedem kommen, steht in auswahl.js.
-    faecherVon(lernstand, NAMEN)
+    faecherVon(lernstand, NAMEN),
+    // Und innerhalb von 'arbeit' entscheidet die Punktsumme, wer drankommt.
+    summenVon(lernstand, NAMEN)
   );
   merkeAuswahl();
   hoechstpunktzahl = stapel.length;

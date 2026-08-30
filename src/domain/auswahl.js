@@ -35,17 +35,90 @@ export function einheiten(karten) {
 
    Wenn ein Fach nicht genug hergibt, gehen die freien
    Plaetze weiter -- in der Reihenfolge darunter.
+
+   Am 30.08.2026 geaendert: 'sicher' hatte drei Plaetze und
+   hat jetzt einen. Was sitzt, muss nicht dreimal die Woche
+   vorgefuehrt werden -- die zwei Plaetze sind zu 'nie' und
+   'arbeit' gewandert, dorthin, wo etwas zu holen ist.
    ========================================================= */
 export const QUOTE = {
-  nie: 5,
-  arbeit: 7,
-  sicher: 3,
+  nie: 6,
+  arbeit: 8,
+  sicher: 1,
 };
+
+/* ---------------------------------------------------------
+   UND WIE DIE ACHT AUS 'arbeit' AUSGESUCHT WERDEN
+
+   Nicht nach Alter wie in den anderen beiden Faechern,
+   sondern nach der Punktsumme: alle bisherigen Ergebnisse
+   einer Vokabel zu einer Zahl zusammengerechnet
+   (summenVon() in lernstand.js). Sie traegt beides in sich,
+   wie gut es lief und wie oft.
+
+   Sechs Plaetze sind benannt, in dieser Reihenfolge:
+
+     top1   die hoechste Summe -- laeuft gut, sitzt aber noch nicht
+     last1  die niedrigste    -- die haerteste Vokabel
+     mid1   die Mitte
+     top2   die zweithoechste
+     last2  die zweitniedrigste
+     mid2   neben der Mitte
+
+   Die restlichen zwei werden aus dem Fach gewuerfelt.
+
+   ACHTUNG, und das faellt erst nach ein paar Wochen auf:
+   die Summe waechst mit jeder Antwort und schrumpft fast
+   nie. Wer oben steht, steht morgen wieder oben -- die
+   benannten Plaetze zeigen also ueber Runden hinweg oft
+   dieselben Vokabeln. Genau dagegen halten die beiden
+   gewuerfelten und das Fach 'nie'.
+   --------------------------------------------------------- */
+const BENANNT = 6;
 
 // In dieser Reihenfolge werden die Faecher bedient, und in derselben ruecken
 // sie nach, wenn eines nicht liefert: zuerst die noch nie geuebten, dann die
 // in Arbeit, zuletzt die stabilen.
 const REIHENFOLGE = ['nie', 'arbeit', 'sicher'];
+
+/**
+ * Bringt das Fach 'arbeit' in seine Reihenfolge: erst die sechs benannten
+ * Plaetze, dann der Rest gewuerfelt.
+ *
+ * Rein und ohne Netz wie alles hier -- der Zufall kommt als Argument.
+ *
+ * Die Indizes koennen zusammenfallen, wenn das Fach klein ist: bei drei
+ * Eintraegen ist top1 zugleich last2. Das Set faengt es ab, und die Runde
+ * laeuft dann eben mit weniger benannten Plaetzen voll. Ein Sonderfall ist
+ * das nicht, nur ein kleines Fach.
+ */
+function nachPunkten(korb, summen, zufall) {
+  const sortiert = [...korb].sort((a, b) =>
+    (summen[schluessel(b.karte.id, b.form)] ?? 0)
+    - (summen[schluessel(a.karte.id, a.form)] ?? 0)
+    || a.wuerfel - b.wuerfel
+  );
+
+  const n = sortiert.length;
+  const mitte = Math.floor((n - 1) / 2);
+  // top1, last1, mid1, top2, last2, mid2 -- in genau dieser Reihenfolge.
+  const stellen = [0, n - 1, mitte, 1, n - 2, mitte + 1].slice(0, BENANNT);
+
+  const genommen = new Set();
+  const reihe = [];
+  for (const stelle of stellen) {
+    if (stelle < 0 || stelle >= n || genommen.has(stelle)) continue;
+    genommen.add(stelle);
+    reihe.push(sortiert[stelle]);
+  }
+
+  // Der Rest gewuerfelt -- er hat seinen Wurf schon in `wuerfel` stehen.
+  const rest = sortiert
+    .filter((_, stelle) => !genommen.has(stelle))
+    .sort((a, b) => a.wuerfel - b.wuerfel);
+
+  return [...reihe, ...rest];
+}
 
 /**
  * Zieht eine Runde: die Einheiten, die am laengsten nicht dran waren, bei
@@ -67,7 +140,7 @@ const REIHENFOLGE = ['nie', 'arbeit', 'sicher'];
  * Spaeter kommt in den Sortierschluessel die Schwierigkeit dazu (Stufe 2 in
  * roadmap/implemented/feature-auswahl-2026-08-29-1327.md). Das ist ein Summand mehr, kein Umbau.
  */
-export function zieheRunde(karten, anzahl, zuletzt = {}, rundeNr = 0, zufall = Math.random, faecher = {}) {
+export function zieheRunde(karten, anzahl, zuletzt = {}, rundeNr = 0, zufall = Math.random, faecher = {}, summen = {}) {
   const alle = einheiten(karten);
 
   // Wie lange ist eine KARTE nicht mehr drangewesen -- egal in welcher Form?
@@ -111,6 +184,10 @@ export function zieheRunde(karten, anzahl, zuletzt = {}, rundeNr = 0, zufall = M
     const name = schluessel(eintrag.karte.id, eintrag.form);
     koerbe[faecher[name] ?? 'nie'].push(eintrag);
   }
+
+  // 'nie' und 'sicher' bleiben nach Alter sortiert. 'arbeit' bekommt seine
+  // eigene Reihenfolge -- danach nimmt nimm() von vorn wie ueberall sonst.
+  koerbe.arbeit = nachPunkten(koerbe.arbeit, summen, zufall);
 
   const gezogen = [];
   const schonDabei = new Set();
