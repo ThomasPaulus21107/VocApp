@@ -749,14 +749,18 @@ eine Mailadresse hat, öffnet ein Link auf der neuen Adresse dieselbe uid
 wieder. Vorher ist ein Umzug genauso teuer, als hätte es die Datenbank nie
 gegeben.
 
-**Entschieden ist am 30.08.2026 nur die Sorte Adresse: eine
-`*.vercel.app`-Adresse, keine eigene Domäne** — also genau ein
-Ursprungswechsel und nicht zwei. Welcher Name, entscheidet sich erst beim
-Umzug; bis dahin steht `voc-app-zeta.vercel.app` als Platzhalter, den niemand
-benutzt.
+**Die Zieladresse ist seit dem 30.08.2026 `https://vocappulary.online`** — eine
+eigene Domäne, von Thomas und Matilda gemeinsam gewählt. Damit ist der Umzug
+zu Vercel **der letzte Ursprungswechsel**: wer je den Hoster tauscht, ändert
+nur, wer hinter derselben Adresse antwortet.
 
-Beim Umzug muss jeder die App neu auf den Homebildschirm legen — das alte
-Lesezeichen zeigt auf die alte Adresse und zieht nicht mit.
+**`www` ist ein anderer Ursprung als kein `www`.** Festgelegt ist die Form
+**ohne** — `https://vocappulary.online`. Die andere wird darauf umgeleitet, und
+weitergegeben wird nur diese eine, auch in Anmeldelinks.
+
+Beim Umzug muss jeder die App einmal neu auf den Homebildschirm legen — das
+alte Lesezeichen zeigt auf die alte Adresse und zieht nicht mit. Danach nie
+wieder.
 
 **Vorschau-Adressen sind eigene Ursprünge.** `vocapp-git-<branch>-….vercel.app`
 ist ein anderer Host als `vocapp.vercel.app`, also eine andere

@@ -99,18 +99,31 @@ Wenig, aber an drei Stellen, die zusammenhängen:
   Vercel — und bei fremden Kinderdaten ist „wer hat Zugriff worauf" eine Frage,
   die jemand beantworten können muss, siehe
   [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md).
-- **Die Adresse ist noch nicht entschieden.** Entschieden ist nur: eine
-  `*.vercel.app`-Adresse, **keine eigene Domäne** — also genau ein
-  Ursprungswechsel und nicht zwei.
+- **Die Adresse ist entschieden: `vocappulary.online`**, seit dem 30.08.2026,
+  von Thomas und Matilda gemeinsam. Eine **eigene Domäne**, nicht die von
+  Vercel vergebene — `voc-app-zeta.vercel.app` bleibt Platzhalter, bis
+  umgezogen wird.
 
-  `vocapp` war am 30.08.2026 vergeben; Vercel hat beim Anlegen
-  `voc-app-zeta.vercel.app` daraus gemacht. Das ist ein **Platzhalter**, kein
-  Beschluss: unter Settings → Domains lässt sich jede freie
-  `*.vercel.app`-Adresse dazunehmen, ohne am Projekt etwas zu ändern.
+  Das ist mehr wert, als es zuerst aussah: **mit einer eigenen Domäne ist
+  dieser Umzug der letzte Ursprungswechsel überhaupt.** Wer je Vercel
+  ersetzt, ändert nur, wer hinter derselben Adresse antwortet — der Ursprung
+  bleibt, und damit bleiben `localStorage`, Sitzung und Lesezeichen. Vorher
+  hätte jeder Hosterwechsel wieder alles gekostet.
 
-  **Der Name muss erst stehen, wenn dieses Feature gebaut wird** — vorher
-  kennt die Adresse niemand und ändern kostet nichts. Danach kostet es jeden
-  eine neue Anmeldung und ein neues Lesezeichen auf dem Homebildschirm.
+### `www` oder nicht ist keine Geschmacksfrage
+
+`https://vocappulary.online` und `https://www.vocappulary.online` sind für den
+Browser **zwei verschiedene Ursprünge**, mit zwei getrennten
+`localStorage`-Schubladen. Wer die eine benutzt hat und später auf die andere
+geleitet wird, steht vor einem leeren Speicher und einer verlorenen Sitzung.
+
+Deshalb **eine von beiden festlegen, bevor sie irgendwer benutzt**, und die
+andere darauf umleiten. Vorschlag: **`https://vocappulary.online` ohne `www`**
+— kürzer zu tippen, und getippt wird sie genau einmal, beim Anlegen auf dem
+Homebildschirm.
+
+Ab dann gilt: **nur diese eine Adresse wird weitergegeben.** Auch in den
+Magic Links aus [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md).
 - **Jeder muss die App neu auf den Homebildschirm legen.** Das alte Lesezeichen
   zeigt auf die alte Adresse und wird nicht von selbst umziehen. Ein Satz an
   alle, die schon eins haben.
