@@ -749,6 +749,13 @@ eine Mailadresse hat, öffnet ein Link auf der neuen Adresse dieselbe uid
 wieder. Vorher ist ein Umzug genauso teuer, als hätte es die Datenbank nie
 gegeben.
 
-**Und eine eigene Domäne gleich mitnehmen.** Jeder Ursprungswechsel kostet
-dasselbe, und dazu muss jeder die App neu auf den Homebildschirm legen — das
-alte Lesezeichen zeigt auf die alte Adresse und zieht nicht mit.
+**Die Zieladresse ist seit dem 30.08.2026 entschieden:
+`https://vocapp.vercel.app`.** Keine eigene Domäne, also genau ein
+Ursprungswechsel und nicht zwei. Dabei muss jeder die App neu auf den
+Homebildschirm legen — das alte Lesezeichen zeigt auf die alte Adresse und
+zieht nicht mit.
+
+**Vorschau-Adressen sind eigene Ursprünge.** `vocapp-git-<branch>-….vercel.app`
+ist ein anderer Host als `vocapp.vercel.app`, also eine andere
+`localStorage`-Schublade. Eine Vorschau startet leer und zeigt nie den echten
+Lernstand — richtig so zum Ausprobieren, aber kein Fehler, wenn es auffällt.
