@@ -17,16 +17,25 @@
 // roadmap/feature-request-backend-naht.md.
 
 import { createClient } from '@supabase/supabase-js';
+// Der Ausgangskorb liegt im localStorage, und den kennt im Projekt genau eine
+// Datei. Auch von hier aus wird nicht daran vorbeigegriffen.
+import * as storage from './storage.js';
 
 /*
  * Die API, die hier einmal vollstaendig stehen wird. Sie steht schon jetzt
  * hier, damit spaeter niemand die Form neu erfindet:
  *
- *   starte()      Sitzung holen oder anonym anmelden        <- gebaut
- *   angemeldet()  die uid der laufenden Sitzung, oder null  <- gebaut
- *   melde(e)      ein Ereignis in den Ausgangskorb          <- feature-request-ereignisse-melden.md
- *   lade()        einmal alles holen, danach synchron       <- feature-request-server-ist-die-wahrheit.md
+ *   melde(e)      ein Ereignis ablegen und im Hintergrund senden  <- gebaut
+ *   angemeldet()  die uid der laufenden Sitzung, oder null         <- gebaut
+ *   starte()      Sitzung holen oder anonym anmelden               <- gebaut, intern
+ *   lade()        einmal alles holen, danach synchron              <- feature-request-server-ist-die-wahrheit.md
  */
+
+// Was im localStorage liegt. Alles drei ist wegwerfbar: der Korb steht auch
+// im lokalen Lernstand, und ein neues Geraet ist nur ein neuer Name.
+const KORB = 'postausgang';
+const GERAET = 'geraet';
+const NUMMER = 'nummer';
 
 // Der Client, oder null wenn abgeschaltet.
 //
@@ -124,4 +133,144 @@ export async function starte() {
 /** Die uid der laufenden Sitzung, oder null. Synchron -- nach dem Start. */
 export function angemeldet() {
   return nutzer;
+}
+
+
+/**
+ * Aus einem Ereignis, wie es die App kennt, wird eine Tabellenzeile.
+ *
+ * Rein und ohne Netz, damit es sich pruefen laesst. Zwei Dinge passieren
+ * hier: `id` heisst in der Tabelle `karte` -- neben der eigenen `id` der
+ * Zeile waere das sonst nicht auseinanderzuhalten -- und `zeit` wird zu einem
+ * Text, den Postgres versteht.
+ *
+ * Was eine Art nicht hat, steht als null da. Ein 'gezogen' kennt keinen
+ * Ausgang, eine 'antwort' keine Runde.
+ */
+export function zuEreignis(ereignis, geraet, nummer) {
+  const {
+    art, id, form = null, runde = null, ausgang = null, versuch = null,
+    tipp = null, tippfehler = null, modus = null, wiederholung = null,
+    punkte = null, zeit, tag = null,
+  } = ereignis;
+
+  return {
+    geraet, nummer, art, karte: id, form, runde,
+    ausgang, versuch, tipp, tippfehler, modus, wiederholung, punkte,
+    zeit: new Date(zeit).toISOString(), tag,
+    // `nutzer` fehlt mit Absicht: den setzt der Server aus auth.uid(). Damit
+    // kann eine Zeile schon im Korb liegen, bevor es eine Sitzung gibt.
+  };
+}
+
+/**
+ * Der Name dieses Geraets. Einmal gewuerfelt, dann bleibt er.
+ *
+ * Er ist kein Geheimnis und identifiziert niemanden -- er sorgt nur dafuer,
+ * dass zwei Geraete derselben Person sich nicht in die Nummern geraten.
+ */
+function geraetName() {
+  const da = storage.lesen(GERAET, null);
+  if (da) return da;
+
+  // crypto.randomUUID gibt es seit Safari 15.4. Faellt es aus, tut es auch
+  // eine Zufallszahl: gebraucht wird Eindeutigkeit, nicht Unvorhersagbarkeit.
+  const neu = globalThis.crypto?.randomUUID?.()
+    ?? `g-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  storage.speichern(GERAET, neu);
+  return neu;
+}
+
+/** Die naechste laufende Nummer dieses Geraets. Zaehlt ueber Runden hinweg. */
+function naechsteNummer() {
+  const neu = storage.lesen(NUMMER, 0) + 1;
+  storage.speichern(NUMMER, neu);
+  return neu;
+}
+
+/**
+ * Ein Ereignis sichern.
+ *
+ * Es wird NICHT gesendet, sondern ABGELEGT. Kein Netz, Flugmodus, Server
+ * aus, U-Bahn: die Zeile bleibt im Korb liegen und geht beim naechsten Mal
+ * raus. Ohne den Korb waere jede Antwort ohne Empfang fuer immer weg -- und
+ * geuebt wird auf einem Telefon.
+ *
+ * Gibt nichts zurueck, worauf man warten koennte. Das ist Absicht: die App
+ * darf hier nie stehenbleiben.
+ */
+export function melde(ereignis) {
+  try {
+    const zeile = zuEreignis(ereignis, geraetName(), naechsteNummer());
+    storage.speichern(KORB, [...storage.lesen(KORB, []), zeile]);
+  } catch {
+    // Ein misslungenes Sichern kostet die Sicherung, nicht die Runde.
+    return;
+  }
+  versende();
+}
+
+// Nur ein Versand auf einmal. Sonst schickten fuenfzehn Antworten in Folge
+// fuenfzehn ueberlappende Anfragen, die einander ueberholen.
+let laeuft = false;
+
+/**
+ * Leert den Korb, so weit es geht. Wirft nie und wartet auf niemanden.
+ *
+ * ANGEMELDET WIRD HIER, nicht beim Laden der Seite. Sonst legte jeder
+ * Seitenaufruf einen anonymen Nutzer an -- ein neugieriger Klick, ein
+ * Crawler, ein privates Fenster, jedes Mal eine Zeile in auth.users. Wer die
+ * Seite nur ansieht, bekommt kein Konto; wer eine Karte beantwortet, schon.
+ */
+async function versende() {
+  if (laeuft) return;
+  laeuft = true;
+
+  try {
+    while (storage.lesen(KORB, []).length > 0) {
+      const korb = storage.lesen(KORB, []);
+
+      // Ohne Sitzung bleibt alles liegen. Beim naechsten melde() oder beim
+      // naechsten Start wird es wieder versucht.
+      if (!(await starte())) return;
+
+      const { error } = await client
+        .from('ereignisse')
+        // Bricht die Verbindung ab, nachdem der Server geschrieben, aber
+        // bevor die App es erfahren hat, schickt der naechste Anlauf
+        // dieselben Zeilen -- und es passiert nichts. Ohne das waere der
+        // Korb eine Maschine, die Antworten vervielfaeltigt.
+        .upsert(korb, { onConflict: 'nutzer,geraet,nummer', ignoreDuplicates: true });
+      if (error) return;
+
+      // Nur wegnehmen, was gerade wirklich rausging. Waehrend des Versands
+      // koennen hinten neue Zeilen dazugekommen sein -- melde() haengt immer
+      // an, nie davor.
+      storage.speichern(KORB, storage.lesen(KORB, []).slice(korb.length));
+    }
+  } catch {
+    // Bleibt liegen. Der naechste Anlauf kommt von allein.
+  } finally {
+    laeuft = false;
+  }
+}
+
+/**
+ * Was vom letzten Mal liegengeblieben ist, noch einmal versuchen.
+ *
+ * Gehoert an den Start der App. Ohne diesen Aufruf bleibt ein voller Korb
+ * liegen, bis jemand die naechste Karte beantwortet -- wer im Flugmodus
+ * geuebt und die App danach geschlossen hat, verloere seine Antworten bis zur
+ * uebernaechsten Sitzung.
+ *
+ * Es ist KEIN Anmelden: ist der Korb leer, passiert gar nichts, und wer die
+ * Seite nur ansieht, bekommt weiterhin kein Konto.
+ */
+export function holeNach() {
+  versende();
+}
+
+/** Wie viele Zeilen noch auf ihren Versand warten. Fuer die Tests. */
+export function korbGroesse() {
+  return storage.lesen(KORB, []).length;
 }

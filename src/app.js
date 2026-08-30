@@ -120,8 +120,21 @@ function start(modus) {
  * Neues, sie wiederholt.
  */
 function merkeAuswahl() {
+  // Die Nummer VOR merkeGezogen lesen: dort bekommen die Einheiten die
+  // laufende Runde, und erst danach zählt sie hoch.
+  const runde = lernstand.rundeNr;
+  const jetzt = Date.now();
+
   lernstand = merkeGezogen(lernstand, stapel);
   storage.speichern(LERNSTAND, lernstand);
+
+  // Dasselbe noch einmal für den Server. Eine gezogene Karte sieht nach
+  // nichts aus und ist trotzdem ein Ereignis: die Auswahl entscheidet
+  // danach, was am längsten nicht dran war. Ohne diese Zeilen wüsste ein
+  // zweites Gerät das nicht.
+  for (const { karte, form } of stapel) {
+    backend.melde({ art: 'gezogen', id: karte.id, form, runde, zeit: jetzt });
+  }
 }
 
 function zeigeAktuelle() {
@@ -174,33 +187,37 @@ function merkeErgebnis({ ausgang, getippt, kartenpunkte, tippfehler = false }) {
   //
   // Gespeichert wird nach jeder Karte und nicht am Rundenende: am Handy wird
   // eine Runde oft unterbrochen, und was beantwortet wurde, wurde beantwortet.
-  lernstand = verrechne(
-    lernstand,
-    {
-      id: frage.id,
-      form: frage.gesuchteForm,
-      ausgang,
-      versuch,
-      tipp: tippBenutzt,
-      // Ein durchgelassener Tippfehler steht mit im Verlauf, wie der Tipp:
-      // beide sagen etwas darüber, wie sicher die Antwort war.
-      tippfehler,
-      modus: gespielterModus,
-      // Eine Wiederholung wiegt anders: die Lösung stand eben noch da.
-      // Gezählt wird sie trotzdem, nur eben als das, was sie ist.
-      wiederholung: imLernpotential,
-      // Dieselbe Zahl, die auch in die Note eingeht. Aufsummiert und durch
-      // die Zahl der Antworten geteilt ergibt sie den Score der Vokabel.
-      punkte: kartenpunkte,
-      // Welcher Tag gerade ist, weiß nur, wer die Uhr kennt -- also hier.
-      // "sv" liefert das Datum als JJJJ-MM-TT, und zwar in der Zeitzone des
-      // Geräts: um halb eins nachts gehört die Runde noch zum Vortag, so wie
-      // Matilda es auch empfinden würde.
-      tag: new Date().toLocaleDateString('sv'),
-    },
-    Date.now()
-  );
+  const jetzt = Date.now();
+  const ereignis = {
+    id: frage.id,
+    form: frage.gesuchteForm,
+    ausgang,
+    versuch,
+    tipp: tippBenutzt,
+    // Ein durchgelassener Tippfehler steht mit im Verlauf, wie der Tipp:
+    // beide sagen etwas darüber, wie sicher die Antwort war.
+    tippfehler,
+    modus: gespielterModus,
+    // Eine Wiederholung wiegt anders: die Lösung stand eben noch da.
+    // Gezählt wird sie trotzdem, nur eben als das, was sie ist.
+    wiederholung: imLernpotential,
+    // Dieselbe Zahl, die auch in die Note eingeht. Aufsummiert und durch
+    // die Zahl der Antworten geteilt ergibt sie den Score der Vokabel.
+    punkte: kartenpunkte,
+    // Welcher Tag gerade ist, weiß nur, wer die Uhr kennt -- also hier.
+    // "sv" liefert das Datum als JJJJ-MM-TT, und zwar in der Zeitzone des
+    // Geräts: um halb eins nachts gehört die Runde noch zum Vortag, so wie
+    // Matilda es auch empfinden würde.
+    tag: new Date().toLocaleDateString('sv'),
+  };
+
+  lernstand = verrechne(lernstand, ereignis, jetzt);
   storage.speichern(LERNSTAND, lernstand);
+
+  // Genau dasselbe Ereignis geht zum Server -- nicht etwas daraus
+  // Errechnetes. Der Lernstand hier und die Zeile dort sind zwei Sichten auf
+  // dieselbe Antwort, und deshalb können sie nicht auseinanderlaufen.
+  backend.melde({ art: 'antwort', ...ereignis, zeit: jetzt });
 }
 
 // Ein Knopf, zwei Bedeutungen: erst prüfen, dann weiter.
@@ -387,11 +404,15 @@ ui.verbinde({
   aufToene: (an) => storage.speichern(TOENE, an),
 });
 
-// Die Sitzung zum Server, absichtlich OHNE await.
+// Was beim letzten Mal nicht rausging, geht jetzt raus -- wer im Flugmodus
+// geübt und die App danach geschlossen hat, verlöre seine Antworten sonst bis
+// zur übernächsten Sitzung.
 //
-// Solange der Lernstand lokal die Wahrheit ist, hängt nichts am Server: die
-// App startet sofort, auch wenn Supabase gerade nicht antwortet oder gar
-// nicht konfiguriert ist. Das eine `await` aus dem Muster in
-// roadmap/feature-request-mehrere-nutzer.md kommt erst, wenn der Server die
-// Wahrheit wird.
-backend.starte();
+// Das ist ausdrücklich KEIN Anmelden: ist der Korb leer, passiert nichts, und
+// wer die Seite nur ansieht, bekommt weiterhin kein Konto. Angemeldet wird
+// erst, wenn es etwas zu sichern gibt.
+//
+// Kein await. In dieser Datei wartet nichts auf den Server; das eine `await`
+// aus dem Muster in roadmap/feature-request-mehrere-nutzer.md kommt erst,
+// wenn der Server die Wahrheit wird.
+backend.holeNach();
