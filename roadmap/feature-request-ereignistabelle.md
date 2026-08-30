@@ -1,22 +1,19 @@
 # Feature: Die Ereignistabelle mit Row Level Security
 
 **Status:** bereit — durchdacht, noch nicht gebaut
-**Wo im Code:** `supabase/schema.sql` — neu. Kein JavaScript.
+**Wo im Code:** `supabase/migrations/20260830060642_ereignisse.sql` — neu.
+Kein JavaScript.
 
-Eine Tabelle und vier Zeilen Sicherheit. Die Datei liegt versioniert im Repo
-und wird im SQL-Editor eingefügt — die Supabase-CLI wäre eine weitere
-Abhängigkeit und lohnt für eine Tabelle nicht.
+Eine Tabelle und vier Zeilen Sicherheit — und die **erste Migration**
+überhaupt. Wie sie in die beiden Projekte kommt, steht in
+[Test und Produktion](feature-request-releases.md) und in
+[`supabase/README.md`](../supabase/README.md): nach `VocApp` spielt der
+Workflow sie beim Merge ein, nach `VocApp TEST` von Hand.
 
-**Sie muss in zwei Projekte**, VocApp TEST und VocApp. Genau dafür ist sie eine
-Datei im Repo und kein einmal getippter Text — sonst driften die beiden nach der
-zweiten Änderung auseinander, und das merkt man erst, wenn ein Insert nur in
-einem von beiden funktioniert.
-
-**Eingespielt wird sie nicht von Hand.** Sobald
-[Test und Produktion](feature-request-releases.md) gebaut ist, liegt sie als
-erste Migration unter `supabase/migrations/` und die CLI übernimmt das. Wer
-diese Datei hier zuerst baut, fügt sie einmal von Hand ein und benennt sie
-danach um — deshalb sollten die beiden dicht beieinander liegen.
+**Sie muss in beide Projekte**, sonst driften sie nach der zweiten Änderung
+auseinander — und das merkt man erst, wenn ein Insert nur in einem von beiden
+funktioniert. Genau dafür ist sie eine Datei im Repo und kein im SQL-Editor
+getippter Text.
 
 ## Ereignisse, keine Zustände
 
@@ -165,16 +162,33 @@ Dann ist die App offen, und zwar still.
 Nicht nebenbei, sondern als Bedingung: **solange dieser Test nicht gelaufen
 ist, gilt das Feature als nicht gebaut.**
 
-1. Zweites Browserprofil öffnen (das bekommt eine eigene anonyme Sitzung).
-2. In der Konsole `supabase.from('ereignisse').select('*')`.
-3. **Es müssen null Zeilen zurückkommen.**
+1. Zwei anonyme Sitzungen anlegen, A und B.
+2. A schreibt drei Zeilen und liest sie zurück: **drei**.
+3. B liest: **null**. Das ist der Test.
+4. Ohne Anmeldung, nur mit dem Publishable Key: **null**.
+5. B versucht eine Zeile mit A's `nutzer` zu schreiben: **abgelehnt**.
+6. A versucht die eigene Zeile zu ändern und zu löschen: **die Daten stehen
+   danach unverändert da**.
+7. Denselben Versand wiederholen: **abgelehnt**, der `unique` hält.
+
+### Eine Falle bei Punkt 6
+
+`PATCH` und `DELETE` antworten mit **HTTP 204**, obwohl keine Policy sie
+erlaubt — PostgREST gibt das unabhängig davon zurück, ob überhaupt eine Zeile
+betroffen war. RLS filtert einfach alles weg, und „nichts geändert" sieht aus
+wie „geändert".
+
+**Der Rückgabewert ist hier also kein Beweis.** Geprüft wird, indem man die
+Zeilen vorher und nachher vergleicht. Am 30.08.2026 gemacht: unverändert.
 
 **In beiden Projekten**, nicht nur in TEST. Die Policies in VocApp sind die, auf
 die es ankommt, und sie sind auch die, die man beim zweiten Einspielen
 vergisst.
 
-Kommt auch nur eine fremde Zeile, ist die Tabelle offen und alles Weitere
-wartet.
+Kommt bei Punkt 3 oder 4 auch nur eine fremde Zeile, ist die Tabelle offen und
+alles Weitere wartet.
+
+**Gelaufen am 30.08.2026 gegen `VocApp TEST`, alle sieben Punkte grün.**
 
 ## Voraussetzung
 

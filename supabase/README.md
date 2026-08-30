@@ -42,14 +42,34 @@ Der Satz steht hier, damit er dasteht, bevor es einmal nicht leicht ist.
 ## Von Hand einspielen (TEST)
 
 Die CLI wird nicht installiert und steht nicht in `package.json` — `npx` holt
-sie bei Bedarf:
+sie bei Bedarf. **Drei Schritte, nicht zwei:**
 
 ```bash
+# 1. einmal je Rechner: oeffnet den Browser, du bestaetigst
+npx supabase@latest login
+
+# 2. einmal je Projektordner: waehlt das Projekt und die IPv4-Verbindung
 npx supabase@latest link --project-ref uwxhfhhxnynxcuzdrcri
+
+# 3. so oft es neue Migrationen gibt
 npx supabase@latest db push
 ```
 
-Beim ersten Mal fragt sie nach dem Datenbank-Passwort. Es steht in Supabase
+**Schritt 1 wird gern vergessen**, weil der Workflow ihn nicht braucht: dort
+kommt das Token aus dem Secret `SUPABASE_ACCESS_TOKEN`. Lokal fehlt es, und
+dann sagt die CLI
+
+```
+Access token not provided. Supply an access token by running `supabase login`
+```
+
+und der nächste Befehl scheitert mit `Cannot find project ref` — was aussieht
+wie ein zweiter Fehler und nur die Folge des ersten ist.
+
+`login` legt ein eigenes Token für diesen Rechner an; das aus den GitHub-
+Secrets wird dafür nicht gebraucht und sollte auch nicht dafür benutzt werden.
+
+Bei Schritt 2 fragt sie nach dem **Datenbank-Passwort**. Es steht in Supabase
 unter Project Settings → Database; ansehen kann man es dort nicht, nur neu
 setzen.
 
