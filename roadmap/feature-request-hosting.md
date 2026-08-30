@@ -124,8 +124,11 @@ und getippt wird sie genau einmal, beim Anlegen auf dem Homebildschirm; ein
 Grund für `www` gäbe es nur bei einem zweiten Angebot unter derselben Domäne,
 und das gibt es nicht.
 
-Ab dann gilt: **nur diese eine Adresse wird weitergegeben.** Auch in den
-Magic Links aus [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md).
+Ab dann gilt: **nur diese eine Adresse wird weitergegeben** — auch als die,
+unter der sich jemand anmeldet, siehe
+[Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md). Eine
+Sitzung, die unter der falschen Schreibweise entsteht, liegt in der falschen
+Schublade.
 - **Jeder muss die App neu auf den Homebildschirm legen.** Das alte Lesezeichen
   zeigt auf die alte Adresse und wird nicht von selbst umziehen. Ein Satz an
   alle, die schon eins haben.
