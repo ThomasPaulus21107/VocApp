@@ -83,6 +83,9 @@ Von unten nach oben, neueste zuerst.
 
 | Feature | Wann |
 |---|---|
+| [Jede Antwort geht zum Server](implemented/feature-ereignisse-melden-2026-08-30-1000.md) | 30.08. 10:00 |
+| [Die Ereignistabelle mit Row Level Security](implemented/feature-ereignistabelle-2026-08-30-0815.md) | 30.08. 08:15 |
+| [Test und Produktion](implemented/feature-releases-2026-08-30-0803.md) | 30.08. 08:03 |
 | [Die zweite Naht zum Server](implemented/feature-backend-naht-2026-08-29-2225.md) | 29.08. 22:25 |
 | [Wie die Oberfläche getestet wird](implemented/feature-ui-tests-2026-08-29-1943.md) | 29.08. 19:43 |
 | [Dein Fleiß](implemented/feature-fleiss-2026-08-29-1551.md) | 29.08. 15:51 |
@@ -132,9 +135,9 @@ Vorgeschichte steht in
 
 ```
    1 backend-naht ✓ ──┐
-                      ├──▶ 3 ereignisse-melden ──▶ 4 umzug-des-bestands
-   2 ereignistabelle ─┘                                      │
-           │                                    (die Datenbank steht)
+                      ├──▶ 3 ereignisse-melden ✓ ──▶ 4 umzug-des-bestands
+   2 ereignistabelle ✓┘                                      │
+           │                              (jede Antwort liegt jetzt doppelt)
            └──▶ 10 releases ✓                                │
                                                              ▼
                             ┌──▶ 6 server-ist-die-wahrheit ──▶ 8 missionen
@@ -145,8 +148,6 @@ Vorgeschichte steht in
 
 | # | Feature | Wer |
 |---|---|---|
-| 2 | [Die Ereignistabelle mit Row Level Security](feature-request-ereignistabelle.md) | Thomas |
-| 3 | [Jede Antwort geht zum Server](feature-request-ereignisse-melden.md) | Thomas |
 | 4 | [Der Bestand zieht um](feature-request-umzug-des-bestands.md) | Thomas |
 | 5 | [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md) | Thomas, Entscheidung: wer legt Konten an |
 | 6 | [Der Server wird die Wahrheit](feature-request-server-ist-die-wahrheit.md) | Thomas |
@@ -159,7 +160,6 @@ reihen sich nach 1 und 2 ein:
 
 | # | Feature | Wer |
 |---|---|---|
-| 10 | [Test und Produktion, und was ein Release ist](feature-request-releases.md) | Thomas |
 | 11 | [GitHub Pages ablösen](feature-request-hosting.md) | Thomas |
 
 **Datei 11 darf nicht vor 1–5 kommen.** Ein Adresswechsel leert

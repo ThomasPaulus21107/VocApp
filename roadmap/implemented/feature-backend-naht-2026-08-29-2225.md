@@ -98,7 +98,7 @@ heißen die Projekte im Dashboard erkennbar verschieden, und die Abnahme unten
 schaut nach, in welchem die Zeile gelandet ist.
 
 **Wie das Schema in beide kommt und was ein Release ist**, steht in
-[Test und Produktion](../feature-request-releases.md) — kurz: nicht von Hand.
+[Test und Produktion](feature-releases-2026-08-30-0803.md) — kurz: nicht von Hand.
 
 ## Die Schlüssel
 
@@ -112,13 +112,13 @@ VITE_SUPABASE_PUBLISHABLE_KEY=
 
 Im Deploy-Workflow zwei Secrets mit den Werten von **VocApp**, die beim
 `npm run build`-Schritt als `env:` hereinkommen. Sie gehören in eine
-geschützte Environment, siehe [Test und Produktion](../feature-request-releases.md).
+geschützte Environment, siehe [Test und Produktion](feature-releases-2026-08-30-0803.md).
 
 **Beide Werte sind öffentlich gedacht** — sie landen im Bundle, das GitHub
 Pages ausliefert, und das ist bei Supabase der vorgesehene Weg. Der Grund für
 die Variablen ist nicht Geheimhaltung, sondern Rotation: ein getauschter Key
 soll keine Code-Änderung sein. **Was schützt, ist RLS**, siehe
-[Die Ereignistabelle mit Row Level Security](../feature-request-ereignistabelle.md).
+[Die Ereignistabelle mit Row Level Security](feature-ereignistabelle-2026-08-30-0815.md).
 
 ## Die neue Abhängigkeit
 
@@ -159,5 +159,5 @@ Keine. Diese Datei kommt zuerst.
 
 ## Was danach kommt
 
-[Die Ereignistabelle](../feature-request-ereignistabelle.md) (parallel möglich),
-dann [Jede Antwort geht zum Server](../feature-request-ereignisse-melden.md).
+[Die Ereignistabelle](feature-ereignistabelle-2026-08-30-0815.md) (parallel möglich),
+dann [Jede Antwort geht zum Server](feature-ereignisse-melden-2026-08-30-1000.md).

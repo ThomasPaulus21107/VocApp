@@ -58,7 +58,7 @@ um: aus „das Älteste fällt raus" wird „alles bleibt".
 Er bleibt — als **Ausfallnetz**, wenn der Server nicht antwortet. Der zuletzt
 geladene Stand liegt weiter lokal, und wer ohne Netz übt, übt weiter. Der
 Ausgangskorb aus
-[Jede Antwort geht zum Server](feature-request-ereignisse-melden.md) sorgt
+[Jede Antwort geht zum Server](implemented/feature-ereignisse-melden-2026-08-30-1000.md) sorgt
 dafür, dass nichts verlorengeht.
 
 Die Rollenverteilung aus `AGENTS.md` bleibt unangetastet: `storage.js` gehört

@@ -97,7 +97,7 @@ zeigt, was herauskommt.
   aus den Zahlen eine Würdigung wird, steht in
   [Würdigung statt Rangliste](feature-request-wuerdigung.md) und ist offen.
 - **Kein Zugriff auf fremde Ereignisse.** Die Policies in
-  [der Ereignistabelle](feature-request-ereignistabelle.md) bleiben, wie sie
+  [der Ereignistabelle](implemented/feature-ereignistabelle-2026-08-30-0815.md) bleiben, wie sie
   sind. Wer sie aufmacht, hebt die zweite Eigenschaft oben auf.
 - **Keine Belohnung für die Serie.** Sie wird weiter nur gezählt, siehe
   [Backlog](backlog.md).

@@ -1,6 +1,6 @@
 # Feature: Jede Antwort geht zum Server
 
-**Status:** bereit — durchdacht, noch nicht gebaut
+**Status:** umgesetzt am 30.08.2026 um 10:00, PR #52
 **Wo im Code:** `src/infra/backend.js`, `src/app.js`, `tests/backend.test.js`
 
 Der Schritt, nach dem die Sicherung wirklich existiert: **jede Antwort und jede
@@ -19,7 +19,7 @@ Das ist bewusst der kleine Weg. Er bringt sofort, worauf es zuerst ankommt —
 eine Kopie, die eine Ferienlücke auf dem iPhone übersteht — und er kann fast
 nichts kaputtmachen: fällt der Server aus, merkt die App es nicht. Das
 Umdrehen ist ein eigenes Feature und kommt später, siehe
-[Der Server wird die Wahrheit](feature-request-server-ist-die-wahrheit.md).
+[Der Server wird die Wahrheit](../feature-request-server-ist-die-wahrheit.md).
 
 ## Der Ausgangskorb
 
@@ -62,7 +62,7 @@ Ereignisse als Argumente herein und Bewertungen heraus, und dabei bleibt es.
 
 ### Angemeldet wird erst, wenn es etwas zu sichern gibt
 
-[Die zweite Naht](implemented/feature-backend-naht-2026-08-29-2225.md) ruft `starte()` beim Laden
+[Die zweite Naht](feature-backend-naht-2026-08-29-2225.md) ruft `starte()` beim Laden
 der Seite. Das war zum Prüfen richtig und ist auf Dauer falsch: **jeder
 Seitenaufruf legt dann einen anonymen Nutzer an.** Am 29.08.2026 in
 `VocApp TEST` nachgezählt — ein paar Testläufe, zehn Nutzer.
@@ -108,7 +108,7 @@ Auch die Anmeldung aus dem Abschnitt oben bleibt **innerhalb** von
 gibt nichts zurück, worauf man warten könnte.
 
 Das eine `await` aus dem Muster in
-[Ob die App mehrere Nutzer kennt](feature-request-mehrere-nutzer.md) kommt erst,
+[Ob die App mehrere Nutzer kennt](../feature-request-mehrere-nutzer.md) kommt erst,
 wenn der Server die Wahrheit wird.
 
 ## Tests
@@ -137,10 +137,10 @@ Dazu von Hand, weil kein Test es prüfen kann:
 
 ## Voraussetzung
 
-[Die zweite Naht zum Server](implemented/feature-backend-naht-2026-08-29-2225.md) und
-[Die Ereignistabelle](feature-request-ereignistabelle.md), beide gebaut.
+[Die zweite Naht zum Server](feature-backend-naht-2026-08-29-2225.md) und
+[Die Ereignistabelle](feature-ereignistabelle-2026-08-30-0815.md), beide gebaut.
 
 ## Was danach kommt
 
-[Der Bestand zieht um](feature-request-umzug-des-bestands.md) — ab hier
+[Der Bestand zieht um](../feature-request-umzug-des-bestands.md) — ab hier
 sammelt der Server nur, was neu passiert. Das Alte fehlt noch.
