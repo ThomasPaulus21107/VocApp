@@ -98,6 +98,28 @@ größte Aufruf im Projekt. Geht er nicht durch, bleibt er im Korb liegen und
 nichts ist verloren; die Antwort wäre dann eine Obergrenze je Durchlauf in
 `versende()`, die später auch dem Normalbetrieb nützt.
 
+## Was beim ersten echten Lauf herauskam
+
+Am 30.08.2026 abends auf zwei Geräten ausgeführt, MacBook und Matildas iPhone.
+205 und 140 Bestandszeilen, die Zahl am MacBook auf die Antwort genau gegen
+`verlauf.length` geprüft. Drei Dinge, die sich erst dabei gezeigt haben:
+
+- **Es waren vier Speicher, nicht zwei.** Auf dem Server standen vier
+  Gerätenamen — Safari neben der App auf dem Homebildschirm zählt als eigener
+  Speicher, mit eigenem Bestand und eigener anonymer uid. Zwei davon sind
+  umgezogen, zwei nicht: **ein Bestand zieht erst um, wenn genau dieser
+  Speicher die App einmal öffnet.**
+- **Jedes Gerät ist ein eigener anonymer Nutzer.** Die Bestände liegen also
+  unter mehreren uids. Zusammengeführt wird nichts — das ist Sache von
+  [Aus der anonymen Sitzung wird ein Konto](../feature-request-konten.md), und
+  zwar von Hand.
+- **Neun Stunden Überschneidung.** Das Melden lief seit 10:00, der Umzug erst
+  ab 18:15; was dazwischen beantwortet wurde, steht sowohl als reguläre Zeile
+  da als auch noch einmal im hochgeschobenen `verlauf`. Beim Nachzügler-Gerät
+  ist dieses Fenster entsprechend größer. Das `unique` fängt es nicht ab, und
+  löschen kann die App nicht — **entdoppelt wird deshalb beim Lesen**, siehe
+  [Der Server wird die Wahrheit](../feature-request-server-ist-die-wahrheit.md).
+
 ## Voraussetzung
 
 [Jede Antwort geht zum Server](feature-ereignisse-melden-2026-08-30-1000.md).
