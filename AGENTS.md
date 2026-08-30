@@ -44,11 +44,18 @@ ein paar Zähler und die Summe der erreichten Kartenpunkte, dazu ein Verlauf
 der letzten 750 Antworten — alles in `localStorage`. Aus Summe geteilt durch
 Anzahl wird der **Score** je Vokabel, in derselben Währung wie die Note.
 
-**Eine Quote entscheidet die Mischung einer Runde:** 5 noch nie geübte, 7 in
-Arbeit, 3 stabil gelernte (`QUOTE` in `auswahl.js`). Ohne sie waren sieben
+**Eine Quote entscheidet die Mischung einer Runde:** 6 noch nie geübte, 8 in
+Arbeit, 1 stabil gelernte (`QUOTE` in `auswahl.js`). Ohne sie waren sieben
 Runden lang alle fünfzehn Karten neu und danach nie wieder eine — ein
 Kippschalter statt einer Lernkurve. Gibt ein Fach nicht genug her, rücken die
 freien Plätze nach: erst an die neuen, dann an die in Arbeit.
+
+**Innerhalb von „in Arbeit" entscheidet seit dem 30.08.2026 die Punktsumme**,
+nicht mehr das Alter: sechs der acht Plätze sind benannt (top1, last1, mid1,
+top2, last2, mid2 nach `summenVon()`), zwei werden gewürfelt. Die Summe trägt
+in sich, wie gut es lief und wie oft — und sie wächst monoton, weshalb dieselben
+Vokabeln oft wiederkommen. Siehe
+`roadmap/implemented/feature-auswahl-nach-punkten-2026-08-30-2145.md`.
 
 Dazu gibt es ein **Seitenmenü** auf jeder Seite (Töne an/aus, Weg zu den
 Statistiken) und zwei weitere Seiten. `fortschritt.html` zeigt in drei

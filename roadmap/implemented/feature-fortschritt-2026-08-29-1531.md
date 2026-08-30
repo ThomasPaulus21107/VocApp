@@ -10,6 +10,35 @@ Das ist die eine Hälfte von „Monitoring". Die andere — läuft die App
 überhaupt — steht in [Technisches Monitoring](../feature-request-monitoring.md)
 und hat damit nur das Wort gemeinsam.
 
+## Nachtrag vom 30.08.2026: der Balken sagt jetzt mehr
+
+Oben lag ein orangefarbener Block für alles, was „in Arbeit" ist — und darin
+stand die Vokabel, die zweimal knapp danebenlag, neben der, die schon fast
+sitzt. Beide sahen gleich aus.
+
+Der orange Teil ist seither selbst eine kleine Leiste, **ein Stück je Stufe, so
+breit wie sein Anteil.** `arbeitsstufe()` in `domain/lernstand.js` teilt nach
+dem Score in sieben:
+
+| Stufe | Score | Farbe |
+|---|---|---|
+| 0 | ≤ 0 | rot |
+| 1–5 | 1–99, in Zwanziger-Schritten | die Orange-Rampe |
+| 6 | 100 | blasses Grün |
+
+**Stufe 6 ist mit Absicht blasser als das Grün von „sitzt":** die Vokabel ist
+nicht durch, sie hat nur noch keinen Fehler gemacht — es waren erst ein oder
+zwei Antworten, `SICHER_AB_ANTWORTEN` ist nicht erreicht. Stufe 3 ist genau das
+alte `--in-arbeit`, damit der Balken zu den Fächerlisten darunter passt.
+
+Damit sieht man an einer Woche Üben etwas, das vorher unsichtbar war: ob das
+Orange nach rot zieht oder nach grün. [PR #65](https://github.com/ThomasPaulus21107/VocApp/pull/65)
+
+**Beobachtet und stehen gelassen:** Stufe 0 ist dasselbe Rot wie „noch nie
+dran". Grenzen die beiden aneinander, verschwimmt die Grenze. Rot heißt rot —
+falls es stört, wäre ein hauchdünner Trennstrich zwischen den Stücken der
+kleinste Hebel.
+
 ## Was darauf steht
 
 Oben ein Überblick: wie viele der 106 Einheiten sicher sitzen, ein Balken

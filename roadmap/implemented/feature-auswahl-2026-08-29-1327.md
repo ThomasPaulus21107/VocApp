@@ -2,6 +2,10 @@
 
 **Status:** Stufe 1 umgesetzt am 29.08.2026 um 13:27, [PR #20](https://github.com/ThomasPaulus21107/VocApp/pull/20)
 **Stufe 2 ist am 29.08.2026 gebaut worden — als Quote, nicht als Gewichtung**
+**Am 30.08.2026 abgelöst**, was die Auswahl *innerhalb* von „in Arbeit"
+angeht, und die Quote hat neue Zahlen (6 / 8 / 1): siehe
+[In Arbeit wird nach Punkten ausgesucht](feature-auswahl-nach-punkten-2026-08-30-2145.md).
+Was hier über die Abdeckung und über die Fächer steht, gilt unverändert.
 **Wo im Code:** `src/domain/auswahl.js` — neu, dazu `src/domain/modus.js`, `src/app.js`
 
 Heute zieht `zieheRunde` reinen Zufall: mischen, die ersten 15 nehmen. Die
