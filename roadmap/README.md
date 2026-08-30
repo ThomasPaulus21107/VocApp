@@ -131,16 +131,16 @@ Vorgeschichte steht in
 [Ob die App mehrere Nutzer kennt](feature-request-mehrere-nutzer.md).
 
 ```
-      1 backend-naht ✓ ───┐
-                          ├──▶ 3 ereignisse-melden ──▶ 4 umzug-des-bestands
-      2 ereignistabelle ──┘   │                (die Datenbank steht)
-              │               │                        │
-              └─▶ 10 releases ┘                        ├──▶ 11 hosting
-                                                       ▼
-                              5 konten ──┬──▶ 6 server-ist-die-wahrheit ──▶ 8 missionen
-                                         └──▶ 7 kinderdaten                  │
-                                                                             ▼
-                                                                    9 wuerdigung (offen)
+   1 backend-naht ✓ ──┐
+                      ├──▶ 3 ereignisse-melden ──▶ 4 umzug-des-bestands
+   2 ereignistabelle ─┘                                      │
+           │                                    (die Datenbank steht)
+           └──▶ 10 releases ✓                                │
+                                                             ▼
+                            ┌──▶ 6 server-ist-die-wahrheit ──▶ 8 missionen
+                 5 konten ──┼──▶ 7 kinderdaten                    │
+                            └──▶ 11 hosting (Vercel)              ▼
+                                                          9 wuerdigung (offen)
 ```
 
 | # | Feature | Wer |
@@ -162,9 +162,12 @@ reihen sich nach 1 und 2 ein:
 | 10 | [Test und Produktion, und was ein Release ist](feature-request-releases.md) | Thomas |
 | 11 | [GitHub Pages ablösen](feature-request-hosting.md) | Thomas |
 
-**Datei 11 darf nicht vor 1–4 kommen.** Ein Adresswechsel leert `localStorage`,
-und solange der Lernstand nur dort liegt, kostet der Umzug ihn. Der Grund steht
-in der Datei.
+**Datei 11 darf nicht vor 1–5 kommen.** Ein Adresswechsel leert
+`localStorage` — und dort liegt nicht nur der Lernstand, sondern auch der
+Sitzungstoken. Der ist bei einem anonymen Nutzer der einzige Ausweis: ohne ihn
+gehören die Zeilen auf dem Server einer uid, in die sich niemand mehr anmelden
+kann. Erst ein Konto mit Mailadresse (Datei 5) macht den Umzug harmlos. Der
+ganze Grund steht in der Datei.
 
 Darauf bauen die letzten beiden auf, möglich geworden, seit *„Was ist ein
 Punkt?"* am 29.08.2026 beantwortet ist. **Datei 9 ist die einzige der neun, die

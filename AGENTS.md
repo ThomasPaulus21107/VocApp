@@ -644,3 +644,111 @@ festlegt. Siehe `roadmap/implemented/feature-lernstand-2026-08-29-1531.md`.
 
 `domain/` erfährt von beidem nichts: dort kommen Ereignisse als Argumente
 herein und Bewertungen heraus.
+
+---
+
+## Umgebungen: wo was lebt
+
+Die Naht oben sagt, **welche Sorte Daten** wohin gehört. Dieser Abschnitt sagt,
+**welche Maschine** das ist. Beides zusammen ist das Zielbild; einzeln führt
+jedes in die Irre.
+
+### Drei Sorten Dinge, drei Orte
+
+| Sorte | Beispiel | lebt in | warum dort |
+|---|---|---|---|
+| **Inhalt** | die Vokabeln, `wortarten.json` | **Repo**, ins Bundle gebacken | Matilda bearbeitet sie per Pull Request. Sie gehören niemandem persönlich. |
+| **Gerät** | Töne an/aus, Kartenbeutel, Ausgangskorb | **localStorage** | Wegwerfbar. Was hier verlorengeht, kostet niemanden etwas. |
+| **Person** | Lernstand, Konto, Punkte | **Postgres** | Muss auf jedes Gerät folgen und eine Ferienlücke überstehen. |
+
+**Die Vokabeln kommen nie in die Datenbank.** Das ist keine Nachlässigkeit,
+sondern dieselbe Trennlinie noch einmal: `data/*.json` ist Inhalt und wird
+versioniert wie Code; `ereignisse` ist, was einer Person passiert ist.
+
+### Zwei Supabase-Projekte
+
+| | `VocApp TEST` | `VocApp` |
+|---|---|---|
+| Wofür | ausprobieren | Matilda und die Kinder |
+| Zeigt darauf | `npm run dev` (lokale `.env`) | die veröffentlichte App |
+| Migrationen | von Hand, `npx supabase db push` | im Workflow, beim Merge nach `main` |
+| Kaputt heißt | egal | jemand verliert seinen Stand |
+
+**Nie eines von beiden im SQL-Editor ändern.** Was nicht als Migration in
+`supabase/migrations/` steht, driftet auseinander — und es fällt erst auf,
+wenn ein Insert nur in einem der beiden funktioniert.
+
+### Heute: GitHub Pages
+
+```
+   npm run dev ──.env──────────────────────────► VocApp TEST
+
+   merge → main ─┬─ Actions: migrieren ─────────► VocApp  (Schema)
+                 └─ Actions: bauen ──► Pages ───► VocApp  (Daten)
+```
+
+**Was fehlt, ist ein gehosteter Teststand.** Pages liefert genau eine Seite pro
+Repo aus; der einzige Ort zum Ausprobieren ist der eigene Rechner. Matilda kann
+eine Änderung nicht vorab auf dem Telefon ansehen. Das ist der Grund für den
+nächsten Abschnitt — nicht, dass Vercel schöner wäre.
+
+### Ziel: Vercel
+
+```
+   lokal ─────────────┐
+   Pull Request ──────┴─ Vercel Preview ────────► VocApp TEST
+
+   main ──────────────── Vercel Production ─────► VocApp
+                              ▲
+                        „Promote to Production"
+```
+
+| | heute | nachher |
+|---|---|---|
+| Bauen und Ausliefern | GitHub Actions → Pages | **Vercel** |
+| Tests, Migrationen | GitHub Actions | GitHub Actions |
+| Schlüssel | GitHub Secrets | GitHub Secrets **und** Vercel-Variablen |
+
+Die Schlüssel liegen dann an zwei Orten, und das ist keine Doppelung: GitHub
+braucht sie für Migrationen, Vercel fürs Bauen.
+
+**Entschieden am 30.08.2026:**
+
+- **Ein Pull Request bekommt seine Migration NICHT vorab in TEST.** Sonst
+  ändert jeder offene PR die gemeinsame Testdatenbank, und zwei PRs können
+  sich widersprechen. Eine Vorschau läuft also gegen das Schema von `main`;
+  wer mehr braucht, schreibt es in die PR-Beschreibung.
+- **Der Release-Knopf ist Vercels „Promote to Production"**, kein Git-Tag.
+  **Zu prüfen, bevor man sich darauf verlässt:** `VITE_`-Variablen werden beim
+  Bauen eingebacken. Wird eine Vorschau befördert statt neu gebaut, könnte die
+  beförderte Fassung weiter auf `VocApp TEST` zeigen. Das ist einmal
+  auszuprobieren, nicht anzunehmen.
+
+### Die Adresse ist Teil der Architektur
+
+`localStorage` gehört zum **Ursprung** (Schema + Host + Port). Für den Browser
+sind `…github.io`, `…vercel.app` und eine eigene Domäne drei verschiedene
+Schubladen, und **es gibt keinen Weg, etwas von einer in die andere zu
+tragen.** Das ist der Sinn der Sache, kein Mangel.
+
+In der Schublade liegen drei Dinge, und das dritte ist das teure:
+
+| | beim Umzug |
+|---|---|
+| `vokabelkarten.toene` | egal |
+| `vokabelkarten.lernstand` | weg — aber nach dem Umzug des Bestands liegt er in Postgres |
+| `sb-…-auth-token` | **der Ausweis** |
+
+Ein anonymer Nutzer hat keine Mailadresse und kein Passwort. Das Einzige, was
+beweist „ich bin diese uid", ist dieser Token. Ist er weg, legt die App einen
+**neuen** anonymen Nutzer an — und die alten Zeilen liegen weiter in Postgres,
+gehören aber einer uid, in die sich niemand mehr anmelden kann.
+
+**Daraus folgt eine harte Reihenfolge: Konten vor Umzug.** Erst wenn ein Konto
+eine Mailadresse hat, öffnet ein Link auf der neuen Adresse dieselbe uid
+wieder. Vorher ist ein Umzug genauso teuer, als hätte es die Datenbank nie
+gegeben.
+
+**Und eine eigene Domäne gleich mitnehmen.** Jeder Ursprungswechsel kostet
+dasselbe, und dazu muss jeder die App neu auf den Homebildschirm legen — das
+alte Lesezeichen zeigt auf die alte Adresse und zieht nicht mit.

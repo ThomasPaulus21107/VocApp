@@ -41,19 +41,35 @@ Mechanismus trifft hier härter. `localStorage` gehört zur **Herkunft**
 Wer heute umzieht, wirft Matildas Lernstand weg — jede geübte Woche, jeden
 gezählten Tag.
 
-**Also gilt eine Reihenfolge, und sie ist nicht verhandelbar:**
+### Und es ist schlimmer, als es zuerst aussah
+
+In der Schublade liegt nicht nur der Lernstand, sondern auch der
+**Sitzungstoken** (`sb-…-auth-token`). Der ist der Ausweis: ein anonymer
+Nutzer hat keine Mailadresse und kein Passwort, und das Einzige, was beweist
+„ich bin diese uid", ist dieser Token.
+
+Ist er weg, legt die App einen **neuen** anonymen Nutzer an. Die alten Zeilen
+sind dann nicht gelöscht — sie liegen in Postgres und gehören einer uid, **in
+die sich niemand mehr anmelden kann.**
+
+Ein Umzug nach dem Umzug des Bestands, aber vor den Konten, kostet also genau
+so viel wie ein Umzug ganz ohne Datenbank. Hier stand deshalb zuerst „Phase 1
+vollständig, besser noch Konten dazu" — das war zu weich.
+
+**Die Reihenfolge ist nicht verhandelbar:**
 
 ```
-1-4  der Lernstand liegt auf dem Server   <- implemented/feature-backend-naht-2026-08-29-2225.md ff.
+1-4  der Lernstand liegt auf dem Server
+  5  Matildas Konto hat eine Mailadresse    <- feature-request-konten.md
      |
      v
      DANN erst umziehen
 ```
 
-Danach ist der Umzug harmlos: die Daten liegen in Postgres, das Konto folgt der
-Person, und die neue Adresse holt sich beim ersten Start denselben Stand.
+Danach ist der Umzug harmlos: ein Link auf der neuen Adresse öffnet dieselbe
+uid, und die neue Schublade füllt sich beim ersten Start von selbst.
 
-Ein Umzug **vorher** wäre nur mit einem Exportknopf und einer Import-Seite zu
+Ein Umzug vorher wäre nur mit einem Exportknopf und einer Import-Seite zu
 machen — also mit einem Feature, das man danach wieder wegwirft.
 
 ## Was der Wechsel im Code kostet
@@ -64,12 +80,10 @@ Wenig, aber an drei Stellen, die zusammenhängen:
   Wurzel aus. Das ist die eine Zeile, an der alles andere hängt.
 - **`playwright.config.js`** kennt dieselbe Adresse als `ADRESSE`. Sie zieht
   mit, sonst laufen die Oberflächen-Tests gegen einen 404.
-- **`deploy.yml` schrumpft.** Vercel baut selbst; der Workflow behält nur, was
-  wirklich CI ist — die Tests. Der Release-Ablauf aus
-  [Test und Produktion](feature-request-releases.md) wandert in die
-  Vercel-Konfiguration, oder der Workflow ruft Vercel an. **Welches von beidem,
-  entscheidet sich erst am Ende dieser Datei** — vorher ist es Spekulation über
-  eine Oberfläche, die noch niemand von uns benutzt hat.
+- **`deploy.yml` schrumpft.** Vercel baut und liefert selbst aus; der Workflow
+  behält die Tests und den `migrieren`-Job — Migrationen bleiben bei GitHub,
+  weil dort die Secrets schon liegen und weil sie nichts mit dem Ausliefern zu
+  tun haben.
 - **`README.md`** nennt die Adresse. Sie zieht mit.
 
 ## Was der Wechsel sonst kostet
@@ -88,11 +102,28 @@ Wenig, aber an drei Stellen, die zusammenhängen:
 
 ## Was danach möglich wird
 
-- **Der Test-Stand bekommt eine Adresse.** Damit gilt „TEST entspricht `main`"
-  auch zum Anschauen und nicht nur lokal — der zurückgestellte Teil aus
-  [Test und Produktion](feature-request-releases.md).
-- **Vorschau je Pull Request.** Matilda bewertet eine Änderung auf dem Telefon,
-  bevor sie gemergt wird.
+- **Vorschau je Pull Request**, mit eigener Adresse. Matilda bewertet eine
+  Änderung auf dem Telefon, bevor sie gemergt wird. Das ist der eigentliche
+  Gewinn — nicht Technik, sondern dass sie mitentscheiden kann.
+- **Der Release-Knopf**, der in
+  [Test und Produktion](feature-request-releases.md) vertagt wurde.
+
+## Zwei Entscheidungen vom 30.08.2026
+
+- **Ein Pull Request bekommt seine Migration NICHT vorab in TEST.** Sonst
+  ändert jeder offene PR die gemeinsame Testdatenbank, und zwei offene PRs
+  können sich widersprechen. Eine Vorschau läuft also gegen das Schema von
+  `main`; wer für seine Änderung mehr braucht, schreibt das in die
+  PR-Beschreibung.
+- **Der Release-Knopf wird Vercels „Promote to Production"**, kein Git-Tag.
+  Er sitzt neben der Vorschau, die man gerade bewertet hat, und das ist die
+  richtige Stelle: befördert wird genau das, was man angesehen hat.
+
+  **Vorher auszuprobieren, nicht anzunehmen:** `VITE_`-Variablen werden beim
+  Bauen eingebacken. Wird eine Vorschau *befördert* statt neu gebaut, könnte
+  die beförderte Fassung weiter auf `VocApp TEST` zeigen — also auf die
+  falsche Datenbank, ohne dass es jemand sieht. Das ist der erste Test nach
+  dem Umzug, und er entscheidet, ob der Knopf so bleiben kann.
 
 ## Die Abnahme
 
@@ -108,6 +139,8 @@ Wenig, aber an drei Stellen, die zusammenhängen:
 **Phase 1 vollständig** — [Naht](implemented/feature-backend-naht-2026-08-29-2225.md),
 [Tabelle](feature-request-ereignistabelle.md),
 [Melden](feature-request-ereignisse-melden.md),
-[Umzug](feature-request-umzug-des-bestands.md) — und besser noch
-[Konten](feature-request-konten.md) dazu. Siehe die Reihenfolge oben: **vorher
-kostet dieser Umzug den Lernstand.**
+[Umzug](feature-request-umzug-des-bestands.md) — **und
+[Konten](feature-request-konten.md)**, ohne Ausnahme.
+
+Siehe die Reihenfolge oben: vorher kostet dieser Umzug nicht nur den lokalen
+Lernstand, sondern den Zugang zu dem, was schon auf dem Server liegt.
