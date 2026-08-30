@@ -21,7 +21,52 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Erst das Schema, dann die App. Andersherum liefe fuer ein paar Sekunden
+  # neuer Code gegen eine alte Datenbank -- und das ist genau der Moment, in
+  # dem jemand uebt.
+  #
+  # Schlaegt dieser Job fehl, wird NICHT gebaut und NICHT veroeffentlicht. Das
+  # ist Absicht: eine App ohne ihr Schema auszuliefern ist schlimmer, als
+  # einen Deploy ausfallen zu lassen.
+  migrieren:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Fehlt das Zugangstoken?
+        # Ohne diese Pruefung faellt der Job weiter unten mit einer Meldung
+        # aus, die nach einem Netzproblem aussieht.
+        env:
+          TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          PASSWORT: ${{ secrets.SUPABASE_DB_PASSWORD_PROD }}
+        run: |
+          test -n "$TOKEN"    || { echo "::error::Secret SUPABASE_ACCESS_TOKEN fehlt. Anlegen unter Settings -> Secrets and variables -> Actions."; exit 1; }
+          test -n "$PASSWORT" || { echo "::error::Secret SUPABASE_DB_PASSWORD_PROD fehlt. Zu setzen in Supabase unter Project Settings -> Database."; exit 1; }
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      # `link` sieht nach einem ueberfluessigen Schritt aus und ist keiner:
+      # ohne ihn versucht `db push` eine direkte Verbindung ueber IPv6, und
+      # die GitHub-Runner koennen kein IPv6. Der Fehler heisst dann
+      # "IPv6 is not supported on your current network".
+      #
+      # Die Projektkennung ist kein Geheimnis -- sie steht in jeder URL.
+      - run: supabase link --project-ref qykacefynfjgpebuazuv
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD_PROD }}
+
+      # Spielt nur ein, was noch nicht drin ist. Gibt es nichts Neues, sagt
+      # der Befehl das und ist zufrieden.
+      - run: supabase db push
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD_PROD }}
+
   bauen:
+    needs: migrieren
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

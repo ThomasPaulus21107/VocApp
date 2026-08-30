@@ -57,6 +57,7 @@ Alles Übrige steht im Backlog.
 
 ```
 data/        die Vokabeln (Daten, kein Code)
+supabase/    das Datenbank-Schema als Migrationen
 public/      wird unverändert mitgeliefert: Icons und manifest.json
 src/domain/  die Regeln: was ist richtig, welche Karte kommt dran
 src/infra/   das Einzige, was etwas speichert: storage.js gehört dem Gerät,

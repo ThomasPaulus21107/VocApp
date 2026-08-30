@@ -161,6 +161,7 @@ später dazu, siehe `roadmap/implemented/feature-tests-in-ci-2026-08-25-2243.md`
 
 ```
 data/          Vokabellisten und die Wortartenliste als JSON. Daten, kein Code.
+supabase/      das Datenbank-Schema als Migrationen. Kein Code, den die App laedt.
 public/        wird unverändert mitgeliefert: Icons und manifest.json.
 src/domain/    Regeln: was ist richtig, wie wird gemischt, wie gewählt.
 src/infra/     das Einzige, was Persistenz kennt. Zwei Nähte, siehe unten:
@@ -409,12 +410,13 @@ npx playwright install webkit   # einmalig, holt den Browser dazu
   anderen sind `devDependencies` und landen nie im Bundle. Am 29.08.2026
   nachgefragt und freigegeben; die Begründung steht in
   `roadmap/implemented/feature-backend-naht-2026-08-29-2225.md`.
-- **Die Supabase-CLI** kommt dazu, aber **nur im Workflow** — nicht in
-  `package.json`, nicht in `npm install`. Sie spielt Migrationen ein, siehe
-  `roadmap/feature-request-releases.md`.
-- **Es gibt zwei Supabase-Projekte:** `VocApp TEST` entspricht `main` und ist
-  das, worauf `npm run dev` zeigt; `VocApp` entspricht dem letzten Release-Tag.
-  Wer eine Migration schreibt, ändert nie eines von Hand — sonst driften sie.
+- **Die Supabase-CLI** kommt dazu, aber **nur im Workflow** und lokal über
+  `npx` — nicht in `package.json`, nicht in `npm install`. Sie spielt
+  Migrationen ein, siehe `supabase/README.md`.
+- **Es gibt zwei Supabase-Projekte:** `VocApp TEST` ist das, worauf
+  `npm run dev` zeigt; `VocApp` entspricht `main` und bekommt seine
+  Migrationen im Workflow. **Nie eines von Hand im SQL-Editor ändern** — sonst
+  driften sie, und es fällt erst auf, wenn etwas nur in einem funktioniert.
 - Keine weiteren Abhängigkeiten hinzufügen ohne Rückfrage. Jede neue
   Abhängigkeit ist etwas, das Matilda nicht mehr überblickt.
 - `vite.config.js` enthält `base: '/VocApp/'` — nötig für GitHub Pages.
