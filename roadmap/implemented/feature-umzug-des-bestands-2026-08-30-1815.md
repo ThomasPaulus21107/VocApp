@@ -1,6 +1,6 @@
 # Feature: Der Bestand zieht um
 
-**Status:** umgesetzt am 30.08.2026 um 18:15, PR #PRNUMMER
+**Status:** umgesetzt am 30.08.2026 um 18:15, PR #57
 **Wo im Code:** `src/infra/backend.js`, `src/app.js`, `tests/backend.test.js`
 
 Das kleinste der vier Datenbank-Features und das letzte von Phase 1. Ohne es
