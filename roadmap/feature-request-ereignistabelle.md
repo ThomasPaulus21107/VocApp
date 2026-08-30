@@ -162,16 +162,33 @@ Dann ist die App offen, und zwar still.
 Nicht nebenbei, sondern als Bedingung: **solange dieser Test nicht gelaufen
 ist, gilt das Feature als nicht gebaut.**
 
-1. Zweites Browserprofil öffnen (das bekommt eine eigene anonyme Sitzung).
-2. In der Konsole `supabase.from('ereignisse').select('*')`.
-3. **Es müssen null Zeilen zurückkommen.**
+1. Zwei anonyme Sitzungen anlegen, A und B.
+2. A schreibt drei Zeilen und liest sie zurück: **drei**.
+3. B liest: **null**. Das ist der Test.
+4. Ohne Anmeldung, nur mit dem Publishable Key: **null**.
+5. B versucht eine Zeile mit A's `nutzer` zu schreiben: **abgelehnt**.
+6. A versucht die eigene Zeile zu ändern und zu löschen: **die Daten stehen
+   danach unverändert da**.
+7. Denselben Versand wiederholen: **abgelehnt**, der `unique` hält.
+
+### Eine Falle bei Punkt 6
+
+`PATCH` und `DELETE` antworten mit **HTTP 204**, obwohl keine Policy sie
+erlaubt — PostgREST gibt das unabhängig davon zurück, ob überhaupt eine Zeile
+betroffen war. RLS filtert einfach alles weg, und „nichts geändert" sieht aus
+wie „geändert".
+
+**Der Rückgabewert ist hier also kein Beweis.** Geprüft wird, indem man die
+Zeilen vorher und nachher vergleicht. Am 30.08.2026 gemacht: unverändert.
 
 **In beiden Projekten**, nicht nur in TEST. Die Policies in VocApp sind die, auf
 die es ankommt, und sie sind auch die, die man beim zweiten Einspielen
 vergisst.
 
-Kommt auch nur eine fremde Zeile, ist die Tabelle offen und alles Weitere
-wartet.
+Kommt bei Punkt 3 oder 4 auch nur eine fremde Zeile, ist die Tabelle offen und
+alles Weitere wartet.
+
+**Gelaufen am 30.08.2026 gegen `VocApp TEST`, alle sieben Punkte grün.**
 
 ## Voraussetzung
 
