@@ -95,6 +95,73 @@ Muss der Anmeldename doch einmal weichen, geht auch das:
 `auth.admin.updateUserById(uid, { email })`. Aber es ist ein bewusster
 Handgriff und kein Nebeneffekt einer Umbenennung.
 
+## Ein Gerät ist kein Nutzer
+
+Der Satz muss hier stehen, weil das Gegenteil heute stimmt und man es sich
+angewöhnt hat: Bis zu diesem Feature legt **jedes Gerät seinen eigenen anonymen
+Nutzer** an, und darum fallen „Gerät" und „Person" zusammen.
+
+Sie gehören aber verschiedenen Schichten an, und nach diesem Feature sieht man
+das auch:
+
+| | was es ist | wo es steht |
+|---|---|---|
+| **Gerätename** | ein Nummernkreis, damit zwei Geräte sich nicht in die laufenden Nummern geraten | `geraet` in `ereignisse`, gewürfelt in `backend.js` |
+| **Pseudonym** | woran die anderen das Kind erkennen | `profile`, änderbar |
+| **uid** | die Person | `auth.users`, für immer |
+
+Der Gerätename identifiziert niemanden und taucht auf keinem Bildschirm auf.
+**Ein Pseudonym gehört nie einem Gerät.**
+
+### Der Anmeldeschirm, einmal je Gerät
+
+```
+App öffnen  ──▶  Sitzung da?  ── ja ──▶  üben
+                     │ nein
+                     ▼
+               anmelden.html:  blauer-otter  +  Passwort
+                     │
+                     ▼
+               Sitzung liegt im Gerät und erneuert sich still
+```
+
+Auf dem zweiten Gerät tippt dasselbe Kind dieselben zwei Felder. Danach
+schreiben beide unter **derselben uid** — in der Tabelle stehen weiterhin zwei
+Gerätenamen, aber eine Person.
+
+**Was das noch nicht heißt:** „auf dem Laptop weitermachen, wo das Telefon
+aufgehört hat". Der angezeigte Lernstand kommt weiter aus `localStorage`, einer
+je Gerät. Das umzudrehen ist
+[Der Server wird die Wahrheit](feature-request-server-ist-die-wahrheit.md).
+Dieses Feature ist dessen Voraussetzung, nicht schon sein Ergebnis — wer das
+verwechselt, hält das Ausbleiben der Synchronisierung für einen Fehler.
+
+### Sign-up und Sign-in sind verschiedene Leute
+
+| | wer | womit | wo |
+|---|---|---|---|
+| **Sign-up**, das Konto entsteht | Thomas | `admin.createUser`, Service-Rolle | Dashboard |
+| **Sign-in**, das Konto wird benutzt | das Kind | `signInWithPassword` | `anmelden.html` |
+
+In der App gibt es Sign-up nicht — und mit abgeschalteten Sign-ups auch nicht
+an der App vorbei. **Die anonyme Anmeldung fällt mit diesem Feature weg:** ab
+hier ist das Formular der einzige Weg herein.
+
+### Wie ein Kind an sein Passwort kommt
+
+Von Thomas, direkt. Einen automatischen Weg gibt es nicht, und das ist der
+Preis dafür, keine Mailadressen zu haben — jeder automatische Weg bräuchte
+eine.
+
+Praktisch: Konto anlegen, Name und Passwort auf einen Zettel, den das Kind
+behält. **Beim ersten Anmelden dabeisein** — einmal gemeinsam eintippen, und
+wenn iOS fragt, das Passwort im Schlüsselbund sichern lassen. Ab dann füllt es
+sich selbst aus, und gebraucht wird es erst wieder auf einem fremden Gerät.
+
+**Kein Zwang, es beim ersten Mal zu ändern.** Bei Zwölfjährigen erzeugt das
+genau ein Ergebnis: ein vergessenes Passwort. Geht doch eines verloren, setzt
+Thomas es im Dashboard neu.
+
 ## Matildas Stand: derselbe Nutzer, nur mit Adresse
 
 Matilda übt seit Phase 1 anonym. Ihr bisheriger Stand soll ihrer bleiben — und
