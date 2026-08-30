@@ -205,7 +205,7 @@ Was dabei gelernt wurde, damit es beim Bauen nicht noch einmal gesucht wird:
 **Phase 1 vollständig** — [Naht](implemented/feature-backend-naht-2026-08-29-2225.md),
 [Tabelle](implemented/feature-ereignistabelle-2026-08-30-0815.md),
 [Melden](implemented/feature-ereignisse-melden-2026-08-30-1000.md),
-[Umzug](feature-request-umzug-des-bestands.md) — **und
+[Umzug](implemented/feature-umzug-des-bestands-2026-08-30-1815.md) — **und
 [Konten](feature-request-konten.md)**, ohne Ausnahme.
 
 Siehe die Reihenfolge oben: vorher kostet dieser Umzug nicht nur den lokalen

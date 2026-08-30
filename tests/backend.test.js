@@ -7,7 +7,7 @@
 // dafuer gibt es verbinde(). Ein Test, der ein Netz braucht, ist keiner.
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import {
-  verbinde, starte, angemeldet, melde, zuEreignis, korbGroesse, holeNach,
+  verbinde, starte, angemeldet, melde, zuEreignis, korbGroesse, holeNach, umzug,
 } from '../src/infra/backend.js';
 
 /** Ein localStorage aus einer Map -- wie in storage.test.js. */
@@ -276,5 +276,119 @@ describe('melde und der Ausgangskorb', () => {
     melde(ereignis(1));
     await gleich();
     expect(c.aufrufe.signInAnonymously).toBe(1);
+  });
+});
+
+
+describe('der Bestand zieht um', () => {
+  // Der Verlauf, wie ihn verrechne() schreibt: kein `art`, kein `tag`, und
+  // die Karte heisst dort noch `id`.
+  const eintrag = (n, zeit = Date.parse('2026-08-30T12:00:00Z')) => ({
+    id: `uv-00${n}`, form: 'simple-past', ausgang: 'richtig', versuch: 0,
+    tipp: false, tippfehler: false, modus: 'uebungsblatt', wiederholung: false,
+    punkte: 1, zeit,
+  });
+
+  /** Ein Client, der mitschreibt, was er zu sehen bekommt. */
+  function mitschrift() {
+    const gesendet = [];
+    return {
+      gesendet,
+      client: {
+        ...fakeClient(),
+        from: () => ({ upsert: async (z) => { gesendet.push(...z); return {}; } }),
+      },
+    };
+  }
+
+  beforeEach(() => setzeSpeicher(fakeSpeicher()));
+  afterEach(() => { delete globalThis.localStorage; });
+
+  it('legt jede Zeile des Verlaufs ab, in seiner Reihenfolge', async () => {
+    const { gesendet, client } = mitschrift();
+    verbinde(client);
+
+    umzug([eintrag(1), eintrag(2), eintrag(3)]);
+    holeNach();
+    await gleich();
+
+    expect(gesendet.map((z) => [z.karte, z.nummer]))
+      .toEqual([['uv-001', 0], ['uv-002', 1], ['uv-003', 2]]);
+    expect(gesendet.every((z) => z.art === 'antwort')).toBe(true);
+  });
+
+  it('nimmt einen eigenen Geraetenamen, damit die Nummern sich nicht treffen', async () => {
+    // Der Bestand zaehlt Stellen im Verlauf ab 0, der laufende Betrieb zaehlt
+    // eigene Nummern ab 1. Unter einem Namen setzten sie sich gegenseitig auf
+    // das unique der Tabelle und verdraengten einander.
+    const { gesendet, client } = mitschrift();
+    verbinde(client);
+
+    umzug([eintrag(1), eintrag(2)]);
+    melde({ art: 'antwort', id: 'uv-009', zeit: Date.now() });
+    await gleich();
+
+    const [bestand, laufend] = [gesendet[0], gesendet.at(-1)];
+    expect(bestand.geraet).toMatch(/^umzug-/);
+    expect(laufend.geraet).not.toMatch(/^umzug-/);
+    expect(bestand.geraet).toBe(`umzug-${laufend.geraet}`);
+    // Dieselbe Nummer waere unter demselben Namen eine Kollision gewesen.
+    expect(gesendet.map((z) => z.nummer)).toEqual([0, 1, 1]);
+  });
+
+  it('zieht nur einmal um, auch ueber Neustarts hinweg', async () => {
+    const { gesendet, client } = mitschrift();
+    verbinde(client);
+
+    umzug([eintrag(1), eintrag(2)]);
+    holeNach();
+    await gleich();
+    expect(gesendet).toHaveLength(2);
+
+    // Der zweite Start der App, derselbe Speicher.
+    umzug([eintrag(1), eintrag(2)]);
+    holeNach();
+    await gleich();
+
+    expect(gesendet).toHaveLength(2);
+    expect(korbGroesse()).toBe(0);
+  });
+
+  it('rechnet den Tag aus der Zeit zurueck, statt ihn leer zu lassen', () => {
+    // Der Verlauf kennt keine Spalte `tag` -- an ihr haengt aber die
+    // Fleiss-Seite. Zurueckrechnen darf man ihn, weil der Umzug auf demselben
+    // Geraet laeuft, das die Zeile geschrieben hat.
+    //
+    // 12:00 UTC gewaehlt, damit der lokale Tag in jeder Zeitzone von UTC-12
+    // bis UTC+11 derselbe ist -- der Test soll nicht davon abhaengen, wo er
+    // laeuft.
+    verbinde(null);
+    umzug([eintrag(1)]);
+
+    const [zeile] = JSON.parse(globalThis.localStorage.getItem('vokabelkarten.postausgang'));
+    expect(zeile.tag).toBe('2026-08-30');
+  });
+
+  it('meldet niemanden an, wenn es nichts umzuziehen gibt', async () => {
+    // Wer die App zum ersten Mal oeffnet, hat keinen Bestand -- und soll
+    // dafuer auch keinen anonymen Nutzer bekommen.
+    const { client } = mitschrift();
+    verbinde(client);
+
+    umzug([]);
+    holeNach();
+    await gleich();
+
+    expect(client.aufrufe.signInAnonymously).toBe(0);
+    expect(korbGroesse()).toBe(0);
+  });
+
+  it('haelt nicht an, wenn im Verlauf Unsinn steht', async () => {
+    // Kein Merker bei einem Fehlschlag: der naechste Start versucht es noch
+    // einmal. Was hier nicht durchgeht, darf die App nicht anhalten.
+    verbinde(null);
+
+    expect(() => umzug([{ id: 'uv-001', zeit: 'gestern' }])).not.toThrow();
+    expect(korbGroesse()).toBe(0);
   });
 });
