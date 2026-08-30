@@ -76,7 +76,7 @@ test.describe('Das Seitenmenue', () => {
     // Der Weg zurueck steht auf jeder Statistikseite auch ohne Menue da --
     // auf dem Homebildschirm gibt es keine Adressleiste.
     await seite.locator('.zurueck').click();
-    await expect(seite.locator('h1')).toHaveText('Vokabelkarten');
+    await expect(seite.locator('h1')).toHaveText('vocAPPulary.online');
   });
 
   test('der Ton-Schalter merkt sich, wie er stand', async ({ page: seite }) => {
