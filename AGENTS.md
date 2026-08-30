@@ -724,6 +724,38 @@ braucht sie für Migrationen, Vercel fürs Bauen.
   beförderte Fassung weiter auf `VocApp TEST` zeigen. Das ist einmal
   auszuprobieren, nicht anzunehmen.
 
+### Welche Geheimnisse wo liegen
+
+| Name | liegt in | wofuer |
+|---|---|---|
+| `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` | lokale `.env` (gitignored) | `npm run dev`, zeigt auf **TEST** |
+| `SUPABASE_URL_PROD`, `SUPABASE_KEY_PROD` | GitHub-Secrets | der Build, zeigt auf **VocApp** |
+| `SUPABASE_ACCESS_TOKEN` | GitHub-Secrets | die CLI, beide Projekte |
+| `SUPABASE_DB_PASSWORD_PROD` | GitHub-Secrets | `db push` nach VocApp |
+| `SUPABASE_DB_PASSWORD_TEST` | GitHub-Secrets | ungenutzt, bis der Teststand gehostet wird |
+
+Dazu drei Regeln, die zusammengehoeren:
+
+- **Die Publishable Keys sind oeffentlich gedacht** und landen im
+  ausgelieferten Bundle. Das ist kein Versehen — was schuetzt, ist RLS.
+- **Der Secret Key (`sb_secret_…`) wird nirgends gebraucht.** Nicht im Build,
+  nicht in der CI, nicht zum Pruefen. Wer ihn irgendwo einsetzt, haengt RLS
+  aus. Ist er einmal weitergegeben worden, hilft nur rotieren.
+- **Die Projektkennungen sind kein Geheimnis** — sie stehen in jeder URL und
+  duerfen offen im Workflow stehen.
+
+### Wie man nachprueft, statt zu glauben
+
+Die Rezepte stehen in [`supabase/README.md`](supabase/README.md), samt der
+Fallen, in die schon jemand getappt ist. Drei Dinge lohnen sich nach jeder
+Aenderung an Schema oder Secrets:
+
+1. **Ist die anonyme Anmeldung an?** Ein Aufruf auf `/auth/v1/settings`, ohne
+   einen Nutzer anzulegen.
+2. **Haelt RLS?** Zwei anonyme Sitzungen: die zweite muss null Zeilen sehen.
+3. **Zeigt das ausgelieferte Bundle auf `VocApp`?** Die Projektkennung steckt
+   darin und laesst sich von aussen nachzaehlen.
+
 ### Die Adresse ist Teil der Architektur
 
 `localStorage` gehört zum **Ursprung** (Schema + Host + Port). Für den Browser

@@ -86,6 +86,72 @@ normalerweise nicht, das macht der Workflow.
   von denen fast alles die lokale Entwicklungsumgebung betrifft, die hier
   niemand startet. `link` und `db push` kommen ohne aus.
 
+## Nachpruefen, ohne dem Dashboard zu glauben
+
+Alles hier laeuft mit dem **Publishable Key** — dem oeffentlichen. Ein Secret
+Key wird dafuer nie gebraucht, und wer eines dieser Rezepte damit ausfuehrt,
+prueft nicht die Sicherheit, sondern haengt sie aus.
+
+### Ist die anonyme Anmeldung an?
+
+Ohne einen Nutzer anzulegen:
+
+```bash
+curl -s "$URL/auth/v1/settings" -H "apikey: $KEY" \
+  | python3 -c "import sys,json; print(json.load(sys.stdin)['external']['anonymous_users'])"
+```
+
+`True` heisst an. Steht dort `False`, meldet sich die App nie an — **ohne
+Fehler und ohne Meldung**, sie laeuft einfach ohne Sicherung weiter.
+
+### Haelt Row Level Security?
+
+Der Test, der ueber "gebaut oder nicht gebaut" entscheidet. Zwei anonyme
+Sitzungen anlegen (`POST /auth/v1/signup` mit `{}`), mit der ersten ein paar
+Zeilen schreiben, mit der **zweiten** lesen:
+
+```
+Sitzung A: select('*') -> die eigenen Zeilen
+Sitzung B: select('*') -> null Zeilen        <- darauf kommt es an
+ohne Token: select('*') -> null Zeilen
+```
+
+Kommt bei B oder ohne Token auch nur eine fremde Zeile, ist die Tabelle offen.
+
+**Zwei Fallen dabei**, beide am 30.08.2026 selbst hineingetappt:
+
+- **`PATCH` und `DELETE` antworten mit HTTP 204**, obwohl keine Policy sie
+  erlaubt. PostgREST gibt das unabhaengig davon zurueck, ob eine Zeile
+  betroffen war; RLS filtert alles weg, und "nichts geaendert" sieht aus wie
+  "geaendert". **Der Rueckgabewert ist kein Beweis** — die Zeilen vorher und
+  nachher vergleichen.
+- **Ein Insert mit fremdem `nutzer` muss 403 geben.** Sonst koennte jeder
+  Zeilen auf ein fremdes Konto schreiben, ohne je etwas lesen zu koennen.
+
+### Schreibt die veroeffentlichte App ins richtige Projekt?
+
+Der Fehler, den man sonst erst Wochen spaeter bemerkt — wenn die geuebten
+Wochen im falschen Projekt liegen. Die Projektkennung steckt im ausgelieferten
+Bundle:
+
+```bash
+JS=$(curl -s "$SEITE" | grep -oE 'src="[^"]*index-[^"]*\.js"' | sed 's/src="//;s/"//')
+curl -s "$SEITE$JS" | grep -c qykacefynfjgpebuazuv   # VocApp,      erwartet 1
+curl -s "$SEITE$JS" | grep -c uwxhfhhxnynxcuzdrcri   # VocApp TEST, erwartet 0
+```
+
+Gehoert nach jeder Aenderung an den Secrets einmal gemacht.
+
+## Aufraeumen
+
+In `VocApp TEST` sammeln sich anonyme Nutzer und Abnahme-Zeilen an. Sie stoeren
+nichts und haengen an nichts — geloescht wird im Dashboard unter
+`Authentication → Users`, das raeumt ueber `on delete cascade` die Zeilen
+gleich mit weg.
+
+**Die App selbst kann das nicht**, und das ist Absicht: es gibt keine
+`delete`-Policy. Was passiert ist, ist passiert.
+
 ## Eine neue Migration anlegen
 
 ```bash
