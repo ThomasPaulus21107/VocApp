@@ -29,6 +29,13 @@ Die Reihenfolge beim Deploy ist keine Kleinigkeit: erst das Schema, dann die
 App. Andersherum liefe für ein paar Sekunden neuer Code gegen eine alte
 Datenbank, und das ist genau der Moment, in dem jemand übt.
 
+**Heute sichert der Workflow das von allein** — Migration und Deploy liegen
+darin nacheinander. **Nach dem Umzug zu Vercel nicht mehr:** dort baut Vercel
+sofort beim Push, während Actions daneben migriert. Ab dann gilt stattdessen
+die Regel aus
+[GitHub Pages ablösen](../roadmap/feature-request-hosting.md): **eine Migration
+kommt in ihrem eigenen Pull Request, vor dem Code, der sie benutzt.**
+
 ## Eine Regel für jede Migration
 
 **Sie darf nichts wegnehmen, was die laufende App noch braucht.** Eine Spalte
