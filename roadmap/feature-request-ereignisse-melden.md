@@ -58,7 +58,7 @@ Ereignisse als Argumente herein und Bewertungen heraus, und dabei bleibt es.
 |---|---|
 | `merkeAuswahl()` | je gezogener Einheit ein `melde({ art: 'gezogen', … })` |
 | nach `verrechne(...)` | `melde({ art: 'antwort', … })` — dasselbe Objekt, das schon an `verrechne()` geht |
-| ganz unten | `backend.starte();` **fällt weg** — siehe unten |
+| ganz unten | statt `backend.starte()` ein `backend.holeNach()` — siehe unten |
 
 ### Angemeldet wird erst, wenn es etwas zu sichern gibt
 
@@ -76,6 +76,16 @@ Nutzer.
 Also wandert der Aufruf nach innen: **`melde()` sorgt selbst dafür, dass eine
 Sitzung da ist**, bevor der Ausgangskorb geleert wird. Wer die Seite nur
 ansieht, bekommt kein Konto; wer eine Karte beantwortet, schon.
+
+**Eine Sache fehlt dann aber**, und sie ist beim Bauen aufgefallen, nicht beim
+Denken: ist `melde()` der einzige Auslöser, bleibt ein voller Korb nach einem
+Neustart liegen, bis jemand die nächste Karte beantwortet. Wer im Flugmodus
+geübt und die App danach geschlossen hat, verlöre seine Antworten bis zur
+übernächsten Sitzung.
+
+Deshalb gibt es zusätzlich **`holeNach()`** am Start der App. Es ist kein
+Anmelden: ist der Korb leer, passiert gar nichts — und leer ist er bei jedem,
+der nur guckt.
 
 Das kostet nichts, und zwar aus zwei Gründen:
 
