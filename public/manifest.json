@@ -1,6 +1,6 @@
 {
-  "name": "Vokabelkarten",
-  "short_name": "Vokabeln",
+  "name": "vocAPPulary.online",
+  "short_name": "vocAPPulary",
   "description": "Unregelmäßige Verben üben",
   "lang": "de",
   "start_url": ".",

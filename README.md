@@ -1,4 +1,4 @@
-# Vokabelkarten
+# vocAPPulary.online
 
 Eine kleine Web-App zum Vokabeln lernen. Ein englisches Wort erscheint, man
 tippt die deutsche Bedeutung ein, die App sagt richtig oder falsch.
