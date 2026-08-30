@@ -1,7 +1,7 @@
 // Prueft, WELCHE Karten drankommen. Der Kern ist nicht der Zufall, sondern
 // die Abdeckung: dass kein Verb wochenlang durchrutscht.
 import { describe, it, expect } from 'vitest';
-import { zieheRunde } from '../src/domain/auswahl.js';
+import { zieheRunde, QUOTE } from '../src/domain/auswahl.js';
 import { merkeGezogen, zuletztVon, schluessel, LEER } from '../src/domain/lernstand.js';
 
 /** Ein paar erfundene Verben. Der Inhalt ist egal, die Struktur nicht. */
@@ -103,5 +103,77 @@ describe('die Abdeckung', () => {
   it('zeigt nach drei Runden noch nicht alles -- 45 von 53', () => {
     // Die Gegenprobe: der Test oben ist nicht zufaellig gruen.
     expect(spiele(verben(53), 15, 3).karten.size).toBe(45);
+  });
+});
+
+
+describe('das Fach "in Arbeit" wird nach Punkten ausgesucht', () => {
+  // Vokabeln OHNE Formen: eine Einheit je Karte. So ist die Reihenfolge im
+  // Fach dieselbe wie die Reihenfolge der Karten, und der Test prueft die
+  // Auswahl und nicht das Ueberspringen doppelter Karten.
+  const woerter = (anzahl) => Array.from({ length: anzahl }, (_, i) => ({
+    id: `v-${String(i).padStart(2, '0')}`,
+  }));
+
+  /** Alle in "arbeit", mit absteigender Punktsumme: v-00 hat am meisten. */
+  function fachArbeit(anzahl) {
+    const faecher = {};
+    const summen = {};
+    for (let i = 0; i < anzahl; i += 1) {
+      faecher[`v-${String(i).padStart(2, '0')}`] = 'arbeit';
+      summen[`v-${String(i).padStart(2, '0')}`] = anzahl - i;
+    }
+    return { faecher, summen };
+  }
+
+  it('nimmt top1, last1, mid1, top2, last2, mid2 -- in dieser Reihenfolge', () => {
+    // Elf Eintraege, Summen 11 bis 1. Die Mitte ist Stelle 5, also v-05.
+    const { faecher, summen } = fachArbeit(11);
+    const gezogen = zieheRunde(woerter(11), 6, {}, 0, () => 0.5, faecher, summen);
+
+    expect(gezogen.map((e) => e.karte.id))
+      .toEqual(['v-00', 'v-10', 'v-05', 'v-01', 'v-09', 'v-06']);
+  });
+
+  it('fuellt die restlichen Plaetze aus demselben Fach auf', () => {
+    // Acht Plaetze, sechs davon benannt -- zwei kommen aus dem Rest.
+    const { faecher, summen } = fachArbeit(11);
+    const gezogen = zieheRunde(woerter(11), 8, {}, 0, wuerfel(0.1, 0.9), faecher, summen);
+
+    expect(gezogen).toHaveLength(8);
+    expect(new Set(gezogen.map((e) => e.karte.id)).size).toBe(8);
+  });
+
+  it('kommt mit einem Fach klar, das kleiner ist als die benannten Plaetze', () => {
+    // Bei drei Eintraegen faellt top1 mit last2 zusammen. Es darf trotzdem
+    // keine Karte doppelt kommen und nichts fehlen.
+    const { faecher, summen } = fachArbeit(3);
+    const gezogen = zieheRunde(woerter(3), 8, {}, 0, () => 0.5, faecher, summen);
+
+    expect(gezogen.map((e) => e.karte.id).sort()).toEqual(['v-00', 'v-01', 'v-02']);
+  });
+
+  it('nimmt die haerteste Vokabel mit, auch wenn sie nie Punkte macht', () => {
+    // last1 ist der Platz, den es dafuer gibt: eine Vokabel mit 0 Punkten
+    // waere nach jeder anderen Sortierung hinten.
+    const { faecher, summen } = fachArbeit(11);
+    summen['v-07'] = 0;
+    const gezogen = zieheRunde(woerter(11), 6, {}, 0, () => 0.5, faecher, summen);
+
+    expect(gezogen.map((e) => e.karte.id)).toContain('v-07');
+  });
+});
+
+describe('die Quote', () => {
+  it('ergibt zusammen eine ganze Runde', () => {
+    // Wer eine Zahl aendert, aendert die anderen mit -- sonst zieht die
+    // Runde still weniger oder mehr als fuenfzehn Karten.
+    expect(QUOTE.nie + QUOTE.arbeit + QUOTE.sicher).toBe(15);
+  });
+
+  it('gibt "sicher" genau einen Platz', () => {
+    // Seit dem 30.08.2026: was sitzt, muss nicht dreimal die Woche
+    // vorgefuehrt werden.
+    expect(QUOTE.sicher).toBe(1);
   });
 });
