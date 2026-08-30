@@ -1,22 +1,19 @@
 # Feature: Die Ereignistabelle mit Row Level Security
 
 **Status:** bereit — durchdacht, noch nicht gebaut
-**Wo im Code:** `supabase/schema.sql` — neu. Kein JavaScript.
+**Wo im Code:** `supabase/migrations/20260830060642_ereignisse.sql` — neu.
+Kein JavaScript.
 
-Eine Tabelle und vier Zeilen Sicherheit. Die Datei liegt versioniert im Repo
-und wird im SQL-Editor eingefügt — die Supabase-CLI wäre eine weitere
-Abhängigkeit und lohnt für eine Tabelle nicht.
+Eine Tabelle und vier Zeilen Sicherheit — und die **erste Migration**
+überhaupt. Wie sie in die beiden Projekte kommt, steht in
+[Test und Produktion](feature-request-releases.md) und in
+[`supabase/README.md`](../supabase/README.md): nach `VocApp` spielt der
+Workflow sie beim Merge ein, nach `VocApp TEST` von Hand.
 
-**Sie muss in zwei Projekte**, VocApp TEST und VocApp. Genau dafür ist sie eine
-Datei im Repo und kein einmal getippter Text — sonst driften die beiden nach der
-zweiten Änderung auseinander, und das merkt man erst, wenn ein Insert nur in
-einem von beiden funktioniert.
-
-**Eingespielt wird sie nicht von Hand.** Sobald
-[Test und Produktion](feature-request-releases.md) gebaut ist, liegt sie als
-erste Migration unter `supabase/migrations/` und die CLI übernimmt das. Wer
-diese Datei hier zuerst baut, fügt sie einmal von Hand ein und benennt sie
-danach um — deshalb sollten die beiden dicht beieinander liegen.
+**Sie muss in beide Projekte**, sonst driften sie nach der zweiten Änderung
+auseinander — und das merkt man erst, wenn ein Insert nur in einem von beiden
+funktioniert. Genau dafür ist sie eine Datei im Repo und kein im SQL-Editor
+getippter Text.
 
 ## Ereignisse, keine Zustände
 
