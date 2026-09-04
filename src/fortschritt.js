@@ -6,7 +6,7 @@ import verben from '../data/unregelmaessige-verben.json';
 import { einheiten } from './domain/auswahl.js';
 import {
   uebersicht, verteile, stufe, verlaufZu, punkteVon, schluessel,
-  farbstufe, FARBSTUFEN, TIEFGRUEN_AB,
+  farbstufe, reifegrad, FARBSTUFEN, TIEFGRUEN_AB,
   LEER, SICHER_AB_PROZENT, SICHER_AB_ANTWORTEN,
 } from './domain/lernstand.js';
 import { FORM_NAME } from './ui/formnamen.js';
@@ -148,7 +148,11 @@ function zeile({ name, score, summe }) {
   // vermutet, ist hier an ihrem Punkt wiederzufinden.
   kopf.append(span(`fach__punkt fach__punkt--${farbstufe(summe)}`, ''));
   kopf.append(span('fach__wort', beschriftung(name)));
-  if (score !== null) kopf.append(span('fach__score', `${score} %`));
+  // Die Zahl gehoert zum Punkt daneben und sagt dasselbe: wie weit die Vokabel
+  // zum tiefgruenen Ende ist. Vorher stand hier der Score -- der konnte 100 %
+  // aus einer einzigen Antwort zeigen, waehrend der Punkt daneben rot blieb.
+  // Was nie dran war, bekommt keine Zahl: das sagt schon das Fach.
+  if (score !== null) kopf.append(span('fach__score', `${reifegrad(summe)} %`));
   lade.append(kopf);
 
   // Erst beim Aufklappen bauen. Für hundert Formen im Voraus Listen zu füllen

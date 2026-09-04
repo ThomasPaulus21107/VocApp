@@ -899,6 +899,20 @@ body {
   color: var(--leise);
 }
 
+/* Erklaert die Zahl hinter jeder Vokabel. Sie steht neben dem Lage-Satz und
+   bleibt kleiner als er: gebraucht wird sie einmal, danach weiss man es. */
+.fortschritt__legende {
+  margin: 0 0 12px;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--leise);
+}
+
+.fortschritt__tiefgruen {
+  font-weight: 700;
+  color: var(--stufe-10);
+}
+
 /* Der Satz unter dem Balken. Sagt dasselbe wie die Farbe, nur in Worten. */
 .fortschritt__lage {
   margin: 0 0 20px;

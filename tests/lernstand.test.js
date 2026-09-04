@@ -4,7 +4,7 @@ import { describe, it, expect } from 'vitest';
 import {
   merkeGezogen, verrechne, zuletztVon, schluessel,
   score, verteile, faecherVon, uebersicht, stufe, verlaufZu, punkteVon, runden, PAUSE_MS, fleiss, serie,
-  farbstufe, FARBSTUFEN, TIEFGRUEN_AB,
+  farbstufe, reifegrad, FARBSTUFEN, TIEFGRUEN_AB,
   SICHER_AB_ANTWORTEN,
   SICHER_AB_PROZENT, TAGE_MAX,
   AUSGAENGE, LEER, VERLAUF_MAX,
@@ -631,5 +631,45 @@ describe('farbstufe', () => {
   it('nimmt einen unbrauchbaren Wert als rot, statt zu rechnen', () => {
     expect(farbstufe(null)).toBe(0);
     expect(farbstufe(undefined)).toBe(0);
+  });
+});
+
+
+describe('reifegrad', () => {
+  // Die Zahl hinter jeder Vokabel auf der Fortschrittsseite. Sie gehoert zur
+  // Farbe daneben und nicht zum Score.
+
+  it('macht aus drei Punkten hundert Prozent', () => {
+    expect(reifegrad(TIEFGRUEN_AB)).toBe(100);
+  });
+
+  it('zaehlt ueber dem Deckel nicht weiter', () => {
+    // Sonst haetten Vokabeln, die seit Wochen sitzen, dreistellige Zahlen.
+    expect(reifegrad(4.5)).toBe(100);
+  });
+
+  it('macht aus nichts null Prozent', () => {
+    expect(reifegrad(0)).toBe(0);
+    expect(reifegrad(-0.3)).toBe(0);
+  });
+
+  it('legt die Haelfte in die Mitte', () => {
+    // Dreimal mit 0,5 abgeschlossen: 1,5 Punkte.
+    expect(reifegrad(1.5)).toBe(50);
+    expect(reifegrad(1)).toBe(33);
+  });
+
+  it('sagt etwas anderes als score()', () => {
+    // Eine einzige richtige Antwort: score() zeigt 100 %, weil alles geholt
+    // wurde, was zu holen war. Der Reifegrad zeigt 33 % -- ein Treffer ist
+    // eben ein Treffer und kein Beweis.
+    const eintrag = { dran: 1, summe: 1 };
+    expect(score(eintrag)).toBe(100);
+    expect(reifegrad(eintrag.summe)).toBe(33);
+  });
+
+  it('nimmt einen unbrauchbaren Wert als null', () => {
+    expect(reifegrad(null)).toBe(0);
+    expect(reifegrad(undefined)).toBe(0);
   });
 });

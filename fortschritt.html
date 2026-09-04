@@ -87,7 +87,8 @@
         <p class="fortschritt__gross"><span id="sicher">0</span> von <span id="gesamt">0</span></p>
         <p class="fortschritt__dazu">
           Formen sind stabil gelernt — mindestens <span id="mindestens">3</span>-mal
-          geübt und über <span id="schwelle">75</span> % der Punkte
+          geübt und über <span id="schwelle">75</span> % der möglichen Punkte
+          getroffen
         </p>
 
         <!-- Die ganze Leiste sind alle Formen, eine Vokabel je Stueck,
@@ -97,6 +98,17 @@
         <div id="balken" class="balken"></div>
 
         <p id="lage" class="fortschritt__lage"></p>
+
+        <!-- Die zwei Prozentzahlen auf dieser Seite meinen NICHT dasselbe.
+             Oben im Satz: welchen Anteil der moeglichen Punkte eine Vokabel
+             geholt hat. Hinter jedem Wort unten: wie viele Punkte sie
+             insgesamt gesammelt hat, gemessen an dreien. Der Satz hier steht
+             da, damit niemand die beiden gegeneinander rechnet. -->
+        <p class="fortschritt__legende">
+          Die Zahl hinter jeder Vokabel sagt, wie weit ihr Punkt
+          zum <span class="fortschritt__tiefgruen">tiefgrünen</span> Ende ist:
+          <strong>3 gesammelte Punkte sind 100 %.</strong>
+        </p>
 
         <dl class="zahlen">
           <div><dt>Geübt</dt><dd id="geuebt">0</dd></div>
