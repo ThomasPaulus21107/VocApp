@@ -30,6 +30,13 @@ die noch nicht gefunden ist; Näheres dort.
 Tipp −0,1. Das ist `punkteFuerKarte()` aus `domain/note.js`, dieselbe Zahl, die
 schon in jeder Ereigniszeile als `punkte` steht.
 
+**Seit dem 04.09.2026 mit einem Zuschlag:** in der Arbeit sind es 20 Prozent
+mehr (`lernpunkte()` in `domain/modus.js`). Für Missionen ist das mehr als eine
+Zahl — **wer Arbeiten spielt, sammelt schneller.** Gewollt ist es: die Arbeit
+kennt keinen Tipp, keine zweite Chance und keine Rückmeldung, sie ist der
+härtere Weg. Wer beim Entwerfen einer Mission trotzdem gleiche Startbedingungen
+will, zählt Karten statt Punkte — die Entscheidung fällt hier, nicht im Code.
+
 Gezählt wird **die laufende Woche**, montags auf null. Wer mittendrin dazukommt,
 ist am nächsten Montag gleichauf — und es gibt ein Ende, statt endlos zu
 sammeln.

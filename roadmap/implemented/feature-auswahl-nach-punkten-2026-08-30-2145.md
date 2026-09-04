@@ -33,6 +33,13 @@ wie **oft**. Die Summe trägt beides in sich, weil jede Antwort sie um ihren
 eigenen Wert weiterschiebt. Zwanzig knappe Runden stehen damit über zwei
 glatten.
 
+**Seit dem 04.09.2026 trägt sie eine dritte Sache mit:** in der Arbeit
+beantwortete Karten zählen 20 Prozent mehr (`lernpunkte()` in `modus.js`). Für
+diese Auswahl heißt das, dass eine in der Arbeit getroffene Vokabel etwas
+schneller Richtung `top1` wandert — und damit früher wieder drankommt. Das ist
+kein Nebeneffekt, den man wegräumen sollte: sie ist auch nachweislich besser
+gekonnt.
+
 ## Sechs benannte Plätze, zwei gewürfelte
 
 Der Korb „in Arbeit" wird nach der Summe sortiert und dann in dieser
