@@ -14,7 +14,7 @@ import {
   AUSGAENGE, LEER,
 } from './domain/lernstand.js';
 import { note, punkteFuerKarte } from './domain/note.js';
-import { regeln, MODI } from './domain/modus.js';
+import { regeln, lernpunkte, MODI } from './domain/modus.js';
 import { lernpotential } from './domain/lernpotential.js';
 import * as storage from './infra/storage.js';
 import * as backend from './infra/backend.js';
@@ -204,9 +204,12 @@ function merkeErgebnis({ ausgang, getippt, kartenpunkte, tippfehler = false }) {
     // Eine Wiederholung wiegt anders: die Lösung stand eben noch da.
     // Gezählt wird sie trotzdem, nur eben als das, was sie ist.
     wiederholung: imLernpotential,
-    // Dieselbe Zahl, die auch in die Note eingeht. Aufsummiert und durch
-    // die Zahl der Antworten geteilt ergibt sie den Score der Vokabel.
-    punkte: kartenpunkte,
+    // NICHT dieselbe Zahl, die in die Note eingeht: in der Arbeit kommen
+    // 20 Prozent dazu (BONUS_ARBEIT in modus.js). Wer eine Vokabel ohne Tipp,
+    // ohne zweite Chance und ohne Rueckmeldung trifft, kann sie -- und der
+    // Lernstand darf das wissen. Die Runde selbst zaehlt weiter ohne Bonus,
+    // sonst gaebe es 18 von 15 Punkten.
+    punkte: lernpunkte(kartenpunkte, gespielterModus),
     // Welcher Tag gerade ist, weiß nur, wer die Uhr kennt -- also hier.
     // "sv" liefert das Datum als JJJJ-MM-TT, und zwar in der Zeitzone des
     // Geräts: um halb eins nachts gehört die Runde noch zum Vortag, so wie

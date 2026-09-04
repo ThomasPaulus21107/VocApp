@@ -64,7 +64,8 @@ sich damit gerade **nicht** festlegt.
 
 - **Was ist ein Punkt?** ~~Die eine Frage, an der alles Userübergreifende
   hängt.~~ **Am 29.08.2026 beantwortet** und damit hier erledigt: ein Punkt ist
-  eine Karte, die saß — 1 auf Anhieb, 0,5 im zweiten Versuch, Tipp −0,1.
+  eine Karte, die saß — 1 auf Anhieb, 0,5 im zweiten Versuch, Tipp −0,1, und
+  seit dem 04.09.2026 in der Arbeit 20 Prozent mehr.
   Gezählt wird die laufende Woche, daneben steht die Gesamtzahl als Blick
   zurück; addiert werden die beiden nie. Die Begründung steht in
   [Mehrere Nutzer](feature-request-mehrere-nutzer.md), das erste Feature

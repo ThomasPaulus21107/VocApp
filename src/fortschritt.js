@@ -6,7 +6,7 @@ import verben from '../data/unregelmaessige-verben.json';
 import { einheiten } from './domain/auswahl.js';
 import {
   uebersicht, verteile, stufe, verlaufZu, punkteVon, schluessel,
-  arbeitsstufe, ARBEITSSTUFEN,
+  farbstufe, FARBSTUFEN, TIEFGRUEN_AB,
   LEER, SICHER_AB_PROZENT, SICHER_AB_ANTWORTEN,
 } from './domain/lernstand.js';
 import { FORM_NAME } from './ui/formnamen.js';
@@ -137,13 +137,16 @@ function historie(name) {
  * <details> macht das Auf und Zu von allein -- mit der Tastatur, mit dem
  * Finger und für den Screenreader, ohne eine Zeile dafür.
  */
-function zeile({ name, score }) {
+function zeile({ name, score, summe }) {
   const knoten = document.createElement('li');
   const lade = document.createElement('details');
 
   const kopf = document.createElement('summary');
   kopf.className = 'fach__zeile';
   kopf.append(span('fach__pfeil', '▸'));
+  // Derselbe Ton wie im Balken oben. Die Vokabel, die man dort ganz rechts
+  // vermutet, ist hier an ihrem Punkt wiederzufinden.
+  kopf.append(span(`fach__punkt fach__punkt--${farbstufe(summe)}`, ''));
   kopf.append(span('fach__wort', beschriftung(name)));
   if (score !== null) kopf.append(span('fach__score', `${score} %`));
   lade.append(kopf);
@@ -163,34 +166,38 @@ function zeile({ name, score }) {
  * einen Knopf, der den Rest nachreicht.
  */
 /**
- * Teilt den orangen Teil des Balkens nach dem Koennen auf: ein Stueck je
- * Stufe, so breit wie sein Anteil an den Vokabeln in Arbeit.
+ * Baut den Balken: ein Stueck je Stufe, von tiefgruen links nach rot rechts,
+ * jedes so breit wie sein Anteil an allen Vokabeln.
  *
- * Warum ueberhaupt: "in Arbeit" ist eine Spanne. Die Vokabel, die zweimal
- * knapp danebenlag, stand im Balken neben der, die schon fast sitzt, und
- * beide sahen gleich aus. Jetzt sieht man, ob das Orange nach rot zieht oder
- * nach gruen -- und damit, ob eine Woche Ueben etwas gebracht hat.
+ * Das ist eine SKALA und keine Faecher mehr. Vorher lagen dort drei Bloecke
+ * -- sitzt, in Arbeit, nie dran -- und der mittlere war ein einziger Klumpen
+ * Orange, in dem die fast fertige Vokabel neben der stand, die dreimal
+ * danebenging.
  *
- * Die Stufen kommen aus arbeitsstufe() in domain/lernstand.js, die Farben aus
- * --arbeit-0 bis --arbeit-6 in styles.css. Hier wird nur gezaehlt und
- * gerechnet.
+ * Sortiert wird nach der Punktsumme, und darin steckt der eigentliche Zweck:
+ * nach jeder Runde wandert die Grenze ein Stueck nach links. Fortschritt ist
+ * damit nichts, was man aus Zahlen erschliessen muss -- man sieht ihn.
+ *
+ * Die Stufen kommen aus farbstufe() in domain/lernstand.js, die Farben aus
+ * --stufe-0 bis --stufe-10 in styles.css. Hier wird nur gezaehlt.
  */
-function stufeInDenBalken(eintraege) {
-  const teil = el('balken-geuebt');
-  teil.replaceChildren();
-  // Kein Fach, kein Balken -- und der bleibt dann einfarbig, wie er im CSS
-  // steht. Ohne diese Zeile teilte man durch null.
-  if (eintraege.length === 0) return;
+function baueBalken(alleEintraege) {
+  const balken = el('balken');
+  balken.replaceChildren();
+  // Ohne eine einzige Vokabel bliebe der Balken in der Farbe aus dem CSS.
+  // Ohne diese Zeile teilte man durch null.
+  if (alleEintraege.length === 0) return;
 
-  const zaehler = new Array(ARBEITSSTUFEN).fill(0);
-  for (const eintrag of eintraege) zaehler[arbeitsstufe(eintrag.score)] += 1;
+  const zaehler = new Array(FARBSTUFEN).fill(0);
+  for (const eintrag of alleEintraege) zaehler[farbstufe(eintrag.summe)] += 1;
 
-  for (const [stufeNr, anzahl] of zaehler.entries()) {
-    if (anzahl === 0) continue;
+  // Von der hoechsten Stufe herunter: gruen steht links.
+  for (let stufeNr = FARBSTUFEN - 1; stufeNr >= 0; stufeNr -= 1) {
+    if (zaehler[stufeNr] === 0) continue;
     const stueck = document.createElement('span');
     stueck.className = `balken__stufe balken__stufe--${stufeNr}`;
-    stueck.style.width = `${(anzahl / eintraege.length) * 100}%`;
-    teil.append(stueck);
+    stueck.style.width = `${(zaehler[stufeNr] / alleEintraege.length) * 100}%`;
+    balken.append(stueck);
   }
 }
 
@@ -237,10 +244,7 @@ if (zahlen.geuebt === 0) {
 
   // Zwei Balken nebeneinander: was sicher sitzt, und was erst in Arbeit ist.
   // Der Rest der Leiste ist, was noch kommt.
-  const breite = (zahl) => `${(zahl / zahlen.gesamt) * 100}%`;
-  el('balken-sicher').style.width = breite(zahlen.sicher);
-  el('balken-geuebt').style.width = breite(zahlen.geuebt - zahlen.sicher);
-  stufeInDenBalken(faecher.arbeit);
+  baueBalken([...faecher.sicher, ...faecher.arbeit, ...faecher.nie]);
 
   // Die Farben im Balken gehören den drei Fächern und sagen nichts über den
   // Gesamtstand -- den sagt der Satz darunter. Dafür ist die Stufe da.

@@ -21,18 +21,25 @@
   --sitzt: var(--richtig);  /* ab 75 % der Punkte: dasselbe Grün wie bei einer
                                richtigen Antwort */
 
-  /* "In Arbeit" ist eine Spanne, keine einzelne Sache -- im Balken oben
-     bekommt sie deshalb sieben Töne statt einem. Links rot (sitzt gar
-     nicht), in der Mitte das Orange von oben, rechts ein blasses Grün:
-     alles richtig, aber noch nicht oft genug, um sicher zu heißen. Deshalb
-     blass -- das leuchtende Grün gehört dem, was durch ist. */
-  --arbeit-0: var(--falsch);
-  --arbeit-1: #fd3416;
-  --arbeit-2: #fe692d;
-  --arbeit-3: var(--in-arbeit);
-  --arbeit-4: #caae58;
-  --arbeit-5: #96be6e;
-  --arbeit-6: #62cf83;
+  /* Elf Stufen für die Fortschrittsseite: der Balken oben und der Punkt vor
+     jeder Vokabel darunter. Gerechnet wird mit der Punktsumme -- Stufe 0 ist
+     rot (noch nichts geholt), Stufe 10 tiefgrün (ab 3,0 Punkten), dazwischen
+     liegt der Weg über das Orange von oben.
+
+     Es ist eine SKALA, keine Fächer: dieselbe Farbe bedeutet überall
+     dasselbe, im Balken wie in der Liste. Siehe farbstufe() in
+     domain/lernstand.js. */
+  --stufe-0: #fd0000;
+  --stufe-1: #fd1f0d;
+  --stufe-2: #fd3f1b;
+  --stufe-3: #fe5e28;
+  --stufe-4: #fe7e36;
+  --stufe-5: #fe9d43;
+  --stufe-6: #cf9f48;
+  --stufe-7: #9fa14d;
+  --stufe-8: #70a452;
+  --stufe-9: #40a657;
+  --stufe-10: #11a85c;
 
   --rundung: 25px;          /* wie rund die Ecken sind */
 
@@ -899,12 +906,9 @@ body {
   line-height: 1.4;
 }
 
-/* Zwei Balken nebeneinander in einer Leiste: was sicher sitzt, und was erst
-   in Arbeit ist. Was uebrig bleibt, ist noch nicht geuebt. */
-/* Drei Faecher in einer Leiste, von links nach rechts: was sitzt, was in
-   Arbeit ist, was noch nie dran war. Das dritte braucht kein eigenes
-   Element -- was die beiden anderen uebrig lassen, IST das dritte Fach.
-   Deshalb ist der Hintergrund der Leiste seine Farbe. */
+/* EINE Skala, keine Fächer: jede Vokabel ist ein Stück, sortiert von
+   tiefgrün links nach rot rechts. Der Hintergrund ist die unterste Stufe --
+   sie deckt den Rest, solange das Skript den Balken noch nicht gefüllt hat. */
 .balken {
   display: flex;
   overflow: hidden;
@@ -912,32 +916,37 @@ body {
   height: 14px;
   margin-bottom: 12px;
   border-radius: 7px;
-  background: var(--nie);
+  background: var(--stufe-0);
 }
 
-.balken__teil--sicher {
-  background: var(--sitzt);
-}
-
-/* Der Teil "in Arbeit" ist selbst eine kleine Leiste: ein Stück je Stufe,
-   so breit wie sein Anteil. Ohne Kinder bleibt er einfarbig orange -- so
-   sieht er aus, bevor das Skript ihn gefüllt hat. */
-.balken__teil--geuebt {
-  display: flex;
-  background: var(--in-arbeit);
-}
-
+/* Ein Stück je Stufe, so breit wie sein Anteil -- von links (tiefgrün) nach
+   rechts (rot). Nach jeder Runde wandert die Grenze ein Stück nach rechts,
+   und genau das soll man sehen. */
 .balken__stufe {
   height: 100%;
 }
 
-.balken__stufe--0 { background: var(--arbeit-0); }
-.balken__stufe--1 { background: var(--arbeit-1); }
-.balken__stufe--2 { background: var(--arbeit-2); }
-.balken__stufe--3 { background: var(--arbeit-3); }
-.balken__stufe--4 { background: var(--arbeit-4); }
-.balken__stufe--5 { background: var(--arbeit-5); }
-.balken__stufe--6 { background: var(--arbeit-6); }
+/* Der Punkt vor jeder Vokabel in den Listen. Dieselbe Farbe wie im Balken --
+   wer eine Vokabel dort sucht, findet ihren Ton wieder. */
+.fach__punkt {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  margin-right: 2px;
+  border-radius: 50%;
+}
+
+.balken__stufe--0,  .fach__punkt--0  { background: var(--stufe-0); }
+.balken__stufe--1,  .fach__punkt--1  { background: var(--stufe-1); }
+.balken__stufe--2,  .fach__punkt--2  { background: var(--stufe-2); }
+.balken__stufe--3,  .fach__punkt--3  { background: var(--stufe-3); }
+.balken__stufe--4,  .fach__punkt--4  { background: var(--stufe-4); }
+.balken__stufe--5,  .fach__punkt--5  { background: var(--stufe-5); }
+.balken__stufe--6,  .fach__punkt--6  { background: var(--stufe-6); }
+.balken__stufe--7,  .fach__punkt--7  { background: var(--stufe-7); }
+.balken__stufe--8,  .fach__punkt--8  { background: var(--stufe-8); }
+.balken__stufe--9,  .fach__punkt--9  { background: var(--stufe-9); }
+.balken__stufe--10, .fach__punkt--10 { background: var(--stufe-10); }
 
 .zahlen {
   display: grid;

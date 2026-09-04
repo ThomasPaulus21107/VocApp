@@ -98,6 +98,12 @@ verschiedenen Dingen hängt:
   `punkteFuerKarte()` aus `domain/note.js`, gezählt über die laufende Woche.
   Damit sind **gemeinsame Missionen** frei, siehe
   `roadmap/feature-request-missionen.md`.
+
+  **Seit dem 04.09.2026 mit einem Zuschlag:** in der Arbeit sind es 20 Prozent
+  mehr (`lernpunkte()` in `domain/modus.js`), weil es dort keinen Tipp, keine
+  zweite Chance und keine Rückmeldung gibt. Der Zuschlag gilt für den
+  **Lernstand** und damit für Farbe, Auswahl und Wochenpunkte — **nicht für die
+  Note der Runde**, die bei 15 von 15 gedeckelt bleibt.
 - **Alle sehen den Fortschritt aller, unter Pseudonymen** — aber **nicht** über
   eine Lesepolicy auf `ereignisse`. Geteilt wird eine Zusammenfassung aus einer
   Funktion, die anonyme Sitzungen ausschließt. Grund: `signInAnonymously()`
