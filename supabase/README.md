@@ -149,6 +149,31 @@ curl -s "$SEITE$JS" | grep -c uwxhfhhxnynxcuzdrcri   # VocApp TEST, erwartet 0
 
 Gehoert nach jeder Aenderung an den Secrets einmal gemacht.
 
+## Vor jedem Eingriff an einem Konto: erst exportieren
+
+Gilt fuer alles, was in `auth.users` greift -- eine Adresse setzen, ein Passwort
+vergeben, einen Nutzer loeschen. Der Grund steht in der Migration: an
+`ereignisse` haengt ein `on delete cascade`. **Ein geloeschter Nutzer nimmt
+seine Zeilen mit, ohne Rueckfrage und ohne Papierkorb.**
+
+```sql
+select * from ereignisse where nutzer = '<uid>';
+```
+
+Ergebnis im SQL-Editor als CSV herunterladen, bevor der Eingriff passiert.
+
+**Die Datei gehoert nicht ins Repo.** Es sind Lerndaten eines Kindes; irgendwo
+lokal reicht, und geloescht werden darf sie, sobald der Eingriff sichtbar
+geglueckt ist.
+
+Wer die richtige uid sucht: sie steht nicht im Repo, sondern nur in der
+Tabelle. Ueber das Geraet zu gehen ist der zuverlaessigste Weg --
+
+```sql
+select nutzer, count(*), min(zeit)::date, max(zeit)::date
+from ereignisse where geraet like '%<geraeteteil>%' group by nutzer;
+```
+
 ## Aufraeumen
 
 In `VocApp TEST` sammeln sich anonyme Nutzer und Abnahme-Zeilen an. Sie stoeren

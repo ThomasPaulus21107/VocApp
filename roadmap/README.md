@@ -148,9 +148,23 @@ Vorgeschichte steht in
 
 **Phase 1 ist seit dem 30.08.2026 vollständig** — 1 bis 4 stehen, und damit
 liegt der Lernstand nicht nur im Browser, sondern auch auf einem Server, der
-gesichert werden kann. Was jetzt kommt, ist ausdrücklich **kein Bauen**: ein
-paar Tage still mitlaufen lassen und nachsehen, ob die Zeilen ankommen. Erst
-danach beginnt 5.
+gesichert werden kann.
+
+**Die Beobachtung danach ist gelaufen und am 04.09.2026 ausgewertet:** an vier
+von fünf Tagen wurde geübt, die letzte Zeile kam am Abend vorher an, insgesamt
+1397. Die Sicherung hat also fünf Tage lang unbemerkt funktioniert — genau das
+sollte sie zeigen. **Damit ist 5 frei.**
+
+Zwei Nebenbefunde stehen dabei fest und gehören in die Konten-Arbeit:
+
+- **Matildas uid ist bekannt** und hat 569 Zeilen. Sie bekommt Adresse und
+  Passwort; die übrigen sechs Nutzer in `VocApp` sind Streuzeilen ohne Besitzer,
+  unter anderem von Klicks auf die neue Adresse. Entschieden am 04.09.2026:
+  **sicherzustellen ist nur Matildas Stand**, alles andere wird vernachlässigt.
+- **107 doppelte Antworten** liegen in der Tabelle — die Überschneidung zwischen
+  Melden und Umzug. Folgenlos, solange lokal die Wahrheit ist; entdoppelt wird
+  beim Lesen, siehe
+  [Der Server wird die Wahrheit](feature-request-server-ist-die-wahrheit.md).
 
 
 | # | Feature | Wer |
