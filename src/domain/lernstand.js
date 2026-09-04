@@ -264,33 +264,41 @@ function brauchbar(eintrag, vomVerlauf) {
 }
 
 /* =========================================================
-   WIE ORANGE EINE VOKABEL IN ARBEIT IST
+   WIE GRUEN EINE VOKABEL IST, MATILDA
 
-   Das Fach "in Arbeit" ist kein Zustand, sondern eine Spanne:
-   darin steht die Vokabel, die zweimal knapp danebenlag,
-   neben der, die schon fast sitzt. Im Balken auf der
-   Fortschrittsseite sahen bisher beide gleich aus.
+   Eine Farbe je Vokabel, und sie sagt zweierlei auf einmal:
+   wie gut es lief UND wie oft. Gerechnet wird mit der
+   PUNKTSUMME -- allen Einzelergebnissen zusammen.
 
-   Sieben Stufen, nach dem Score:
+     dreimal mit 0,5 abgeschlossen  ->  1,5
+     fuenfmal voll getroffen        ->  5,0
 
-     0     rot           -- 0 Punkte oder weniger, sitzt gar nicht
-     1..5  orange        -- die Spanne dazwischen, in Zwanziger-Schritten
-     6     blasses Gruen -- volle 100 %, aber noch nicht oft genug
-                            beantwortet fuer SICHER_AB_ANTWORTEN
+   Daraus werden elf Stufen:
 
-   Blasser als das Gruen von "sitzt", und das ist die Aussage:
-   die Vokabel ist nicht durch, sie hat nur noch keinen Fehler
-   gemacht.
+     0            rot        noch nichts geholt
+     1 bis 9      der Verlauf von rot ueber orange nach gruen
+     10           tiefgruen  ab 3,0 Punkten
+
+   Der Deckel bei 3,0 ist eine Entscheidung und keine
+   Wahrheit: er ist erreicht, wenn eine Vokabel dreimal
+   sauber sass. Wer strenger will, aendert ihn hier.
+
+   Warum die Summe und nicht der Score: 100 Prozent aus einer
+   einzigen Antwort sind kein Beweis, sondern ein Zufall. Die
+   Summe waechst nur, wenn wirklich geuebt wurde.
    ========================================================= */
-export const ARBEITSSTUFEN = 7;
+export const FARBSTUFEN = 11;
+export const TIEFGRUEN_AB = 3;
 
-export function arbeitsstufe(score) {
-  // Nicht bewertbar oder im Minus -- Tipps kosten Punkte, und wer nur Tipps
-  // genommen hat, steht unter null.
-  if (!Number.isFinite(score) || score <= 0) return 0;
-  if (score >= 100) return ARBEITSSTUFEN - 1;
-  // 1-19 -> 1, 20-39 -> 2, 40-59 -> 3, 60-79 -> 4, 80-99 -> 5.
-  return 1 + Math.floor(score / 20);
+export function farbstufe(summe) {
+  // Auch Minuspunkte sind rot: Tipps koennen eine Vokabel unter null druecken.
+  if (!Number.isFinite(summe) || summe <= 0) return 0;
+  if (summe >= TIEFGRUEN_AB) return FARBSTUFEN - 1;
+
+  // Zehn gleich breite Schritte bis zum Deckel. Ein Hauch von Punkten hebt
+  // schon auf Stufe 1 -- "hat angefangen" soll man sehen.
+  const schritt = TIEFGRUEN_AB / (FARBSTUFEN - 1);
+  return Math.ceil(summe / schritt);
 }
 
 export function verteile(stand, namen) {
@@ -301,12 +309,15 @@ export function verteile(stand, namen) {
     const eintrag = brauchbar(stand.einheiten[name], ausVerlauf[name]);
     const wert = score(eintrag);
 
-    if (wert === null) faecher.nie.push({ name, score: null, dran: 0 });
+    // Die Summe wandert mit: an ihr haengt die Farbe, siehe farbstufe().
+    const summe = eintrag?.summe ?? 0;
+
+    if (wert === null) faecher.nie.push({ name, score: null, dran: 0, summe: 0 });
     // Stabil ist nur, was gut UND oft genug war. Wer die Huerde reisst,
     // bleibt in Arbeit -- auch mit 100 Prozent aus einer einzigen Antwort.
     else if (wert > SICHER_AB_PROZENT && eintrag.dran >= SICHER_AB_ANTWORTEN) {
-      faecher.sicher.push({ name, score: wert, dran: eintrag.dran });
-    } else faecher.arbeit.push({ name, score: wert, dran: eintrag.dran });
+      faecher.sicher.push({ name, score: wert, dran: eintrag.dran, summe });
+    } else faecher.arbeit.push({ name, score: wert, dran: eintrag.dran, summe });
   }
 
   // Oben steht jeweils, was gerade an der Kippe ist: in Arbeit das, was fast

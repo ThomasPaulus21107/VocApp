@@ -4,7 +4,7 @@ import { describe, it, expect } from 'vitest';
 import {
   merkeGezogen, verrechne, zuletztVon, schluessel,
   score, verteile, faecherVon, uebersicht, stufe, verlaufZu, punkteVon, runden, PAUSE_MS, fleiss, serie,
-  arbeitsstufe, ARBEITSSTUFEN,
+  farbstufe, FARBSTUFEN, TIEFGRUEN_AB,
   SICHER_AB_ANTWORTEN,
   SICHER_AB_PROZENT, TAGE_MAX,
   AUSGAENGE, LEER, VERLAUF_MAX,
@@ -273,7 +273,7 @@ describe('wenn die Zaehler nichts wissen, hilft der Verlauf', () => {
 
     const faecher = verteile(stand, namen);
     expect(faecher.nie).toHaveLength(0);
-    expect(faecher.arbeit).toEqual([{ name: 'uv-001|simple-past', score: 50, dran: 2 }]);
+    expect(faecher.arbeit).toEqual([{ name: 'uv-001|simple-past', score: 50, dran: 2, summe: 1 }]);
   });
 
   it('rettet auch einen alten Eintrag ohne Summe vor dem NaN', () => {
@@ -290,7 +290,7 @@ describe('wenn die Zaehler nichts wissen, hilft der Verlauf', () => {
 
     // 1 + 0,5 auf zwei Antworten = 75 % -- und damit knapp NICHT stabil.
     expect(verteile(stand, namen).arbeit).toEqual([
-      { name: 'uv-001|simple-past', score: 75, dran: 2 },
+      { name: 'uv-001|simple-past', score: 75, dran: 2, summe: 1.5 },
     ]);
   });
 
@@ -595,36 +595,41 @@ describe('serie', () => {
 });
 
 
-describe('arbeitsstufe', () => {
-  // Sieben Toene fuer das Fach "in Arbeit". Sie sagen im Balken, ob eine
-  // Vokabel dort gerade angekommen ist oder gleich hinausfaellt.
+describe('farbstufe', () => {
+  // Elf Toene fuer den Balken und die Punkte in den Listen. Gerechnet wird
+  // mit der Punktsumme -- sie sagt zugleich, wie gut es lief und wie oft.
 
-  it('faengt bei rot an, wenn nichts sitzt', () => {
-    expect(arbeitsstufe(0)).toBe(0);
+  it('faengt bei rot an, wenn nichts geholt wurde', () => {
+    expect(farbstufe(0)).toBe(0);
   });
 
-  it('nimmt auch Minuspunkte in die unterste Stufe', () => {
-    // Tipps kosten 0,1. Wer nur Tipps genommen und daneben gelegen hat,
-    // steht unter null -- das ist keine eigene Stufe, das ist rot.
-    expect(arbeitsstufe(-20)).toBe(0);
+  it('nimmt auch Minuspunkte als rot', () => {
+    // Tipps kosten 0,1. Wer nur Tipps genommen und daneben gelegen hat, steht
+    // unter null -- das ist keine eigene Stufe, das ist rot.
+    expect(farbstufe(-0.5)).toBe(0);
   });
 
-  it('endet bei blassem Gruen, wenn alles sass', () => {
-    // 100 Prozent und trotzdem noch "in Arbeit": es waren erst ein oder zwei
-    // Antworten, und SICHER_AB_ANTWORTEN ist nicht erreicht.
-    expect(arbeitsstufe(100)).toBe(ARBEITSSTUFEN - 1);
+  it('hebt schon bei einem Hauch von Punkten auf Stufe 1', () => {
+    // "Hat angefangen" soll man sehen. Sonst saehe die Vokabel, die einmal
+    // halb sass, aus wie die, die nie dran war.
+    expect(farbstufe(0.1)).toBe(1);
   });
 
-  it('teilt die Spanne dazwischen in Zwanziger-Schritte', () => {
-    expect([1, 19, 20, 39, 40, 60, 80, 99].map(arbeitsstufe))
-      .toEqual([1, 1, 2, 2, 3, 4, 5, 5]);
+  it('erreicht Tiefgruen ab drei Punkten und bleibt dort', () => {
+    expect(farbstufe(TIEFGRUEN_AB)).toBe(FARBSTUFEN - 1);
+    // Fuenfmal voll getroffen: mehr als tiefgruen gibt es nicht.
+    expect(farbstufe(5)).toBe(FARBSTUFEN - 1);
+  });
+
+  it('legt die Beispiele aus dem Gespraech dorthin, wo sie hingehoeren', () => {
+    // Dreimal mit 0,5 abgeschlossen ergibt 1,5 -- genau die Mitte.
+    expect(farbstufe(1.5)).toBe(5);
+    // Einmal voll getroffen ist ein Drittel des Weges.
+    expect(farbstufe(1)).toBe(4);
   });
 
   it('nimmt einen unbrauchbaren Wert als rot, statt zu rechnen', () => {
-    // score() gibt null zurueck, wenn eine Einheit nie dran war. Im Fach
-    // "in Arbeit" sollte das nicht vorkommen -- eine Farbe muss die Funktion
-    // trotzdem liefern, sonst faellt der Balken auseinander.
-    expect(arbeitsstufe(null)).toBe(0);
-    expect(arbeitsstufe(undefined)).toBe(0);
+    expect(farbstufe(null)).toBe(0);
+    expect(farbstufe(undefined)).toBe(0);
   });
 });
