@@ -120,7 +120,7 @@ test.describe('Dein Fortschritt', () => {
     // Markup. Wer sie dort aendert, aendert sie hier mit.
     await expect(seite.locator('.fortschritt__dazu')).toHaveText(
       `Formen sind stabil gelernt — mindestens ${SICHER_AB_ANTWORTEN}-mal `
-      + `geübt und über ${SICHER_AB_PROZENT} % der Punkte`
+      + `geübt und über ${SICHER_AB_PROZENT} % der möglichen Punkte getroffen`
     );
 
     // Eine Runde reicht nicht fuer "stabil gelernt": dafuer muss eine Form

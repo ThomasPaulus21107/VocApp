@@ -52,6 +52,30 @@ beiträgt.** Wer oben ganz rechts eine rote Kante sieht, findet die dazugehörig
 Wörter unten an ihren roten Punkten wieder. Ohne das wären es zwei getrennte
 Darstellungen desselben Standes.
 
+## Nachtrag am selben Tag: die Prozentzahl gehoert zur Farbe
+
+Hinter jeder Vokabel stand eine Prozentzahl, und sie war der **Score** — der
+Anteil der möglichen Punkte. Neben dem neuen Farbpunkt ergab das Widersprüche,
+die niemand auflösen konnte:
+
+> `sein · simple past` — roter Punkt, **100 %**
+
+Beides stimmte. Der Punkt las die Punktsumme (0,9 — kaum etwas geholt), die
+Zahl den Score (eine einzige Antwort, die saß). Zwei Maße, eine Zeile.
+
+**Seit dem 04.09.2026 zeigt die Zahl dasselbe wie die Farbe:** `reifegrad()`
+rechnet die Punktsumme gegen den Deckel, **3,0 Punkte sind 100 %**, darüber
+wird nicht weitergezählt. Der rote Punkt oben steht jetzt neben 30 %.
+
+`score()` ist damit nicht abgeschafft — die Fächer-Einteilung hängt weiter
+daran, und dort ist er richtig: „hat sie getroffen, wenn sie drankam" ist eine
+andere Frage als „hat sie genug gesammelt".
+
+**Auf der Seite stehen deshalb zwei Prozentzahlen, die verschiedene Dinge
+meinen.** Damit das niemand gegeneinander rechnet, sagt der Satz oben jetzt
+„über 75 % der **möglichen** Punkte getroffen", und unter dem Balken steht eine
+Zeile, die die Zahl hinter den Vokabeln erklärt.
+
 ## Zwanzig Prozent Bonus in der Arbeit
 
 `BONUS_ARBEIT` und `lernpunkte()` in `modus.js`. In der Arbeit gibt es keinen

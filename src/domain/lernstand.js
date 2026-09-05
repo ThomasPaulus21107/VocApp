@@ -301,6 +301,23 @@ export function farbstufe(summe) {
   return Math.ceil(summe / schritt);
 }
 
+/**
+ * Wie weit eine Vokabel auf der Skala ist, in Prozent -- dieselbe Rechnung wie
+ * farbstufe(), nur als Zahl statt als Farbe.
+ *
+ * 3,0 Punkte sind 100 %, 0 Punkte sind 0 %. Ueber dem Deckel wird nicht weiter
+ * gezaehlt: 4,5 Punkte sind auch 100 %, sonst haetten Vokabeln, die seit
+ * Wochen sitzen, dreistellige Zahlen.
+ *
+ * NICHT zu verwechseln mit score(): der sagt, welchen ANTEIL der moeglichen
+ * Punkte eine Vokabel geholt hat -- 100 % kann dort auch aus einer einzigen
+ * Antwort kommen. Hier zaehlt, was zusammengekommen ist.
+ */
+export function reifegrad(summe) {
+  if (!Number.isFinite(summe) || summe <= 0) return 0;
+  return Math.min(100, Math.round((summe / TIEFGRUEN_AB) * 100));
+}
+
 export function verteile(stand, namen) {
   const faecher = { nie: [], arbeit: [], sicher: [] };
   const ausVerlauf = zaehlerAusVerlauf(stand.verlauf);
