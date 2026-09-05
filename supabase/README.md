@@ -7,8 +7,8 @@ neuen ein.
 
 ```
 migrations/
-  20260830120000_ereignisse.sql
-  20260901093000_profile.sql
+  20260830060642_ereignisse.sql
+  20260905183000_profile.sql
 ```
 
 ## Warum nicht einfach eine schema.sql
