@@ -159,7 +159,13 @@ Zwei Nebenbefunde stehen dabei fest und gehören in die Konten-Arbeit:
 
 - **Matildas uid ist bekannt** und hat 569 Zeilen. Sie bekommt Adresse und
   Passwort; die übrigen sechs Nutzer in `VocApp` sind Streuzeilen ohne Besitzer,
-  unter anderem von Klicks auf die neue Adresse. Entschieden am 04.09.2026:
+  unter anderem von Klicks auf die neue Adresse. Seit dem 05.09.2026 steht die
+  uid in [Konten](feature-request-konten.md) — mitsamt den Geräte-Ids und dem
+  SQL zum Nachzählen. Aufgeschrieben, weil eine anonyme uid keinen Namen trägt
+  und sich später nicht mehr erraten lässt. **Am 05.09.2026 kam eine zweite
+  Entscheidung dazu:** was vom MacBook stammt, wird mit Thomas' Konto
+  verknüpft, nicht mit Matildas — das ist gebaut und getestet, kein Lernstand.
+  Entschieden am 04.09.2026:
   **sicherzustellen ist nur Matildas Stand**, alles andere wird vernachlässigt.
 - **107 doppelte Antworten** liegen in der Tabelle — die Überschneidung zwischen
   Melden und Umzug. Folgenlos, solange lokal die Wahrheit ist; entdoppelt wird

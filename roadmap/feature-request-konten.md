@@ -179,10 +179,148 @@ Also läuft auch dieser Schritt über das Dashboard:
 setzt Adresse und Passwort und markiert die Adresse als bestätigt. Danach ist
 es ein normales Konto wie jedes andere.
 
-**Nimm die uid ihres iPhones**, nicht die des MacBooks: seit dem
+**Welche uid ihre ist, steht seit dem 04.09.2026 fest** und ist unten
+aufgeschrieben. Vorher war das eine Suche: seit dem
 [Umzug des Bestands](implemented/feature-umzug-des-bestands-2026-08-30-1815.md)
-liegen mehrere anonyme Nutzer in `VocApp`, einer je Gerät. Welcher ihrer ist,
-steht in der Tabelle — das Gerät mit den meisten Zeilen aus ihrem Alltag.
+liegen mehrere anonyme Nutzer in `VocApp`, einer je Gerät, und welcher ihrer
+war, stand nur in der Tabelle.
+
+### Die uids, soweit sie erkannt sind
+
+Nachgezählt am 05.09.2026. Sie stehen hier, weil sie **nirgends sonst im Repo
+stehen** und sich später nicht mehr erraten lassen: eine anonyme uid trägt
+keinen Namen, und wer die Zeilen einmal einem falschen Konto zuordnet, merkt es
+an nichts.
+
+| Wer | uid | Geräte | Zeilen |
+|---|---|---|---|
+| **Matilda** | `c815e627-4b69-4859-a025-a9f9d8ba5358` | `22f9adf2…` (iPhone) + `umzug-22f9adf2…` | 586 + 140 = **726**, zuletzt 05.09.2026 |
+| **Thomas** | `739bfdea-8ba7-427a-a530-2907c784cae5` | `ef05d75a…` (MacBook) + `umzug-ef05d75a…` | 261 + 205 = **466**, zuletzt 04.09.2026 |
+| **noch offen** | `5d68b27a-5d34-4688-90df-581ac69b1ca8` | `08ac754a…` + `umzug-08ac754a…` | 271 + 44 = **315**, zuletzt 03.09.2026 |
+| Streuzeilen | fünf weitere uids | je ein Gerät, keins mit Umzug | 15 bis 60 Zeilen, zusammen 47 Antworten |
+
+**Die zwei Gerätenamen je uid sind kein zweites Gerät**, sondern der
+[Umzug des Bestands](implemented/feature-umzug-des-bestands-2026-08-30-1815.md):
+er schrieb den mitgebrachten Vorrat unter `umzug-<geraet>`, und diese Zeilen
+sind ausnahmslos Antworten — 140, 205 und 44 Zeilen, 140, 205 und 44 Antworten.
+Jede dieser uids ist also **genau ein Browser-Speicher**, und genau das macht
+die Zuordnung so eindeutig: ein Gerätename gehört zu genau einer uid.
+
+**Damit ist eine frühere Annahme widerlegt.** Am 04.09.2026 stand hier, alles
+außer Matilda seien Streuzeilen von Klicks auf die neue Adresse. Das gilt für
+die fünf kleinen; die 466 und die 315 sind echtes Üben oder Testen über eine
+Woche.
+
+#### Das MacBook gehört Thomas: entschieden am 05.09.2026
+
+**Was vom MacBook kam, wird mit Thomas' Konto verknüpft, nicht mit Matildas.**
+Das sind Sitzungen aus dem Bauen und Ausprobieren, und sie haben in ihrem
+Lernstand nichts verloren: eine Vokabel, die Thomas beim Testen zwanzigmal
+richtig getippt hat, stünde bei ihr auf Tiefgrün und käme nie wieder dran.
+
+**Ein Gerät ist keine uid**, und daran hing dieser Punkt: läge das MacBook
+unter Matildas uid, wäre ein Trennen ein `update` auf `ereignisse` — und das
+gibt es nicht, die Tabelle hat mit Absicht weder `update`- noch
+`delete`-Policy.
+
+**Abfrage 2 hat das am 05.09.2026 entschieden: das MacBook hat eine eigene
+uid.** `ef05d75a…` und sein Umzug schreiben beide unter
+`739bfdea-8ba7-427a-a530-2907c784cae5`, und unter Matildas uid steht
+ausschließlich das iPhone. **Es bewegt sich keine einzige Zeile** — zwei
+`updateUserById`, und jeder Stand liegt bei der Person, die ihn erzeugt hat.
+
+### Die dritte uid ist noch niemandes
+
+`5d68b27a-5d34-4688-90df-581ac69b1ca8`, 315 Zeilen mit 180 Antworten vom
+30.08. bis 03.09.2026, ein Speicher `08ac754a…` mit 44 mitgebrachten Zeilen.
+Der Verdacht steht in der Zeile darüber: **Safari neben der
+Homebildschirm-App** — dieselbe Person, anderer Speicher, eigene anonyme uid.
+Wessen Safari, sagen die Zahlen nicht.
+
+**Sie bekommt vorerst kein Konto.** Ein Konto ist eine Behauptung darüber, wem
+etwas gehört, und die lässt sich hier nicht belegen. Die Zeilen bleiben liegen,
+die uid bleibt anonym — sie kostet nichts und verliert nichts. Klärt sich
+später, wer dort geübt hat, ist das Nachreichen derselbe eine Handgriff.
+
+Daneben standen am 04.09.2026 **7 Nutzer und 6 Geräte** in `VocApp`. Die
+übrigen sind Streuzeilen ohne Besitzer, unter anderem von Klicks auf
+vocappulary.online. **Entschieden am 04.09.2026: sicherzustellen ist nur
+Matildas Stand**, alles andere wird vernachlässigt — deshalb ist keine dieser
+uids hier aufgeschrieben.
+
+### Nachzählen, bevor etwas angefasst wird
+
+Die Zahlen oben sind vom 04.09.2026 und altern. Vor dem ersten `admin`-Aufruf
+läuft das hier im SQL-Editor des Dashboards — es prüft die Tabelle oben nach
+und beantwortet die eine offene Frage, ob das MacBook eine eigene uid hat.
+
+```sql
+-- 1. Wer schreibt, wie viel, von wie vielen Geraeten, wie lange schon
+select u.id                                        as uid,
+       u.email,
+       u.is_anonymous                              as anonym,
+       count(e.id)                                 as zeilen,
+       count(distinct e.geraet)                    as geraete,
+       min(e.zeit)::date                           as erste,
+       max(e.zeit)                                 as letzte
+from auth.users u
+left join ereignisse e on e.nutzer = u.id
+group by u.id, u.email, u.is_anonymous
+order by zeilen desc;
+```
+
+```sql
+-- 2. Welches Geraet unter welcher uid schreibt -- die MacBook-Frage
+select nutzer,
+       geraet,
+       count(*)                                    as zeilen,
+       count(*) filter (where art = 'antwort')     as antworten,
+       min(zeit)::date                             as erste,
+       max(zeit)                                   as letzte
+from ereignisse
+group by nutzer, geraet
+order by nutzer, zeilen desc;
+```
+
+```sql
+-- 3. Die 107 Doppelten: Melden und Umzug haben sich ueberschnitten.
+--    Am 05.09.2026 nachgemessen: 107 Gruppen, 107 ueberzaehlige Zeilen -- je
+--    Gruppe genau eine zu viel, und seit dem 04.09. unveraendert. Es kommen
+--    also keine neuen dazu; es war einmalig der Umzug. Folgenlos, solange
+--    lokal die Wahrheit ist, siehe feature-request-server-ist-die-wahrheit.md.
+select count(*) as doppelte_gruppen,
+       sum(anzahl - 1) as ueberzaehlige_zeilen
+from (
+  select count(*) as anzahl
+  from ereignisse
+  group by nutzer, karte, form, art, zeit
+  having count(*) > 1
+) g;
+```
+
+```sql
+-- 4. Der Export VOR dem Handgriff. Am Fremdschluessel haengt
+--    "on delete cascade": ein falsch verknuepftes oder geloeschtes Konto
+--    raeumt diese Zeilen ab, und dann gibt es kein Zurueck.
+--
+--    Zweimal laufen lassen, einmal je uid aus Abfrage 2 -- Matildas und, wenn
+--    das MacBook eine eigene hat, auch dessen. Gesichert wird vor BEIDEN
+--    Aufrufen, nicht vor dem ersten.
+select *
+from ereignisse
+where nutzer = 'c815e627-4b69-4859-a025-a9f9d8ba5358'
+order by id;
+```
+
+Die Reihenfolge des Handgriffs steht damit fest: **zählen (1, 2), doppelte
+messen (3), exportieren (4), dann erst `updateUserById`** — Matildas uid auf
+ihre Adresse, die MacBook-uid auf Thomas'. Thomas' Konto folgt demselben
+Muster wie die der Kinder, mit einem Pseudonym als lokalem Teil; ein zweiter
+Kontentyp entsteht dadurch nicht.
+
+Abfrage 1 und 2 lesen `auth.users` und fremde Zeilen — das geht **nur im
+Dashboard**, mit der Service-Rolle. Aus der App heraus lässt RLS davon nichts
+zu, und der `sb_secret_`-Schlüssel gehört dafür trotzdem in keine `.env`.
 
 **Einmal von Hand, für ein Kind.** Das ist kein Feature, das ist ein Handgriff —
 und der Grund, warum die anonyme Anmeldung in Phase 1 trotzdem richtig war: sie
