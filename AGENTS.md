@@ -64,11 +64,26 @@ Vokabeln oft wiederkommen. Siehe
 `roadmap/implemented/feature-auswahl-nach-punkten-2026-08-30-2145.md`.
 
 Dazu gibt es ein **Seitenmenü** auf jeder Seite (Töne an/aus, Weg zu den
-Statistiken) und zwei weitere Seiten. `fortschritt.html` zeigt in drei
-Fächern, was stabil gelernt ist und was nicht; jede Vokabel klappt auf und
-zeigt, wann sie dran war und was sie geholt hat. `fleiss.html` zeigt als
-Balkendiagramm, an welchen der letzten 30 Tage wie viel geübt wurde, und
-darunter jede einzelne Runde mit Uhrzeit und Trefferquote.
+Statistiken, der eigene Anzeigename und Abmelden) und drei weitere Seiten.
+`fortschritt.html` zeigt in drei Fächern, was stabil gelernt ist und was
+nicht; jede Vokabel klappt auf und zeigt, wann sie dran war und was sie
+geholt hat. `fleiss.html` zeigt als Balkendiagramm, an welchen der letzten 30
+Tage wie viel geübt wurde, und darunter jede einzelne Runde mit Uhrzeit und
+Trefferquote.
+
+`anmelden.html` ist seit dem 05.09.2026 **der einzige Weg in die App**: ohne
+Sitzung schicken alle anderen Seiten dorthin. Angemeldet wird mit einem
+Namen und einem Passwort; die Kennung daraus lautet
+`<name>@konten.vocappulary.online` — eine Subdomäne, auf der **nie ein
+Mailserver steht**. Sie ist eine Kennung und kein Postfach, und das ist der
+beste Datenschutz, den dieses Feature haben kann: von keinem fremden Kind
+wird eine Kontaktadresse eingesammelt. **Konten legt Thomas im Dashboard an**,
+die App kennt kein Registrieren, und Sign-ups sind serverseitig aus. Siehe
+`roadmap/implemented/feature-konten-2026-09-05-1830.md`.
+
+**Ein Gerät ist kein Nutzer.** Der Gerätename in `ereignisse` sorgt nur dafür,
+dass zwei Geräte sich nicht in die laufenden Nummern geraten; wer jemand ist,
+steht in der uid, und woran die anderen ihn erkennen, in `profile`.
 
 **Geübt wird primär auf Matildas iPhone.** Seit dem 29.08.2026 ist das eine
 Randbedingung und keine Nebensache: Layouts werden für ein Telefon mit offener
@@ -112,13 +127,15 @@ verschiedenen Dingen hängt:
   Note der Runde**, die bei 15 von 15 gedeckelt bleibt.
 - **Alle sehen den Fortschritt aller, unter Pseudonymen** — aber **nicht** über
   eine Lesepolicy auf `ereignisse`. Geteilt wird eine Zusammenfassung aus einer
-  Funktion, die anonyme Sitzungen ausschließt. Grund: `signInAnonymously()`
-  steht jedem offen, der die Seite lädt, und die Ereignistabelle ist ein
-  Tagebuch, kein Punktestand. **Wer eine Lesepolicy auf `ereignisse` aufmacht,
-  öffnet die App fürs offene Netz, und zwar still.**
-- **Merksatz für jede Policy: `to authenticated` schließt niemanden aus.** Eine
-  anonyme Sitzung hat genau diese Rolle. Was schützt, ist immer die Bedingung
-  dahinter — `using (nutzer = auth.uid())`, nie `using (true)`.
+  Funktion; die Ereignistabelle ist ein Tagebuch, kein Punktestand. **Wer eine
+  Lesepolicy auf `ereignisse` aufmacht, öffnet die App fürs offene Netz, und
+  zwar still.** Das Pseudonym steht in `profile` und sonst nirgends; **Thomas
+  vergibt es**, und ein Klarname ist keins.
+- **Merksatz für jede Policy: `to authenticated` schließt niemanden aus.** Was
+  schützt, ist immer die Bedingung dahinter — `using (nutzer = auth.uid())`,
+  nie `using (true)`. Bis zum 05.09.2026 war der Satz noch schärfer: eine
+  anonyme Sitzung hatte dieselbe Rolle und bekam sie in einer Sekunde. Die
+  Rolle sagt weiterhin nichts darüber, **wer** da ist.
 - **Eine Rangliste ist weiter nicht freigegeben.** Entschieden ist nur die
   Richtung: wenn ein Vergleich kommt, dann **würdigend statt rangordnend**.
   Die Form ist offen, siehe `roadmap/feature-request-wuerdigung.md`.
@@ -644,7 +661,7 @@ sie dürfen nicht vermischt werden.
 | Inhalt | Töne an/aus, Aufgabenart, Kartenbeutel | Lernstand, Punkte, Missionen |
 | Technik | `localStorage`, synchron | Supabase, asynchron |
 | Wird getauscht | nie | ist von Anfang an das Ziel |
-| Zustand | gebaut am 29.08.2026 | gebaut; Phase 1 (Naht, Tabelle, Melden, Umzug) steht seit dem 30.08.2026 |
+| Zustand | gebaut am 29.08.2026 | gebaut; Phase 1 (Naht, Tabelle, Melden, Umzug) steht seit dem 30.08.2026, die Anmeldung seit dem 05.09.2026 |
 
 Ob am Küchentisch der Ton an ist, gehört dem Laptop. Ob `caught` sitzt, gehört
 Matilda und muss ihr auf jedes Gerät folgen.
@@ -769,9 +786,11 @@ Die Rezepte stehen in [`supabase/README.md`](supabase/README.md), samt der
 Fallen, in die schon jemand getappt ist. Drei Dinge lohnen sich nach jeder
 Aenderung an Schema oder Secrets:
 
-1. **Ist die anonyme Anmeldung an?** Ein Aufruf auf `/auth/v1/settings`, ohne
-   einen Nutzer anzulegen.
-2. **Haelt RLS?** Zwei anonyme Sitzungen: die zweite muss null Zeilen sehen.
+1. **Stehen die Schalter richtig?** Ein Aufruf auf `/auth/v1/settings`, ohne
+   einen Nutzer anzulegen. **Seit dem 05.09.2026 muessen beide aus sein** --
+   anonyme Anmeldung und Sign-ups. Bis dahin war die erste Erwartung genau
+   andersherum; wer eine alte Notiz liest, liest die alte.
+2. **Haelt RLS?** Zwei Sitzungen: die zweite muss null Zeilen sehen.
 3. **Zeigt das ausgelieferte Bundle auf `VocApp`?** Die Projektkennung steckt
    darin und laesst sich von aussen nachzaehlen.
 
@@ -796,9 +815,15 @@ beweist „ich bin diese uid", ist dieser Token. Ist er weg, legt die App einen
 gehören aber einer uid, in die sich niemand mehr anmelden kann.
 
 **Daraus folgt eine harte Reihenfolge: Konten vor Umzug.** Erst wenn ein Konto
-eine Mailadresse hat, öffnet ein Link auf der neuen Adresse dieselbe uid
-wieder. Vorher ist ein Umzug genauso teuer, als hätte es die Datenbank nie
-gegeben.
+eine Kennung und ein Passwort hat, öffnet dieselbe Anmeldung auf der neuen
+Adresse wieder dieselbe uid. Vorher ist ein Umzug genauso teuer, als hätte es
+die Datenbank nie gegeben.
+
+**Diese Bedingung ist seit dem 05.09.2026 erfüllt** — siehe
+[Aus der anonymen Sitzung wird ein Konto](roadmap/implemented/feature-konten-2026-09-05-1830.md).
+Der Sitzungstoken ist damit nicht mehr der einzige Ausweis: geht er verloren,
+tippt das Kind zwei Felder und ist wieder bei seinen Zeilen. **Der Umzug zu
+Vercel ist dadurch entsperrt**, nicht schon gemacht.
 
 **Die Zieladresse ist seit dem 30.08.2026 `https://vocappulary.online`** — eine
 eigene Domäne, von Thomas und Matilda gemeinsam gewählt. Damit ist der Umzug

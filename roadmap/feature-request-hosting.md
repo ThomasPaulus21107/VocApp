@@ -60,7 +60,7 @@ vollständig, besser noch Konten dazu" — das war zu weich.
 
 ```
 1-4  der Lernstand liegt auf dem Server
-  5  Matildas Konto hat eine Mailadresse    <- feature-request-konten.md
+  5  Matildas Konto hat eine Mailadresse    <- implemented/feature-konten-2026-09-05-1830.md
      |
      v
      DANN erst umziehen
@@ -126,7 +126,7 @@ und das gibt es nicht.
 
 Ab dann gilt: **nur diese eine Adresse wird weitergegeben** — auch als die,
 unter der sich jemand anmeldet, siehe
-[Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md). Eine
+[Aus der anonymen Sitzung wird ein Konto](implemented/feature-konten-2026-09-05-1830.md). Eine
 Sitzung, die unter der falschen Schreibweise entsteht, liegt in der falschen
 Schublade.
 - **Jeder muss die App neu auf den Homebildschirm legen.** Das alte Lesezeichen
@@ -316,7 +316,7 @@ Was dabei gelernt wurde, damit es beim Bauen nicht noch einmal gesucht wird:
 [Tabelle](implemented/feature-ereignistabelle-2026-08-30-0815.md),
 [Melden](implemented/feature-ereignisse-melden-2026-08-30-1000.md),
 [Umzug](implemented/feature-umzug-des-bestands-2026-08-30-1815.md) — **und
-[Konten](feature-request-konten.md)**, ohne Ausnahme.
+[Konten](implemented/feature-konten-2026-09-05-1830.md)**, ohne Ausnahme.
 
 Siehe die Reihenfolge oben: vorher kostet dieser Umzug nicht nur den lokalen
 Lernstand, sondern den Zugang zu dem, was schon auf dem Server liegt.

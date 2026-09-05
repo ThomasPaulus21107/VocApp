@@ -114,7 +114,7 @@ Dazu: Netz aus, üben, Netz an, neu laden — nichts fehlt.
 
 ## Voraussetzung
 
-[Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md).
+[Aus der anonymen Sitzung wird ein Konto](implemented/feature-konten-2026-09-05-1830.md).
 
 Ohne Konten hätte das Feature keinen Sinn: ein anonymer Nutzer je Gerät heißt,
 dass „der Server ist die Wahrheit" und „jedes Gerät hat seinen eigenen Stand"

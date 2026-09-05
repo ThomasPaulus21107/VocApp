@@ -398,33 +398,49 @@ function aufTipp() {
   ui.zeigeTipp(frage.hinweis);
 }
 
-// Kein start() beim Laden: zuerst steht die Wahl zwischen Übungsblatt und
-// Arbeit auf dem Bildschirm, und die stößt die Runde an.
-ui.setzeToene(storage.lesen(TOENE, true));
+/**
+ * Der Start der Seite. Alles darüber sind Deklarationen -- hier passiert
+ * zum ersten Mal etwas.
+ *
+ * Sie ist eine Funktion geworden, weil ganz oben ein `await` steht und der
+ * Rest ihn abwarten MUSS: `umzug()` setzt den Merker, dass der Bestand
+ * abgelegt ist, und `holeNach()` schickt den Korb los. Beides ohne Sitzung
+ * anzustoßen, während der Browser schon zur Anmeldung unterwegs ist, wäre
+ * die Sorte Fehler, die man nie sieht und die einen Bestand kostet.
+ */
+async function starteSeite() {
+  // OHNE SITZUNG WIRD HIER NICHT GEÜBT. Fehlt der Server ganz (keine
+  // Umgebungsvariablen), gibt verlangeSitzung() true zurück und alles läuft
+  // wie bisher -- siehe die Begründung in infra/backend.js.
+  if (!(await backend.verlangeSitzung())) return;
 
-ui.verbinde({
-  aufAbsenden,
-  aufStart: start,
-  aufTipp,
-  aufWeiter: starteLernpotential,
-  aufToene: (an) => storage.speichern(TOENE, an),
-});
+  // Kein start() beim Laden: zuerst steht die Wahl zwischen Übungsblatt und
+  // Arbeit auf dem Bildschirm, und die stößt die Runde an.
+  ui.setzeToene(storage.lesen(TOENE, true));
 
-// Der Bestand zuerst: Matildas bisher geübte Wochen stehen nur hier im
-// Browser, und ohne diese Zeile lernte der Server nur, was ab heute passiert.
-// Sie legt einmalig ab, sie sendet nicht -- das erledigt holeNach() gleich
-// darunter, und deshalb steht sie davor und nicht dahinter.
-backend.umzug(lernstand.verlauf);
+  ui.verbinde({
+    aufAbsenden,
+    aufStart: start,
+    aufTipp,
+    aufWeiter: starteLernpotential,
+    aufToene: (an) => storage.speichern(TOENE, an),
+  });
 
-// Was beim letzten Mal nicht rausging, geht jetzt raus -- wer im Flugmodus
-// geübt und die App danach geschlossen hat, verlöre seine Antworten sonst bis
-// zur übernächsten Sitzung.
-//
-// Das ist ausdrücklich KEIN Anmelden: ist der Korb leer, passiert nichts, und
-// wer die Seite nur ansieht, bekommt weiterhin kein Konto. Angemeldet wird
-// erst, wenn es etwas zu sichern gibt.
-//
-// Kein await. In dieser Datei wartet nichts auf den Server; das eine `await`
-// aus dem Muster in roadmap/feature-request-mehrere-nutzer.md kommt erst,
-// wenn der Server die Wahrheit wird.
-backend.holeNach();
+  // Der Bestand zuerst: Matildas bisher geübte Wochen stehen nur hier im
+  // Browser, und ohne diese Zeile lernte der Server nur, was ab heute
+  // passiert. Sie legt einmalig ab, sie sendet nicht -- das erledigt
+  // holeNach() gleich darunter, und deshalb steht sie davor und nicht
+  // dahinter.
+  backend.umzug(lernstand.verlauf);
+
+  // Was beim letzten Mal nicht rausging, geht jetzt raus -- wer im Flugmodus
+  // geübt und die App danach geschlossen hat, verlöre seine Antworten sonst
+  // bis zur übernächsten Sitzung.
+  //
+  // Kein await. Auf den Versand wartet nichts; das eine `await` aus dem
+  // Muster in roadmap/feature-request-mehrere-nutzer.md kommt erst, wenn der
+  // Server die Wahrheit wird.
+  backend.holeNach();
+}
+
+starteSeite();

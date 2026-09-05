@@ -7,7 +7,8 @@
 // dafuer gibt es verbinde(). Ein Test, der ein Netz braucht, ist keiner.
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import {
-  verbinde, starte, angemeldet, melde, zuEreignis, korbGroesse, holeNach, umzug,
+  verbinde, starte, angemeldet, anmelden, abmelden, pseudonym, verlangeSitzung,
+  melde, zuEreignis, korbGroesse, holeNach, umzug,
 } from '../src/infra/backend.js';
 
 /** Ein localStorage aus einer Map -- wie in storage.test.js. */
@@ -30,11 +31,23 @@ function setzeSpeicher(wert) {
 const gleich = () => new Promise((f) => setTimeout(f, 0));
 
 /**
- * Ein Supabase-Client aus Pappe. `sitzung` ist die schon vorhandene Sitzung
- * (oder null), `anmeldung` das, was signInAnonymously() liefern soll.
+ * Ein Supabase-Client aus Pappe.
+ *
+ * `sitzung` ist die schon vorhandene Sitzung -- sie steht DEFAULT auf einer
+ * angemeldeten, weil das seit den Konten der Normalfall ist: wer bis zu einer
+ * Karte kommt, ist angemeldet. Wer den anderen Fall braucht, sagt
+ * `fakeClient({ sitzung: null })`.
+ *
+ * `anmeldung` ist, was signInWithPassword() liefern soll, `fehler` der Fehler
+ * daneben -- Supabase gibt bei falschem Passwort beides zurueck.
  */
-function fakeClient({ sitzung = null, anmeldung = { user: { id: 'neu-1' } }, fehler = null } = {}) {
-  const aufrufe = { getSession: 0, signInAnonymously: 0 };
+function fakeClient({
+  sitzung = { user: { id: 'angemeldet-1' } },
+  anmeldung = { user: { id: 'angemeldet-1' } },
+  fehler = null,
+  profil = { pseudonym: 'blauer-otter' },
+} = {}) {
+  const aufrufe = { getSession: 0, signInWithPassword: 0, signOut: 0, kennung: null };
   return {
     aufrufe,
     auth: {
@@ -42,33 +55,160 @@ function fakeClient({ sitzung = null, anmeldung = { user: { id: 'neu-1' } }, feh
         aufrufe.getSession += 1;
         return { data: { session: sitzung } };
       },
-      signInAnonymously: async () => {
-        aufrufe.signInAnonymously += 1;
-        return { data: anmeldung, error: fehler };
+      signInWithPassword: async ({ email }) => {
+        aufrufe.signInWithPassword += 1;
+        aufrufe.kennung = email;
+        return { data: anmeldung ?? {}, error: fehler };
       },
+      signOut: async () => { aufrufe.signOut += 1; return {}; },
     },
+    from: () => ({
+      select: () => ({ maybeSingle: async () => ({ data: profil, error: null }) }),
+    }),
   };
 }
 
 describe('starte', () => {
-  it('meldet anonym an, wenn es noch keine Sitzung gibt', async () => {
-    const c = fakeClient();
-    verbinde(c);
-
-    expect(await starte()).toBe('neu-1');
-    expect(angemeldet()).toBe('neu-1');
-    expect(c.aufrufe.signInAnonymously).toBe(1);
-  });
-
-  it('nimmt die vorhandene Sitzung und meldet sich NICHT neu an', async () => {
-    // Ohne diesen Fall entstuende bei jedem Start ein neuer anonymer Nutzer,
-    // und der Lernstand waere jedes Mal leer. Das ist der teuerste Fehler,
-    // den diese Datei machen kann.
+  it('nimmt die vorhandene Sitzung', async () => {
     const c = fakeClient({ sitzung: { user: { id: 'schon-da' } } });
     verbinde(c);
 
     expect(await starte()).toBe('schon-da');
-    expect(c.aufrufe.signInAnonymously).toBe(0);
+    expect(angemeldet()).toBe('schon-da');
+  });
+
+  it('legt KEINE Sitzung an, wenn keine da ist', async () => {
+    // Der Test, der die anonyme Anmeldung begraebt. Frueher stand hier ein
+    // signInAnonymously(), und dadurch holte sich jeder Browser seine eigene
+    // uid -- ein Geraet war ein Nutzer, und zusammenfuehren liess sich das
+    // nie. Kaeme sie zurueck, waere dieser Test rot.
+    const c = fakeClient({ sitzung: null });
+    verbinde(c);
+
+    expect(await starte()).toBeNull();
+    expect(angemeldet()).toBeNull();
+    expect(c.auth.signInAnonymously).toBeUndefined();
+  });
+});
+
+describe('anmelden', () => {
+  it('haengt die Domaene an den Namen, den das Kind tippt', async () => {
+    // DER TEST, DER DIE KENNUNG FESTNAGELT. Auf dem Bildschirm steht nur
+    // "blauer-otter"; was daraus wird, entscheidet allein backend.js. Stuende
+    // die Domaene an einer zweiten Stelle im Code, waere sie eines Tages an
+    // einer davon falsch -- und ein Kind kaeme nicht mehr herein.
+    const c = fakeClient({ anmeldung: { user: { id: 'otter' } } });
+    verbinde(c);
+
+    expect(await anmelden('blauer-otter', 'drei einfache woerter')).toBe(true);
+    expect(c.aufrufe.kennung).toBe('blauer-otter@konten.vocappulary.online');
+    expect(angemeldet()).toBe('otter');
+  });
+
+  it('sagt bei falschem Passwort nur false und wirft nicht', async () => {
+    verbinde(fakeClient({ anmeldung: null, fehler: { status: 400 } }));
+
+    expect(await anmelden('blauer-otter', 'daneben')).toBe(false);
+    expect(angemeldet()).toBeNull();
+  });
+
+  it('sagt auch ohne Server false, statt zu werfen', async () => {
+    verbinde(null);
+    expect(await anmelden('blauer-otter', 'egal')).toBe(false);
+  });
+});
+
+describe('abmelden', () => {
+  beforeEach(() => setzeSpeicher(fakeSpeicher()));
+  afterEach(() => { delete globalThis.localStorage; });
+
+  it('vergisst die uid und sagt es dem Server', async () => {
+    const c = fakeClient();
+    verbinde(c);
+    await starte();
+
+    await abmelden();
+
+    expect(angemeldet()).toBeNull();
+    expect(c.aufrufe.signOut).toBe(1);
+  });
+
+  it('laesst den Korb liegen', async () => {
+    // Was darin steht, ist beantwortet worden und gehoert der uid, die es
+    // beantwortet hat. Es beim Abmelden wegzuwerfen hiesse, eine Runde ohne
+    // Empfang zu verlieren, nur weil danach jemand auf "Abmelden" tippt.
+    verbinde(fakeClient({ sitzung: null }));
+    melde({ art: 'antwort', id: 'uv-001', zeit: Date.now() });
+    await gleich();
+    expect(korbGroesse()).toBe(1);
+
+    await abmelden();
+
+    expect(korbGroesse()).toBe(1);
+  });
+
+  it('wirft nicht, wenn der Server beim Abmelden ausfaellt', async () => {
+    verbinde({
+      auth: {
+        getSession: async () => ({ data: { session: { user: { id: 'x' } } } }),
+        signOut: async () => { throw new Error('kein Netz'); },
+      },
+    });
+    await starte();
+
+    await expect(abmelden()).resolves.toBeUndefined();
+    expect(angemeldet()).toBeNull();
+  });
+});
+
+describe('pseudonym', () => {
+  it('gibt den Anzeigenamen aus profile zurueck', async () => {
+    verbinde(fakeClient());
+    expect(await pseudonym()).toBe('blauer-otter');
+  });
+
+  it('gibt null zurueck, wenn dem Konto noch keins gehoert', async () => {
+    // Kein Fehler, sondern eine fehlende Zeile: Thomas hat sie noch nicht
+    // angelegt. Die Oberflaeche laesst den Namen dann leer.
+    verbinde(fakeClient({ profil: null }));
+    expect(await pseudonym()).toBeNull();
+  });
+
+  it('gibt ohne Server null zurueck, statt zu werfen', async () => {
+    verbinde(null);
+    expect(await pseudonym()).toBeNull();
+  });
+});
+
+describe('verlangeSitzung', () => {
+  it('laesst weiterlaufen, wenn eine Sitzung da ist', async () => {
+    verbinde(fakeClient());
+    expect(await verlangeSitzung()).toBe(true);
+  });
+
+  it('laesst OHNE SERVER weiterlaufen, ohne umzuleiten', async () => {
+    // Die wichtigste Zeile des Waechters. Fehlt im Workflow ein Secret oder
+    // laeuft die App absichtlich ohne Server -- so wie in den
+    // Oberflaechen-Tests --, dann darf sie nicht vor einem Anmeldeformular
+    // enden, das gar nichts anmelden kann. Ein vergessenes Secret kostet die
+    // Sicherung, nicht das Ueben.
+    verbinde(null);
+    expect(await verlangeSitzung()).toBe(true);
+  });
+
+  it('schickt ohne Sitzung zum Anmelden', async () => {
+    const gerufen = [];
+    // location ist in Node nicht da; hier reicht ein Doppel mit replace().
+    Object.defineProperty(globalThis, 'location', {
+      value: { replace: (ziel) => gerufen.push(ziel) },
+      configurable: true, writable: true,
+    });
+    verbinde(fakeClient({ sitzung: null }));
+
+    expect(await verlangeSitzung()).toBe(false);
+    expect(gerufen).toEqual(['anmelden.html']);
+
+    delete globalThis.location;
   });
 });
 
@@ -83,15 +223,6 @@ describe('wenn es schiefgeht', () => {
     expect(angemeldet()).toBeNull();
   });
 
-  it('haelt nicht an, wenn die anonyme Anmeldung abgelehnt wird', async () => {
-    // Genau das passiert, wenn im Dashboard "Anonymous sign-ins" aus ist:
-    // Supabase antwortet mit 422.
-    verbinde(fakeClient({ anmeldung: null, fehler: { status: 422 } }));
-
-    expect(await starte()).toBeNull();
-    expect(angemeldet()).toBeNull();
-  });
-
   it('haelt nicht an, wenn der Client wirft', async () => {
     verbinde({ auth: { getSession: async () => { throw new Error('kein Netz'); } } });
 
@@ -101,7 +232,7 @@ describe('wenn es schiefgeht', () => {
   it('vergisst die uid, wenn ein anderer Client eingesetzt wird', async () => {
     verbinde(fakeClient());
     await starte();
-    expect(angemeldet()).toBe('neu-1');
+    expect(angemeldet()).toBe('angemeldet-1');
 
     verbinde(null);
     expect(angemeldet()).toBeNull();
@@ -255,27 +386,34 @@ describe('melde und der Ausgangskorb', () => {
     expect(korbGroesse()).toBe(0);
   });
 
-  it('meldet sich beim Start NICHT an, wenn der Korb leer ist', async () => {
-    // Sonst legte jeder Seitenaufruf einen anonymen Nutzer an.
+  it('sieht beim Start gar nicht erst nach, wenn der Korb leer ist', async () => {
     const c = { ...fakeClient(), from: () => ({ upsert: async () => ({}) }) };
     verbinde(c);
 
     holeNach();
     await gleich();
 
-    expect(c.aufrufe.signInAnonymously).toBe(0);
+    expect(c.aufrufe.getSession).toBe(0);
   });
 
-  it('meldet sich erst an, wenn etwas zu senden ist', async () => {
-    const c = { ...fakeClient(), from: () => ({ upsert: async () => ({}) }) };
+  it('behaelt alles, solange niemand angemeldet ist', async () => {
+    // Der Fall tritt nach dem Abmelden ein, und frueher fuellte diese Stelle
+    // die Luecke selbst -- mit einer anonymen Anmeldung. Jetzt bleibt der
+    // Korb einfach stehen: nichts geht raus, nichts geht verloren, und beim
+    // naechsten Anmelden ist alles noch da.
+    const gesendet = [];
+    const c = {
+      ...fakeClient({ sitzung: null }),
+      from: () => ({ upsert: async (z) => { gesendet.push(...z); return {}; } }),
+    };
     verbinde(c);
 
-    // Die Seite ist geladen, aber niemand hat geuebt.
-    expect(c.aufrufe.signInAnonymously).toBe(0);
-
     melde(ereignis(1));
+    melde(ereignis(2));
     await gleich();
-    expect(c.aufrufe.signInAnonymously).toBe(1);
+
+    expect(gesendet).toHaveLength(0);
+    expect(korbGroesse()).toBe(2);
   });
 });
 
@@ -369,9 +507,9 @@ describe('der Bestand zieht um', () => {
     expect(zeile.tag).toBe('2026-08-30');
   });
 
-  it('meldet niemanden an, wenn es nichts umzuziehen gibt', async () => {
-    // Wer die App zum ersten Mal oeffnet, hat keinen Bestand -- und soll
-    // dafuer auch keinen anonymen Nutzer bekommen.
+  it('fasst den Server nicht an, wenn es nichts umzuziehen gibt', async () => {
+    // Wer die App zum ersten Mal oeffnet, hat keinen Bestand -- und dann
+    // passiert hier gar nichts.
     const { client } = mitschrift();
     verbinde(client);
 
@@ -379,7 +517,7 @@ describe('der Bestand zieht um', () => {
     holeNach();
     await gleich();
 
-    expect(client.aufrufe.signInAnonymously).toBe(0);
+    expect(client.aufrufe.getSession).toBe(0);
     expect(korbGroesse()).toBe(0);
   });
 

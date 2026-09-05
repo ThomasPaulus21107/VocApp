@@ -1,9 +1,30 @@
 # Feature: Aus der anonymen Sitzung wird ein Konto
 
-**Status:** bereit — durchdacht, noch nicht gebaut
+**Status:** umgesetzt am 05.09.2026 um 18:30, PR #72 (Schema) und #73 (Code)
 **Wo im Code:** `anmelden.html` und `src/anmelden.js` — neu, dazu
-`vite.config.js`, `src/ui/menue.js`, `src/infra/backend.js`, und ein Schalter
-in der Supabase-Konfiguration (Sign-ups aus)
+`vite.config.js`, `src/ui/menue.js`, `src/infra/backend.js`, die Migration
+`supabase/migrations/20260905183000_profile.sql` und zwei Schalter in der
+Supabase-Konfiguration (Sign-ups aus, anonyme Anmeldung aus)
+
+## Was beim Bauen dazukam
+
+Drei Dinge, die beim Durchdenken nicht dastanden:
+
+- **Der Wächter greift auf allen drei Seiten**, nicht nur beim Üben. Die
+  Statistikseiten lesen zwar nur aus `localStorage` — aber ein Kind, das über
+  das Menü dorthin kommt, versteht nicht, warum die eine Seite eine Anmeldung
+  verlangt und die andere nicht. Zwei Klassen von Seiten wären eine Regel, die
+  niemand erklären kann.
+- **Ohne Umgebungsvariablen greift er gar nicht.** `verlangeSitzung()` gibt
+  dann `true` zurück, und die App läuft wie vorher ohne Server. Ein im
+  Workflow vergessenes Secret kostet damit die Sicherung und nicht das Üben —
+  ein Anmeldeformular, das nichts anmelden kann, wäre die schlechtere Antwort.
+- **Die Oberflächen-Tests laufen jetzt mit `--mode test`** gegen eine
+  erfundene Supabase-Adresse aus `.env.test`, und `playwright.config.js`
+  schiebt ihnen eine erfundene Sitzung unter. Vorher wäre derselbe Testlauf
+  lokal gegen `VocApp TEST` gelaufen und in der CI gegen gar nichts — also
+  zweimal verschieden, und das ist kein Test. Nebenbei sind damit alle 52
+  Oberflächen-Tests ein Nachweis, dass der Wächter richtig sitzt.
 
 Der Anfang von Phase 2. Ab hier gehört ein Lernstand einer **Person** und nicht
 mehr einem Browser.
@@ -43,7 +64,7 @@ bestätigen.
 **Das ist der beste Datenschutz, den dieses Feature haben kann: wir sammeln
 keine einzige Kontaktadresse eines fremden Kindes ein.** Was nicht da ist, kann
 nicht abfließen, nicht falsch adressiert werden und nicht gelöscht werden
-müssen. Siehe [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md).
+müssen. Siehe [Wenn fremde Kinder mitüben](../feature-request-kinderdaten.md).
 
 Als lokalen Teil nimmt man **das Pseudonym, nie den Klarnamen** — dieselbe
 Regel wie beim Anzeigenamen weiter unten. `matilda-p@…` ist kein Pseudonym.
@@ -132,7 +153,7 @@ Gerätenamen, aber eine Person.
 **Was das noch nicht heißt:** „auf dem Laptop weitermachen, wo das Telefon
 aufgehört hat". Der angezeigte Lernstand kommt weiter aus `localStorage`, einer
 je Gerät. Das umzudrehen ist
-[Der Server wird die Wahrheit](feature-request-server-ist-die-wahrheit.md).
+[Der Server wird die Wahrheit](../feature-request-server-ist-die-wahrheit.md).
 Dieses Feature ist dessen Voraussetzung, nicht schon sein Ergebnis — wer das
 verwechselt, hält das Ausbleiben der Synchronisierung für einen Fehler.
 
@@ -181,7 +202,7 @@ es ein normales Konto wie jedes andere.
 
 **Welche uid ihre ist, steht seit dem 04.09.2026 fest** und ist unten
 aufgeschrieben. Vorher war das eine Suche: seit dem
-[Umzug des Bestands](implemented/feature-umzug-des-bestands-2026-08-30-1815.md)
+[Umzug des Bestands](feature-umzug-des-bestands-2026-08-30-1815.md)
 liegen mehrere anonyme Nutzer in `VocApp`, einer je Gerät, und welcher ihrer
 war, stand nur in der Tabelle.
 
@@ -200,7 +221,7 @@ an nichts.
 | Streuzeilen | fünf weitere uids | je ein Gerät, keins mit Umzug | 15 bis 60 Zeilen, zusammen 47 Antworten |
 
 **Die zwei Gerätenamen je uid sind kein zweites Gerät**, sondern der
-[Umzug des Bestands](implemented/feature-umzug-des-bestands-2026-08-30-1815.md):
+[Umzug des Bestands](feature-umzug-des-bestands-2026-08-30-1815.md):
 er schrieb den mitgebrachten Vorrat unter `umzug-<geraet>`, und diese Zeilen
 sind ausnahmslos Antworten — 140, 205 und 44 Zeilen, 140, 205 und 44 Antworten.
 Jede dieser uids ist also **genau ein Browser-Speicher**, und genau das macht
@@ -348,7 +369,7 @@ einen Ausnahme oben, und die macht Thomas von Hand.
   mehr nicht.
 - **Ein Pseudonym als Anzeigename** in einer kleinen `profile`-Tabelle (uid,
   pseudonym). **Klarnamen kommen nicht hinein**, siehe
-  [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md).
+  [Wenn fremde Kinder mitüben](../feature-request-kinderdaten.md).
 
   Das Pseudonym ist seit dem 29.08.2026 **tragend und nicht mehr Zierde**: alle
   sehen den Fortschritt aller, und das Pseudonym ist genau das, woran sie
@@ -361,7 +382,7 @@ einen Ausnahme oben, und die macht Thomas von Hand.
 
 Alles, wofür ein anderer den Namen sehen müsste: **Rangliste, Missionen,
 userübergreifender Punktestand.** Das hängt an der Frage *was ist ein Punkt?*
-im [Backlog](backlog.md) und wird hier nicht angefasst — auch nicht „schon mal
+im [Backlog](../backlog.md) und wird hier nicht angefasst — auch nicht „schon mal
 vorbereitet". Die `profile`-Tabelle bekommt deshalb genau zwei Spalten.
 
 ## Die Abnahme
@@ -382,14 +403,14 @@ vorbereitet". Die `profile`-Tabelle bekommt deshalb genau zwei Spalten.
 ## Voraussetzung
 
 Phase 1 vollständig, also
-[die Naht](implemented/feature-backend-naht-2026-08-29-2225.md),
-[die Tabelle](implemented/feature-ereignistabelle-2026-08-30-0815.md),
-[das Melden](implemented/feature-ereignisse-melden-2026-08-30-1000.md) und
-[der Umzug](implemented/feature-umzug-des-bestands-2026-08-30-1815.md).
+[die Naht](feature-backend-naht-2026-08-29-2225.md),
+[die Tabelle](feature-ereignistabelle-2026-08-30-0815.md),
+[das Melden](feature-ereignisse-melden-2026-08-30-1000.md) und
+[der Umzug](feature-umzug-des-bestands-2026-08-30-1815.md).
 
 ## Was danach kommt
 
 Zwei Dinge, unabhängig voneinander:
-[Der Server wird die Wahrheit](feature-request-server-ist-die-wahrheit.md) und —
+[Der Server wird die Wahrheit](../feature-request-server-ist-die-wahrheit.md) und —
 **bevor das erste fremde Kind mitübt** —
-[Wenn fremde Kinder mitüben](feature-request-kinderdaten.md).
+[Wenn fremde Kinder mitüben](../feature-request-kinderdaten.md).

@@ -15,13 +15,15 @@ export default defineConfig({
 
   build: {
     rollupOptions: {
-      // Zwei Seiten, zwei Einstiegspunkte. Mehr braucht es nicht -- kein
-      // Router, keine neue Abhängigkeit. Wer eine dritte Seite baut, trägt
-      // sie hier ein.
+      // Eine Seite, ein Einstiegspunkt. Mehr braucht es nicht -- kein
+      // Router, keine neue Abhängigkeit. Wer eine weitere Seite baut, trägt
+      // sie hier ein; wer das vergisst, merkt es erst am Deploy, weil der
+      // Dev-Server sie trotzdem ausliefert.
       input: {
         index: resolve(import.meta.dirname, 'index.html'),
         fortschritt: resolve(import.meta.dirname, 'fortschritt.html'),
         fleiss: resolve(import.meta.dirname, 'fleiss.html'),
+        anmelden: resolve(import.meta.dirname, 'anmelden.html'),
       },
     },
   },
