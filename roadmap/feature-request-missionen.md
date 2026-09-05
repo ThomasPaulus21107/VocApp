@@ -121,7 +121,7 @@ zeigt, was herauskommt.
 
 ## Voraussetzung
 
-[Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md) und
+[Aus der anonymen Sitzung wird ein Konto](implemented/feature-konten-2026-09-05-1830.md) und
 [Der Server wird die Wahrheit](feature-request-server-ist-die-wahrheit.md) —
 ohne Konten gibt es niemanden, mit dem man etwas gemeinsam hat, und ohne den
 Rollentausch keine verlässliche Summe.

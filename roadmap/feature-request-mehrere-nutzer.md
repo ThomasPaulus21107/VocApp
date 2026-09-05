@@ -20,7 +20,7 @@ einzeln baubar und einzeln mergebar:
 | 2 | [Die Ereignistabelle mit RLS](implemented/feature-ereignistabelle-2026-08-30-0815.md) | `supabase/schema.sql` |
 | 3 | [Jede Antwort geht zum Server](implemented/feature-ereignisse-melden-2026-08-30-1000.md) | `melde()`, Ausgangskorb, Anschlüsse in `app.js` |
 | 4 | [Der Bestand zieht um](implemented/feature-umzug-des-bestands-2026-08-30-1815.md) | den vorhandenen `verlauf` einmalig hochschieben |
-| 5 | [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md) | Anmeldung |
+| 5 | [Aus der anonymen Sitzung wird ein Konto](implemented/feature-konten-2026-09-05-1830.md) | Anmeldung |
 | 6 | [Der Server wird die Wahrheit](feature-request-server-ist-die-wahrheit.md) | `lade()`, Zustand aus Ereignissen |
 | 7 | [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md) | Löschen, Pseudonyme, der eine Satz |
 
@@ -174,7 +174,7 @@ Sitzungen aus und gibt Zahlen zurück, keine Zeilen.
 Daraus folgen zwei Dinge, die anderswo stehen:
 
 - **Das Pseudonym ist jetzt tragend** — es ist das, was die anderen sehen.
-  Siehe [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md).
+  Siehe [Aus der anonymen Sitzung wird ein Konto](implemented/feature-konten-2026-09-05-1830.md).
 - **Die Datenschutzseite muss es sagen.** „Nur du siehst deinen Stand" stimmt
   nicht mehr. Siehe [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md).
 
@@ -182,7 +182,7 @@ Daraus folgen zwei Dinge, die anderswo stehen:
 
 - [x] **Was ist ein Punkt** — oben beantwortet.
 - [x] **Wer legt Konten an** — entschieden in
-      [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md):
+      [Aus der anonymen Sitzung wird ein Konto](implemented/feature-konten-2026-09-05-1830.md):
       Thomas, von Hand, mit einem Link je Kind und ohne Mailanbindung.
 - [x] **Wer darf wessen Fortschritt sehen** — oben beantwortet.
 - [ ] **Wie aus den Zahlen eine Würdigung wird.** Steht als eigene Datei in

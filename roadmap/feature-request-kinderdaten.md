@@ -22,7 +22,7 @@ darunter braucht es die der Eltern. Praktisch heißt das vier Dinge:
 - **Die Mailadresse der Eltern**, nicht die der Kinder. Das Konto gehört
   formal den Eltern, geübt wird vom Kind.
 - **Pseudonyme statt Klarnamen.** Die `profile`-Tabelle aus
-  [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md) nimmt
+  [Aus der anonymen Sitzung wird ein Konto](implemented/feature-konten-2026-09-05-1830.md) nimmt
   gar nichts anderes entgegen. Seit dem 29.08.2026 trägt das Pseudonym mehr
   als vorher: es ist das, woran die anderen Kinder einander erkennen.
 - **Ein Löschknopf, der wirklich löscht.**
@@ -75,7 +75,7 @@ wenn es so weit ist.
 
 ## Voraussetzung
 
-[Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md).
+[Aus der anonymen Sitzung wird ein Konto](implemented/feature-konten-2026-09-05-1830.md).
 
 ## Hängt damit zusammen
 

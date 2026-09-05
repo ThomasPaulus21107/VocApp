@@ -111,7 +111,7 @@ Am 30.08.2026 abends auf zwei Geräten ausgeführt, MacBook und Matildas iPhone.
   Speicher die App einmal öffnet.**
 - **Jedes Gerät ist ein eigener anonymer Nutzer.** Die Bestände liegen also
   unter mehreren uids. Zusammengeführt wird nichts — das ist Sache von
-  [Aus der anonymen Sitzung wird ein Konto](../feature-request-konten.md), und
+  [Aus der anonymen Sitzung wird ein Konto](feature-konten-2026-09-05-1830.md), und
   zwar von Hand.
 - **Neun Stunden Überschneidung.** Das Melden lief seit 10:00, der Umzug erst
   ab 18:15; was dazwischen beantwortet wurde, steht sowohl als reguläre Zeile
@@ -128,5 +128,5 @@ Am 30.08.2026 abends auf zwei Geräten ausgeführt, MacBook und Matildas iPhone.
 
 Phase 1 ist fertig. **Ein paar Tage still laufen lassen** und nachsehen, ob die
 Zeilen ankommen, bevor
-[Aus der anonymen Sitzung wird ein Konto](../feature-request-konten.md)
+[Aus der anonymen Sitzung wird ein Konto](feature-konten-2026-09-05-1830.md)
 beginnt.

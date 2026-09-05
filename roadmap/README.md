@@ -83,6 +83,7 @@ Von unten nach oben, neueste zuerst.
 
 | Feature | Wann |
 |---|---|
+| [Aus der anonymen Sitzung wird ein Konto](implemented/feature-konten-2026-09-05-1830.md) | 05.09. 18:30 |
 | [Jede Antwort geht zum Server](implemented/feature-ereignisse-melden-2026-08-30-1000.md) | 30.08. 10:00 |
 | [Die Ereignistabelle mit Row Level Security](implemented/feature-ereignistabelle-2026-08-30-0815.md) | 30.08. 08:15 |
 | [Test und Produktion](implemented/feature-releases-2026-08-30-0803.md) | 30.08. 08:03 |
@@ -129,7 +130,8 @@ Von unten nach oben, neueste zuerst.
 
 Sieben Dateien, die zusammengehören: erst die Datenbank, dann die Anmeldung.
 Jede ist einzeln baubar und einzeln mergebar — deshalb sind es sieben und
-nicht eine. Refined am 29.08.2026, nachdem Supabase eingerichtet war; die
+nicht eine. **Sechs davon stehen** (1 bis 5 und 10); sie stehen mit
+Datum oben in der Tabelle der gebauten Features. Refined am 29.08.2026, nachdem Supabase eingerichtet war; die
 Vorgeschichte steht in
 [Ob die App mehrere Nutzer kennt](feature-request-mehrere-nutzer.md).
 
@@ -141,7 +143,7 @@ Vorgeschichte steht in
            └──▶ 10 releases ✓                                │
                                                              ▼
                             ┌──▶ 6 server-ist-die-wahrheit ──▶ 8 missionen
-                 5 konten ──┼──▶ 7 kinderdaten                    │
+               5 konten ✓ ──┼──▶ 7 kinderdaten                    │
                             └──▶ 11 hosting (Vercel)              ▼
                                                           9 wuerdigung (offen)
 ```
@@ -153,14 +155,20 @@ gesichert werden kann.
 **Die Beobachtung danach ist gelaufen und am 04.09.2026 ausgewertet:** an vier
 von fünf Tagen wurde geübt, die letzte Zeile kam am Abend vorher an, insgesamt
 1397. Die Sicherung hat also fünf Tage lang unbemerkt funktioniert — genau das
-sollte sie zeigen. **Damit ist 5 frei.**
+sollte sie zeigen. **Damit war 5 frei, und seit dem 05.09.2026 ist es gebaut.**
+
+**Phase 2 hat damit angefangen.** Ein Lernstand gehört ab jetzt einer Person
+und keinem Browser mehr: die anonyme Anmeldung ist weg, das Formular in
+`anmelden.html` ist der einzige Weg herein. Was das noch **nicht** heißt —
+auf dem Laptop weitermachen, wo das Telefon aufgehört hat. Der angezeigte
+Stand kommt weiter aus `localStorage`; das umzudrehen ist Datei 6.
 
 Zwei Nebenbefunde stehen dabei fest und gehören in die Konten-Arbeit:
 
 - **Matildas uid ist bekannt** und hat 569 Zeilen. Sie bekommt Adresse und
   Passwort; die übrigen sechs Nutzer in `VocApp` sind Streuzeilen ohne Besitzer,
   unter anderem von Klicks auf die neue Adresse. Seit dem 05.09.2026 steht die
-  uid in [Konten](feature-request-konten.md) — mitsamt den Geräte-Ids und dem
+  uid in [Konten](implemented/feature-konten-2026-09-05-1830.md) — mitsamt den Geräte-Ids und dem
   SQL zum Nachzählen. Aufgeschrieben, weil eine anonyme uid keinen Namen trägt
   und sich später nicht mehr erraten lässt. **Am 05.09.2026 kam eine zweite
   Entscheidung dazu:** was vom MacBook stammt, wird mit Thomas' Konto
@@ -175,7 +183,6 @@ Zwei Nebenbefunde stehen dabei fest und gehören in die Konten-Arbeit:
 
 | # | Feature | Wer |
 |---|---|---|
-| 5 | [Aus der anonymen Sitzung wird ein Konto](feature-request-konten.md) | Thomas, Entscheidung: wer legt Konten an |
 | 6 | [Der Server wird die Wahrheit](feature-request-server-ist-die-wahrheit.md) | Thomas |
 | 7 | [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md) | Thomas |
 | 8 | [Gemeinsame Lernmissionen](feature-request-missionen.md) | Thomas, Ziele Matilda |
@@ -188,12 +195,17 @@ reihen sich nach 1 und 2 ein:
 |---|---|---|
 | 11 | [GitHub Pages ablösen](feature-request-hosting.md) | Thomas |
 
-**Datei 11 darf nicht vor 1–5 kommen.** Ein Adresswechsel leert
-`localStorage` — und dort liegt nicht nur der Lernstand, sondern auch der
-Sitzungstoken. Der ist bei einem anonymen Nutzer der einzige Ausweis: ohne ihn
-gehören die Zeilen auf dem Server einer uid, in die sich niemand mehr anmelden
-kann. Erst ein Konto mit Mailadresse (Datei 5) macht den Umzug harmlos. Der
-ganze Grund steht in der Datei.
+**Datei 11 durfte nicht vor 1–5 kommen, und seit dem 05.09.2026 darf sie.**
+Ein Adresswechsel leert `localStorage` — und dort liegt nicht nur der
+Lernstand, sondern auch der Sitzungstoken. Der war bei einem anonymen Nutzer
+der einzige Ausweis: ohne ihn gehörten die Zeilen auf dem Server einer uid, in
+die sich niemand mehr anmelden kann. **Mit einem Konto ist er nur noch eine
+Abkürzung** — das Kind tippt zwei Felder und ist auf der neuen Adresse wieder
+bei seinen Zeilen. Der ganze Grund steht in der Datei.
+
+**Das ist die eigentliche Nachricht von Schritt 5:** der Umzug zu Vercel ist
+entsperrt. Er ist damit nicht gemacht, und die Reihenfolge darin bleibt heikel
+genug für eine eigene Datei.
 
 Darauf bauen die letzten beiden auf, möglich geworden, seit *„Was ist ein
 Punkt?"* am 29.08.2026 beantwortet ist. **Datei 9 ist die einzige der neun, die

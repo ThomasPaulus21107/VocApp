@@ -55,7 +55,7 @@ niemand ein zweites Mal sucht:
   [Wenn fremde Kinder mitüben](feature-request-kinderdaten.md).
 
 Sinnvoll wird es frühestens, wenn Vercel die Produktion ist — also nach den
-[Konten](feature-request-konten.md), zusammen mit dem Rest dieser Datei. Der
+[Konten](implemented/feature-konten-2026-09-05-1830.md), zusammen mit dem Rest dieser Datei. Der
 Einbau wäre dann ein `inject()` beim Start, mehr nicht.
 
 ## Zu entscheiden

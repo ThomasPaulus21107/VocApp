@@ -99,23 +99,48 @@ Alles hier laeuft mit dem **Publishable Key** — dem oeffentlichen. Ein Secret
 Key wird dafuer nie gebraucht, und wer eines dieser Rezepte damit ausfuehrt,
 prueft nicht die Sicherheit, sondern haengt sie aus.
 
-### Ist die anonyme Anmeldung an?
+### Sind die Schalter richtig gestellt?
 
-Ohne einen Nutzer anzulegen:
+Beide stehen in derselben Antwort, und beide muessen seit den Konten
+**aus** sein:
 
 ```bash
 curl -s "$URL/auth/v1/settings" -H "apikey: $KEY" \
-  | python3 -c "import sys,json; print(json.load(sys.stdin)['external']['anonymous_users'])"
+  | python3 -c "import sys,json; d=json.load(sys.stdin); \
+      print('anonym:  ', d['external']['anonymous_users']); \
+      print('sign-ups:', not d['disable_signup'])"
 ```
 
-`True` heisst an. Steht dort `False`, meldet sich die App nie an — **ohne
-Fehler und ohne Meldung**, sie laeuft einfach ohne Sicherung weiter.
+| | erwartet | was ein `True` bedeutet |
+|---|---|---|
+| **anonym** | `False` | jeder Seitenaufruf koennte sich wieder eine eigene uid holen |
+| **sign-ups** | `False` | jeder im Netz kann sich ein Konto anlegen, am Formular vorbei |
+
+**Bis zum 05.09.2026 war `anonym` genau andersherum richtig.** In Phase 1 gab
+es keine Anmeldung, und eine anonyme Sitzung war das Einzige, was RLS etwas zu
+pruefen gab. Wer eine alte Notiz liest, liest also die alte Erwartung.
+
+Der Sign-up-Schalter ist die eigentliche Absicherung, nicht die fehlende
+Schaltflaeche: die API ist immer da, auch wenn kein Formular auf sie zeigt.
+Nachweisen laesst er sich auch direkt — ein `signUp` mit dem Publishable Key
+muss abgelehnt werden:
+
+```bash
+curl -s -o /dev/null -w '%{http_code}\n' -X POST "$URL/auth/v1/signup" \
+  -H "apikey: $KEY" -H 'Content-Type: application/json' \
+  -d '{"email":"probe@konten.vocappulary.online","password":"probe-probe-probe"}'
+```
+
+Erwartet wird **422**. Kommt eine 200, steht gerade ein Konto in `auth.users`,
+das dort nicht hingehoert. **Das ist die Abnahme, die man vergisst**, weil
+nichts kaputtgeht, wenn sie fehlschlaegt.
 
 ### Haelt Row Level Security?
 
-Der Test, der ueber "gebaut oder nicht gebaut" entscheidet. Zwei anonyme
-Sitzungen anlegen (`POST /auth/v1/signup` mit `{}`), mit der ersten ein paar
-Zeilen schreiben, mit der **zweiten** lesen:
+Der Test, der ueber "gebaut oder nicht gebaut" entscheidet. **Seit die
+anonyme Anmeldung aus ist, braucht er zwei echte Konten** — am einfachsten
+zwei Wegwerfkonten in `VocApp TEST`, angelegt mit `admin.createUser`. Mit dem
+ersten ein paar Zeilen schreiben, mit dem **zweiten** lesen:
 
 ```
 Sitzung A: select('*') -> die eigenen Zeilen

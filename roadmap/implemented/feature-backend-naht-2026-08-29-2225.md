@@ -53,7 +53,7 @@ Nutzer an — mit einer echten `auth.uid()`, nur ohne Mailadresse. Damit gilt:
   Nutzer; er bekommt nachträglich eine Mailadresse und behält dieselbe uid mit
   allen Zeilen. Weil es ohne Mailanbindung keine Bestätigungsmail gibt, macht
   Thomas diesen einen Handgriff im Dashboard — siehe
-  [Aus der anonymen Sitzung wird ein Konto](../feature-request-konten.md).
+  [Aus der anonymen Sitzung wird ein Konto](feature-konten-2026-09-05-1830.md).
 
 Die Alternative wäre ein selbst erfundener Geräteschlüssel in `localStorage`
 gewesen. Der hat den Fehler, dass RLS nichts prüfen kann: die Tabelle wäre für
