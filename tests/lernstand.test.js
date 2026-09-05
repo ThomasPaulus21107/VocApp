@@ -4,7 +4,7 @@ import { describe, it, expect } from 'vitest';
 import {
   merkeGezogen, verrechne, zuletztVon, schluessel,
   score, verteile, faecherVon, uebersicht, stufe, verlaufZu, punkteVon, runden, PAUSE_MS, fleiss, serie,
-  farbstufe, reifegrad, FARBSTUFEN, TIEFGRUEN_AB,
+  farbstufe, antwortstufe, reifegrad, FARBSTUFEN, TIEFGRUEN_AB, ANTWORT_MAX,
   SICHER_AB_ANTWORTEN,
   SICHER_AB_PROZENT, TAGE_MAX,
   AUSGAENGE, LEER, VERLAUF_MAX,
@@ -631,6 +631,38 @@ describe('farbstufe', () => {
   it('nimmt einen unbrauchbaren Wert als rot, statt zu rechnen', () => {
     expect(farbstufe(null)).toBe(0);
     expect(farbstufe(undefined)).toBe(0);
+  });
+});
+
+
+describe('antwortstufe', () => {
+  // Dieselben elf Toene, anderer Deckel: hier zaehlt EINE Antwort, nicht das,
+  // was eine Vokabel ueber Wochen gesammelt hat.
+
+  it('faengt bei rot an, wenn die Antwort nichts brachte', () => {
+    expect(antwortstufe(0)).toBe(0);
+  });
+
+  it('gibt der Antwort in der Arbeit das dunkle Gruen', () => {
+    // 1,0 mal dem Bonus von 20 Prozent -- ohne Tipp, ohne zweite Chance,
+    // ohne Rueckmeldung getroffen. Mehr geht nicht.
+    expect(antwortstufe(ANTWORT_MAX)).toBe(FARBSTUFEN - 1);
+  });
+
+  it('laesst die perfekte Antwort im Uebungsblatt eine Stufe darunter', () => {
+    // Gewollt: tiefgruen ist der staerkere Befund, und dafuer gibt es den
+    // Bonus. 1,0 von 1,2 ist Stufe 9.
+    expect(antwortstufe(1)).toBe(9);
+  });
+
+  it('legt den zweiten Versuch in die untere Haelfte', () => {
+    // 0,5 von 1,2 -- knapp unter der Mitte, und das stimmt auch so.
+    expect(antwortstufe(0.5)).toBe(5);
+  });
+
+  it('nimmt einen unbrauchbaren Wert als rot, statt zu rechnen', () => {
+    expect(antwortstufe(null)).toBe(0);
+    expect(antwortstufe(undefined)).toBe(0);
   });
 });
 

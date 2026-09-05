@@ -76,6 +76,35 @@ meinen.** Damit das niemand gegeneinander rechnet, sagt der Satz oben jetzt
 „über 75 % der **möglichen** Punkte getroffen", und unter dem Balken steht eine
 Zeile, die die Zahl hinter den Vokabeln erklärt.
 
+## Nachtrag am 05.09.2026: die dritte Zahl wird ein Punkt
+
+Eine Prozentzahl stand noch woanders — **aufgeklappt, hinter jeder einzelnen
+Antwort.** Beim Nachlesen einer Sitzung standen damit zwei Zahlen untereinander,
+die verschiedene Bezugsgrößen hatten: im Kopf der Zeile der Reifegrad der
+Vokabel, darunter der Wert einer Antwort. Derselbe Fehler wie oben, eine Ebene
+tiefer.
+
+**Auch das ist jetzt ein Punkt.** `antwortstufe(punkte)` in `lernstand.js`
+rechnet dieselben elf Töne, nur mit dem Deckel **einer Antwort**:
+
+```
+ANTWORT_MAX = BONUS_ARBEIT = 1,2
+```
+
+Zwei Deckel auf einer Skala, und das ist der ganze Unterschied: `farbstufe()`
+misst, was eine Vokabel über Wochen gesammelt hat (3,0), `antwortstufe()` misst
+einen einzigen Moment (1,2).
+
+**Eine perfekte Antwort im Übungsblatt wird damit Stufe 9 von 10 und nicht
+tiefgrün** — gewollt. Tiefgrün ist der stärkere Befund: ohne Tipp, ohne zweite
+Chance, ohne Rückmeldung getroffen. Genau dafür gibt es den Bonus, und hier
+sieht man ihn zum ersten Mal.
+
+**Die Zahl ist nicht weg, sie ist leise geworden:** als `title` fürs Zeigen mit
+der Maus und als `aria-label` für den Screenreader — „1 von 1,2 Punkten". Ohne
+die beiden bliebe von der Zeile für ihn nur Datum und Vermerk übrig; eine Farbe
+allein sagt niemandem etwas, der sie nicht sieht.
+
 ## Zwanzig Prozent Bonus in der Arbeit
 
 `BONUS_ARBEIT` und `lernpunkte()` in `modus.js`. In der Arbeit gibt es keinen

@@ -162,7 +162,14 @@ test.describe('Dein Fortschritt', () => {
     await expect(verlauf).toBeVisible();
     // Eine Runde, eine Antwort, und die sass auf Anhieb.
     await expect(verlauf.locator('.fach__antwort')).toHaveCount(1);
-    await expect(verlauf.locator('.fach__punkte')).toHaveText('100 %');
+
+    // Hinter der Antwort steht ein Punkt und keine Prozentzahl. Im
+    // Uebungsblatt ist 1,0 das Hoechste, das dunkle Gruen bleibt der Arbeit
+    // vorbehalten -- also Stufe 9 von 10.
+    const punkt = verlauf.locator('.fach__punkt');
+    await expect(punkt).toHaveClass(/fach__punkt--9/);
+    // Die Zahl ist nicht weg, sie ist nur leise: fuer den Screenreader.
+    await expect(punkt).toHaveAttribute('aria-label', '1 von 1,2 Punkten');
   });
 });
 

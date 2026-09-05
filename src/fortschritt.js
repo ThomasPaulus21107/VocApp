@@ -6,7 +6,7 @@ import verben from '../data/unregelmaessige-verben.json';
 import { einheiten } from './domain/auswahl.js';
 import {
   uebersicht, verteile, stufe, verlaufZu, punkteVon, schluessel,
-  farbstufe, reifegrad, FARBSTUFEN, TIEFGRUEN_AB,
+  farbstufe, antwortstufe, reifegrad, FARBSTUFEN, TIEFGRUEN_AB, ANTWORT_MAX,
   LEER, SICHER_AB_PROZENT, SICHER_AB_ANTWORTEN,
 } from './domain/lernstand.js';
 import { FORM_NAME } from './ui/formnamen.js';
@@ -88,6 +88,23 @@ function span(klasse, text) {
   return knoten;
 }
 
+/**
+ * Der Punkt hinter einer einzelnen Antwort: dieselben elf Farben wie im
+ * Balken, nur misst er einen Moment und keine Woche.
+ *
+ * Die Zahl geht dabei nicht verloren, sie wird nur leise: als `title` fürs
+ * Zeigen mit der Maus und als `aria-label` für den Screenreader. Ohne die
+ * beiden bliebe von der Zeile für ihn nur Datum und Vermerk übrig -- eine
+ * Farbe allein sagt niemandem etwas, der sie nicht sieht.
+ */
+function antwortpunkt(punkte) {
+  const knoten = span(`fach__punkt fach__punkt--${antwortstufe(punkte)}`, '');
+  const text = `${punkte.toLocaleString('de-DE')} von ${ANTWORT_MAX.toLocaleString('de-DE')} Punkten`;
+  knoten.title = text;
+  knoten.setAttribute('aria-label', text);
+  return knoten;
+}
+
 /** "29.08. um 16:40" -- wann eine einzelne Antwort gefallen ist. */
 function wannGenau(zeit) {
   const wann = new Date(zeit);
@@ -98,8 +115,13 @@ function wannGenau(zeit) {
 
 /**
  * Was der Verlauf über diese eine Form weiß: wann sie dran war und was sie
- * dabei geholt hat. Der Prozentwert ist derselbe wie der Score, nur für eine
- * einzelne Antwort -- ganz richtig ist 100 %, im zweiten Anlauf 50 %.
+ * dabei geholt hat.
+ *
+ * Was sie geholt hat, ist ein Punkt in derselben Skala wie oben -- und keine
+ * Prozentzahl mehr. Zwei Prozentzahlen untereinander, die verschiedene Dinge
+ * meinen, waren beim Nachlesen einer einzelnen Sitzung nicht auseinanderzu-
+ * halten: im Kopf der Zeile der Reifegrad der VOKABEL, darunter der Wert
+ * EINER Antwort. Als Farbe stellt sich die Frage nicht mehr.
  */
 function historie(name) {
   const eintraege = verlaufZu(stand, name);
@@ -124,7 +146,7 @@ function historie(name) {
     if (eintrag.wiederholung) knoten.append(span('fach__vermerk', 'Wiederholung'));
     else if (eintrag.modus === 'arbeit') knoten.append(span('fach__vermerk', 'Arbeit'));
 
-    knoten.append(span('fach__punkte', `${Math.round(punkteVon(eintrag) * 100)} %`));
+    knoten.append(antwortpunkt(punkteVon(eintrag)));
     liste.append(knoten);
   }
   return liste;
