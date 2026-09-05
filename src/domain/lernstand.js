@@ -11,6 +11,7 @@
 // Runde danebenging, sofort. Hier geht es um die Geschichte ueber Wochen.
 
 import { punkteFuerKarte } from './note.js';
+import { BONUS_ARBEIT } from './modus.js';
 
 /** Wie eine Karte ausgegangen ist. Mehr Faelle gibt es nicht. */
 export const AUSGAENGE = {
@@ -316,6 +317,32 @@ export function farbstufe(summe) {
 export function reifegrad(summe) {
   if (!Number.isFinite(summe) || summe <= 0) return 0;
   return Math.min(100, Math.round((summe / TIEFGRUEN_AB) * 100));
+}
+
+// Was EINE Antwort hoechstens wert ist: 1 im Uebungsblatt, mit dem Bonus 1,2
+// in der Arbeit. Das ist das dunkle Gruen.
+//
+// Eine perfekte Antwort im Uebungsblatt wird damit Stufe 9 von 10 und nicht
+// tiefgruen -- gewollt. Tiefgruen ist der staerkere Befund: ohne Tipp, ohne
+// zweite Chance, ohne Rueckmeldung getroffen. Genau dafuer gibt es den Bonus.
+export const ANTWORT_MAX = BONUS_ARBEIT;
+
+/**
+ * Was eine EINZELNE Antwort wert war, als Farbstufe -- dieselbe Skala wie
+ * farbstufe(), nur mit dem Deckel einer Antwort statt dem einer Vokabel.
+ *
+ * Die zwei Deckel sind der ganze Unterschied, und er ist wichtig: farbstufe()
+ * misst, was eine Vokabel ueber Wochen gesammelt hat (3,0 Punkte), diese hier
+ * misst einen einzigen Moment (1,2 Punkte). Dieselben elf Farben, zwei
+ * Bezugsgroessen -- und deshalb steht die eine im Kopf einer Zeile und die
+ * andere in ihrer aufgeklappten Historie.
+ */
+export function antwortstufe(punkte) {
+  if (!Number.isFinite(punkte) || punkte <= 0) return 0;
+  if (punkte >= ANTWORT_MAX) return FARBSTUFEN - 1;
+
+  const schritt = ANTWORT_MAX / (FARBSTUFEN - 1);
+  return Math.ceil(punkte / schritt);
 }
 
 export function verteile(stand, namen) {

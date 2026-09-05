@@ -42,7 +42,13 @@ Karte und Form, wann sie zuletzt dran war, und zieht die, die am längsten
 warten. Seit dem 29.08.2026 merkt sie sich auch, wie es ausging: je Einheit
 ein paar Zähler und die Summe der erreichten Kartenpunkte, dazu ein Verlauf
 der letzten 750 Antworten — alles in `localStorage`. Aus Summe geteilt durch
-Anzahl wird der **Score** je Vokabel, in derselben Währung wie die Note.
+Anzahl wird der **Score** je Vokabel, in derselben Währung wie die Note. Er
+entscheidet die Fächer-Einteilung; **gezeigt** wird er seit dem 05.09.2026
+nirgends mehr. Auf der Fortschrittsseite steht stattdessen die Punktsumme —
+als Farbe (`farbstufe()`, Deckel 3,0) und als Zahl daneben (`reifegrad()`),
+und hinter einer einzelnen Antwort als Punkt in derselben Skala
+(`antwortstufe()`, Deckel 1,2). Was jede der drei misst, steht in
+`roadmap/implemented/feature-farben-nach-punkten-2026-09-04-0645.md`.
 
 **Eine Quote entscheidet die Mischung einer Runde:** 6 noch nie geübte, 8 in
 Arbeit, 1 stabil gelernte (`QUOTE` in `auswahl.js`). Ohne sie waren sieben
