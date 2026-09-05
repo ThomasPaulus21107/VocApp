@@ -1,6 +1,6 @@
 # Feature: Aus der anonymen Sitzung wird ein Konto
 
-**Status:** umgesetzt am 05.09.2026 um 18:30, PR #PLATZHALTER
+**Status:** umgesetzt am 05.09.2026 um 18:30, PR #72 (Schema) und #73 (Code)
 **Wo im Code:** `anmelden.html` und `src/anmelden.js` — neu, dazu
 `vite.config.js`, `src/ui/menue.js`, `src/infra/backend.js`, die Migration
 `supabase/migrations/20260905183000_profile.sql` und zwei Schalter in der
