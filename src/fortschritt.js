@@ -12,6 +12,17 @@ import {
 import { FORM_NAME } from './ui/formnamen.js';
 import * as storage from './infra/storage.js';
 import { verbindeMenue } from './ui/menue.js';
+import * as backend from './infra/backend.js';
+
+// OHNE SITZUNG WIRD HIER NICHTS ANGEZEIGT. Die Statistikseiten lesen zwar nur
+// aus dem lokalen Speicher -- aber ein Kind, das über das Menü hierherkommt,
+// versteht nicht, warum die eine Seite eine Anmeldung verlangt und die andere
+// nicht. Fehlt der Server ganz, läuft alles wie bisher; die Begründung dazu
+// steht in infra/backend.js.
+//
+// Das `await` steht vor allem anderen: verbindeMenue() fragt gleich darunter,
+// wer angemeldet ist, und das weiß erst, wer nachgesehen hat.
+await backend.verlangeSitzung();
 
 // Wie viele Beispiele je Fach. Mehr wäre keine Übersicht mehr, sondern eine
 // zweite Vokabelliste -- die Menge darüber sagt ja schon, wie groß das Fach ist.

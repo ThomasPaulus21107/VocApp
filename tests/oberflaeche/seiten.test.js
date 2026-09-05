@@ -79,6 +79,22 @@ test.describe('Das Seitenmenue', () => {
     await expect(seite.locator('h1')).toHaveText('vocAPPulary.online');
   });
 
+  test('der Abmelden-Knopf fuehrt zurueck ans Formular', async ({ page: seite }) => {
+    // Und zwar von jeder Seite aus: der Abschnitt "Konto" steht in allen drei
+    // HTML-Dateien und wird von derselben Datei verdrahtet.
+    await oeffneUebung(seite);
+    await oeffneMenue(seite);
+
+    await expect(seite.locator('#menue-konto')).toBeVisible();
+    await seite.locator('#menue-abmelden').click();
+
+    await expect(seite).toHaveURL(/anmelden\.html$/);
+
+    // Und zurueck geht es nicht: die Sitzung ist weg, der Waechter greift.
+    await seite.goto('index.html');
+    await expect(seite).toHaveURL(/anmelden\.html$/);
+  });
+
   test('der Ton-Schalter merkt sich, wie er stand', async ({ page: seite }) => {
     await oeffneUebung(seite);
     await oeffneMenue(seite);

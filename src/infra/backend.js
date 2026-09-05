@@ -12,9 +12,10 @@
 // Ob am Kuechentisch der Ton an ist, gehoert dem Laptop. Ob `caught` sitzt,
 // gehoert Matilda und muss ihr auf jedes Geraet folgen.
 //
-// Diese Datei baut vorerst nur die LEITUNG: Client, Konfiguration, Sitzung.
-// Es fliesst noch nichts durch sie. Siehe
-// roadmap/feature-request-backend-naht.md.
+// Was durch diese Datei laeuft: die Sitzung (wer ist da), die Anmeldung (wie
+// kommt jemand herein) und der Postausgang (was geht raus). Was noch nicht
+// laeuft, ist die Gegenrichtung -- gelesen wird der Lernstand weiter aus
+// localStorage. Siehe roadmap/feature-request-server-ist-die-wahrheit.md.
 
 import { createClient } from '@supabase/supabase-js';
 // Der Ausgangskorb liegt im localStorage, und den kennt im Projekt genau eine
@@ -25,11 +26,29 @@ import * as storage from './storage.js';
  * Die API, die hier einmal vollstaendig stehen wird. Sie steht schon jetzt
  * hier, damit spaeter niemand die Form neu erfindet:
  *
- *   melde(e)      ein Ereignis ablegen und im Hintergrund senden  <- gebaut
- *   angemeldet()  die uid der laufenden Sitzung, oder null         <- gebaut
- *   starte()      Sitzung holen oder anonym anmelden               <- gebaut, intern
- *   lade()        einmal alles holen, danach synchron              <- feature-request-server-ist-die-wahrheit.md
+ *   melde(e)           ein Ereignis ablegen und im Hintergrund senden  <- gebaut
+ *   angemeldet()       die uid der laufenden Sitzung, oder null         <- gebaut
+ *   starte()           nachsehen, ob eine Sitzung da ist               <- gebaut, intern
+ *   anmelden(n, p)     Name und Passwort gegen eine Sitzung tauschen   <- gebaut
+ *   abmelden()         die Sitzung wegwerfen                          <- gebaut
+ *   pseudonym()        der eigene Anzeigename, oder null               <- gebaut
+ *   verlangeSitzung()  ohne Sitzung geht es zum Anmelden               <- gebaut
+ *   lade()             einmal alles holen, danach synchron             <- feature-request-server-ist-die-wahrheit.md
  */
+
+// Der Teil hinter dem @ einer Kontokennung. Er steht hier EINMAL, und das ist
+// der ganze Punkt: eine vergessene Kopie in einer zweiten Datei sperrte ein
+// Kind aus, und es faende nie heraus, warum.
+//
+// Die Kennung ist eine KENNUNG UND KEIN POSTFACH. Auf dieser Subdomaene steht
+// nie ein Mailserver; angelegt wird ein Konto mit `email_confirm: true`, es
+// wird nichts verschickt und es gibt nichts zu bestaetigen. Damit sammeln wir
+// von keinem fremden Kind eine Kontaktadresse ein -- was nicht da ist, kann
+// nicht abfliessen und nicht falsch adressiert werden.
+//
+// Auf dem Bildschirm steht sie nirgends: das Kind tippt "blauer-otter", den
+// Rest haengt anmelden() an. Siehe roadmap/feature-request-konten.md.
+const KONTEN_DOMAENE = 'konten.vocappulary.online';
 
 // Was im localStorage liegt. Alles drei ist wegwerfbar: der Korb steht auch
 // im lokalen Lernstand, und ein neues Geraet ist nur ein neuer Name.
@@ -89,42 +108,29 @@ export function verbinde(eigener) {
 }
 
 /**
- * Holt die Sitzung, oder legt eine anonyme an. Gibt die uid zurueck, oder
- * null, wenn es keinen Server gibt oder es nicht geklappt hat.
+ * Sieht nach, ob eine Sitzung da ist. Gibt die uid zurueck, oder null.
  *
- * WARUM ANONYM, obwohl es noch keine Anmeldung gibt: die Reihenfolge lautet
- * "erst die Datenbank, dann die Anmeldung", und dazwischen entsteht eine
- * Luecke -- wem gehoert eine Zeile, solange niemand angemeldet ist? Eine
- * anonyme Sitzung ist ein ECHTER Nutzer mit echter auth.uid(), nur ohne
- * Mailadresse. Damit greift RLS ab der ersten Zeile, und spaeter wird aus
- * demselben Nutzer ein Konto: dieselbe uid, alle Zeilen bleiben liegen.
+ * FRUEHER STAND HIER EIN signInAnonymously(), und es war richtig, solange es
+ * keine Anmeldung gab: eine anonyme Sitzung ist ein echter Nutzer mit echter
+ * auth.uid(), nur ohne Kennung. Damit griff RLS ab der ersten Zeile, und der
+ * Lernstand war ueber Wochen gesichert, bevor irgendjemand ein Konto hatte.
  *
- * Die Alternative -- ein selbst erfundener Geraeteschluessel -- haette den
- * Fehler, dass RLS nichts pruefen kann. Die Tabelle waere fuer jeden im Netz
- * les- und schreibbar.
+ * Seit es Konten gibt, faellt sie weg -- und zwar ganz. Ein Geraet ist kein
+ * Nutzer: solange jeder Browser sich seine eigene uid holt, gehoert ein
+ * Lernstand einem Speicher und nicht einem Kind, und niemand kann die beiden
+ * spaeter zusammenfuehren. Das Formular in anmelden.html ist ab hier der
+ * einzige Weg herein. Siehe roadmap/feature-request-konten.md.
  *
- * Wirft nie. Dieselbe Haltung wie in storage.js: ein fehlgeschlagenes
- * Anmelden darf die App nicht anhalten, es kostet nur die Sicherung.
+ * Wirft nie. Dieselbe Haltung wie in storage.js: eine fehlende Sitzung darf
+ * die App nicht anhalten, sie kostet nur die Sicherung.
  */
 export async function starte() {
   if (client === undefined) client = ausDerUmgebung();
   if (!client) return null;
 
   try {
-    // Erst nachsehen, ob schon eine da ist. Sonst entstuende bei jedem Start
-    // ein neuer anonymer Nutzer, und der Lernstand waere jedes Mal leer.
     const { data } = await client.auth.getSession();
-    if (data?.session?.user) {
-      nutzer = data.session.user.id;
-      return nutzer;
-    }
-
-    const { data: neue, error } = await client.auth.signInAnonymously();
-    // Der haeufigste Grund fuer einen Fehler hier ist ein Schalter im
-    // Dashboard: Auth -> Providers -> Anonymous sign-ins. Ohne ihn kommt 422.
-    if (error || !neue?.user) return null;
-
-    nutzer = neue.user.id;
+    nutzer = data?.session?.user?.id ?? null;
     return nutzer;
   } catch {
     return null;
@@ -134,6 +140,105 @@ export async function starte() {
 /** Die uid der laufenden Sitzung, oder null. Synchron -- nach dem Start. */
 export function angemeldet() {
   return nutzer;
+}
+
+/**
+ * Name und Passwort gegen eine Sitzung tauschen. true, wenn es geklappt hat.
+ *
+ * Das Kind tippt "blauer-otter"; die Domaene haengt diese Zeile an, und auf
+ * dem Bildschirm steht sie nirgends.
+ *
+ * NUR true ODER false, kein Fehlertext. Supabase unterscheidet "den Namen
+ * gibt es nicht" nicht von "das Passwort ist falsch", und das soll es auch
+ * nicht: ein Formular, das beides trennt, verraet jedem, der es ausprobiert,
+ * welche Pseudonyme es gibt. Das Kind liest ohnehin denselben Satz.
+ */
+export async function anmelden(name, passwort) {
+  if (client === undefined) client = ausDerUmgebung();
+  if (!client) return false;
+
+  try {
+    const { data, error } = await client.auth.signInWithPassword({
+      email: `${name}@${KONTEN_DOMAENE}`,
+      password: passwort,
+    });
+    if (error || !data?.user) return false;
+
+    nutzer = data.user.id;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Die Sitzung wegwerfen.
+ *
+ * WAS IM SPEICHER LIEGEN BLEIBT: Lernstand, Toene, Korb, Geraetename. Das ist
+ * Absicht und keine Vergesslichkeit -- storage.js gehoert dem GERAET,
+ * backend.js der PERSON, und die Tabelle ganz oben in dieser Datei sagt,
+ * warum das zwei Dinge sind. Wer sich abmeldet, gibt sein Konto zurueck, nicht
+ * den Laptop.
+ *
+ * Der Korb bleibt besonders bewusst liegen: was darin steht, ist beantwortet
+ * worden und gehoert der uid, die es beantwortet hat. Es geht raus, sobald
+ * dieselbe Person wieder da ist.
+ */
+export async function abmelden() {
+  nutzer = null;
+  if (!client) return;
+
+  try {
+    await client.auth.signOut();
+  } catch {
+    // Die Sitzung ist hier ohnehin schon vergessen. Bleibt der Token im
+    // Speicher liegen, faengt ihn der naechste getSession() wieder ein -- und
+    // das ist immer noch besser als eine Ausnahme beim Abmelden.
+  }
+}
+
+/**
+ * Der eigene Anzeigename aus `profile`, oder null.
+ *
+ * NULL IST KEIN FEHLER, sondern ein Konto, dem noch niemand ein Pseudonym
+ * gegeben hat. Angelegt werden die Zeilen im Dashboard; die Tabelle hat mit
+ * Absicht keine insert-Policy.
+ *
+ * Es kommt genau eine Zeile zurueck, dafuer sorgt RLS -- deshalb `maybeSingle`
+ * und kein Filter auf die eigene uid. Ein zweiter Ort, an dem "wem gehoert
+ * das" steht, waere ein zweiter Ort, an dem es falsch stehen kann.
+ */
+export async function pseudonym() {
+  if (!client) return null;
+
+  try {
+    const { data, error } = await client.from('profile').select('pseudonym').maybeSingle();
+    if (error) return null;
+    return data?.pseudonym ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Ohne Sitzung geht es zum Anmelden. true heisst: die Seite darf weiterlaufen.
+ *
+ * OHNE CLIENT KEIN ZWANG. Fehlen die Umgebungsvariablen, laeuft die App wie
+ * bisher ohne Server weiter -- das ist der Normalfall in den
+ * Oberflaechen-Tests und der Notfall, wenn jemand ein Secret im Workflow
+ * vergisst. Ein vergessenes Secret darf kein ausgesperrtes Kind ergeben; es
+ * kostet die Sicherung, nicht das Ueben.
+ *
+ * `replace` und nicht `href`: sonst fuehrte der Zurueck-Knopf auf die Seite,
+ * die gerade weggeschickt hat, und von dort wieder hierher.
+ */
+export async function verlangeSitzung(ziel = 'anmelden.html') {
+  if (client === undefined) client = ausDerUmgebung();
+  if (!client) return true;
+  if (await starte()) return true;
+
+  location.replace(ziel);
+  return false;
 }
 
 
@@ -218,10 +323,11 @@ let laeuft = false;
 /**
  * Leert den Korb, so weit es geht. Wirft nie und wartet auf niemanden.
  *
- * ANGEMELDET WIRD HIER, nicht beim Laden der Seite. Sonst legte jeder
- * Seitenaufruf einen anonymen Nutzer an -- ein neugieriger Klick, ein
- * Crawler, ein privates Fenster, jedes Mal eine Zeile in auth.users. Wer die
- * Seite nur ansieht, bekommt kein Konto; wer eine Karte beantwortet, schon.
+ * OHNE SITZUNG BLEIBT ALLES LIEGEN. Frueher meldete sich diese Stelle im
+ * Notfall selbst an -- anonym, damit ein Seitenaufruf allein noch kein Konto
+ * anlegt. Beides ist mit den Konten weg: angemeldet wird im Formular, und
+ * ohne Anmeldung kommt niemand bis zu einer Karte. Was hier ankommt, gehoert
+ * also immer schon jemandem.
  */
 async function versende() {
   if (laeuft) return;

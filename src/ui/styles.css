@@ -745,6 +745,27 @@ body {
   text-decoration: none;
 }
 
+/* Abmelden ist ein <button> und kein Link -- es fuehrt nicht woandershin,
+   es TUT etwas. Ein <a href> dafuer waere eine Zeile, die ein Browser
+   vorladen darf. Diese vier Angaben nehmen dem Knopf sein Knopf-Aussehen;
+   den Rest macht .menue__zeile, wie bei den Links daneben. */
+button.menue__zeile {
+  width: 100%;
+  font-family: inherit;
+  background: none;
+  border: none;
+  text-align: left;
+}
+
+/* Wer angemeldet ist. Leiser als die Zeilen darunter: es ist eine Auskunft
+   und nichts zum Anfassen -- und leer, solange dem Konto kein Pseudonym
+   gehoert. */
+.menue__zeile--wer {
+  margin: 0;
+  color: var(--leise);
+  cursor: default;
+}
+
 .menue__pfeil {
   color: var(--leise);
 }

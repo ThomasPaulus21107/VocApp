@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#9f5de4" />
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📇</text></svg>"
+    />
+
+    <!-- Dieselben vier Zeilen wie auf den anderen Seiten. Sie gehoeren
+         besonders hierher: wer die App vom Homebildschirm startet und dabei
+         ohne Sitzung ist, landet HIER -- und dann soll es aussehen wie die
+         App und nicht wie eine fremde Webseite. -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Vokabeln" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <title>Anmelden · vocAPPulary.online</title>
+  </head>
+
+  <!-- KEIN MENUE UND KEIN ZURUECK-LINK. Von hier fuehrt kein Weg an der
+       Anmeldung vorbei -- ein Link zurueck landete nur wieder hier, weil die
+       anderen Seiten ohne Sitzung selbst hierher schicken. -->
+  <body>
+    <main class="buehne">
+      <h1 class="titel">vocAPPulary.online</h1>
+
+      <section class="karte">
+        <p class="frage">Wer übt?</p>
+
+        <!-- Ein echtes <form>: dann schickt die Eingabetaste ab, und iOS
+             zeigt auf der Tastatur "Los" statt eines Zeilenumbruchs. -->
+        <form id="anmeldung" class="formular">
+          <label class="label" for="name">Dein Name</label>
+          <!-- DIE AUTOCOMPLETE-ATTRIBUTE SIND DAS FEATURE, nicht Beiwerk:
+               ohne sie bietet iOS das Passwort nicht im Schluesselbund an,
+               und dann tippt ein Zwoelfjaehriger es jedes Mal neu -- nach
+               einer Woche heisst es "aaa", oder die App fliegt vom
+               Homebildschirm. autocapitalize gehoert dazu, weil iOS sonst
+               "Blauer-otter" daraus macht und der Name nicht mehr passt. -->
+          <input
+            id="name"
+            class="eingabe"
+            name="name"
+            type="text"
+            autocomplete="username"
+            autocapitalize="none"
+            autocorrect="off"
+            spellcheck="false"
+            enterkeyhint="next"
+            required
+          />
+
+          <label class="label" for="passwort">Dein Passwort</label>
+          <input
+            id="passwort"
+            class="eingabe"
+            name="passwort"
+            type="password"
+            autocomplete="current-password"
+            enterkeyhint="go"
+            required
+          />
+
+          <!-- Kein Registrieren, kein "Passwort vergessen", kein "angemeldet
+               bleiben". Konten legt Thomas an, die Sitzung bleibt ohnehin und
+               erneuert sich still, und ein Weg zurueck brauchte eine
+               Mailadresse, die es mit Absicht nicht gibt. -->
+          <button id="knopf" class="knopf" type="submit">Anmelden</button>
+        </form>
+
+        <p id="fehler" class="rueckmeldung rueckmeldung--falsch" role="alert" hidden></p>
+      </section>
+    </main>
+
+    <script type="module" src="/src/anmelden.js"></script>
+  </body>
+</html>

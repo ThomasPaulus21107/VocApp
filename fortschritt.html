@@ -69,6 +69,23 @@
         Dein Fleiß
         <span aria-hidden="true" class="menue__pfeil">→</span>
       </a>
+
+      <!-- Wer übt hier gerade, und der Weg heraus. Gefüllt wird der
+           Abschnitt von src/ui/menue.js; läuft die App ohne Server, blendet
+           sie ihn aus -- ein Abmelden-Knopf ohne Anmeldung verspräche etwas.
+           Der Name bleibt leer, solange dem Konto kein Pseudonym gehört. -->
+      <section id="menue-konto">
+        <h2 class="menue__titel">Konto</h2>
+        <p id="menue-wer" class="menue__zeile menue__zeile--wer"></p>
+        <button
+          id="menue-abmelden"
+          class="menue__zeile menue__zeile--link"
+          type="button"
+        >
+          Abmelden
+          <span aria-hidden="true" class="menue__pfeil">→</span>
+        </button>
+      </section>
     </aside>
 
     <main class="buehne buehne--seite buehne--breit">
